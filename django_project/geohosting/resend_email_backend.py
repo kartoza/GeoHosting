@@ -7,12 +7,12 @@ from django.core.mail.backends.base import BaseEmailBackend
 
 
 class ResendBackend(BaseEmailBackend):
-    """
-    A Django email backend that uses the Resend API.
-    """
+    """A Django email backend that uses the Resend API."""
+
     def send_messages(self, email_messages):
         """
         Send a list of email messages using the Resend API.
+
         :param email_messages: List of Django email messages.
         :return: The number of successfully sent messages.
         """
@@ -29,6 +29,7 @@ class ResendBackend(BaseEmailBackend):
     def _send_via_resend(self, email):
         """
         Send a single email via Resend.
+
         :param email: A Django EmailMessage object.
         :return: The response from the Resend API.
         """
