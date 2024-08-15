@@ -23,7 +23,7 @@ class CheckoutAPI(APIView):
 
     @property
     def payment_method(self):
-        """Return payment method"""
+        """Return payment method."""
         raise NotImplemented
 
     def create_payload(
