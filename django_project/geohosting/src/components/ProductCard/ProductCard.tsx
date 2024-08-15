@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useState } from 'react';
-import { Box, Heading, Text, Button, Image } from '@chakra-ui/react';
+import { Box, Heading, Text, Button, Skeleton, Image } from '@chakra-ui/react';
 
 interface CardProps {
   image?: string;
@@ -13,6 +13,7 @@ interface CardProps {
 const ProductCard: React.FC<CardProps> = ({ image, title, description, comingSoon, onClick, selected }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hovering, setHovering] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -79,7 +80,13 @@ const ProductCard: React.FC<CardProps> = ({ image, title, description, comingSoo
         </Box>
       )}
       <Box justifyContent={'center'} display={'flex'} zIndex={1}>
-        <img src={image} width={115} />
+        {!imageLoaded && <Skeleton width={115} height={115} />}
+        <Image
+          src={image}
+          width={115}
+          onLoad={() => setImageLoaded(true)}
+          display={imageLoaded ? 'block' : 'none'}
+        />
       </Box>
       <Heading as="h3" size="md" marginBottom="10px" zIndex={1}>
         {title}
