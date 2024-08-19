@@ -91,6 +91,38 @@ CSRF_TRUSTED_ORIGINS = ast.literal_eval(
     os.environ.get('CSRF_TRUSTED_ORIGINS', '[]'))
 
 
-STATICFILES_DIRS += (
-    absolute_path('geohosting', 'assets', 'webpack_bundles_dev'),
+MB = 1024 ** 2
+
+TRANSFER_CONFIG = TransferConfig(
+    multipart_chunksize=512 * MB,
+    use_threads=True,
+    max_concurrency=10
 )
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": os.environ.get("AWS_ACCESS_KEY"),
+            "secret_key": os.environ.get("AWS_SECRET_KEY"),
+            "bucket_name": os.environ.get("AWS_BUCKET_NAME"),
+            "file_overwrite": False,
+            "max_memory_size": 300 * MB,  # 300MB
+            "transfer_config": TRANSFER_CONFIG,
+            "endpoint_url": os.environ.get("AWS_HOST"),
+            "location": os.environ.get("AWS_DIR_PREFIX", "")
+        },
+    },
+    "staticfiles": {
+        "BACKEND": (
+            "django.contrib.staticfiles.storage.StaticFilesStorage"
+        )
+    },
+}
+
+# If it is using minio local, custom_domain should be 127.0.0.1
+if os.environ.get("AWS_HOST") == 'http://minio:9000/':
+    STORAGES['default']['OPTIONS']['url_protocol'] = "http:"
+    STORAGES['default']['OPTIONS']['custom_domain'] = (
+        f'127.0.0.1:9005/{os.environ.get("AWS_BUCKET_NAME")}'
+    )
