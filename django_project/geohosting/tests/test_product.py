@@ -135,14 +135,14 @@ class FetchProductsTestCase(TestCase):
                         '<p><br></p>'
                     ),
                     'image': '/path/to/image1.jpg',
-                    'available': 1
+                    'available': True
                 },
                 {
                     'name': 'product_2',
                     'item_name': 'Product 2',
                     'description': '<div><p><strong>short description</strong></p><p>Biodiversity Information Management System.</p><p><br>',
                     'image': '/path/to/image2.jpg',
-                    'available': 0
+                    'available': False
                 }
             ]
         ]
@@ -163,7 +163,7 @@ class FetchProductsTestCase(TestCase):
         self.assertEqual(Product.objects.count(), 2)
         product1 = Product.objects.get(upstream_id='product_1')
         self.assertEqual(product1.name, 'Product 1')
-        self.assertTrue(product1.available == 1)
+        self.assertTrue(product1.available)
         self.assertIsNotNone(product1.image.name)
 
         # Check the metadata
