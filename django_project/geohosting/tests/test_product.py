@@ -163,7 +163,7 @@ class FetchProductsTestCase(TestCase):
         self.assertEqual(Product.objects.count(), 2)
         product1 = Product.objects.get(upstream_id='product_1')
         self.assertEqual(product1.name, 'Product 1')
-        self.assertTrue(product1.available)
+        self.assertTrue(product1.published_in_website == 1)
         self.assertIsNotNone(product1.image.name)
 
         # Check the metadata
