@@ -18,6 +18,16 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_tickets(request):
+    user_email = request.user.email
+    tickets = Ticket.objects.filter(customer=user_email)
+    ticket_serializer = TicketSerializer(tickets, many=True)
+
+    return Response(ticket_serializer.data, status=status.HTTP_200_OK)
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_ticket(request):
