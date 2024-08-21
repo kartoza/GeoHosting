@@ -28,7 +28,7 @@ class TicketTests(TestCase):
             'customer': 'tinashe@test.com'
         }
         response = self.client.post(
-            '/api/support/tickets/', payload, format='json')
+            '/api/support/tickets/create/', payload, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['subject'], payload['subject'])
 
@@ -38,7 +38,7 @@ class TicketTests(TestCase):
             'subject': '',  # Invalid subject
         }
         response = self.client.post(
-            '/api/support/tickets/', payload, format='json')
+            '/api/support/tickets/create/', payload, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('details', response.data)
 
