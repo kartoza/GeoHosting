@@ -28,7 +28,7 @@ const initialState: SupportState = {
   selectedTicket: null,
   attachments: {},
   loading: false,
-  error: null,
+  error: string | { detail?: string } | null;
 };
 
 interface CreateTicketData {
@@ -44,7 +44,10 @@ export const fetchTickets = createAsyncThunk(
   'support/fetchTickets',
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/api/support/tickets/');
+      const token = localStorage.getItem('token');
+      const response = await axios.get('/api/support/tickets/', {
+        headers: { Authorization: `Token ${token}` }
+      });
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data || 'An unknown error occurred');
