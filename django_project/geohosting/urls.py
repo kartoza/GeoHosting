@@ -25,7 +25,7 @@ from geohosting.views.home import HomeView
 from geohosting.views.products import fetch_products
 from geohosting.views.reset_password import ResetPasswordView
 from geohosting.views.support import (
-    create_ticket,
+    get_tickets,
     create_ticket,
     upload_attachments
 )
