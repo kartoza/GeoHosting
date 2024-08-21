@@ -134,14 +134,15 @@ const SupportPage: React.FC = () => {
                   mb={2}
                 >
                   <Text>{stripHtmlTags(ticket.details)}</Text>
-                  <IconButton
+                  {/* HIDE EDIT */}
+                  {/* <IconButton
                     icon={<EditIcon />}
                     aria-label="Edit Ticket"
                     onClick={() => handleEditTicket(ticket.id)}
                     isDisabled={ticket.status !== 'open'}
                     variant="outline"
                     colorScheme={ticket.status === 'open' ? 'blue' : 'gray'}
-                  />
+                  /> */}
                 </Box>
                 <Text
                   fontSize="sm"
