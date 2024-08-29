@@ -4,10 +4,13 @@ import { ChevronUpIcon } from '@chakra-ui/icons';
 import { UnorderedList, ListItem, Icon } from "@chakra-ui/react";
 import { FaTwitter, FaYoutube, FaInstagram, FaFacebook, FaLinkedin, FaGithub } from 'react-icons/fa6';
 import LoginForm from '../LoginForm/LoginForm';
+import { RootState } from '../../redux/store';
+import { useSelector } from 'react-redux';
 
 const Footer: React.FC = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
+  const { token, loading, error } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -116,15 +119,17 @@ const Footer: React.FC = () => {
             </Text>
 
             <Flex gap="2">
-              <Button
-                type="button"
-                bg="#f8b54b"
-                color="white"
-                _hover={{ bg: "#e1a03e" }}
-                onClick={handleOpenLoginForm}
-              >
-                Sign Up
-              </Button>
+              {!token && (
+                <Button
+                  type="button"
+                  bg="#f8b54b"
+                  color="white"
+                  _hover={{ bg: "#e1a03e" }}
+                  onClick={handleOpenLoginForm}
+                >
+                  Sign Up
+                </Button>
+              )}
             </Flex>
           </Box>
         </Flex>
