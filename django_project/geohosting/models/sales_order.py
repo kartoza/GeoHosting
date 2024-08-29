@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.timezone import now
 
+from geohosting.models.activity import name_validator
 from geohosting.models.user_profile import UserProfile
 from geohosting.utils.erpnext import post_to_erpnext
 from geohosting.utils.paystack import verify_paystack_payment
@@ -110,6 +111,15 @@ class SalesOrder(models.Model):
         blank=True,
         null=True,
         help_text='Checkout id on the payment gateway.'
+    )
+    app_name = models.CharField(
+        blank=True,
+        null=True,
+        help_text=(
+            'App name that would be used for instance.'
+            'It will also be used for sub domain.'
+        ),
+        validators=[name_validator]
     )
 
     class Meta:

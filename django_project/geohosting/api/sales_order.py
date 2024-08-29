@@ -23,7 +23,9 @@ class SalesOrderSetView(
 
     def get_queryset(self):
         """Return querysets."""
-        return SalesOrder.objects.filter(customer=self.request.user)
+        if self.request.user.id:
+            return SalesOrder.objects.filter(customer_id=self.request.user.id)
+        return SalesOrder.objects.none()
 
     def get_object(self):
         """Get object."""

@@ -8,29 +8,23 @@ import {
   Flex,
   Grid,
   GridItem,
-  Heading,
   HStack,
   IconButton,
-  Image,
   Link,
-  List,
-  ListItem,
   Text,
   useBreakpointValue,
   VStack
 } from '@chakra-ui/react';
-import { CheckIcon } from '@chakra-ui/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import customTheme from "../../theme/theme";
 import Navbar from "../../components/Navbar/Navbar";
 import Background from "../../components/Background/Background";
-import { formatPrice, packageName } from "../../utils/helpers";
 import { Package } from "../../redux/reducers/productsSlice";
 import { FaCcStripe } from 'react-icons/fa6';
 import { StripePaymentModal } from "./Stripe";
 import { PaystackPaymentModal } from "./Paystack";
 import ProgressTracker from "../../components/ProgressTracker/ProgressTracker";
-
+import { OrderSummary } from "./OrderSummary"
 
 interface LocationState {
   productName: string;
@@ -144,44 +138,7 @@ const CheckoutPage: React.FC = () => {
                   </VStack>
                 </Box>
               </GridItem>
-              <GridItem>
-                <Box>
-                  <Text fontSize={22} color={'black'}>
-                    Order Summary
-                  </Text>
-                </Box>
-                <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
-                  <Box border="1px" borderColor="gray.300" borderRadius="md"
-                       p="4">
-                    <Box display="flex" alignItems="center" pr={4} pb={4}>
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        boxSize="50px"
-                      />
-                      <Text fontSize="2xl" fontWeight="bold" ml={2}>
-                        {product.name} {packageName(pkg)}
-                      </Text>
-                    </Box>
-                    <Text fontSize="xl" mb={4} fontWeight="bold">
-                      {formatPrice(pkg.price, pkg.currency)} / month
-                    </Text>
-                    <Heading as="h3" size="md" mb={2}>
-                      Features
-                    </Heading>
-                    <List spacing={2}>
-                      {pkg.feature_list &&
-                        pkg.feature_list['spec'] &&
-                        Object.entries(pkg.feature_list['spec']).map(([key, value]: any) => (
-                          <ListItem
-                            key={key} display="flex" alignItems="center">
-                            <CheckIcon color="green.500" mr={2}/> {value}
-                          </ListItem>
-                        ))}
-                    </List>
-                  </Box>
-                </Box>
-              </GridItem>
+              <OrderSummary product={product} pkg={pkg}/>
             </Grid>
             <Box mt={4}>
               <Button

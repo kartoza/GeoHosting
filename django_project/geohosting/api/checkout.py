@@ -44,7 +44,7 @@ class CheckoutAPI(APIView):
                 package=package,
                 customer=request.user
             )
-            callback_url = f'{domain}#/dashboard/orders/{order.id}'
+            callback_url = f'{domain}#/orders/{order.id}/configuration'
             _id, payload = self.create_payload(
                 request.user.email, package, callback_url
             )
