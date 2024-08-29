@@ -66,7 +66,7 @@ const OverviewPage: React.FC = () => {
                       <Heading as="h3" fontSize={{ base: '20px', md: '2xl', xl: '3xl' }} pt={3} pb={3} fontWeight={'light'}>{productDetail.description}</Heading>
                     </Container>
                     <Container maxW='container.xl' mt={5} mb={5}>
-                      <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '3xl' }} >
+                      <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'lg', sm: 'xl', md: '5xl', xl: '5xl' }} >
                         Tailor Your Experience: Find the Right Plan for You
                       </Text>
                     </Container>
@@ -84,7 +84,7 @@ const OverviewPage: React.FC = () => {
                     </SimpleGrid>
 
                     <Container maxW='container.xl' mt={5} mb={5}>
-                      <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'xl', md: '2xl', xl: '3xl' }}>
+                      <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'xl', md: '5xl', xl: '5xl' }}>
                         What {productDetail.name} Can Do for You
                       </Text>
                     </Container>
@@ -101,7 +101,7 @@ const OverviewPage: React.FC = () => {
                   mx="auto"
 
                 >
-                  <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'xl', md: '2xl', xl: '3xl' }}  mb={15}>
+                  <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'xl', md: '5xl', xl: '5xl' }}  mb={15}>
                     Why Choose {productDetail.name}?
                   </Text>
                   <Suspense fallback={<LoadingSpinner/>}>
