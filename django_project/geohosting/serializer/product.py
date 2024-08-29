@@ -1,20 +1,24 @@
 from rest_framework import serializers
 from geohosting.models import Product, ProductMedia, Package, ProductMetadata
 
+
 class ProductMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductMedia
         fields = '__all__'
+
 
 class ProductPackageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Package
         fields = '__all__'
 
+
 class ProductMetadataSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductMetadata
         fields = ['key', 'value']
+
 
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,6 +27,7 @@ class ProductListSerializer(serializers.ModelSerializer):
             'id', 'name', 'order', 'upstream_id',
             'description', 'image', 'available'
         ]
+
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     images = ProductMediaSerializer(many=True, read_only=True)
