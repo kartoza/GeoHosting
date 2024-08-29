@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { Box, Spinner } from "@chakra-ui/react";
+import { FaPrint } from "react-icons/fa6";
 
 
 interface DataProps {
@@ -19,7 +20,8 @@ interface DataProps {
       feature_list: {
         spec: Array<string>
       },
-    }
+    },
+    invoice_url: string
   },
   error?: string
 }
@@ -38,7 +40,7 @@ const OrderDetail: React.FC = () => {
             headers: { Authorization: `Token ${token}` }
           });
           setState({ data: response.data })
-        // @ts-ignore
+          // @ts-ignore
         } catch ({ message }) {
           setState(
             {
@@ -62,12 +64,20 @@ const OrderDetail: React.FC = () => {
       ) : (
         <Box>
           You ordered at : {state.data?.date}
-          <div><b>Package</b> : {state.data?.package.name}</div>
-          <div><b>Status</b> : {state.data?.order_status}</div>
-          <div><b>Payment method</b> : {state.data?.payment_method}</div>
-          <div>
+          <Box><b>Package</b> : {state.data?.package.name}</Box>
+          <Box><b>Status</b> : {state.data?.order_status}</Box>
+          <Box><b>Payment method</b> : {state.data?.payment_method}</Box>
+          <Box>
             <b>Spec</b> : {state.data?.package.feature_list.spec.join(', ')}
-          </div>
+          </Box>
+          {
+            state.data?.invoice_url ?
+              <Box marginTop={5}>
+                <a href={state.data?.invoice_url} target='_blank'>
+                  Invoice <FaPrint style={{ display: "inline-block" }}/>
+                </a>
+              </Box> : null
+          }
         </Box>
       )
     }

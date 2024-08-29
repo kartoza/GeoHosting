@@ -103,6 +103,13 @@ class SalesOrder(models.Model):
         verbose_name = 'Sales Order'
         verbose_name_plural = 'Sales Orders'
 
+    def save(self, *args, **kwargs):
+        """Save model."""
+        super(SalesOrder, self).save(*args, **kwargs)
+        # Push to erp if the it is created
+        if not self.erpnext_code:
+            self.post_to_erpnext()
+
     def __str__(self):
         return (
             f"SalesOrder {self.id} for "
@@ -148,11 +155,18 @@ class SalesOrder(models.Model):
                 detail = get_checkout_detail(self.payment_id)
                 if detail.invoice:
                     self.order_status = SalesOrderStatus.PAID
-                    self.post_to_erpnext()
                     self.save()
             elif self.payment_method == SalesOrderPaymentMethod.PAYSTACK:
                 response = verify_paystack_payment(self.payment_id)
                 if response['data']['status'] == 'success':
                     self.order_status = SalesOrderStatus.PAID
-                    self.post_to_erpnext()
                     self.save()
+
+    @property
+    def invoice_url(self):
+        """Return invoice url."""
+        if self.order_status == SalesOrderStatus.PAID:
+            return (
+                f"{settings.ERPNEXT_BASE_URL}/printview?doctype=Sales%20Order"
+                f"&name={self.erpnext_code}&format=Standard"
+            )
