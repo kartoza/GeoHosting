@@ -24,7 +24,9 @@ class SalesOrderStatus:
     """Order Status."""
 
     WAITING_PAYMENT = 'Waiting Payment'
-    PAID = 'Paid'
+    WAITING_CONFIGURATION = 'Waiting Configuration'
+    WAITING_DEPLOYMENT = 'Waiting Deployment'
+    DEPLOYED = 'Deployed'
 
 
 class SalesOrderPaymentMethod:
@@ -72,7 +74,18 @@ class SalesOrder(models.Model):
                 SalesOrderStatus.WAITING_PAYMENT,
                 SalesOrderStatus.WAITING_PAYMENT
             ),
-            (SalesOrderStatus.PAID, SalesOrderStatus.PAID)
+            (
+                SalesOrderStatus.WAITING_CONFIGURATION,
+                SalesOrderStatus.WAITING_CONFIGURATION
+            ),
+            (
+                SalesOrderStatus.WAITING_DEPLOYMENT,
+                SalesOrderStatus.WAITING_DEPLOYMENT
+            ),
+            (
+                SalesOrderStatus.DEPLOYED,
+                SalesOrderStatus.DEPLOYED
+            )
         ),
         max_length=256,
         help_text='The status of order.'
@@ -154,18 +167,18 @@ class SalesOrder(models.Model):
             if self.payment_method == SalesOrderPaymentMethod.STRIPE:
                 detail = get_checkout_detail(self.payment_id)
                 if detail.invoice:
-                    self.order_status = SalesOrderStatus.PAID
+                    self.order_status = SalesOrderStatus.WAITING_CONFIGURATION
                     self.save()
             elif self.payment_method == SalesOrderPaymentMethod.PAYSTACK:
                 response = verify_paystack_payment(self.payment_id)
                 if response['data']['status'] == 'success':
-                    self.order_status = SalesOrderStatus.PAID
+                    self.order_status = SalesOrderStatus.WAITING_CONFIGURATION
                     self.save()
 
     @property
     def invoice_url(self):
         """Return invoice url."""
-        if self.order_status == SalesOrderStatus.PAID:
+        if self.order_status == SalesOrderStatus.WAITING_CONFIGURATION:
             return (
                 f"{settings.ERPNEXT_BASE_URL}/printview?doctype=Sales%20Order"
                 f"&name={self.erpnext_code}&format=Standard"
