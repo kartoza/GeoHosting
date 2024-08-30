@@ -1,24 +1,24 @@
 import { SalesOrder } from "../../redux/reducers/salesOrdersSlice";
 
-export function checkCheckoutUrl(salesOrder: SalesOrder) {
+export function checkCheckoutUrl(salesOrder: SalesOrder, navigate) {
   // Check checkout url
   const originalUrl = location.href.replace(location.origin, '')
   let targetUrl = originalUrl;
   switch (salesOrder.order_status) {
     case 'Waiting Payment':
-      targetUrl = `/#/orders/${salesOrder.id}/payment`
+      targetUrl = `/orders/${salesOrder.id}/payment`
       break
     case 'Waiting Configuration':
-      targetUrl = `/#/orders/${salesOrder.id}/configuration`
+      targetUrl = `/orders/${salesOrder.id}/configuration`
       break
     case 'Waiting Deployment':
-      targetUrl = `/#/orders/${salesOrder.id}/deployment`
+      targetUrl = `/orders/${salesOrder.id}/deployment`
       break
     case 'Deployed':
-      targetUrl = `/#/orders/${salesOrder.id}/finish`
+      targetUrl = `/orders/${salesOrder.id}/finish`
       break
   }
-  if (originalUrl != targetUrl) {
-    location.href = targetUrl
+  if (originalUrl.replace('/#', '') != targetUrl) {
+    navigate(targetUrl)
   }
 }

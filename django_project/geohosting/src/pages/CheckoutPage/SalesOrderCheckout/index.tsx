@@ -4,14 +4,9 @@ import {
   ChakraProvider,
   Container,
   Flex,
-  Grid,
-  GridItem,
-  keyframes,
   Spinner,
-  Text,
-  useBreakpointValue
+  Text
 } from '@chakra-ui/react';
-import { FaGear } from "react-icons/fa6";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import customTheme from "../../../theme/theme";
@@ -23,28 +18,21 @@ import { AppDispatch, RootState } from "../../../redux/store";
 import {
   fetchSalesOrderDetail
 } from "../../../redux/reducers/salesOrdersSlice";
-import OrderSummary from "../../CheckoutPage/OrderSummary";
 import { checkCheckoutUrl } from "../utils";
 
 
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg)
-  }
-`;
-const spinAnimation = `${spin} infinite 2s linear`;
+interface Props {
+  activeStep: number;
+  children: JSX.Element;
+}
 
-const CheckoutConfiguration: React.FC = () => {
+const Index: React.FC<Props> = ({ activeStep, children }) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { salesOrderDetail, detailError } = useSelector(
     (state: RootState) => state.salesOrders
   );
-  const columns = useBreakpointValue({ base: 1, md: 2 });
 
   useEffect(() => {
     if (detailError) {
@@ -58,18 +46,12 @@ const CheckoutConfiguration: React.FC = () => {
     }
     // Check the url and redirect to correct page
     if (salesOrderDetail && salesOrderDetail.id + '' === id) {
-      checkCheckoutUrl(salesOrderDetail)
+      checkCheckoutUrl(salesOrderDetail, navigate)
     }
   }, [id, salesOrderDetail, dispatch]);
 
-  useEffect(() => {
-    if (id != null) {
-      dispatch(fetchSalesOrderDetail(id));
-    }
-  }, [dispatch]);
 
-
-  if (!salesOrderDetail) {
+  if (!salesOrderDetail || salesOrderDetail?.id != id) {
     return (
       <Box
         position={'absolute'} display={'flex'}
@@ -88,31 +70,15 @@ const CheckoutConfiguration: React.FC = () => {
           <Background/>
           <Container maxW='container.xl' mt="80px" mb="80px" bg="transparent">
             <Box mb={10}>
-              <CheckoutTracker activeStep={2}/>
+              <CheckoutTracker activeStep={activeStep}/>
             </Box>
-            <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
-              <OrderSummary
-                product={salesOrderDetail.product}
-                pkg={salesOrderDetail.package}
-                invoice_url={salesOrderDetail.invoice_url}
-              />
-              <GridItem>
-                <Box>
-                  <Text fontSize={22} color={'white'}>Title</Text>
-                </Box>
-                <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
-                  <Box>
-                    Sit tight, your service is being deployed. Please hold on
-                    as the deployment process is underway.
-                    <br/>
-                    <br/>
-                    <Box animation={spinAnimation} width='fit-content'>
-                      <FaGear/>
-                    </Box>
-                  </Box>
-                </Box>
-              </GridItem>
-            </Grid>
+            {
+              salesOrderDetail ? React.Children.map(children, child => {
+                return React.cloneElement(child, {
+                  salesOrderDetail: salesOrderDetail
+                })
+              }) : null
+            }
           </Container>
         </Box>
         <Box
@@ -128,4 +94,4 @@ const CheckoutConfiguration: React.FC = () => {
   );
 };
 
-export default CheckoutConfiguration;
+export default Index;

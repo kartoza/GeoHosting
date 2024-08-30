@@ -7,14 +7,15 @@ import './assets/styles/index.css';
 import TokenValidator from './components/TokenValidator/TokenValidator';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
-import CheckoutPayment from "./pages/CheckoutPage/CheckoutPayment";
 
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage/DashboardPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
-const CheckoutConfiguration = lazy(() => import('./pages/CheckoutPage/CheckoutConfiguration'));
-const CheckoutDeployment = lazy(() => import('./pages/CheckoutPage/CheckoutDeployment'));
-const CheckoutFinish = lazy(() => import('./pages/CheckoutPage/CheckoutFinish'));
+const SalesOrderCheckout = lazy(() => import('./pages/CheckoutPage/SalesOrderCheckout'));
+const CheckoutPayment = lazy(() => import('./pages/CheckoutPage/SalesOrderCheckout/CheckoutPayment'));
+const CheckoutConfiguration = lazy(() => import('./pages/CheckoutPage/SalesOrderCheckout/CheckoutConfiguration'));
+const CheckoutDeployment = lazy(() => import('./pages/CheckoutPage/SalesOrderCheckout/CheckoutDeployment'));
+const CheckoutFinish = lazy(() => import('./pages/CheckoutPage/SalesOrderCheckout/CheckoutFinish'));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage/ResetPasswordPage'));
 const OverviewPage = lazy(() => import('./pages/OverviewPage/OverviewPage'));
 
@@ -38,7 +39,9 @@ const App: React.FC = () => {
               path="/orders/:id/payment"
               element={
                 <PrivateRoute>
-                  <CheckoutPayment/>
+                  <SalesOrderCheckout activeStep={0}>
+                    <CheckoutPayment salesOrderDetail={null}/>
+                  </SalesOrderCheckout>
                 </PrivateRoute>
               }
             />
@@ -46,7 +49,9 @@ const App: React.FC = () => {
               path="/orders/:id/configuration"
               element={
                 <PrivateRoute>
-                  <CheckoutConfiguration/>
+                  <SalesOrderCheckout activeStep={1}>
+                    <CheckoutConfiguration salesOrderDetail={null}/>
+                  </SalesOrderCheckout>
                 </PrivateRoute>
               }
             />
@@ -54,7 +59,9 @@ const App: React.FC = () => {
               path="/orders/:id/deployment"
               element={
                 <PrivateRoute>
-                  <CheckoutDeployment/>
+                  <SalesOrderCheckout activeStep={2}>
+                    <CheckoutDeployment salesOrderDetail={null}/>
+                  </SalesOrderCheckout>
                 </PrivateRoute>
               }
             />
@@ -62,7 +69,9 @@ const App: React.FC = () => {
               path="/orders/:id/finish"
               element={
                 <PrivateRoute>
-                  <CheckoutFinish/>
+                  <SalesOrderCheckout activeStep={3}>
+                    <CheckoutFinish salesOrderDetail={null}/>
+                  </SalesOrderCheckout>
                 </PrivateRoute>
               }
             />
