@@ -25,6 +25,7 @@ import {
   fetchSalesOrderDetail
 } from "../../../redux/reducers/salesOrdersSlice";
 import OrderSummary from "../../CheckoutPage/OrderSummary";
+import { checkCheckoutUrl } from "../utils";
 
 
 const CheckoutConfiguration: React.FC = () => {
@@ -37,6 +38,13 @@ const CheckoutConfiguration: React.FC = () => {
   const [appName, setAppName] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(false);
   const { token } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    // Check the url and redirect to correct page
+    if (salesOrderDetail) {
+      checkCheckoutUrl(salesOrderDetail)
+    }
+  }, [salesOrderDetail]);
 
   useEffect(() => {
     if (id != null) {

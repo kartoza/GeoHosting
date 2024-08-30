@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   ChakraProvider,
@@ -11,7 +11,6 @@ import {
   useBreakpointValue
 } from '@chakra-ui/react';
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import customTheme from "../../../theme/theme";
 import Navbar from "../../../components/Navbar/Navbar";
 import Background from "../../../components/Background/Background";
@@ -23,6 +22,7 @@ import {
   fetchSalesOrderDetail
 } from "../../../redux/reducers/salesOrdersSlice";
 import OrderSummary from "../../CheckoutPage/OrderSummary";
+import { checkCheckoutUrl } from "../utils";
 
 
 const CheckoutConfiguration: React.FC = () => {
@@ -32,35 +32,19 @@ const CheckoutConfiguration: React.FC = () => {
     (state: RootState) => state.salesOrders
   );
   const columns = useBreakpointValue({ base: 1, md: 2 });
-  const [appName, setAppName] = useState<string>('');
-  const [disabled, setDisabled] = useState<boolean>(false);
-  const { token } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    // Check the url and redirect to correct page
+    if (salesOrderDetail) {
+      checkCheckoutUrl(salesOrderDetail)
+    }
+  }, [salesOrderDetail]);
 
   useEffect(() => {
     if (id != null) {
       dispatch(fetchSalesOrderDetail(id));
     }
   }, [dispatch]);
-
-  useEffect(() => {
-    if (salesOrderDetail) {
-      setAppName(salesOrderDetail.app_name)
-      if (salesOrderDetail.app_name) {
-        setDisabled(true)
-      }
-    }
-  }, [salesOrderDetail]);
-
-  const submit = async () => {
-    setDisabled(true)
-    try {
-      await axios.patch(`/api/orders/${id}/`, { app_name: appName }, {
-        headers: { Authorization: `Token ${token}` }
-      });
-      // @ts-ignore
-    } catch ({ message }) {
-    }
-  };
 
   if (!salesOrderDetail) {
     return (

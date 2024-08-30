@@ -24,6 +24,7 @@ import {
   fetchSalesOrderDetail
 } from "../../../redux/reducers/salesOrdersSlice";
 import OrderSummary from "../../CheckoutPage/OrderSummary";
+import { checkCheckoutUrl } from "../utils";
 
 
 const spin = keyframes`
@@ -43,7 +44,13 @@ const CheckoutConfiguration: React.FC = () => {
     (state: RootState) => state.salesOrders
   );
   const columns = useBreakpointValue({ base: 1, md: 2 });
-  const { token } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    // Check the url and redirect to correct page
+    if (salesOrderDetail) {
+      checkCheckoutUrl(salesOrderDetail)
+    }
+  }, [salesOrderDetail]);
 
   useEffect(() => {
     if (id != null) {
