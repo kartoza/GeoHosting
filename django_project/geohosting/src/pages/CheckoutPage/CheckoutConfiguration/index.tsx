@@ -12,7 +12,7 @@ import {
   Text,
   useBreakpointValue
 } from '@chakra-ui/react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import customTheme from "../../../theme/theme";
 import Navbar from "../../../components/Navbar/Navbar";
@@ -26,12 +26,14 @@ import {
 } from "../../../redux/reducers/salesOrdersSlice";
 import OrderSummary from "../../CheckoutPage/OrderSummary";
 import { checkCheckoutUrl } from "../utils";
+import { toast } from "react-toastify";
 
 
 const CheckoutConfiguration: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { salesOrderDetail } = useSelector(
+  const { salesOrderDetail, detailError } = useSelector(
     (state: RootState) => state.salesOrders
   );
   const columns = useBreakpointValue({ base: 1, md: 2 });
@@ -40,17 +42,20 @@ const CheckoutConfiguration: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    // Check the url and redirect to correct page
-    if (salesOrderDetail && salesOrderDetail.id === id) {
-      checkCheckoutUrl(salesOrderDetail)
+    if (detailError) {
+      navigate('/');
     }
-  }, [salesOrderDetail]);
+  }, [detailError]);
 
   useEffect(() => {
-    if (id != null) {
+    if (id && salesOrderDetail?.id != id) {
       dispatch(fetchSalesOrderDetail(id));
     }
-  }, [dispatch]);
+    // Check the url and redirect to correct page
+    if (salesOrderDetail && salesOrderDetail.id + '' === id) {
+      checkCheckoutUrl(salesOrderDetail)
+    }
+  }, [id, salesOrderDetail, dispatch]);
 
   useEffect(() => {
     if (salesOrderDetail) {
@@ -67,8 +72,13 @@ const CheckoutConfiguration: React.FC = () => {
       await axios.patch(`/api/orders/${id}/`, { app_name: appName }, {
         headers: { Authorization: `Token ${token}` }
       });
+      if (id != null) {
+        dispatch(fetchSalesOrderDetail(id));
+      }
       // @ts-ignore
     } catch ({ message }) {
+      toast.error("App name should just contains letter, number and dash");
+      setDisabled(false)
     }
   };
 

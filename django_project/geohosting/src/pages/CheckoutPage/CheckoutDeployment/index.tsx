@@ -12,7 +12,7 @@ import {
   useBreakpointValue
 } from '@chakra-ui/react';
 import { FaGear } from "react-icons/fa6";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import customTheme from "../../../theme/theme";
 import Navbar from "../../../components/Navbar/Navbar";
@@ -39,24 +39,35 @@ const spinAnimation = `${spin} infinite 2s linear`;
 
 const CheckoutConfiguration: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { salesOrderDetail } = useSelector(
+  const { salesOrderDetail, detailError } = useSelector(
     (state: RootState) => state.salesOrders
   );
   const columns = useBreakpointValue({ base: 1, md: 2 });
 
   useEffect(() => {
+    if (detailError) {
+      navigate('/');
+    }
+  }, [detailError]);
+
+  useEffect(() => {
+    if (id && salesOrderDetail?.id != id) {
+      dispatch(fetchSalesOrderDetail(id));
+    }
     // Check the url and redirect to correct page
-    if (salesOrderDetail && salesOrderDetail.id === id) {
+    if (salesOrderDetail && salesOrderDetail.id + '' === id) {
       checkCheckoutUrl(salesOrderDetail)
     }
-  }, [salesOrderDetail]);
+  }, [id, salesOrderDetail, dispatch]);
 
   useEffect(() => {
     if (id != null) {
       dispatch(fetchSalesOrderDetail(id));
     }
   }, [dispatch]);
+
 
   if (!salesOrderDetail) {
     return (

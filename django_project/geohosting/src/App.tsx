@@ -7,6 +7,7 @@ import './assets/styles/index.css';
 import TokenValidator from './components/TokenValidator/TokenValidator';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
+import CheckoutPayment from "./pages/CheckoutPage/CheckoutPayment";
 
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage/DashboardPage'));
@@ -30,6 +31,14 @@ const App: React.FC = () => {
               element={
                 <PrivateRoute>
                   <DashboardPage/>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/orders/:id/payment"
+              element={
+                <PrivateRoute>
+                  <CheckoutPayment/>
                 </PrivateRoute>
               }
             />

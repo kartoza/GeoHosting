@@ -10,7 +10,7 @@ import {
   Text,
   useBreakpointValue
 } from '@chakra-ui/react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import customTheme from "../../../theme/theme";
 import Navbar from "../../../components/Navbar/Navbar";
 import Background from "../../../components/Background/Background";
@@ -27,24 +27,29 @@ import { checkCheckoutUrl } from "../utils";
 
 const CheckoutConfiguration: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { salesOrderDetail } = useSelector(
+  const { salesOrderDetail, detailError } = useSelector(
     (state: RootState) => state.salesOrders
   );
   const columns = useBreakpointValue({ base: 1, md: 2 });
 
   useEffect(() => {
-    // Check the url and redirect to correct page
-    if (salesOrderDetail && salesOrderDetail.id === id) {
-      checkCheckoutUrl(salesOrderDetail)
+    if (detailError) {
+      navigate('/');
     }
-  }, [salesOrderDetail]);
+  }, [detailError]);
 
   useEffect(() => {
-    if (id != null) {
+    if (id && salesOrderDetail?.id != id) {
       dispatch(fetchSalesOrderDetail(id));
     }
-  }, [dispatch]);
+    // Check the url and redirect to correct page
+    if (salesOrderDetail && salesOrderDetail.id + '' === id) {
+      checkCheckoutUrl(salesOrderDetail)
+    }
+  }, [id, salesOrderDetail, dispatch]);
+
 
   if (!salesOrderDetail) {
     return (
