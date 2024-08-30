@@ -199,7 +199,7 @@ class SalesOrder(models.Model):
         )
 
     def post_to_erpnext(self):
-        """Function to create the sales order to erpnext."""
+        """Create the sales order to erpnext."""
         user_profile = UserProfile.objects.get(
             user=self.customer
         )
@@ -274,8 +274,7 @@ class SalesOrder(models.Model):
 
     @property
     def invoice_url(self):
-        """Return invoice url when the status is not waiting payment anymore.
-        """
+        """Return invoice url when the status is not payment anymore."""
         if self.sales_order_status_obj != SalesOrderStatus.WAITING_PAYMENT:
             return (
                 f"{settings.ERPNEXT_BASE_URL}/printview?doctype=Sales%20Order"
