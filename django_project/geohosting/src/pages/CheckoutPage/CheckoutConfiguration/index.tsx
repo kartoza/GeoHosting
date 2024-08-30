@@ -12,16 +12,19 @@ import {
   Text,
   useBreakpointValue
 } from '@chakra-ui/react';
-import customTheme from "../../theme/theme";
-import Navbar from "../../components/Navbar/Navbar";
-import Background from "../../components/Background/Background";
-import ProgressTracker from "../../components/ProgressTracker/ProgressTracker";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
-import { fetchSalesOrderDetail } from "../../redux/reducers/salesOrdersSlice";
-import OrderSummary from "../CheckoutPage/OrderSummary";
 import axios from "axios";
+import customTheme from "../../../theme/theme";
+import Navbar from "../../../components/Navbar/Navbar";
+import Background from "../../../components/Background/Background";
+import CheckoutTracker
+  from "../../../components/ProgressTracker/CheckoutTracker";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/store";
+import {
+  fetchSalesOrderDetail
+} from "../../../redux/reducers/salesOrdersSlice";
+import OrderSummary from "../../CheckoutPage/OrderSummary";
 
 
 const CheckoutConfiguration: React.FC = () => {
@@ -80,7 +83,7 @@ const CheckoutConfiguration: React.FC = () => {
           <Background/>
           <Container maxW='container.xl' mt="80px" mb="80px" bg="transparent">
             <Box mb={10}>
-              <ProgressTracker activeStep={1}/>
+              <CheckoutTracker activeStep={1}/>
             </Box>
             <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
               <OrderSummary

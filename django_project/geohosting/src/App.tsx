@@ -11,7 +11,9 @@ import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage/DashboardPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
-const CheckoutConfiguration = lazy(() => import('./pages/CheckoutConfiguration'));
+const CheckoutConfiguration = lazy(() => import('./pages/CheckoutPage/CheckoutConfiguration'));
+const CheckoutDeployment = lazy(() => import('./pages/CheckoutPage/CheckoutDeployment'));
+const CheckoutFinish = lazy(() => import('./pages/CheckoutPage/CheckoutFinish'));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage/ResetPasswordPage'));
 const OverviewPage = lazy(() => import('./pages/OverviewPage/OverviewPage'));
 
@@ -36,6 +38,22 @@ const App: React.FC = () => {
               element={
                 <PrivateRoute>
                   <CheckoutConfiguration/>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/orders/:id/deployment"
+              element={
+                <PrivateRoute>
+                  <CheckoutDeployment/>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/orders/:id/finish"
+              element={
+                <PrivateRoute>
+                  <CheckoutFinish/>
                 </PrivateRoute>
               }
             />
