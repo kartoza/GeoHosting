@@ -12,11 +12,11 @@ import {
 import axios from "axios";
 import { useSelector } from "react-redux";
 import PaystackPop from '@paystack/inline-js';
-import { RootState } from "../../redux/store";
 import { toast } from "react-toastify";
+import { RootState } from "../../../redux/store";
 
 interface StripePaymentModalProps {
-  packageId: number;
+  url: string,
 }
 
 export const PaystackPaymentModal = forwardRef(
@@ -30,7 +30,7 @@ export const PaystackPaymentModal = forwardRef(
         (
           async () => {
             try {
-              const response = await axios.post(`/api/package/${props.packageId}/checkout/paystack`, {}, {
+              const response = await axios.post(props.url, {}, {
                 headers: { Authorization: `Token ${token}` }
               });
               onClose()

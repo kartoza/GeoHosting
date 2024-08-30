@@ -1,30 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Box,
-  Button,
-  ChakraProvider,
-  Container,
-  Divider,
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-  IconButton,
-  Link,
-  Text,
-  useBreakpointValue,
-  VStack
-} from '@chakra-ui/react';
+import { useBreakpointValue } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import customTheme from "../../theme/theme";
-import Navbar from "../../components/Navbar/Navbar";
-import Background from "../../components/Background/Background";
 import { Package } from "../../redux/reducers/productsSlice";
-import { FaCcStripe } from 'react-icons/fa6';
-import { StripePaymentModal } from "./Stripe";
-import { PaystackPaymentModal } from "./Paystack";
-import CheckoutTracker from "../../components/ProgressTracker/CheckoutTracker";
-import { OrderSummary } from "./OrderSummary"
+import MainCheckoutPage from "./CheckoutPage";
 
 interface LocationState {
   productName: string;
@@ -81,95 +59,13 @@ const CheckoutPage: React.FC = () => {
   }
 
   return (
-    <ChakraProvider theme={customTheme}>
-      <Flex direction="column" minHeight="100vh">
-        <Box flex="1">
-          <Navbar/>
-          <Background/>
-          <Container maxW='container.xl' mt="80px" mb="80px" bg="transparent">
-            <Box mb={10}>
-              <CheckoutTracker activeStep={0}/>
-            </Box>
-            <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
-              <GridItem>
-                <Box>
-                  <Text fontSize={22} color={'black'}>
-                    Payment Method
-                  </Text>
-                </Box>
-                <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
-                  <VStack spacing={4} align="stretch">
-                    <Box border="1px" borderColor="gray.300" borderRadius="md"
-                         p="4">
-                      <HStack justifyContent="space-between">
-                        <HStack>
-                          <FaCcStripe size="30px"/>
-                        </HStack>
-                        <IconButton aria-label={'icon'} variant="ghost"/>
-                      </HStack>
-                      <Text mt={2}>
-                        By purchasing this subscription and clicking
-                        "Continue", you agree to the <Link href="#">terms of
-                        service</Link>, <Link href="#">auto-renewal
-                        terms</Link>, electronic document delivery, and
-                        acknowledge the <Link href="#">privacy policy</Link>.
-                      </Text>
-                      <Button
-                        mt={4} leftIcon={<FaCcStripe/>} mr={1}
-                        colorScheme={paymentMethod === PaymentMethods.STRIPE ? "blue" : "blackAlpha"}
-                        size="lg"
-                        onClick={() => setPaymentMethod(PaymentMethods.STRIPE)}
-                      >
-                        Pay with Stripe
-                      </Button>
-                      <Button
-                        mt={4}
-                        colorScheme={paymentMethod === PaymentMethods.PAYSTACK ? "blue" : "blackAlpha"}
-                        size="lg"
-                        onClick={() => setPaymentMethod(PaymentMethods.PAYSTACK)}
-                      >
-                        Pay with Paystack
-                      </Button>
-                      <Divider mt={4}/>
-                      <Text mt={2} fontSize="sm">Payments are processed
-                        in {pkg.currency}. Payment provider fees may
-                        apply.</Text>
-                    </Box>
-                  </VStack>
-                </Box>
-              </GridItem>
-              <OrderSummary product={product} pkg={pkg}/>
-            </Grid>
-            <Box mt={4}>
-              <Button
-                w='100%'
-                colorScheme="orange"
-                onClick={checkout}
-              >
-                Pay with {paymentMethod.toLowerCase()}
-              </Button>
-            </Box>
-          </Container>
-        </Box>
-        <Box
-          width="100%"
-          backgroundColor="blue.500"
-          py="4"
-          textAlign="center"
-        >
-          <Text color="white">Powered by Kartoza</Text>
-        </Box>
-        <StripePaymentModal
-          ref={stripePaymentModalRef}
-          packageId={pkg.id}
-        />
-        <PaystackPaymentModal
-          ref={paystackPaymentModalRef}
-          packageId={pkg.id}
-        />
-      </Flex>
-    </ChakraProvider>
-  );
+    <MainCheckoutPage
+      product={product}
+      pkg={pkg}
+      stripeUrl={`/api/package/${pkg.id}/checkout/stripe`}
+      paystackUrl={`/api/package/${pkg.id}/checkout/paystack`}
+    />
+  )
 };
 
 export default CheckoutPage;

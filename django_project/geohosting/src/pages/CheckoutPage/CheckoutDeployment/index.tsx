@@ -47,7 +47,7 @@ const CheckoutConfiguration: React.FC = () => {
 
   useEffect(() => {
     // Check the url and redirect to correct page
-    if (salesOrderDetail) {
+    if (salesOrderDetail && salesOrderDetail.id === id) {
       checkCheckoutUrl(salesOrderDetail)
     }
   }, [salesOrderDetail]);
