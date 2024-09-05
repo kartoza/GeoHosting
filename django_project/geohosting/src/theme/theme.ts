@@ -26,9 +26,30 @@ const customTheme = extendTheme({
   },
   fonts: {
     body: 'Lato, sans-serif',
-    heading: 'Avenir, Sen, sans-serif',
+    heading: 'Lato, sans-serif',
+  },
+  fontSizes: {
+    xs: "12px",
+    sm: "14px",
+    md: "16px",
+    lg: "18px",
+    xl: "20px",
+    "2xl": "24px",
+    "3xl": "30px",
+    "4xl": "36px",
+    "5xl": "48px",
   },
   components: {
+    Heading: {
+      sizes: {
+        h1: {
+          fontSize: "5xl",
+        },
+        h2: {
+          fontSize: "4xl",
+        },
+      },
+    },
     Button: {
       baseStyle: {
         fontWeight: 'bold',
