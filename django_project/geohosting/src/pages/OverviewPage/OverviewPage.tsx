@@ -95,7 +95,7 @@ const OverviewPage: React.FC = () => {
                   mx="auto"
 
                 >
-                  <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'xl', md: '2xl', xl: '3xl' }}  mb={15}>
+                  <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'xl', md: '2xl', xl: '4xl' }}  mb={15}>
                     Why Choose {productDetail.name}?
                   </Text>
                   <Suspense fallback={<LoadingSpinner/>}>
@@ -113,7 +113,7 @@ const OverviewPage: React.FC = () => {
                   <Text 
                     color={'gray.700'} 
                     fontWeight="bold" 
-                    fontSize={{ base: 'xl', md: '2xl', xl: '3xl' }}  
+                    fontSize={{ base: 'xl', md: '2xl', xl: '4xl' }}  
                     mb={15}
                   >
                     Start Transforming your Data with {productDetail.name} Today
