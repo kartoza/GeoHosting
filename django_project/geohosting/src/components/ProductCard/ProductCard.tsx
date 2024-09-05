@@ -32,12 +32,12 @@ const ProductCard: React.FC<CardProps> = ({ image, title, description, comingSoo
       paddingBottom={5}
       position="relative"
       height={350}
-      onClick={onClick}
+      onClick={!comingSoon ? onClick : undefined}
       backgroundColor={selected ? "blue.100" : "gray.200"}
       borderColor={hovering ? "rgba(87, 160, 198)" : "gray.200"}
       width={["350px", "350px", "320px", "320px"]}
       transition="background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease"
-      cursor="pointer"
+      cursor={comingSoon ? "not-allowed" : "pointer"}
       boxShadow={hovering ? "0 4px 8px rgba(0, 0, 0, 0.1)" : "0 2px 4px rgba(0, 0, 0, 0.1)"}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -91,11 +91,19 @@ const ProductCard: React.FC<CardProps> = ({ image, title, description, comingSoo
       <Heading as="h3" size="md" marginBottom="10px" zIndex={1}>
         {title}
       </Heading>
-      <Text justifyContent={'center'} display={'flex'} fontSize="md" marginBottom="20px"
-        maxW={["500px", "350px", "320px", "320px"]} pt={2} pb={5} pl={5} pr={5} height={75} zIndex={1}>
+      <Text justifyContent={'center'} display={'flex'}  marginBottom="20px"
+        maxW={["500px", "350px", "320px", "320px"]} pt={2} pb={5} pl={5} pr={5} height={75} 
+        textStyle="cardText" zIndex={1}>
         {description}
       </Text>
-      <Button colorScheme="orange" onClick={onClick} zIndex={1}>Learn More</Button>
+      <Button 
+        colorScheme="orange" 
+        onClick={!comingSoon ? onClick : undefined} 
+        zIndex={1} 
+        isDisabled={comingSoon}
+      >
+        Learn More
+      </Button>
     </Box>
   );
 };
