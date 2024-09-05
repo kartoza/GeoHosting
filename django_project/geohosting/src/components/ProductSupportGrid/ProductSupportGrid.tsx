@@ -94,7 +94,7 @@ const ProductSupportGrid = ({ product }) => {
       window.location.href = github_link;
     }
   };
-  
+
 
   return (
     <Flex
