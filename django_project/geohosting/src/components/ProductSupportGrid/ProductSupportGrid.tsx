@@ -3,7 +3,7 @@ import { Box, Text, Button, Flex, Icon } from '@chakra-ui/react';
 import { FaGithub, FaHeadset } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-const Card = ({ icon, title, description, buttonText, descriptionMb = "4", onButtonClick }) => (
+const Card = ({ icon, title, description, buttonText, descriptionMb = "4",definedWidth='100%', onButtonClick }) => (
   <Box
     width={{ base: '100%', md: '48%' }}
     borderRadius="8px"
@@ -34,7 +34,7 @@ const Card = ({ icon, title, description, buttonText, descriptionMb = "4", onBut
           fontFamily="Lato"
           fontStyle="normal"
           fontWeight="700"
-          fontSize={{ base: '24px', md: '32px' }}
+          fontSize={{ base: '24px', md: '24px' }}
           lineHeight={{ base: '28px', md: '38px' }}
           color="#3E3E3E"
           mb="4"
@@ -45,16 +45,17 @@ const Card = ({ icon, title, description, buttonText, descriptionMb = "4", onBut
           fontFamily="Lato"
           fontStyle="normal"
           fontWeight="400"
-          fontSize={{ base: '14px', md: '16px' }}
+          fontSize={{ base: "md", md: "lg" , xl: 'lg' }}
           lineHeight={{ base: '18px', md: '19px' }}
           color="#555555"
           mb={descriptionMb}
+          width={definedWidth}
         >
           {description}
         </Text>
         <Button
           width="full"
-          maxW="213px"
+          maxW="220px"
           height="54px"
           background="#57A0C7"
           color="#FFFFFF"
@@ -87,6 +88,14 @@ const ProductSupportGrid = ({ product }) => {
     navigate('/dashboard/support');
   };
 
+  const handleGithubClick = () => {
+    const github_link = product.product_meta.find((meta) => meta.key === "github_link")?.value || "#";
+    if (github_link && github_link !== "#") {
+      window.location.href = github_link;
+    }
+  };
+  
+
   return (
     <Flex
       direction={{ base: 'column', md: 'row' }}
@@ -102,14 +111,16 @@ const ProductSupportGrid = ({ product }) => {
         title="Download"
         description={`The source code of ${product.name} is freely available on GitHub`}
         buttonText="GitHub"
-        descriptionMb="20" onButtonClick={undefined}      />
+        descriptionMb="20" onButtonClick={handleGithubClick}
+      />
       <Card
         icon={FaHeadset}
         title="Support"
         description="We provide a full support service with our hosting packages. Need a custom solution? Let's discuss how we can customize the platform to suit your organisation's specific requirements."
         buttonText="Support Center"
-        descriptionMb="6"
+        descriptionMb="9"
         onButtonClick={handleSupportClick}
+        definedWidth='150%'
       />
     </Flex>
   );
