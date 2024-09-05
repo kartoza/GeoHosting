@@ -62,11 +62,11 @@ const OverviewPage: React.FC = () => {
                       </Box>
                       {productDetail.name}
                     </Heading>
-                    <Container maxW='container.sm'>
-                      <Heading as="h3" fontSize={{ base: '20px', md: '2xl', xl: '3xl' }} pt={3} pb={3} fontWeight={'light'}>{productDetail.description}</Heading>
+                    <Container maxW='container.2lg'>
+                      <Heading as="h2" fontSize={{ base: '20px', md: '2xl', xl: '5xl' }} pt={3} pb={3} fontWeight={'light'}>{productDetail.description}</Heading>
                     </Container>
                     <Container maxW='container.xl' mt={5} mb={5}>
-                      <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '3xl' }} >
+                      <Text color={'gray.700'} fontWeight="bold" fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '4xl' }} >
                         Tailor Your Experience: Find the Right Plan for You
                       </Text>
                     </Container>
