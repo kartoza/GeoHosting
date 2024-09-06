@@ -11,11 +11,11 @@ const SidebarItem = ({ label, isSelected, onClick }) => {
       px={4}
       py={2}
       color="white"
-      _hover={{ bg: 'gray.400', cursor: 'pointer' }}
+      _hover={{ bg: 'gray.600', cursor: 'pointer' }}
       w="full"
-      backgroundColor={isSelected ? 'gray.500' : 'blue.500'}
+      backgroundColor={isSelected ? 'gray.600' : 'blue.500'}
       onClick={onClick}
-      bg={isSelected ? 'rgba(0, 0, 0, 0.05)' : 'transparent'}
+      bg={isSelected ? 'gray.600' : 'transparent'}
       borderRight={isSelected ? '8px solid #FFFFFF' : 'none'}
     >
       {label}
