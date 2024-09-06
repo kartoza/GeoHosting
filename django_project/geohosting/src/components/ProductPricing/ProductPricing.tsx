@@ -5,7 +5,7 @@ import { CheckIcon } from '@chakra-ui/icons';
 import { Package, Product } from '../../redux/reducers/productsSlice';
 import { formatPrice, packageName } from "../../utils/helpers";
 
-interface PackageProps {
+export interface PackageProps {
   product: Product;
   pkg: Package;
 }
