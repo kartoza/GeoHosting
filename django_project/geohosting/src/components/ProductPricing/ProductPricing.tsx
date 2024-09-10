@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Heading, List, ListItem, Text, Tooltip } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
@@ -10,9 +10,52 @@ export interface PackageProps {
   pkg: Package;
 }
 
+
+
 const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
   const navigate = useNavigate();
   const available = product.available;
+
+  const [convertedPrice, setConvertedPrice] = useState<string>(pkg.price);
+  const [currency, setCurrency] = useState<string>(pkg.currency); 
+
+  useEffect(() => {
+    const getCurrencyBasedOnLocation = async () => {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const locationData = await response.json();
+        const userCountry = locationData.country_code;
+
+        let newCurrency = 'USD';
+        if (userCountry === 'ZA') newCurrency = 'ZAR';
+        else if (['AT', 'BE', 'FR', 'DE', 'IT', 'ES', 'NL', 'PT'].includes(userCountry)) newCurrency = 'EUR';
+
+        setCurrency(newCurrency);
+        await fetchNewPrice(newCurrency);
+
+      } catch (error) {
+        console.error('Error determining location or currency:', error);
+      }
+    };
+
+    getCurrencyBasedOnLocation();
+  }, [pkg.price]);
+
+  async function fetchNewPrice(newCurrency: string) {
+    // TODO fetch currency from ERP or use an API to convert price to location currency
+    try {
+      const response = await fetch(`https://open.er-api.com/v6/latest/${newCurrency}`);
+      const rates = await response.json();
+      const exchangeRate = rates.rates[newCurrency] / rates.rates[pkg.currency];
+
+      const convertedAmount = parseFloat(pkg.price) * exchangeRate;
+      setConvertedPrice(convertedAmount.toFixed(2));
+
+    } catch (error) {
+      console.error('Error fetching exchange rates:', error);
+    }
+    throw new Error('Function not implemented.');
+  }
 
   const handleCheckout = () => {
     localStorage.setItem('selectedProduct', JSON.stringify({ product, pkg }));
@@ -50,7 +93,7 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
       <Box mt={10} mb={5}>
         <Box flexDirection={'row'} display={'flex'} alignItems={'end'}>
           <Text fontSize={{ base: '35', sm: '45', md: '32', xl: '45' }} fontWeight={'bold'} color={'gray.600'}>
-            {formatPrice(pkg.price, pkg.currency)}
+            {formatPrice(convertedPrice, currency)}
           </Text>
         </Box>
       </Box>
@@ -79,12 +122,17 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
             paddingTop={5}
             paddingBottom={5}
             onClick={handleCheckout}
-            isDisabled={!available}
             _hover={{
               filter: 'brightness(1.1)',
               cursor: available ? 'pointer' : 'not-allowed'
             }}
+            _disabled={{
+              backgroundColor: packageName(pkg) === 'Gold' ? 'customOrange.500' : 'blue.500',
+              cursor: 'not-allowed',
+              opacity: 0.6,
+            }}
             transition="filter 0.3s ease"
+            isDisabled={!available}
           >
             {`Get ${product.name} ${packageName(pkg)}`}
           </Button>
@@ -95,3 +143,4 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
 };
 
 export default ProductPricing;
+
