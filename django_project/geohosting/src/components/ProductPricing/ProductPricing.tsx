@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Heading, List, ListItem, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Heading, List, ListItem, Text, Tooltip, Badge } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { Package, Product } from '../../redux/reducers/productsSlice';
 import { formatPrice, packageName } from "../../utils/helpers";
@@ -31,7 +31,24 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
       flexDirection="column"
       width={'100%'}
       boxShadow="0px 4px 6px rgba(0, 0, 0, 0.2)"
+      position="relative"
     >
+      {!available && (
+        <Badge
+          colorScheme="red"
+          variant="solid"
+          position="absolute"
+          top="10px"
+          left="10px"
+          fontSize="0.9em"
+          px={2}
+          py={1}
+          zIndex="10"
+        >
+          Coming Soon
+        </Badge>
+      )}
+
       <Box
         backgroundColor={packageName(pkg) === 'Gold' ? 'customOrange.500' : 'blue.500'}
         textColor={'white'}
@@ -47,14 +64,30 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
           {product.name} {packageName(pkg)}
         </Heading>
       </Box>
-      <Box mt={10} mb={5}>
-        <Box flexDirection={'row'} display={'flex'} alignItems={'end'}>
+
+      {/* Blurred content if not available */}
+      <Box
+        mt={10}
+        mb={5}
+        filter={!available ? 'blur(4px)' : 'none'}
+        position="relative"
+        width="100%"
+        textAlign="center"
+      >
+        <Box flexDirection={'row'} display={'flex'} alignItems={'end'} justifyContent="center">
           <Text fontSize={{ base: '35', sm: '45', md: '32', xl: '45' }} fontWeight={'bold'} color={'gray.600'}>
             {formatPrice(pkg.price, pkg.currency)}
           </Text>
         </Box>
       </Box>
-      <Box mt={5} textAlign="center" width={{ base: "50%", md: '80%', xl: "50%" }} alignItems="center">
+
+      <Box
+        mt={5}
+        textAlign="center"
+        width={{ base: "50%", md: '80%', xl: "50%" }}
+        alignItems="center"
+        filter={!available ? 'blur(4px)' : 'none'}
+      >
         <Text fontWeight={'bold'} fontSize={18}>
           {packageName(pkg)} Features
         </Text>
@@ -68,6 +101,7 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
             ))}
         </List>
       </Box>
+
       <Box mt={10} width="100%" pl={7} pr={7}>
         <Tooltip label="Product is not available" isDisabled={available}>
           <Button
