@@ -34,9 +34,19 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     packages = serializers.SerializerMethodField()
     product_meta = serializers.SerializerMethodField()
 
+    def __init__(self, *args, **kwargs):
+        self.currency = kwargs.pop('currency', None)
+        super().__init__(*args, **kwargs)
+
     def get_packages(self, obj: Product):
         packages = obj.packages.all()
-        preferred_currency_order = ['EUR', 'USD', 'ZAR']
+
+        preferred_currency_order = (
+            [self.currency, 'EUR', 'USD', 'ZAR'] 
+            if self.currency 
+            else ['EUR', 'USD', 'ZAR']
+        )
+
         unique_packages = {}
 
         for package in packages:
