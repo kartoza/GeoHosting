@@ -42,8 +42,8 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         packages = obj.packages.all()
 
         preferred_currency_order = (
-            [self.currency, 'EUR', 'USD', 'ZAR'] 
-            if self.currency 
+            [self.currency, 'EUR', 'USD', 'ZAR']
+            if self.currency
             else ['EUR', 'USD', 'ZAR']
         )
 
