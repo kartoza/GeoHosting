@@ -43,14 +43,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
         if self.currency:
             preferred_currency_order = [self.currency]
-
-            if 'USD' != self.currency:
-                preferred_currency_order.append('USD')
-            if 'EUR' != self.currency:
-                preferred_currency_order.append('EUR')
-            if 'ZAR' != self.currency:
-                preferred_currency_order.append('ZAR')
-
+            for currency in ['USD', 'EUR', 'ZAR']:
+                if currency != self.currency:
+                    preferred_currency_order.append(currency)
         else:
             preferred_currency_order = ['USD', 'EUR', 'ZAR']
 
