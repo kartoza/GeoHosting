@@ -165,7 +165,8 @@ class ControllerTest(TestCase):
                     '/api/webhook/',
                     data={
                         'app_name': self.app_name,
-                        'status': 'running'
+                        'status': 'running',
+                        'source': 'ArgoCD'
                     },
                     headers={'Authorization': f'Token {self.user_token}'}
                 )
@@ -176,7 +177,8 @@ class ControllerTest(TestCase):
                     '/api/webhook/',
                     data={
                         'app_name': self.app_name,
-                        'status': 'running'
+                        'status': 'running',
+                        'source': 'ArgoCD'
                     },
                     headers={'Authorization': f'Token {self.admin_token}'}
                 )
@@ -190,7 +192,8 @@ class ControllerTest(TestCase):
                     data={
                         'app_name': self.app_name,
                         'status': 'failed',
-                        'message': 'Error'
+                        'message': 'Error',
+                        'source': 'ArgoCD'
                     },
                     headers={'Authorization': f'Token {self.admin_token}'}
                 )
@@ -205,7 +208,8 @@ class ControllerTest(TestCase):
                     '/api/webhook/',
                     data={
                         'app_name': self.app_name,
-                        'status': 'succeeded'
+                        'status': 'succeeded',
+                        'source': 'ArgoCD'
                     },
                     headers={'Authorization': f'Token {self.admin_token}'}
                 )
@@ -215,7 +219,8 @@ class ControllerTest(TestCase):
                 self.assertEqual(
                     WebhookEvent.objects.all().first().data, {
                         'app_name': self.app_name,
-                        'status': 'succeeded'
+                        'status': 'succeeded',
+                        'source': 'ArgoCD'
                     }
                 )
 

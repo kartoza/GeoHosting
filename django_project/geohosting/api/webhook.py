@@ -20,6 +20,8 @@ class WebhookView(APIView):
     """Webhook receiver."""
 
     permission_classes = (IsAuthenticated, IsAdminUser)
+    JENKINS = 'jenkins'
+    ARGO_CD = 'argocd'
 
     def post(self, request):
         """Create new instance."""
@@ -28,18 +30,31 @@ class WebhookView(APIView):
             WebhookEvent.objects.create(
                 data=data,
             )
+            app_name = data['app_name']
+            activities = Activity.objects.filter(
+                client_data__app_name=app_name
+            )
 
             # Check the data
-            app_name = data['app_name']
             status = data['status'].lower()
+            source = data['source'].lower()
 
             # Don't do anything if it is still running
             if status in ['running']:
                 return Response()
 
-            activity = Activity.objects.filter(
-                status=ActivityStatus.BUILD_ARGO
-            ).filter(client_data__app_name=app_name).first()
+            # If source is argocd
+            if source == self.JENKINS:
+                activity = activities.filter(
+                    status=ActivityStatus.BUILD_JENKINS
+                ).first()
+            elif source == self.ARGO_CD:
+                activity = activities.filter(
+                    status=ActivityStatus.BUILD_ARGO
+                ).first()
+            else:
+                return Response()
+
             if not activity:
                 raise Activity.DoesNotExist()
 
@@ -51,29 +66,34 @@ class WebhookView(APIView):
             if status not in ['succeeded']:
                 return Response()
 
-            price = Package.objects.filter(
-                package_group__package_code=activity.client_data[
-                    'package_code'
-                ]
-            ).first()
-            if activity.sales_order:
-                price = activity.sales_order.package
-            if (
-                    activity.activity_type.identifier ==
-                    ActivityTypeTerm.CREATE_INSTANCE.value
-            ):
-                cluster = Cluster.objects.get(
-                    code=activity.post_data['k8s_cluster']
-                )
-                Instance.objects.create(
-                    name=activity.client_data['app_name'],
-                    price=price,
-                    cluster=cluster,
-                    owner=activity.triggered_by
-                )
-            activity.note = json.dumps(data)
-            activity.update_status(ActivityStatus.SUCCESS)
-            activity.save()
+            if source == self.JENKINS:
+                activity.update_status(ActivityStatus.BUILD_ARGO)
+                activity.save()
+            elif source == self.ARGO_CD:
+                price = Package.objects.filter(
+                    package_group__package_code=activity.client_data[
+                        'package_code'
+                    ]
+                ).first()
+                if activity.sales_order:
+                    price = activity.sales_order.package
+                if (
+                        activity.activity_type.identifier ==
+                        ActivityTypeTerm.CREATE_INSTANCE.value
+                ):
+                    cluster = Cluster.objects.get(
+                        code=activity.post_data['k8s_cluster']
+                    )
+                    Instance.objects.create(
+                        name=activity.client_data['app_name'],
+                        price=price,
+                        cluster=cluster,
+                        owner=activity.triggered_by
+                    )
+                activity.note = json.dumps(data)
+                activity.update_status(ActivityStatus.SUCCESS)
+                activity.save()
+
         except (KeyError, Activity.DoesNotExist, Package.DoesNotExist) as e:
             return HttpResponseBadRequest(f'{e}')
 
