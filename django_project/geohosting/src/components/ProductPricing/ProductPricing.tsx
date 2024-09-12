@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Heading, List, ListItem, Text, Tooltip, Badge } from '@chakra-ui/react';
+import { Box, Button, Heading, List, ListItem, Text, Tooltip, Image } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { Package, Product } from '../../redux/reducers/productsSlice';
 import { formatPrice, packageName } from "../../utils/helpers";
@@ -33,20 +33,20 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
       boxShadow="0px 4px 6px rgba(0, 0, 0, 0.2)"
       position="relative"
     >
+      {/* Coming Soon Banner */}
       {!available && (
-        <Badge
-          colorScheme="red"
-          variant="solid"
+        <Box
           position="absolute"
-          top="10px"
-          left="10px"
-          fontSize="0.9em"
-          px={2}
-          py={1}
-          zIndex="10"
+          top="-35px"
+          right="-35px"
+          zIndex={999}
         >
-          Coming Soon
-        </Badge>
+          <Image
+            src='/static/images/Coming_Soon_Banner.png'
+            alt='Coming Soon'
+            width={185}
+          />
+        </Box>
       )}
 
       <Box
@@ -76,7 +76,7 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
       >
         <Box flexDirection={'row'} display={'flex'} alignItems={'end'} justifyContent="center">
           <Text fontSize={{ base: '35', sm: '45', md: '32', xl: '45' }} fontWeight={'bold'} color={'gray.600'}>
-            {formatPrice(pkg.price, pkg.currency)}
+            {!available ? pkg.currency:formatPrice(pkg.price, pkg.currency)}
           </Text>
         </Box>
       </Box>
