@@ -301,7 +301,7 @@ class ProductViewSetTestCase(APITestCase):
         )
 
         self.client = APIClient()
-        self.url = reverse('product-detail', kwargs={'pk': self.product.pk})
+        self.url = reverse('product-detail', kwargs={'pk': self.product.pk,'currency': 'USD'})
 
     def test_retrieve_product_detail_with_currency(self):
         # Test retrieving product details with specific currency
