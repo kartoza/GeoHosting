@@ -70,7 +70,7 @@ class CreateInstanceForm(forms.ModelForm):
                     'subdomain': app_name,
                     'k8s_cluster': product_cluster.cluster.code,
                     'geonode_env': product_cluster.environment,
-                    'geonode_size': package.package_code,
+                    'geonode_size': package.package_group.package_code,
                     'geonode_name': app_name
                 }
             except ProductCluster.DoesNotExist:
@@ -87,7 +87,7 @@ class CreateInstanceForm(forms.ModelForm):
         data = {
             'app_name': app_name,
             'package_id': package.id,
-            'package_code': package.package_code,
+            'package_code': package.package_group.package_code,
             'product_name': package.product.name,
             'region_id': region.id,
             'region_name': region.name

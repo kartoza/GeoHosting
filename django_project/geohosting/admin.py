@@ -12,7 +12,7 @@ from django.utils.safestring import mark_safe
 
 from geohosting.forms.activity import CreateInstanceForm
 from geohosting.models import (
-    Activity, ActivityType, Region, Product, ProductMetadata,
+    Activity, ActivityType, Region, Product, PackageGroup, ProductMetadata,
     Cluster, ProductCluster, Instance, Package, WebhookEvent, ProductMedia,
     SalesOrder, UserProfile
 )
@@ -198,11 +198,19 @@ def create_paystack_price(modeladmin, request, queryset):
         package.get_paystack_price_id()
 
 
+@admin.register(PackageGroup)
+class PackageGroupAdmin(admin.ModelAdmin):
+    list_display = (
+        'name', 'package_code', 'vault_url'
+    )
+    list_editable = ('package_code', 'vault_url')
+
+
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'price', 'currency', 'product',
-        'package_code', 'stripe_id', 'paystack_id'
+        'name', 'price', 'currency', 'product', 'package_group',
+        'stripe_id', 'paystack_id'
     )
     search_fields = ('name', 'product__name')
     list_filter = ('created_at', 'updated_at')

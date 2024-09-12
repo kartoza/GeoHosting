@@ -10,7 +10,7 @@ from django.test.client import Client
 from django.test.testcases import TestCase
 from rest_framework.authtoken.models import Token
 
-from geohosting.factories.package import PackageFactory
+from geohosting.factories.package import PackageFactory, PackageGroupFactory
 from geohosting.forms.activity import CreateInstanceForm
 from geohosting.models import (
     Activity, Instance, Region, WebhookEvent, ProductCluster, Cluster
@@ -47,7 +47,9 @@ class ControllerTest(TestCase):
         )
         self.admin_token = Token.objects.create(user=self.admin)
         self.package = PackageFactory(
-            package_code='dev-1'
+            package_group=PackageGroupFactory(
+                package_code='dev-1'
+            )
         )
         self.region = Region.objects.get(code='global')
         ProductCluster.objects.create(
@@ -219,7 +221,7 @@ class ControllerTest(TestCase):
                     instance.name, self.app_name
                 )
                 self.assertEqual(
-                    instance.price.package_code, 'dev-1'
+                    instance.price.package_group.package_code, 'dev-1'
                 )
                 self.assertEqual(
                     instance.owner, self.admin

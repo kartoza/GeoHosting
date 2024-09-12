@@ -8,7 +8,18 @@ import factory
 from factory.django import DjangoModelFactory
 
 from geohosting.factories.product import ProductFactory
-from geohosting.models import Package
+from geohosting.models import Package, PackageGroup
+
+
+class PackageGroupFactory(DjangoModelFactory):
+    """Factory class for PackageGroup model."""
+
+    class Meta:  # noqa
+        model = PackageGroup
+
+    name = factory.Sequence(
+        lambda n: f'package-{n}'
+    )
 
 
 class PackageFactory(DjangoModelFactory):
