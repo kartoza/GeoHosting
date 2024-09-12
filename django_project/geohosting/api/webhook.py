@@ -31,11 +31,25 @@ class WebhookView(APIView):
 
             # Check the data
             app_name = data['app_name']
+            status = data['status'].lower()
+
+            # Don't do anything if it is still running
+            if status in ['running']:
+                return Response()
+
             activity = Activity.objects.filter(
                 status=ActivityStatus.BUILD_ARGO
             ).filter(client_data__app_name=app_name).first()
             if not activity:
                 raise Activity.DoesNotExist()
+
+            if status in ['error', 'failed']:
+                activity.note = data.get('message', 'Error')
+                activity.update_status(ActivityStatus.ERROR)
+                return Response()
+
+            if status not in ['succeeded']:
+                return Response()
 
             price = Package.objects.filter(
                 package_group__package_code=activity.client_data[

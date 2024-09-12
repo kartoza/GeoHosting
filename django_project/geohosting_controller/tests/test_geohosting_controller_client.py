@@ -13,7 +13,8 @@ from rest_framework.authtoken.models import Token
 from geohosting.factories.package import PackageFactory, PackageGroupFactory
 from geohosting.forms.activity import CreateInstanceForm
 from geohosting.models import (
-    Activity, Instance, Region, WebhookEvent, ProductCluster, Cluster
+    Activity, Instance, Region, WebhookEvent, ProductCluster, Cluster,
+    ActivityStatus
 )
 from geohosting_controller.exceptions import (
     ConnectionErrorException, NoJenkinsUserException, NoJenkinsTokenException,
@@ -159,30 +160,70 @@ class ControllerTest(TestCase):
 
                 # Run webhook, should be run by Argo CD
                 client = Client()
-                webhook_data = {
-                    'app_name': self.app_name,
-                    'state': 'successful'
-                }
                 # If not admin
                 response = client.post(
-                    '/api/webhook/', data=webhook_data,
+                    '/api/webhook/',
+                    data={
+                        'app_name': self.app_name,
+                        'status': 'running'
+                    },
                     headers={'Authorization': f'Token {self.user_token}'}
                 )
                 self.assertEqual(response.status_code, 403)
 
-                # Success if admin
+                # Success if admin but running
                 response = client.post(
-                    '/api/webhook/', data=webhook_data,
+                    '/api/webhook/',
+                    data={
+                        'app_name': self.app_name,
+                        'status': 'running'
+                    },
                     headers={'Authorization': f'Token {self.admin_token}'}
                 )
                 self.assertEqual(response.status_code, 200)
+                activity.refresh_from_db()
+                self.assertEqual(activity.status, ActivityStatus.BUILD_ARGO)
+
+                # Success if admin but error
+                response = client.post(
+                    '/api/webhook/',
+                    data={
+                        'app_name': self.app_name,
+                        'status': 'failed',
+                        'message': 'Error'
+                    },
+                    headers={'Authorization': f'Token {self.admin_token}'}
+                )
+                self.assertEqual(response.status_code, 200)
+                activity.refresh_from_db()
+                self.assertEqual(activity.status, ActivityStatus.ERROR)
+                self.assertEqual(activity.note, 'Error')
+
+                # Success if admin but success
+                activity.update_status(ActivityStatus.BUILD_ARGO)
+                response = client.post(
+                    '/api/webhook/',
+                    data={
+                        'app_name': self.app_name,
+                        'status': 'succeeded'
+                    },
+                    headers={'Authorization': f'Token {self.admin_token}'}
+                )
+                self.assertEqual(response.status_code, 200)
+                activity.refresh_from_db()
+                self.assertEqual(activity.status, ActivityStatus.SUCCESS)
                 self.assertEqual(
-                    WebhookEvent.objects.all().first().data, webhook_data
+                    WebhookEvent.objects.all().first().data, {
+                        'app_name': self.app_name,
+                        'status': 'succeeded'
+                    }
                 )
 
                 # Get the activity status from server
-                activity = Activity.objects.get(id=activity.id)
-                self.assertEqual(activity.status, 'SUCCESS')
+                activity.refresh_from_db()
+                self.assertEqual(
+                    activity.status, ActivityStatus.SUCCESS
+                )
                 self.assertEqual(
                     activity.activity_type.identifier,
                     ActivityTypeTerm.CREATE_INSTANCE.value
