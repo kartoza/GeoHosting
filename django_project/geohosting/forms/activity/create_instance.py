@@ -63,11 +63,13 @@ class CreateInstanceForm(forms.ModelForm):
                 region_id = data['region_id']
                 package = Package.objects.get(id=package_id)
                 product = package.product
+                product_cluster = product.productcluster_set.get(
+                    cluster__region_id=region_id
+                )
                 return {
                     'subdomain': app_name,
-                    'k8s_cluster': product.productcluster_set.get(
-                        cluster__region_id=region_id
-                    ).cluster.code,
+                    'k8s_cluster': product_cluster.cluster.code,
+                    'geonode_env': product_cluster.environment,
                     'geonode_size': package.package_code,
                     'geonode_name': app_name
                 }

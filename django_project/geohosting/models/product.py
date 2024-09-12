@@ -70,6 +70,11 @@ class ProductCluster(models.Model):
     cluster = models.ForeignKey(
         Cluster, on_delete=models.CASCADE
     )
+    environment = models.CharField(
+        max_length=256,
+        help_text='The environment of the instance.',
+        null=True, blank=True
+    )
 
     class Meta:
         unique_together = ['product', 'cluster']

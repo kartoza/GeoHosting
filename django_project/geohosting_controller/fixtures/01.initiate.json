@@ -11,7 +11,7 @@
     "model": "geohosting.cluster",
     "pk": 1,
     "fields": {
-      "code": "ktz-dev-ks-gn-01",
+      "code": "ktz-sta-ks-gn-01",
       "region": 1,
       "domain": null
     }

@@ -168,7 +168,8 @@ class SalesOrderTests(TestCase):
             )
             ProductCluster.objects.create(
                 cluster=cluster,
-                product=self.package.product
+                product=self.package.product,
+                environment='test'
             )
             sales_order.auto_deploy()
             self.assertTrue(sales_order.activity_set.all().count())
