@@ -37,6 +37,13 @@ class WebhookView(APIView):
             if not activity:
                 raise Activity.DoesNotExist()
 
+            price = Package.objects.filter(
+                package_group__package_code=activity.client_data[
+                    'package_code'
+                ]
+            ).first()
+            if activity.sales_order:
+                price = activity.sales_order.package
             if (
                     activity.activity_type.identifier ==
                     ActivityTypeTerm.CREATE_INSTANCE.value
@@ -46,7 +53,7 @@ class WebhookView(APIView):
                 )
                 Instance.objects.create(
                     name=activity.client_data['app_name'],
-                    price=activity.sales_order.package,
+                    price=price,
                     cluster=cluster,
                     owner=activity.triggered_by
                 )

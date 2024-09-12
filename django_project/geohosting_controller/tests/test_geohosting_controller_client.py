@@ -197,7 +197,7 @@ class ControllerTest(TestCase):
 
                 # For data to jenkins
                 self.assertEqual(
-                    activity.post_data['k8s_cluster'], 'ktz-dev-ks-gn-01'
+                    activity.post_data['k8s_cluster'], 'ktz-sta-ks-gn-01'
                 )
                 self.assertEqual(
                     activity.post_data['subdomain'], self.app_name
@@ -215,7 +215,7 @@ class ControllerTest(TestCase):
                     self.create_function(self.app_name)
                 instance = Instance.objects.first()
                 self.assertEqual(
-                    instance.cluster.code, 'ktz-dev-ks-gn-01'
+                    instance.cluster.code, 'ktz-sta-ks-gn-01'
                 )
                 self.assertEqual(
                     instance.name, self.app_name
