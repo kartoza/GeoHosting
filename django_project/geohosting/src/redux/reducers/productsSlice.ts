@@ -88,13 +88,10 @@ export const fetchProductDetail = createAsyncThunk(
   'products/fetchProductDetail',
   async (productId: number, thunkAPI) => {
     try {
-      const currency = await getCurrencyBasedOnLocation();
-      const response = await axios.get(`/api/products/${productId}/`, {
-        params: { currency },
-      });
+      const response = await axios.get(`/api/products/${productId}/`);
       return response.data;
     } catch (error: any) {
-      const errorData = error.response?.data;
+      const errorData = error.response.data;
       return thunkAPI.rejectWithValue(errorData);
     }
   }
@@ -104,7 +101,10 @@ export const fetchProductDetailByName = createAsyncThunk(
   'products/fetchProductDetailByName',
   async (productName: string, thunkAPI) => {
     try {
-      const response = await axios.get(`/api/products/${productName}/`);
+      const currency = await getCurrencyBasedOnLocation();
+      const response = await axios.get(`/api/products/${productName}/`, {
+        params: { currency },
+      });
       return response.data;
     } catch (error: any) {
       const errorData = error.response.data;
