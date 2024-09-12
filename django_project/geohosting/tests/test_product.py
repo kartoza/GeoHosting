@@ -263,6 +263,7 @@ class ProductViewSetTestCase(APITestCase):
         serializer = ProductDetailSerializer(instance=self.product, context={'currency': 'USD'})
 
         self.assertEqual(product_data['packages'], serializer.data['packages'])
+        self.assertEqual(product_data['packages'][0]['currency'], 'USD')
         self.assertEqual(product_data['images'], serializer.data['images'])
         self.assertEqual(product_data['product_meta'], serializer.data['product_meta'])
 
