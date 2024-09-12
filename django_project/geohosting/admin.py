@@ -185,7 +185,8 @@ def create_paystack_price(modeladmin, request, queryset):
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'price', 'product', 'package_code', 'stripe_id', 'paystack_id'
+        'name', 'price', 'currency', 'product',
+        'package_code', 'stripe_id', 'paystack_id'
     )
     search_fields = ('name', 'product__name')
     list_filter = ('created_at', 'updated_at')

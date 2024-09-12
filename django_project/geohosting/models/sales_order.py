@@ -184,12 +184,14 @@ class SalesOrder(models.Model):
         # Check if order status is waiting configuration
         order_status_obj = self.sales_order_status_obj
         if order_status_obj == SalesOrderStatus.WAITING_CONFIGURATION:
-            if self.app_name and self.erpnext_code:
-                self.set_order_status(SalesOrderStatus.WAITING_DEPLOYMENT)
-                add_erp_next_comment(
-                    self.customer, self.doctype, self.erpnext_code,
-                    f"App name : {self.app_name}"
-                )
+            self.auto_deploy()
+
+    def add_comment(self, comment):
+        """Add comment."""
+        if self.erpnext_code:
+            add_erp_next_comment(
+                self.customer, self.doctype, self.erpnext_code, comment
+            )
 
     def __str__(self):
         return (
@@ -280,3 +282,10 @@ class SalesOrder(models.Model):
                 f"{settings.ERPNEXT_BASE_URL}/printview?doctype=Sales%20Order"
                 f"&name={self.erpnext_code}&format=Standard"
             )
+
+    def auto_deploy(self):
+        """Change status to deployment and do deployment."""
+        # Check if order status is waiting configuration
+        if self.app_name and self.erpnext_code:
+            self.set_order_status(SalesOrderStatus.WAITING_DEPLOYMENT)
+            self.add_comment(f"App name : {self.app_name}")

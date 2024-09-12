@@ -117,6 +117,13 @@ class Activity(models.Model):
         null=True, blank=True, editable=False
     )
 
+    # The sales order of the activity
+    sales_order = models.ForeignKey(
+        'geohosting.SalesOrder',
+        on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
+
     class Meta:  # noqa
         verbose_name_plural = 'Activities'
         ordering = ('-triggered_at',)
