@@ -41,11 +41,15 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     def get_packages(self, obj: Product):
         packages = obj.packages.all()
 
-        preferred_currency_order = (
-            [self.currency, 'EUR', 'USD', 'ZAR']
-            if self.currency
-            else ['EUR', 'USD', 'ZAR']
-        )
+        if self.currency:
+            preferred_currency_order = (
+                [self.currency] +
+                [currency for currency in ['USD', 'EUR', 'ZAR']
+                if currency != self.currency]
+            )
+        else:
+            preferred_currency_order = ['USD', 'EUR', 'ZAR']
+
 
         unique_packages = {}
 
