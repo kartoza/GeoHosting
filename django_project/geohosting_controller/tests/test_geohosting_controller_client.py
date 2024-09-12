@@ -10,9 +10,10 @@ from django.test.client import Client
 from django.test.testcases import TestCase
 from rest_framework.authtoken.models import Token
 
+from geohosting.factories.package import PackageFactory
 from geohosting.forms.activity import CreateInstanceForm
 from geohosting.models import (
-    Activity, Instance, Package, Region, WebhookEvent
+    Activity, Instance, Region, WebhookEvent, ProductCluster, Cluster
 )
 from geohosting_controller.exceptions import (
     ConnectionErrorException, NoJenkinsUserException, NoJenkinsTokenException,
@@ -45,14 +46,22 @@ class ControllerTest(TestCase):
             is_staff=True
         )
         self.admin_token = Token.objects.create(user=self.admin)
+        self.package = PackageFactory(
+            package_code='dev-1'
+        )
+        self.region = Region.objects.get(code='global')
+        ProductCluster.objects.create(
+            product=self.package.product,
+            cluster=Cluster.objects.first()
+        )
 
     def create_function(self, app_name) -> Activity:
         """Create function."""
         form = CreateInstanceForm(
             {
                 'app_name': app_name,
-                'package': Package.objects.get(package_code='dev-1'),
-                'region': Region.objects.get(code='global')
+                'package': self.package,
+                'region': self.region
             }
         )
         form.user = self.admin
@@ -107,18 +116,17 @@ class ControllerTest(TestCase):
                 }
             )
 
-            try:
-                self.create_function(self.app_name)
-                self.fail('Should have raised ConnectionErrorException')
-            except NoJenkinsUserException:
-                pass
+            self.assertEqual(
+                self.create_function(self.app_name).note,
+                NoJenkinsUserException().__str__()
+            )
 
-            try:
-                os.environ['JENKINS_USER'] = 'user@example.com'
-                self.create_function(self.app_name)
-                self.fail('Should have raised ConnectionErrorException')
-            except NoJenkinsTokenException:
-                pass
+            os.environ['JENKINS_USER'] = 'user@example.com'
+            self.create_function(self.app_name)
+            self.assertEqual(
+                self.create_function(self.app_name).note,
+                NoJenkinsTokenException().__str__()
+            )
 
             # ---------------------------------------------
             # WORKING FLOW

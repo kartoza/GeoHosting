@@ -1,3 +1,4 @@
+import os
 from unittest.mock import patch, call
 
 import requests_mock
@@ -160,7 +161,7 @@ class SalesOrderTests(TestCase):
                 }
             )
 
-            # Create cluster
+            # Create cluster but no JENKINS USER
             cluster = Cluster.objects.create(
                 code='test',
                 region=Region.default_region()
@@ -169,6 +170,20 @@ class SalesOrderTests(TestCase):
                 cluster=cluster,
                 product=self.package.product
             )
+            sales_order.auto_deploy()
+            self.assertTrue(sales_order.activity_set.all().count())
+            mock_add_erp_next_comment.assert_has_calls([
+                call(
+                    self.user, sales_order.doctype,
+                    sales_order.erpnext_code,
+                    'Auto deployment: ERROR.\nJENKINS_USER is required.'
+                )
+            ])
+
+            # Has JENKINS USER
+            mock_add_erp_next_comment.reset_mock()
+            os.environ['JENKINS_USER'] = 'user@example.com'
+            os.environ['JENKINS_TOKEN'] = 'token'
             sales_order.auto_deploy()
             self.assertTrue(sales_order.activity_set.all().count())
             mock_add_erp_next_comment.assert_has_calls([

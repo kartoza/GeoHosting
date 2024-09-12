@@ -14,6 +14,7 @@ from geohosting.utils.erpnext import (
 )
 from geohosting.utils.paystack import verify_paystack_payment
 from geohosting.utils.stripe import get_checkout_detail
+from geohosting.validators import app_name_validator
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 User = get_user_model()
@@ -168,7 +169,7 @@ class SalesOrder(models.Model):
             'App name that would be used for instance.'
             'It will also be used for sub domain.'
         ),
-        validators=[name_validator]
+        validators=[name_validator, app_name_validator]
     )
 
     class Meta:

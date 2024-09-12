@@ -6,6 +6,7 @@ GeoHosting.
 """
 from django import forms
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 
 from geohosting.models.activity import (
@@ -17,10 +18,10 @@ from geohosting.models.product import ProductCluster
 from geohosting.models.region import Region
 from geohosting.models.sales_order import SalesOrder
 from geohosting_controller.exceptions import (
-    NoClusterException, ActivityException
+    NoClusterException
 )
 from geohosting_controller.variables import ActivityTypeTerm
-
+from geohosting.validators import app_name_validator
 User = get_user_model()
 
 
@@ -31,7 +32,7 @@ class CreateInstanceForm(forms.ModelForm):
     """
 
     app_name = forms.CharField(
-        validators=[name_validator]
+        validators=[name_validator, app_name_validator]
     )
     package = forms.ModelChoiceField(
         queryset=Package.objects.all()
@@ -62,20 +63,6 @@ class CreateInstanceForm(forms.ModelForm):
                 app_name = data['app_name']
                 package_id = data['package_id']
                 region_id = data['region_id']
-
-                if Instance.objects.filter(name=app_name).count():
-                    raise ActivityException('Instance already exists')
-
-                if Activity.objects.filter(
-                        client_data__app_name=app_name
-                ).exclude(
-                    Q(status=ActivityStatus.ERROR) |
-                    Q(status=ActivityStatus.SUCCESS)
-                ):
-                    raise ActivityException(
-                        'Some of activity is already running'
-                    )
-
                 package = Package.objects.get(id=package_id)
                 product = package.product
                 return {
