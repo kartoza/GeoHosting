@@ -50,7 +50,6 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         else:
             preferred_currency_order = ['USD', 'EUR', 'ZAR']
 
-
         unique_packages = {}
 
         for package in packages:
