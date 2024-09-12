@@ -221,6 +221,14 @@ class ProductViewSetTestCase(APITestCase):
         )
         
         # Create test packages
+        self.product = Product.objects.create(
+            name="BIMS",
+            description="Biodiversity Information Management System.",
+            upstream_id='123',
+            available=True,
+        )
+        
+        # Create test packages
         self.package1 = Package.objects.create(
             name="BIMS-SMALL-DO",
             currency="EUR",
@@ -229,7 +237,49 @@ class ProductViewSetTestCase(APITestCase):
             product=self.product,
         )
         self.package2 = Package.objects.create(
+            name="BIMS-SMALL-DO",
+            currency="USD",
+            price="6695.12",
+            periodicity="monthly",
+            product=self.product,
+        )
+        self.package3 = Package.objects.create(
+            name="BIMS-SMALL-DO",
+            currency="ZAR",
+            price="7890.52",
+            periodicity="monthly",
+            product=self.product,
+        )
+        self.package1 = Package.objects.create(
             name="BIMS-MEDIUM-DO",
+            currency="EUR",
+            price="6155.58",
+            periodicity="monthly",
+            product=self.product,
+        )
+        self.package2 = Package.objects.create(
+            name="BIMS-MEDIUM-DO",
+            currency="USD",
+            price="6695.12",
+            periodicity="monthly",
+            product=self.product,
+        )
+        self.package3 = Package.objects.create(
+            name="BIMS-MEDIUM-DO",
+            currency="ZAR",
+            price="7890.52",
+            periodicity="monthly",
+            product=self.product,
+        )
+        self.package1 = Package.objects.create(
+            name="BIMS-LARGE-DO",
+            currency="EUR",
+            price="6155.58",
+            periodicity="monthly",
+            product=self.product,
+        )
+        self.package2 = Package.objects.create(
+            name="BIMS-LARGE-DO",
             currency="USD",
             price="6695.12",
             periodicity="monthly",
