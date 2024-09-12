@@ -34,8 +34,8 @@ class WebhookView(APIView):
             activity = Activity.objects.filter(
                 status=ActivityStatus.BUILD_ARGO
             ).filter(client_data__app_name=app_name).first()
-            activity.status = ActivityStatus.SUCCESS
-            activity.note = json.dumps(data)
+            if not activity:
+                raise Activity.DoesNotExist()
 
             if (
                     activity.activity_type.identifier ==
@@ -46,12 +46,12 @@ class WebhookView(APIView):
                 )
                 Instance.objects.create(
                     name=activity.client_data['app_name'],
-                    price=Package.objects.get(
-                        package_code=activity.client_data['package_code']
-                    ),
+                    price=activity.sales_order.package,
                     cluster=cluster,
                     owner=activity.triggered_by
                 )
+            activity.note = json.dumps(data)
+            activity.update_status(ActivityStatus.SUCCESS)
             activity.save()
         except (KeyError, Activity.DoesNotExist, Package.DoesNotExist) as e:
             return HttpResponseBadRequest(f'{e}')

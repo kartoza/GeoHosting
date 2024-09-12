@@ -130,6 +130,7 @@ class Activity(models.Model):
 
     def update_status(self, status, note=None):
         """Update activity status."""
+        from geohosting.models.sales_order import SalesOrderStatus
         self.status = status
         if note:
             self.note = note
@@ -139,6 +140,9 @@ class Activity(models.Model):
             if self.note:
                 comment += f'\n{self.note}'
             self.sales_order.add_comment(comment)
+            if self.status == ActivityStatus.SUCCESS:
+                self.sales_order.order_status = SalesOrderStatus.DEPLOYED.key
+                self.sales_order.save()
 
     def get_jenkins_build_url(self):
         """Get jenkins build url."""
