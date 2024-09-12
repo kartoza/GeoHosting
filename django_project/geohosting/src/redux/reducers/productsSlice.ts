@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import axios from 'axios';
+import { getCurrencyBasedOnLocation } from '../../utils/utils';
 
 export interface Product {
   id: number;
@@ -50,23 +51,6 @@ const initialState: ProductsState = {
   error: null,
   detailLoading: false,
   detailError: null,
-};
-
-const getCurrencyBasedOnLocation = async () => {
-  try {
-    const response = await fetch('https://ipapi.co/json/');
-    const locationData = await response.json();
-    const userCountry = locationData.country_code;
-
-    let newCurrency = 'USD';
-    if (userCountry === 'ZA') newCurrency = 'ZAR';
-    else if (['AT', 'BE', 'FR', 'DE', 'IT', 'ES', 'NL', 'PT'].includes(userCountry)) newCurrency = 'EUR';
-
-    return newCurrency;
-  } catch (error) {
-    console.error('Error determining location or currency:', error);
-    return 'USD';
-  }
 };
 
 // Async thunk to fetch products
