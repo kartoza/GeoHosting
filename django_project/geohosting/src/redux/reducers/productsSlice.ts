@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { getCurrencyBasedOnLocation } from '../../utils/utils';
+import { getCurrencyBasedOnLocation } from '../../utils/helpers';
 
 export interface Product {
   id: number;
