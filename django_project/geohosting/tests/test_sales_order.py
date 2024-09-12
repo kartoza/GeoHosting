@@ -1,15 +1,22 @@
-from unittest.mock import patch
+from unittest.mock import patch, call
 
+import requests_mock
 from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIClient
 
 from geohosting.factories import PackageFactory, SalesOrderFactory
-from geohosting.models import SalesOrderStatus, SalesOrderPaymentMethod
+from geohosting.models import (
+    SalesOrderStatus, SalesOrderPaymentMethod, ActivityType, Cluster,
+    Region, ProductCluster
+)
+from geohosting_controller.variables import ActivityTypeTerm
 
 
 class SalesOrderTests(TestCase):
     """Sales order tests."""
+
+    jenkins_url = 'https://jenkins.example.com'
 
     def setUp(self):
         """Setup test case."""
@@ -75,7 +82,104 @@ class SalesOrderTests(TestCase):
             sales_order.order_status,
             SalesOrderStatus.WAITING_DEPLOYMENT.key
         )
-        mock_add_erp_next_comment.assert_called_once_with(
-            self.user, sales_order.doctype, sales_order.erpnext_code,
-            "App name : test"
+        mock_add_erp_next_comment.assert_has_calls([
+            call(
+                self.user, sales_order.doctype,
+                sales_order.erpnext_code, 'App name : test'
+            ),
+            call(
+                self.user, sales_order.doctype,
+                sales_order.erpnext_code,
+                'Activity type INSTANCE.CREATE does not exist.'
+            )
+        ])
+        mock_add_erp_next_comment.reset_mock()
+
+        # Add the ACTIVITY.CREATE
+        ActivityType.objects.create(
+            identifier=ActivityTypeTerm.CREATE_INSTANCE.value,
+            jenkins_url=(
+                'https://jenkins.example.com/job/kartoza/job/devops/job/'
+                'geohosting/job/geonode_create/buildWithParameters'
+            )
         )
+        sales_order.auto_deploy()
+        mock_add_erp_next_comment.assert_has_calls([
+            call(
+                self.user, sales_order.doctype,
+                sales_order.erpnext_code, 'App name : test'
+            ),
+            call(
+                self.user, sales_order.doctype,
+                sales_order.erpnext_code,
+                'No cluster found.'
+            )
+        ])
+        mock_add_erp_next_comment.reset_mock()
+
+        with requests_mock.Mocker() as requests_mocker:
+            # Mock requests
+            requests_mocker.get(
+                f'{self.jenkins_url}/crumbIssuer/api/json',
+                status_code=200,
+                json={
+                    "crumb": "crumb"
+                }
+            )
+            requests_mocker.post(
+                f'{self.jenkins_url}/job/kartoza/job/devops/'
+                'job/geohosting/job/geonode_create/buildWithParameters',
+                status_code=201,
+                headers={
+                    'Location': f'{self.jenkins_url}/queue/item/1/'
+                },
+            )
+            requests_mocker.get(
+                f'{self.jenkins_url}/queue/item/1/api/json',
+                status_code=200,
+                json={
+                    "id": 1,
+                    "url": "queue/item/1/",
+                    "executable": {
+                        "url": (
+                            f'{self.jenkins_url}/job/kartoza/job/'
+                            "devops/job/geohosting/job/geonode_create/1/"
+                        )
+                    }
+                }
+            )
+            requests_mocker.get(
+                (
+                    f'{self.jenkins_url}/job/kartoza/job/'
+                    'devops/job/geohosting/job/geonode_create/1/api/json'
+                ),
+                status_code=200,
+                json={
+                    "result": "SUCCESS",
+                    "inProgress": False
+                }
+            )
+
+            # Create cluster
+            cluster = Cluster.objects.create(
+                code='test',
+                region=Region.default_region()
+            )
+            ProductCluster.objects.create(
+                cluster=cluster,
+                product=self.package.product
+            )
+            sales_order.auto_deploy()
+            self.assertTrue(sales_order.activity_set.all().count())
+            mock_add_erp_next_comment.assert_has_calls([
+                call(
+                    self.user, sales_order.doctype,
+                    sales_order.erpnext_code,
+                    'Auto deployment: BUILD_JENKINS.'
+                ),
+                call(
+                    self.user, sales_order.doctype,
+                    sales_order.erpnext_code,
+                    'Auto deployment: BUILD_ARGO.'
+                )
+            ])

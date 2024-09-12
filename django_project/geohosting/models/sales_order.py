@@ -7,6 +7,7 @@ from django.db import models
 from django.utils.timezone import now
 
 from geohosting.models.activity import name_validator
+from geohosting.models.region import Region
 from geohosting.models.user_profile import UserProfile
 from geohosting.utils.erpnext import (
     post_to_erpnext, put_to_erpnext, add_erp_next_comment
@@ -15,7 +16,6 @@ from geohosting.utils.paystack import verify_paystack_payment
 from geohosting.utils.stripe import get_checkout_detail
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
-
 User = get_user_model()
 
 
@@ -285,7 +285,32 @@ class SalesOrder(models.Model):
 
     def auto_deploy(self):
         """Change status to deployment and do deployment."""
+        from geohosting.forms.activity.create_instance import (
+            CreateInstanceForm
+        )
         # Check if order status is waiting configuration
         if self.app_name and self.erpnext_code:
+            if self.order_status != SalesOrderStatus.WAITING_CONFIGURATION:
+                self.add_comment(f"App name : {self.app_name}")
             self.set_order_status(SalesOrderStatus.WAITING_DEPLOYMENT)
-            self.add_comment(f"App name : {self.app_name}")
+
+            # TODO:
+            #  When we have multi region, we will change below
+            #  Link region to sales order
+
+            form = CreateInstanceForm(
+                {
+                    'region': Region.default_region(),
+                    'app_name': self.app_name,
+                    'package': self.package,
+                    'sales_order': self
+                }
+            )
+            form.user = self.customer
+            if not form.is_valid():
+                errors = []
+                for key, val in form.errors.items():
+                    errors += val
+                self.add_comment(', '.join(errors))
+            else:
+                form.save()

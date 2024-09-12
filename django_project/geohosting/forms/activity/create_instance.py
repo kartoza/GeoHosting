@@ -8,12 +8,14 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
-from geohosting.models import (
-    Activity, ActivityType, ActivityStatus, Instance, Package,
-    ProductCluster
+from geohosting.models.activity import (
+    Activity, ActivityType, ActivityStatus,
+    Instance, name_validator
 )
-from geohosting.models.activity import name_validator
+from geohosting.models.package import Package
+from geohosting.models.product import ProductCluster
 from geohosting.models.region import Region
+from geohosting.models.sales_order import SalesOrder
 from geohosting_controller.exceptions import (
     NoClusterException, ActivityException
 )
@@ -37,10 +39,14 @@ class CreateInstanceForm(forms.ModelForm):
     region = forms.ModelChoiceField(
         queryset=Region.objects.all()
     )
+    sales_order = forms.ModelChoiceField(
+        queryset=SalesOrder.objects.all(),
+        required=False
+    )
 
     class Meta:  # noqa: D106
         model = Activity
-        fields = ['app_name', 'package', 'region']
+        fields = ['app_name', 'package', 'region', 'sales_order']
 
     def _post_data(self):
         """Refactor data."""
@@ -85,6 +91,7 @@ class CreateInstanceForm(forms.ModelForm):
         raise ActivityType.DoesNotExist()
 
     def clean(self):
+        """Clean form."""
         cleaned_data = super().clean()
         app_name = cleaned_data.get('app_name')
         package = cleaned_data.get('package')
@@ -116,8 +123,6 @@ class CreateInstanceForm(forms.ModelForm):
             raise forms.ValidationError(
                 f'Activity type {activity_type_id} does not exist.'
             )
-        except ActivityException as e:
-            raise forms.ValidationError(
-                f'{e}'
-            )
+        except Exception as e:
+            raise forms.ValidationError(f'{e}')
         return cleaned_data

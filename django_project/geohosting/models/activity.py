@@ -128,6 +128,18 @@ class Activity(models.Model):
         verbose_name_plural = 'Activities'
         ordering = ('-triggered_at',)
 
+    def update_status(self, status, note=None):
+        """Update activity status."""
+        self.status = status
+        if note:
+            self.note = note
+        self.save()
+        if self.sales_order:
+            comment = f'Auto deployment: {self.status}.'
+            if self.note:
+                comment += f'\n{self.note}'
+            self.sales_order.add_comment(comment)
+
     def get_jenkins_build_url(self):
         """Get jenkins build url."""
         # We need to run this on the background
@@ -143,12 +155,13 @@ class Activity(models.Model):
             except KeyError:
                 pass
         else:
-            self.status = ActivityStatus.ERROR
-            self.note = (
-                'Unable to get jenkins build url, '
-                f'queue API does not exist = {_url}'
+            self.update_status(
+                ActivityStatus.ERROR,
+                (
+                    'Unable to get jenkins build url, '
+                    f'queue API does not exist = {_url}'
+                )
             )
-            self.save()
 
     def get_jenkins_status(self):
         """Get jenkins status."""
@@ -160,15 +173,14 @@ class Activity(models.Model):
                 if response.status_code == 200:
                     if not response.json()['inProgress']:
                         if response.json()['result'] == 'SUCCESS':
-                            self.status = ActivityStatus.BUILD_ARGO
-                            self.save()
+                            self.update_status(ActivityStatus.BUILD_ARGO)
                         elif response.json()['result'] == 'FAILURE':
-                            self.status = ActivityStatus.ERROR
-                            self.note = (
-                                f'Error note : '
-                                f'{self.jenkins_build_url}consoleText'
+                            self.update_status(
+                                ActivityStatus.ERROR, (
+                                    f'Error note : '
+                                    f'{self.jenkins_build_url}consoleText'
+                                )
                             )
-                            self.save()
 
     def run(self):
         """Run the activity."""
@@ -178,27 +190,26 @@ class Activity(models.Model):
                 data=self.post_data
             )
             if response.status_code != 201:
-                self.status = ActivityStatus.ERROR
-                self.note = response.content
-                self.save()
+                self.update_status(
+                    ActivityStatus.ERROR, response.content
+                )
                 raise ConnectionErrorException(
                     response.content, response=response
                 )
-            self.status = ActivityStatus.BUILD_JENKINS
             self.jenkins_queue_url = response.headers['Location']
-            self.save()
+            self.update_status(ActivityStatus.BUILD_JENKINS)
             self.get_jenkins_build_url()
         except Exception as e:
-            self.status = ActivityStatus.ERROR
-            self.note = f'{e}'
-            self.save()
-            raise
+            self.update_status(
+                ActivityStatus.ERROR, f'{e}'
+            )
 
     def save(self, *args, **kwargs):
         """Override importer saved."""
         created = not self.pk
         super(Activity, self).save(*args, **kwargs)
         if created:
+            self.update_status(ActivityStatus.RUNNING)
             self.run()
 
     @staticmethod
