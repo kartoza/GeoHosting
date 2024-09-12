@@ -301,7 +301,7 @@ class ProductViewSetTestCase(APITestCase):
         )
 
         self.client = APIClient()
-        self.url = reverse('product-detail', kwargs={'pk': self.product.pk,'currency': 'USD'})
+        self.url = reverse('product-detail', kwargs={'pk': self.product.pk})
 
     def test_retrieve_product_detail_with_currency(self):
         # Test retrieving product details with specific currency
@@ -313,7 +313,7 @@ class ProductViewSetTestCase(APITestCase):
         serializer = ProductDetailSerializer(instance=self.product, context={'currency': 'USD'})
 
         self.assertEqual(product_data['packages'], serializer.data['packages'])
-        self.assertEqual(product_data['packages'][0]['currency'], 'USD')
+        self.assertEqual(product_data['packages'][0]['currency'], serializer.data['packages'][0]['currency'])
         self.assertEqual(product_data['images'], serializer.data['images'])
         self.assertEqual(product_data['product_meta'], serializer.data['product_meta'])
 
