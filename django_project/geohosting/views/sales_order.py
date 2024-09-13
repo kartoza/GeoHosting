@@ -12,9 +12,8 @@ from geohosting.serializer.sales_order import (
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_all_orders(request):
-    """
-    Fetch all sales orders for the authenticated user.
-    """
+    """Fetch all sales orders for the authenticated user."""
+
     user = request.user
     orders = SalesOrder.objects.filter(customer=user)
     serializer = SalesOrderSerializer(orders, many=True)
@@ -24,9 +23,8 @@ def get_all_orders(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_order_by_id(request, order_id):
-    """
-    Fetch a specific sales order by ID for the authenticated user.
-    """
+    """Fetch a specific sales order by ID for the authenticated user."""
+
     user = request.user
     try:
         order = SalesOrder.objects.get(id=order_id, customer=user)
