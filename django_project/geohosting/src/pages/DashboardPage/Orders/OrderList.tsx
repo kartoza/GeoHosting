@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchOrders } from '../../../redux/reducers/ordersSlice';
 import { AppDispatch, RootState } from '../../../redux/store';
-import { Box, Spinner, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Box, Spinner, Table, Thead, Tbody, Tr, Th, Td, Input, FormControl, FormLabel, Button } from '@chakra-ui/react';
 
 const OrdersList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -11,11 +11,25 @@ const OrdersList: React.FC = () => {
   const { orders, loading, error } = useSelector((state: RootState) => state.orders);
   const { token } = useSelector((state: RootState) => state.auth);
 
+  // State for search and filter
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredOrders, setFilteredOrders] = useState(orders);
+
   useEffect(() => {
     if (token) {
       dispatch(fetchOrders(token));
     }
   }, [dispatch, token]);
+
+  useEffect(() => {
+    // Filter orders based on search term
+    const filtered = orders.filter((order) => 
+      order.id.toString().includes(searchTerm) || 
+      order.package.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.order_status.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredOrders(filtered);
+  }, [searchTerm, orders]);
 
   if (loading) {
     return (
@@ -29,12 +43,22 @@ const OrdersList: React.FC = () => {
     return <Box color='red'>{error}</Box>;
   }
 
-  const handleRowClick = (id: string) => {
-    navigate(`${id}`);
+  const handleRowClick = (id: number) => {
+    navigate(`/orders/${id}`);
   };
 
   return (
-    <Box>
+    <Box p={4}>
+      <FormControl mb={4}>
+        <FormLabel htmlFor='search'>Search Orders</FormLabel>
+        <Input
+          id='search'
+          type='text'
+          placeholder='Search by Order ID, Package, or Status'
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </FormControl>
       <Table variant='simple'>
         <Thead>
           <Tr>
@@ -46,7 +70,7 @@ const OrdersList: React.FC = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {orders.map((order: any) => (
+          {filteredOrders.map((order) => (
             <Tr 
               key={order.id} 
               onClick={() => handleRowClick(order.id)}
@@ -57,7 +81,7 @@ const OrdersList: React.FC = () => {
               <Td>{order.package.name}</Td>
               <Td>{order.order_status}</Td>
               <Td>{order.payment_method}</Td>
-              <Td>{order.date}</Td>
+              <Td>{new Date(order.date).toLocaleDateString()}</Td>
             </Tr>
           ))}
         </Tbody>
