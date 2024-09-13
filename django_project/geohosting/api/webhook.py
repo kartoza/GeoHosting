@@ -67,7 +67,7 @@ class WebhookView(APIView):
                 return Response()
 
             if status not in ['succeeded']:
-                return HttpResponseBadRequest(f'Status does not found')
+                return HttpResponseBadRequest('Status does not found')
 
             if source == self.JENKINS:
                 activity.update_status(ActivityStatus.BUILD_ARGO)
