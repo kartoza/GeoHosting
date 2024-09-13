@@ -12,7 +12,8 @@ from django.utils.safestring import mark_safe
 
 from geohosting.forms.activity import CreateInstanceForm
 from geohosting.models import (
-    Activity, ActivityType, Region, Product, PackageGroup, ProductMetadata,
+    Activity, ActivityType, ActivityTypeMapping, Region, Product, PackageGroup,
+    ProductMetadata,
     Cluster, ProductCluster, Instance, Package, WebhookEvent, ProductMedia,
     SalesOrder, UserProfile
 )
@@ -71,11 +72,17 @@ class ActivityAdmin(admin.ModelAdmin):
         return False
 
 
+class ActivityTypeMappingInline(admin.TabularInline):
+    model = ActivityTypeMapping
+    extra = 1
+
+
 @admin.register(ActivityType)
 class ActivityTypeAdmin(admin.ModelAdmin):
     """ActivityType admin."""
 
-    list_display = ('identifier', 'jenkins_url')
+    list_display = ('identifier', 'jenkins_url', 'product')
+    inlines = (ActivityTypeMappingInline,)
 
 
 @admin.register(Cluster)
