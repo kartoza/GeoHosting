@@ -32,10 +32,6 @@ from geohosting.views.support import (
     create_ticket,
     upload_attachments
 )
-from geohosting.views.sales_orders import (
-    get_all_orders,
-    get_order_by_id
-)
 
 router = DefaultRouter()
 router.register(r'activities', ActivityViewSet, basename='activities')
@@ -46,12 +42,6 @@ router.register(
 )
 
 package = [
-    path('orders/', get_all_orders, name='get_all_orders'),
-    path(
-        'orders/<int:order_id>/',
-        get_order_by_id,
-        name='get_order_by_id'
-    ),
     path(
         '<pk>/payment/stripe',
         CheckoutStripeSessionAPI.as_view(),
