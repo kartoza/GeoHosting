@@ -119,13 +119,15 @@ class ControllerTest(TestCase):
                 }
             )
 
+            os.environ['JENKINS_USER'] = ''
+            os.environ['JENKINS_TOKEN'] = ''
             self.assertEqual(
-                self.create_function(self.app_name).note,
+                self.create_function('error-app').note,
                 NoJenkinsUserException().__str__()
             )
 
             os.environ['JENKINS_USER'] = 'user@example.com'
-            self.create_function(self.app_name)
+            self.create_function('error-app-2')
             self.assertEqual(
                 self.create_function(self.app_name).note,
                 NoJenkinsTokenException().__str__()

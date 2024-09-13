@@ -29,6 +29,7 @@ class PackageFactory(DjangoModelFactory):
         model = Package
 
     product = factory.SubFactory(ProductFactory)
+    package_group = factory.SubFactory(PackageGroupFactory)
     name = factory.Sequence(
         lambda n: f'package-{n}'
     )

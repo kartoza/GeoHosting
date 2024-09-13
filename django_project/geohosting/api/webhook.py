@@ -5,7 +5,7 @@ GeoHosting Controller.
 """
 import json
 
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponseServerError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -37,7 +37,10 @@ class WebhookView(APIView):
 
             # Check the data
             status = data['status'].lower()
-            source = data['source'].lower()
+            try:
+                source = data['Source'].lower()
+            except KeyError:
+                source = data['source'].lower()
 
             # Don't do anything if it is still running
             if status in ['running']:
@@ -96,5 +99,7 @@ class WebhookView(APIView):
 
         except (KeyError, Activity.DoesNotExist, Package.DoesNotExist) as e:
             return HttpResponseBadRequest(f'{e}')
+        except Exception as e:
+            return HttpResponseServerError(f'{e}')
 
         return Response()
