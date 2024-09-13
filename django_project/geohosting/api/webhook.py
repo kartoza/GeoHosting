@@ -29,7 +29,7 @@ class WebhookView(APIView):
             data=data,
         )
         try:
-            app_name = data['app_name']
+            app_name = data['app_name'].replace('devops-', '')
             activities = Activity.objects.filter(
                 client_data__app_name=app_name
             )
@@ -59,12 +59,12 @@ class WebhookView(APIView):
             if not activity:
                 raise Activity.DoesNotExist('Activity does not exist')
 
-            if status in ['error', 'failed']:
-                activity.note = data.get('message', 'Error')
+            if status in ['error', 'failed', 'outofsync', 'unknown']:
+                activity.note = data.get('message', 'Error on Argo CD')
                 activity.update_status(ActivityStatus.ERROR)
                 return Response()
 
-            if status not in ['succeeded']:
+            if status not in ['succeeded', 'synced']:
                 raise KeyError('Status does not found')
 
             if source == self.ARGO_CD:
