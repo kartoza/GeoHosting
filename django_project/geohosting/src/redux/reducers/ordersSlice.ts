@@ -19,7 +19,7 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async (token: 
   const response = await axios.get('/api/orders', {
     headers: { Authorization: `Token ${token}` },
   });
-  return response.data;
+  return response.data.results;
 });
 
 export const fetchOrderById = createAsyncThunk('orders/fetchOrderById', async ({ id, token }: { id: string; token: string }) => {
