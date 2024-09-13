@@ -1,27 +1,2 @@
 [
-  {
-    "model": "geohosting.region",
-    "pk": 1,
-    "fields": {
-      "name": "Global",
-      "code": "global"
-    }
-  },
-  {
-    "model": "geohosting.cluster",
-    "pk": 1,
-    "fields": {
-      "code": "ktz-sta-ks-gn-01",
-      "region": 1,
-      "domain": null
-    }
-  },
-  {
-    "model": "geohosting.activitytype",
-    "pk": 1,
-    "fields": {
-      "identifier": "INSTANCE.CREATE",
-      "jenkins_url": "https://jenkins.do.kartoza.com/job/kartoza/job/devops/job/geohosting/job/geonode_create/buildWithParameters"
-    }
-  }
 ]

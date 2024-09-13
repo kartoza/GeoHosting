@@ -10,11 +10,15 @@ from django.test.client import Client
 from django.test.testcases import TestCase
 from rest_framework.authtoken.models import Token
 
-from geohosting.factories.package import PackageFactory, PackageGroupFactory
+from geohosting.factories.package import (
+    PackageFactory, PackageGroupFactory, ProductFactory
+)
 from geohosting.forms.activity import CreateInstanceForm
 from geohosting.models import (
-    Activity, Instance, Region, WebhookEvent, ProductCluster, Cluster,
-    ActivityStatus
+    Activity, Instance, Region, WebhookEvent, ActivityStatus
+)
+from geohosting_controller.default_data import (
+    generate_cluster, generate_regions
 )
 from geohosting_controller.exceptions import (
     ConnectionErrorException, NoJenkinsUserException, NoJenkinsTokenException,
@@ -36,11 +40,13 @@ class ControllerTest(TestCase):
         call_command(
             'loaddata', '01.initiate.json'
         )
+        generate_regions()
+        generate_cluster()
+
         self.user = User.objects.create(
             username='user', password='password'
         )
         self.user_token = Token.objects.create(user=self.user)
-
         self.admin = User.objects.create(
             username='admin', password='password',
             is_superuser=True,
@@ -50,13 +56,12 @@ class ControllerTest(TestCase):
         self.package = PackageFactory(
             package_group=PackageGroupFactory(
                 package_code='dev-1'
+            ),
+            product=ProductFactory(
+                name='GeoNode'
             )
         )
         self.region = Region.objects.get(code='global')
-        ProductCluster.objects.create(
-            product=self.package.product,
-            cluster=Cluster.objects.first()
-        )
 
     def create_function(self, app_name) -> Activity:
         """Create function."""
@@ -248,7 +253,7 @@ class ControllerTest(TestCase):
                     activity.post_data['k8s_cluster'], 'ktz-sta-ks-gn-01'
                 )
                 self.assertEqual(
-                    activity.post_data['subdomain'], self.app_name
+                    activity.post_data['geonode_env'], 'sta'
                 )
                 self.assertEqual(
                     activity.post_data['geonode_name'], self.app_name

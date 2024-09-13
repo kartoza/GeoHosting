@@ -13,6 +13,7 @@ from django.db import models
 from django.utils import timezone
 
 from geohosting.models.instance import Instance
+from geohosting.models.product import Product
 from geohosting_controller.connection import request_post, request_get
 from geohosting_controller.exceptions import (
     ConnectionErrorException, ActivityException
@@ -35,6 +36,10 @@ class ActivityType(models.Model):
             'Jenkins URL based on identifier and product (optional).'
         )
     )
+    product = models.ForeignKey(
+        Product, on_delete=models.SET_NULL,
+        null=True, blank=True
+    )
 
     @property
     def url(self):
@@ -44,6 +49,36 @@ class ActivityType(models.Model):
     def __str__(self):
         """Return activity type name."""
         return self.identifier
+
+    class Meta:  # noqa
+        verbose_name = 'Jenkins Activity Type'
+
+    def mapping_data(self, data: dict):
+        """Map data."""
+        new_data = {}
+        for key, value in data.items():
+            try:
+                jenkins_key = self.activitytypemapping_set.get(
+                    geohosting_key=key
+                ).jenkins_key
+                new_data[jenkins_key] = value
+            except ActivityTypeMapping.DoesNotExist:
+                pass
+        return new_data
+
+
+class ActivityTypeMapping(models.Model):
+    """Mapping between GeoHosting json to jenkins payload."""
+
+    activity_type = models.ForeignKey(
+        ActivityType, on_delete=models.CASCADE
+    )
+    geohosting_key = models.CharField(
+        max_length=256
+    )
+    jenkins_key = models.CharField(
+        max_length=256
+    )
 
 
 class ActivityStatus:

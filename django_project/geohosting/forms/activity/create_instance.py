@@ -50,14 +50,12 @@ class CreateInstanceForm(forms.ModelForm):
     def _post_data(self):
         """Refactor data."""
         activity = self.instance
-        activity_type = activity.activity_type.identifier
-        if activity_type == ActivityTypeTerm.CREATE_INSTANCE.value:
+        if (
+                activity.activity_type.identifier ==
+                ActivityTypeTerm.CREATE_INSTANCE.value
+        ):
             data = activity.client_data
             try:
-                # TODO:
-                #  Later fix using region input
-                #  Change keys when API is universal
-
                 app_name = data['app_name']
                 package_id = data['package_id']
                 region_id = data['region_id']
@@ -66,13 +64,13 @@ class CreateInstanceForm(forms.ModelForm):
                 product_cluster = product.productcluster_set.get(
                     cluster__region_id=region_id
                 )
-                return {
-                    'subdomain': app_name,
-                    'k8s_cluster': product_cluster.cluster.code,
-                    'geonode_env': product_cluster.environment,
-                    'geonode_size': package.package_group.package_code,
-                    'geonode_name': app_name
+                data = {
+                    'cluster': product_cluster.cluster.code,
+                    'environment': product_cluster.environment,
+                    'package': package.package_group.package_code,
+                    'app_name': app_name
                 }
+                return activity.activity_type.mapping_data(data)
             except ProductCluster.DoesNotExist:
                 raise NoClusterException()
         raise ActivityType.DoesNotExist()

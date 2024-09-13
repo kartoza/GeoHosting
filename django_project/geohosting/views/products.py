@@ -22,6 +22,9 @@ from geohosting.utils.erpnext import (
     fetch_erpnext_data,
     fetch_erpnext_detail_data
 )
+from geohosting_controller.default_data import (
+    generate_regions, generate_cluster
+)
 
 
 def handle_image(image_path):
@@ -80,8 +83,10 @@ def save_product_image(
 
 def fetch_products_from_erpnext():
     """Fetch products from ERPNEXT API."""
-    doctype = 'Item'
+    generate_regions()
+    generate_cluster()
 
+    doctype = 'Item'
     product_list = fetch_erpnext_data(
         doctype,
         {
@@ -193,7 +198,7 @@ def fetch_products_from_erpnext():
 def fetch_products(request):
     fetching_data = "Products fetch initiated in the background."
 
-    fetch_products_from_erpnext_task.delay()
+    fetch_products_from_erpnext_task()
 
     messages.add_message(
         request,
