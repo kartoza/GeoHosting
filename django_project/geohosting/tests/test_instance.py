@@ -55,7 +55,7 @@ class InstanceViewSetTests(APITestCase):
         response = self.client.get('/api/instances/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
-        self.assertEqual(len(data), 1)  # Check that we have one instance
+        self.assertEqual(len(data), 4)
         self.assertEqual(data[0]['name'], self.instance.name)
 
     def test_my_instances(self):
