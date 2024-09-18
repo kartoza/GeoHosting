@@ -140,7 +140,7 @@ def fetch_products_from_erpnext():
                 f'/assets/geohosting/images/Product_Images/{name}/main.png'
             )
             save_product_image(
-                product_obj, desc, 
+                product_obj, desc,
                 'overview_continuation_header', 'overview_continuation',
                 (
                     f'/assets/geohosting/images/Product_Images/{name}/'
