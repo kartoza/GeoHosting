@@ -15,13 +15,11 @@ class InstanceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return instances for the authenticated user."""
-
         return Instance.objects.filter(owner=self.request.user)
 
     @action(detail=False, methods=['get'])
     def my_instances(self, request):
-        """Custom action to return instances for the current user."""
-
+        """Return instances for the current user."""
         user_instances = self.get_queryset()
         serializer = self.get_serializer(user_instances, many=True)
         return Response(serializer.data)
