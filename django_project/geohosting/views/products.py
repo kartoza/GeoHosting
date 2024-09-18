@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from geohosting.models.package import Package, PackageGroup
+from geohosting.models.package import Package
 from geohosting.models.product import (
     Product, ProductMetadata, ProductMedia
 )
@@ -21,9 +21,6 @@ from geohosting.tasks.products import (
 from geohosting.utils.erpnext import (
     fetch_erpnext_data,
     fetch_erpnext_detail_data
-)
-from geohosting_controller.default_data import (
-    generate_regions, generate_cluster
 )
 
 
@@ -143,10 +140,14 @@ def fetch_products_from_erpnext():
                 f'/assets/geohosting/images/Product_Images/{name}/main.png'
             )
             save_product_image(
-                product_obj, desc, 'overview_continuation_header',
-                'overview_continuation',
-                f'/assets/geohosting/images/Product_Images/{name}/secondary.png'
+                product_obj, desc, 
+                'overview_continuation_header', 'overview_continuation',
+                (
+                    f'/assets/geohosting/images/Product_Images/{name}/'
+                    f'secondary.png'
+                )
             )
+
 
             # Save all description to product metadata
             for key, value in desc.items():
