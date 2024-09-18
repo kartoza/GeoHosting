@@ -9,8 +9,13 @@ class InstanceViewSetTests(APITestCase):
     def setUp(self):
         """Create test user and instances."""
         # Create a test user
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
-        self.client.login(username='testuser', password='testpassword')
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='tinashe@test.com',
+            password='password123'
+        )
+        # Authenticate the client
+        self.client.force_authenticate(user=self.user)
 
         # Create test Region object
         self.region = Region.objects.create(name='Test Region')  # Assuming Region has a 'name' field
