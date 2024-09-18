@@ -10,7 +10,7 @@ from geohosting.api.checkout import (
     CheckoutStripeSessionAPI, CheckoutPaystackSessionAPI
 )
 from geohosting.api.product import ProductViewSet
-from geohosting.api.Instance import InstanceViewSet
+from geohosting.api.instance import InstanceViewSet
 from geohosting.api.sales_order import (
     SalesOrderSetView, SalesOrderPaymentStripeSessionAPI,
     SalesOrderPaymentPaystackSessionAPI
