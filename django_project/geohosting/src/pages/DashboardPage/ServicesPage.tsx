@@ -3,48 +3,47 @@ import { Box, Spinner, Image, Text, Input, FormControl, FormLabel, Flex, Switch,
 import { EditIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
-import { fetchOrders } from '../../redux/reducers/ordersSlice';
+import { fetchUserInstances } from '../../redux/reducers/instanceSlice';
 
 import Geoserver from '../../assets/images/GeoServer.svg';
 import Geonode from '../../assets/images/GeoNode.svg';
 
 const ServicesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredOrders, setFilteredOrders] = useState<any[]>([]);
+  const [filteredInstances, setFilteredInstances] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
   const dispatch = useDispatch<AppDispatch>();
 
-  const Placeholder = 'https://via.placeholder.com/60'
+  const Placeholder = 'https://via.placeholder.com/60';
 
-  const { orders, loading, error } = useSelector((state: RootState) => state.orders);
+  const { instances, loading, error } = useSelector((state: RootState) => state.instance);
   const { token } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchOrders(token));
+      dispatch(fetchUserInstances(token));
     }
   }, [dispatch, token]);
 
   useEffect(() => {
-    if (orders) {
-      // Filter orders based on search term
-      const filtered = orders.filter((order: any) => 
-        order.id.toString().includes(searchTerm) || 
-        order.package.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.order_status.toLowerCase().includes(searchTerm.toLowerCase())
+    if (instances) {
+      // Filter instances based on search term
+      const filtered = instances.filter((instance: any) => 
+        instance.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        instance.price.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setFilteredOrders(filtered);
+      setFilteredInstances(filtered);
     }
-  }, [orders, searchTerm]);
+  }, [instances, searchTerm]);
 
   // Pagination logic
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentCards = filteredOrders.slice(indexOfFirstCard, indexOfLastCard);
+  const currentCards = filteredInstances.slice(indexOfFirstCard, indexOfLastCard);
 
   const handleNextPage = () => {
-    if (currentPage < Math.ceil(filteredOrders.length / cardsPerPage)) {
+    if (currentPage < Math.ceil(filteredInstances.length / cardsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -56,10 +55,10 @@ const ServicesPage: React.FC = () => {
   };
 
   const toggleStatus = (id: number) => {
-    const updatedOrders = filteredOrders.map((order: any) => 
-      order.id === id ? { ...order, isActive: !order.isActive } : order
+    const updatedInstances = filteredInstances.map((instance: any) => 
+      instance.id === id ? { ...instance, isActive: !instance.isActive } : instance
     );
-    setFilteredOrders(updatedOrders);
+    setFilteredInstances(updatedInstances);
   };
 
   // Function to determine the correct image based on package name
@@ -79,21 +78,21 @@ const ServicesPage: React.FC = () => {
       <FormControl mb={4}>
         <FormLabel>Search Services</FormLabel>
         <Input 
-          placeholder="Search by domain, name"
+          placeholder="Search by name or package"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </FormControl>
 
-      {loading ? <Spinner /> : error ? <Text>Error loading orders</Text> : (
+      {loading ? <Spinner /> : error ? <Text>Error loading instances</Text> : (
         <>
           {/* Cards */}
           <Flex wrap="wrap" justify="flex-start" gap={6}
             direction={{ base: 'column', md: 'row' }}
           >
-            {currentCards.map((order: any) => (
+            {currentCards.map((instance: any) => (
               <Box 
-                key={order.id} 
+                key={instance.id} 
                 borderWidth="1px" 
                 borderRadius="lg" 
                 p={6} 
@@ -104,17 +103,17 @@ const ServicesPage: React.FC = () => {
                 {/* Logo and Switch */}
                 <Flex justify="space-between" align="center" mb={4}>
                   <Image 
-                    src={getImageForPackage(order.package.name)} 
-                    alt={`${order.package.name} logo`} 
+                    src={getImageForPackage(instance.price.name)} 
+                    alt={`${instance.price.name} logo`} 
                     boxSize="80px" 
                     borderRadius="full" 
                   />
                   <Flex align="center">
                     <Switch
                       size="lg"
-                      colorScheme={order.isActive ? "blue" : "red"}
-                      isChecked={order.isActive}
-                      onChange={() => toggleStatus(order.id)}
+                      colorScheme={instance.isActive ? "blue" : "red"}
+                      isChecked={instance.isActive}
+                      onChange={() => toggleStatus(instance.id)}
                       mr={2}
                     />
                   </Flex>
@@ -122,31 +121,30 @@ const ServicesPage: React.FC = () => {
 
                 {/* Package name and Edit Icon */}
                 <Flex justify="space-between" align="center" mb={4}>
-                  <Text fontWeight="bold" isTruncated>{order.package.name}</Text>
+                  <Text fontWeight="bold" isTruncated>{instance.name}</Text>
                   <IconButton 
-                    aria-label="Edit package" 
+                    aria-label="Edit instance" 
                     icon={<EditIcon />} 
-                    onClick={() => console.log(`Edit order ${order.id}`)}
+                    onClick={() => console.log(`Edit instance ${instance.id}`)}
                     color="blue.500" 
                     size="sm"
                   />
                 </Flex>
 
                 {/* Package details */}
-                <Flex justify="space-between">
-                <Text fontSize="sm">
-                  Storage: {order.package.feature_list.spec[0].split(' ')[0]}
-                </Text>
-                <Text fontSize="sm" textAlign="right">
-                  Memory: {order.package.feature_list.spec[2].split(' ')[1]}
-                </Text>
-              </Flex>
-
-              {/* CPU */}
-              <Text fontSize="sm" mt={2}>
-                CPUs: {order.package.feature_list.spec[1].split(' ')[2]}
-              </Text>
-
+                {instance.price.feature_list && (
+                  <Flex direction="column">
+                    <Text fontSize="sm">
+                      Storage: {instance.price.feature_list.spec[0]?.split(' ')[0]}
+                    </Text>
+                    <Text fontSize="sm" textAlign="right">
+                      Memory: {instance.price.feature_list.spec[2]?.split(' ')[1]}
+                    </Text>
+                    <Text fontSize="sm" mt={2}>
+                      CPUs: {instance.price.feature_list.spec[1]?.split(' ')[2]}
+                    </Text>
+                  </Flex>
+                )}
               </Box>
             ))}
           </Flex>
@@ -165,7 +163,7 @@ const ServicesPage: React.FC = () => {
 
             {/* Page numbers centered */}
             <Flex justify="center" flex="1">
-              {Array.from({ length: Math.ceil(filteredOrders.length / cardsPerPage) }, (_, index) => (
+              {Array.from({ length: Math.ceil(filteredInstances.length / cardsPerPage) }, (_, index) => (
                 <Button
                   key={index}
                   onClick={() => setCurrentPage(index + 1)}
@@ -184,7 +182,7 @@ const ServicesPage: React.FC = () => {
             {/* Next button aligned to the right */}
             <Button 
               onClick={handleNextPage} 
-              isDisabled={currentPage === Math.ceil(filteredOrders.length / cardsPerPage)} 
+              isDisabled={currentPage === Math.ceil(filteredInstances.length / cardsPerPage)} 
               colorScheme="orange"
               _disabled={{ bg: 'orange.300', cursor: 'not-allowed' }}
             >
