@@ -24,7 +24,7 @@ const OrdersList: React.FC = () => {
   useEffect(() => {
     // Filter orders based on search term
     const filtered = orders.filter((order) => 
-      order.id.toString().includes(searchTerm) || 
+      order.erpnext_code.toString().includes(searchTerm) || 
       order.package.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.order_status.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -54,7 +54,7 @@ const OrdersList: React.FC = () => {
         <Input
           id='search'
           type='text'
-          placeholder='Search by Order ID, Package, or Status'
+          placeholder='Search by erpnext_code, Package, or Status'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -62,7 +62,7 @@ const OrdersList: React.FC = () => {
       <Table variant='simple'>
         <Thead>
           <Tr>
-            <Th>Order ID</Th>
+            <Th>Erpnext_code</Th>
             <Th>Package</Th>
             <Th>Status</Th>
             <Th>Payment Method</Th>
@@ -72,12 +72,12 @@ const OrdersList: React.FC = () => {
         <Tbody>
           {filteredOrders.map((order) => (
             <Tr 
-              key={order.id} 
+              key={order.id}
               onClick={() => handleRowClick(order.id)}
               style={{ cursor: 'pointer' }}
               _hover={{ bg: 'gray.100' }}
             >
-              <Td>{order.id}</Td>
+              <Td>{order.erpnext_code}</Td>
               <Td>{order.package.name}</Td>
               <Td>{order.order_status}</Td>
               <Td>{order.payment_method}</Td>
