@@ -111,8 +111,8 @@ const ServicesPage: React.FC = () => {
                   <Flex align="center">
                     <Switch
                       size="lg"
-                      colorScheme={instance.isActive ? "blue" : "red"}
-                      isChecked={instance.isActive}
+                      colorScheme={instance?.isActive ? "blue" : "red"}
+                      isChecked={instance?.isActive || true}
                       onChange={() => toggleStatus(instance.id)}
                       mr={2}
                     />
