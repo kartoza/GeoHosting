@@ -83,10 +83,8 @@ def save_product_image(
 
 def fetch_products_from_erpnext():
     """Fetch products from ERPNEXT API."""
-    generate_regions()
-    generate_cluster()
-
     doctype = 'Item'
+
     product_list = fetch_erpnext_data(
         doctype,
         {
@@ -115,18 +113,30 @@ def fetch_products_from_erpnext():
                 'available_in_geohosting', 0) == 1
             image_file = None
 
+            # If there's an image path, process the image
             if image_path:
                 image_file = handle_image(image_path)
 
+            # Fetch existing product or create a new one
             product_obj, created = Product.objects.update_or_create(
                 upstream_id=upstream_id,
                 defaults={
                     'name': name,
                     'description': description,
-                    'image': image_file,
                     'available': available
                 }
             )
+
+            # If the product already has an image, delete the old image
+            if not created and product_obj.image and image_file:
+                old_image_path = product_obj.image.path
+                if os.path.exists(old_image_path):
+                    default_storage.delete(old_image_path)
+
+            if image_file:
+                product_obj.image = image_file
+                product_obj.save()
+
             save_product_image(
                 product_obj, desc, 'overview_header',
                 'overview_description',
@@ -135,8 +145,7 @@ def fetch_products_from_erpnext():
             save_product_image(
                 product_obj, desc, 'overview_continuation_header',
                 'overview_continuation',
-                f'/assets/geohosting/images/Product_Images/{name}/'
-                f'secondary.png'
+                f'/assets/geohosting/images/Product_Images/{name}/secondary.png'
             )
 
             # Save all description to product metadata
@@ -149,7 +158,7 @@ def fetch_products_from_erpnext():
                     }
                 )
 
-    # Get pricing
+    # Get pricing details for the packages
     for package_detail in packages:
         package_detail = fetch_erpnext_detail_data(
             f'{doctype}/{package_detail.get("name", "")}')
@@ -166,16 +175,13 @@ def fetch_products_from_erpnext():
                     'item_code': package_detail.get("name", "")
                 }
             )
-            product = Product.objects.get(
-                upstream_id=package_detail.get('variant_of', '')
-            )
-            package_group, _ = PackageGroup.objects.update_or_create(
-                name=package_detail.get("name", "")
-            )
             for item_price in pricing_list:
                 currency = item_price.get('currency', 'USD')
                 price = item_price.get('price_list_rate', 0)
                 try:
+                    product = Product.objects.get(
+                        upstream_id=package_detail.get('variant_of', '')
+                    )
                     Package.objects.update_or_create(
                         product=product,
                         erpnext_code=item_price.get('name'),
@@ -185,11 +191,11 @@ def fetch_products_from_erpnext():
                             'currency': currency,
                             'name': item_price.get('item_name'),
                             'erpnext_item_code': item_price.get('item_code'),
-                            'package_group': package_group
                         }
                     )
                 except Product.DoesNotExist:
                     continue
+
     return products
 
 
