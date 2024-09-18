@@ -18,7 +18,7 @@ class InstanceViewSetTests(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         # Create test Region object
-        self.region = Region.objects.create(name='Test Region')  # Assuming Region has a 'name' field
+        self.region = Region.objects.create(name='Test Region')
 
         # Create test Cluster object with 'code' and 'region'
         self.cluster = Cluster.objects.create(code='Cluster Code', region=self.region, domain='example.com')
@@ -70,7 +70,7 @@ class InstanceViewSetTests(APITestCase):
         """Test that unauthenticated users cannot access the API."""
         self.client.logout()  # Log out the user
         response = self.client.get('/api/instances/')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         
         response = self.client.get('/api/instances/my_instances/')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
