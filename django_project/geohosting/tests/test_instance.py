@@ -3,6 +3,8 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from geohosting.models import Instance, Package, Cluster, Region
 
+from geohosting.models import Product
+
 class InstanceViewSetTests(APITestCase):
     def setUp(self):
         """Create test user and instances."""
@@ -16,9 +18,18 @@ class InstanceViewSetTests(APITestCase):
         # Create test Cluster object with 'code' and 'region'
         self.cluster = Cluster.objects.create(code='Cluster Code', region=self.region, domain='example.com')
 
-        # Create test Package
+        # Create a test Product object
+        self.product = Product.objects.create(
+            name='Test Product',
+            order=1,
+            upstream_id='123',
+            description='Test Description',
+            available=True
+        )
+        
+        # Create test Package with a valid product
         self.package = Package.objects.create(
-            product=None,  # Assuming you have a product or leave as None
+            product=self.product,  # Assign a valid Product
             name='Test Package',
             price=100.00,
             periodicity='monthly',
@@ -32,6 +43,7 @@ class InstanceViewSetTests(APITestCase):
             cluster=self.cluster,
             owner=self.user
         )
+
 
     def test_get_queryset(self):
         """Test that get_queryset returns instances for the authenticated user."""
