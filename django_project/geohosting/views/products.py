@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from geohosting.models.package import Package
+from geohosting.models.package import Package, PackageGroup
 from geohosting.models.product import (
     Product, ProductMetadata, ProductMedia
 )
@@ -21,6 +21,9 @@ from geohosting.tasks.products import (
 from geohosting.utils.erpnext import (
     fetch_erpnext_data,
     fetch_erpnext_detail_data
+)
+from geohosting_controller.default_data import (
+    generate_regions, generate_cluster
 )
 
 
@@ -80,8 +83,10 @@ def save_product_image(
 
 def fetch_products_from_erpnext():
     """Fetch products from ERPNEXT API."""
-    doctype = 'Item'
+    generate_regions()
+    generate_cluster()
 
+    doctype = 'Item'
     product_list = fetch_erpnext_data(
         doctype,
         {
@@ -183,6 +188,9 @@ def fetch_products_from_erpnext():
                     product = Product.objects.get(
                         upstream_id=package_detail.get('variant_of', '')
                     )
+                    package_group, _ = PackageGroup.objects.update_or_create(
+                        name=package_detail.get("name", "")
+                    )
                     Package.objects.update_or_create(
                         product=product,
                         erpnext_code=item_price.get('name'),
@@ -192,6 +200,7 @@ def fetch_products_from_erpnext():
                             'currency': currency,
                             'name': item_price.get('item_name'),
                             'erpnext_item_code': item_price.get('item_code'),
+                            'package_group': package_group
                         }
                     )
                 except Product.DoesNotExist:
@@ -205,7 +214,7 @@ def fetch_products_from_erpnext():
 def fetch_products(request):
     fetching_data = "Products fetch initiated in the background."
 
-    fetch_products_from_erpnext_task()
+    fetch_products_from_erpnext_task.delay()
 
     messages.add_message(
         request,
