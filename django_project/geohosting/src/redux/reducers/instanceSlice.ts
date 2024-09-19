@@ -20,7 +20,7 @@ export const fetchUserInstances = createAsyncThunk(
     try {
       const response = await axios.get('/api/instances/my_instances/', {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Token ${token}`,
         },
       });
       return response.data;

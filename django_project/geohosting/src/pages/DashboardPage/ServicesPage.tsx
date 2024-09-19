@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Spinner, Image, Text, Input, FormControl, FormLabel, Flex, Switch, IconButton, Button } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  IconButton,
+  Image,
+  Input,
+  Spinner,
+  Switch,
+  Text
+} from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { fetchUserInstances } from '../../redux/reducers/instanceSlice';
-
-import Geoserver from '../../assets/images/GeoServer.svg';
-import Geonode from '../../assets/images/GeoNode.svg';
 
 const ServicesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,7 +26,11 @@ const ServicesPage: React.FC = () => {
 
   const Placeholder = 'https://via.placeholder.com/60';
 
-  const { instances, loading, error } = useSelector((state: RootState) => state.instance);
+  const {
+    instances,
+    loading,
+    error
+  } = useSelector((state: RootState) => state.instance);
   const { token } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
@@ -29,9 +42,9 @@ const ServicesPage: React.FC = () => {
   useEffect(() => {
     if (instances) {
       // Filter instances based on search term
-      const filtered = instances.filter((instance: any) => 
+      const filtered = instances.filter((instance: any) =>
         instance.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        instance.price.name.toLowerCase().includes(searchTerm.toLowerCase())
+        instance.package.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredInstances(filtered);
     }
@@ -55,21 +68,13 @@ const ServicesPage: React.FC = () => {
   };
 
   const toggleStatus = (id: number) => {
-    const updatedInstances = filteredInstances.map((instance: any) => 
-      instance.id === id ? { ...instance, isActive: !instance.isActive } : instance
+    const updatedInstances = filteredInstances.map((instance: any) =>
+      instance.id === id ? {
+        ...instance,
+        isActive: !instance.isActive
+      } : instance
     );
     setFilteredInstances(updatedInstances);
-  };
-
-  // Function to determine the correct image based on package name
-  const getImageForPackage = (packageName: string) => {
-    if (packageName.toLowerCase().includes('geoserver')) {
-      return Geoserver;
-    } else if (packageName.toLowerCase().includes('geonode')) {
-      return Geonode;
-    } else {
-      return Placeholder;
-    }
   };
 
   return (
@@ -77,36 +82,36 @@ const ServicesPage: React.FC = () => {
       {/* Search bar */}
       <FormControl mb={4}>
         <FormLabel>Search Services</FormLabel>
-        <Input 
+        <Input
           placeholder="Search by name or package"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </FormControl>
 
-      {loading ? <Spinner /> : error ? <Text>Error loading instances</Text> : (
+      {loading ? <Spinner/> : error ? <Text>Error loading instances</Text> : (
         <>
           {/* Cards */}
           <Flex wrap="wrap" justify="flex-start" gap={6}
-            direction={{ base: 'column', md: 'row' }}
+                direction={{ base: 'column', md: 'row' }}
           >
             {currentCards.map((instance: any) => (
-              <Box 
-                key={instance.id} 
-                borderWidth="1px" 
-                borderRadius="lg" 
-                p={6} 
+              <Box
+                key={instance.id}
+                borderWidth="1px"
+                borderRadius="lg"
+                p={6}
                 width={{ base: "100%", md: "320px" }}
-                bg="white" 
+                bg="white"
                 boxShadow="lg"
               >
                 {/* Logo and Switch */}
                 <Flex justify="space-between" align="center" mb={4}>
-                  <Image 
-                    src={getImageForPackage(instance.price.name)} 
-                    alt={`${instance.price.name} logo`} 
-                    boxSize="80px" 
-                    borderRadius="full" 
+                  <Image
+                    src={instance.product.image}
+                    alt={`${instance.package.name} logo`}
+                    boxSize="80px"
+                    borderRadius="full"
                   />
                   <Flex align="center">
                     <Switch
@@ -122,39 +127,39 @@ const ServicesPage: React.FC = () => {
                 {/* Package name and Edit Icon */}
                 <Flex justify="space-between" align="center" mb={4}>
                   <Text fontWeight="bold" isTruncated>{instance.name}</Text>
-                  <IconButton 
-                    aria-label="Edit instance" 
-                    icon={<EditIcon />} 
+                  <IconButton
+                    aria-label="Edit instance"
+                    icon={<EditIcon/>}
                     onClick={() => console.log(`Edit instance ${instance.id}`)}
-                    color="blue.500" 
+                    color="blue.500"
                     size="sm"
                   />
                 </Flex>
 
                 {/* Package details */}
-                {instance.price.feature_list && (
-                  <Flex direction="column">
-                    <Text fontSize="sm">
-                      Storage: {instance.price.feature_list.spec[0]?.split(' ')[0]}
-                    </Text>
-                    <Text fontSize="sm" textAlign="right">
-                      Memory: {instance.price.feature_list.spec[2]?.split(' ')[1]}
-                    </Text>
-                    <Text fontSize="sm" mt={2}>
-                      CPUs: {instance.price.feature_list.spec[1]?.split(' ')[2]}
-                    </Text>
-                  </Flex>
+                {instance.package.feature_list && (
+                  <Box width="100%">
+                    {
+                      instance.package.feature_list.spec.map((spec, idx) =>
+                        <Box fontSize="sm" width="50%" display='inline-block'
+                             textAlign={idx % 2 == 0 ? "left" : "right"}>
+                          {spec}
+                        </Box>
+                      )
+                    }
+                  </Box>
                 )}
               </Box>
             ))}
           </Flex>
 
           {/* Pagination controls */}
-          <Flex justify="space-between" align="center" mt="auto" py={6} width="100%">
+          <Flex justify="space-between" align="center" mt="auto" py={6}
+                width="100%">
             {/* Back button aligned to the left */}
-            <Button 
-              onClick={handlePrevPage} 
-              isDisabled={currentPage === 1} 
+            <Button
+              onClick={handlePrevPage}
+              isDisabled={currentPage === 1}
               colorScheme="orange"
               _disabled={{ bg: 'orange.300', cursor: 'not-allowed' }}
             >
@@ -168,8 +173,8 @@ const ServicesPage: React.FC = () => {
                   key={index}
                   onClick={() => setCurrentPage(index + 1)}
                   bg={currentPage === index + 1 ? "orange" : "transparent"}
-                  color={currentPage === index + 1 ? "white" : "black"} 
-                  border="1px solid" 
+                  color={currentPage === index + 1 ? "white" : "black"}
+                  border="1px solid"
                   borderColor={currentPage === index + 1 ? "orange" : "gray"}
                   _hover={{ bg: currentPage === index + 1 ? "orange" : "gray.100" }}
                   mx={1}
@@ -180,9 +185,9 @@ const ServicesPage: React.FC = () => {
             </Flex>
 
             {/* Next button aligned to the right */}
-            <Button 
-              onClick={handleNextPage} 
-              isDisabled={currentPage === Math.ceil(filteredInstances.length / cardsPerPage)} 
+            <Button
+              onClick={handleNextPage}
+              isDisabled={currentPage === Math.ceil(filteredInstances.length / cardsPerPage)}
               colorScheme="orange"
               _disabled={{ bg: 'orange.300', cursor: 'not-allowed' }}
             >
