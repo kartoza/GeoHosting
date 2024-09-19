@@ -44,13 +44,12 @@ const OrdersList: React.FC = () => {
   }
 
   const handleRowClick = (id: number) => {
-    navigate(`/orders/${id}`);
+    navigate(`/orders/${id}/finish`);
   };
 
   return (
     <Box p={4}>
       <FormControl mb={4}>
-        <FormLabel htmlFor='search'>Search Orders</FormLabel>
         <Input
           id='search'
           type='text'
@@ -62,11 +61,10 @@ const OrdersList: React.FC = () => {
       <Table variant='simple'>
         <Thead>
           <Tr>
-            <Th>Erpnext_code</Th>
+            <Th>Order ID</Th>
+            <Th>Date</Th>
             <Th>Package</Th>
             <Th>Status</Th>
-            <Th>Payment Method</Th>
-            <Th>Date</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -78,10 +76,9 @@ const OrdersList: React.FC = () => {
               _hover={{ bg: 'gray.100' }}
             >
               <Td>{order.erpnext_code}</Td>
+              <Td>{new Date(order.date).toLocaleDateString()}</Td>
               <Td>{order.package.name}</Td>
               <Td>{order.order_status}</Td>
-              <Td>{order.payment_method}</Td>
-              <Td>{new Date(order.date).toLocaleDateString()}</Td>
             </Tr>
           ))}
         </Tbody>
