@@ -168,7 +168,6 @@ class ProductMedia(models.Model):
 @receiver(pre_save, sender=Product)
 def delete_old_image(sender, instance, **kwargs):
     """Delete the old image file if a new image is being set."""
-
     if instance.pk:
         try:
             old_product = Product.objects.get(pk=instance.pk)
