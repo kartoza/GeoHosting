@@ -6,8 +6,14 @@ GeoHosting.
 
 """
 from django.contrib import admin
+from django.contrib.admin.sites import NotRegistered
 
 from core.models.preferences import Preferences
+
+try:
+    admin.site.unregister(Preferences)
+except NotRegistered:
+    pass
 
 
 @admin.register(Preferences)
