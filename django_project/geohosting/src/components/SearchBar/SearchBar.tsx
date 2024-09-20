@@ -134,7 +134,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     flex: 1,
     padding: '10px 10px 10px 20px', 
     height: '100%',
-    border: '1px solid #ccc',
+    border: '0px',
     borderRadius: '4px',
     outline: 'none',
     transition: 'border-color 0.2s',
@@ -154,7 +154,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   datePicker: {
     padding: '10px',
     height: '100%',
-    border: '1px solid #ccc',
+    border: '0px',
     borderRadius: '4px',
     outline: 'none',
     transition: 'border-color 0.2s',
