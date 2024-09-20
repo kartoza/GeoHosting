@@ -327,6 +327,10 @@ class ProductViewSetTestCase(APITestCase):
         product_data = response.data
         serializer = ProductDetailSerializer(instance=self.product)
 
+        self.assertEqual(product_data['packages'], serializer.data['packages'])
+        self.assertEqual(product_data['images'], serializer.data['images'])
+        self.assertEqual(product_data['product_meta'], serializer.data['product_meta'])
+
 
 class DeleteOldImageSignalTest(TestCase):
 
