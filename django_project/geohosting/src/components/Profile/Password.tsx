@@ -1,0 +1,97 @@
+import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  IconButton,
+  SimpleGrid,
+  Text,
+  VStack,
+  InputGroup,
+  InputRightElement,
+} from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+
+const PasswordResetTab: React.FC = () => {
+  const [passwords, setPasswords] = useState({
+    oldPassword: '',
+    newPassword: '',
+    repeatPassword: '',
+  });
+  const [showPassword, setShowPassword] = useState({
+    oldPassword: false,
+    newPassword: false,
+    repeatPassword: false,
+  });
+  const [passwordError, setPasswordError] = useState('');
+
+  const handlePasswordUpdate = () => {
+    // Implement password update logic
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof typeof passwords) => {
+    const { value } = e.target;
+    setPasswords({ ...passwords, [field]: value });
+
+    if (field === 'repeatPassword') {
+      if (passwords.newPassword !== value) {
+        setPasswordError('Passwords do not match.');
+      } else {
+        setPasswordError('');
+      }
+    }
+  };
+
+  const renderInputField = (field: keyof typeof passwords, label: string) => (
+    <FormControl position="relative">
+      <FormLabel>{label}</FormLabel>
+      <InputGroup>
+        <Input
+          type={showPassword[field] ? 'text' : 'password'}
+          value={passwords[field]}
+          onChange={(e) => handlePasswordChange(e, field)}
+          borderWidth="0px"
+          bg="white"
+          width="400px"
+        />
+        <InputRightElement>
+          <IconButton
+            aria-label={showPassword[field] ? 'Hide password' : 'Show password'}
+            icon={showPassword[field] ? <ViewOffIcon color="gray.500" /> : <ViewIcon color="gray.500" />}
+            onClick={() => setShowPassword({ ...showPassword, [field]: !showPassword[field] })}
+            variant="link"
+            color="gray.500"
+            size="sm"
+          />
+        </InputRightElement>
+      </InputGroup>
+    </FormControl>
+  );
+
+  return (
+    <Box width={{ base: '100%', md: '71.5%' }} >
+      <VStack spacing={4} alignItems="flex-start" ml={{ base: 'auto', md: 44 }}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} >
+          {renderInputField('oldPassword', 'Old Password')}
+          {renderInputField('newPassword', 'New Password')}
+          {renderInputField('repeatPassword', 'Repeat New Password')}
+        </SimpleGrid>
+
+        {passwordError && <Text color="red.500">{passwordError}</Text>}
+
+        <Button
+          colorScheme="blue"
+          onClick={handlePasswordUpdate}
+          alignSelf="flex-start"
+          isDisabled={!!passwordError || passwords.newPassword !== passwords.repeatPassword}
+        >
+          Change Password
+        </Button>
+      </VStack>
+    </Box>
+  );
+};
+
+export default PasswordResetTab;
