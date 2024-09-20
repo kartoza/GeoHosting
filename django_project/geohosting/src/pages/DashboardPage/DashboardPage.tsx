@@ -15,6 +15,7 @@ import DashboardMainPage from "./DashboardMainPage";
 import SupportPage from "./Support/SupportPage";
 import OrdersList from './Orders/OrderList';
 import OrderDetail from "./Orders/OrderDetail";
+import ProfilePage from './Profile/ProfilePage';
 
 const DashboardPage = ({ title="Dashboard" }) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -57,6 +58,7 @@ const DashboardPage = ({ title="Dashboard" }) => {
               <Route path="/support" element={<SupportPage />} />
               <Route path="/orders" element={<OrdersList />} />
               <Route path="/orders/:id" element={<OrderDetail />} />
+              <Route path='/profile' element={<ProfilePage />} />
             </Routes>
           </Box>
         </Box>
