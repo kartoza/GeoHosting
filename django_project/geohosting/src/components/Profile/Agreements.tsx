@@ -52,7 +52,7 @@ const AgreementsTab: React.FC = () => {
   return (
     <Box>
     <Box width="100%" margin="0 auto" textAlign="left" minHeight={{ base: 'auto', md: '80vh' }}>
-      <Text fontSize="2xl" fontWeight="bold" mb={4} color={'#3e3e3e'}>Agreements</Text>
+      <Text fontSize="2xl" fontWeight="bold" mb={2} color={'#3e3e3e'}>Agreements</Text>
       <Box height="2px" bg="blue.500" width="100%" mb={4} />
 
       <SearchBar
