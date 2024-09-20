@@ -51,13 +51,13 @@ const AgreementsTab: React.FC = () => {
 
   return (
     <Box>
-    <Box width="100%" margin="0 auto" textAlign="left" minHeight={'80vh'}>
+    <Box width="100%" margin="0 auto" textAlign="left" minHeight={{ base: 'auto', md: '80vh' }}>
       <Text fontSize="2xl" fontWeight="bold" mb={4} color={'#3e3e3e'}>Agreements</Text>
       <Box height="2px" bg="blue.500" width="100%" mb={4} />
 
       <SearchBar
         onSearch={handleSearch}
-        showDateFields={true}
+        showDateFields={false}
         showClearButton={false}
         placeholder={'Search Agreements'}
       />
