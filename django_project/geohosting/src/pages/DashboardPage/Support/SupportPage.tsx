@@ -74,7 +74,7 @@ const SupportPage: React.FC = () => {
           onSearch={setSearchTerm}
           showDateFields={false}
           showClearButton={false}
-          placeholder={'Search by Order ID'}
+          placeholder={'Search Ticket'}
         />
         
       </Flex>
