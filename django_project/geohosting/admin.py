@@ -97,7 +97,7 @@ class InstanceAdmin(admin.ModelAdmin):
     """Instance admin."""
 
     list_display = (
-        'name', 'product', 'cluster', 'price', 'owner'
+        'name', 'product', 'cluster', 'price', 'owner', 'status'
     )
 
     def has_add_permission(*args, **kwargs):

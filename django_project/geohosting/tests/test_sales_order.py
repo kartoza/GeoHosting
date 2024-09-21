@@ -114,7 +114,7 @@ class SalesOrderTests(TestCase):
             call(
                 self.user, sales_order.doctype,
                 sales_order.erpnext_code,
-                'No cluster found.'
+                'Product cluster for region Global does not exist.'
             )
         ])
         mock_add_erp_next_comment.reset_mock()

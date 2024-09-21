@@ -14,6 +14,14 @@ from geohosting.models.package import Package
 User = get_user_model()
 
 
+class InstanceStatus:
+    """Instance Status."""
+
+    DEPLOYING = 'Deploying'
+    ONLINE = 'Online'
+    OFFLINE = 'Offline'
+
+
 class Instance(models.Model):
     """Instance model."""
 
@@ -29,6 +37,14 @@ class Instance(models.Model):
     owner = models.ForeignKey(
         User, on_delete=models.CASCADE
     )
+    status = models.CharField(
+        default=InstanceStatus.DEPLOYING,
+        choices=(
+            (InstanceStatus.DEPLOYING, InstanceStatus.DEPLOYING),
+            (InstanceStatus.ONLINE, InstanceStatus.ONLINE),
+            (InstanceStatus.OFFLINE, InstanceStatus.OFFLINE),
+        )
+    )
 
     def __str__(self):
         """Return activity type name."""
@@ -36,3 +52,13 @@ class Instance(models.Model):
 
     class Meta:  # noqa
         unique_together = ('name', 'cluster')
+
+    def online(self):
+        """Make instance online."""
+        self.status = InstanceStatus.ONLINE
+        self.save()
+
+    def offline(self):
+        """Make instance offline."""
+        self.status = InstanceStatus.OFFLINE
+        self.save()
