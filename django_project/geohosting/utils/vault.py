@@ -27,3 +27,21 @@ def get_token():
     if response.status_code != 200:
         raise Exception(response.text)
     return response.json()['auth']['client_token']
+
+
+def get_credentials(url, params=None):
+    """Return credentials on vault."""
+    token = get_token()
+    response = requests.get(
+        url, params=params if params else {},
+        headers={
+            'X-Vault-Token': token
+        },
+        verify=False
+    )
+    if response.status_code != 200:
+        raise Exception(response.text)
+    return {
+        key: value for key, value in response.json()['data']['data'].items()
+        if 'password' in key.lower()
+    }
