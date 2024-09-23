@@ -1,37 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  Image,
-  Input,
-  keyframes,
-  Link,
-  Spinner,
-  Text,
-  Switch,
-  IconButton
-} from '@chakra-ui/react';
+import { Box, Spinner, Image, Text, Flex, Switch, IconButton, Button } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { fetchUserInstances } from '../../redux/reducers/instanceSlice';
-import { FaGear, FaLink } from "react-icons/fa6";
 import SearchBar from '../../components/SearchBar/SearchBar';
 import Pagination from '../../components/Pagination/Pagination';
+
 import Geoserver from '../../assets/images/GeoServer.svg';
 import Geonode from '../../assets/images/GeoNode.svg';
-
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg)
-  }
-`;
-const spinAnimation = `${spin} infinite 2s linear`;
 
 const ServicesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -137,64 +114,7 @@ const ServicesPage: React.FC = () => {
                       onChange={() => toggleStatus(instance.id)}
                       mr={2}
                     />
-                  </Box>
-
-                  <Box>
-                    <Flex
-                      wrap="wrap"
-                      justify="flex-end"
-                      gap={2}
-                      direction={{ base: 'column', md: 'row' }}
-                      height="fit-content"
-                      alignItems="center"
-                    >
-                      {
-                        instance.status === 'Deploying' ?
-                          <>
-                            <Box
-                              animation={spinAnimation}
-                              width='fit-content'
-                              height='fit-content'
-                            >
-                              <FaGear/>
-                            </Box>
-                            <Text>Deploying</Text>
-                          </> : instance.status === 'Online' ?
-                            <>
-                              <Box
-                                width='16px'
-                                height='16px'
-                                backgroundColor="var(--chakra-colors-green-300)"
-                                borderRadius='50'
-                                border='1px solid var(--chakra-colors-gray-600)'
-                              />
-                              <Text>Online</Text>
-                            </> : instance.status === 'Offline' ?
-                              <>
-                                <Box
-                                  width='16px'
-                                  height='16px'
-                                  backgroundColor="var(--chakra-colors-red-300)"
-                                  borderRadius='50'
-                                  border='1px solid var(--chakra-colors-gray-600)'
-                                />
-                                <Text>Offline</Text>
-                              </> : null
-                      }
-                    </Flex>
-                  </Box>
-                </Flex>
-                <Flex justify="space-between" align="center" mb={4}>
-                  {/* TODO: Uncomment after we able to turn off/on */}
-                  {/*<Flex align="center">*/}
-                  {/*  <Switch*/}
-                  {/*    size="lg"*/}
-                  {/*    colorScheme={instance?.isActive ? "blue" : "red"}*/}
-                  {/*    isChecked={instance?.isActive || true}*/}
-                  {/*    onChange={() => toggleStatus(instance.id)}*/}
-                  {/*    mr={2}*/}
-                  {/*  />*/}
-                  {/*</Flex>*/}
+                  </Flex>
                 </Flex>
 
                 {/* Package name and Edit Icon */}
