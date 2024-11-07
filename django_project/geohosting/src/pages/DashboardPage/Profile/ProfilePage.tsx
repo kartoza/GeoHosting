@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+  Avatar,
   Box,
-  Flex,
   Button,
-  Input,
+  Flex,
   FormControl,
   FormLabel,
-  Avatar,
-  VStack,
-  Text,
+  Input,
   SimpleGrid,
+  Text,
+  VStack,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store';
-import { fetchUserProfile, updateUserProfile } from '../../../redux/reducers/profileSlice';
-import PasswordResetTab from '../../../components/Profile/Password';
+import {
+  fetchUserProfile,
+  updateUserProfile
+} from '../../../redux/reducers/profileSlice';
+import { PasswordResetModal } from '../../../components/Profile/Password';
 
 const ProfilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const resetPasswordModalRef = useRef(null);
   const { user } = useSelector((state: RootState) => state.profile);
-  
+
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [personalInfo, setPersonalInfo] = useState({
     name: '',
     surname: '',
     email: '',
   });
-  const [showPasswordUpdate, setShowPasswordUpdate] = useState(false);
   const [billingInfo, setBillingInfo] = useState({
     billingName: '',
     address: '',
@@ -73,155 +76,198 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <Box p={0} mx="auto" >
-      <Text fontSize="2xl" fontWeight="bold" mb={2} color={'#3e3e3e'}>Profile</Text>
-      <Box height="2px" bg="blue.500" width="100%" mb={8} />
+    <Box p={0} mx="auto">
+      <Text fontSize="2xl" fontWeight="bold" mb={2} color={'#3e3e3e'}>
+        Profile
+      </Text>
+      <Box height="2px" bg="blue.500" width="100%" mb={8}/>
 
       <Flex
         direction={{ base: 'column', md: 'row' }}
         align="flex-start"
-        gap={10}
+        gap={4}
       >
-        <VStack spacing={4} alignItems="center" mb={{ base: 6, md: 0 }} mt={{ base: 'auto', md: 12}}>
-          <Avatar size="2xl" src={user?.profileImageUrl} />
-          <Button colorScheme="orange" onClick={() => console.log("Update Avatar")}>
+        <VStack spacing={2} alignItems="center" padding="0 1rem">
+          <Avatar size="2xl" src={user?.profileImageUrl}/>
+          <Button
+            colorScheme="orange" onClick={() => console.log("Update Avatar")}
+          >
             Update Avatar
           </Button>
         </VStack>
 
-        <VStack spacing={4} alignItems="flex-start" width={{ base: '100%', md: '60%' }}>
+        <VStack
+          spacing={4} alignItems="flex-start"
+          width={{ base: '100%', lg: '60%' }}
+        >
           <Text fontSize="lg" fontWeight="bold">User Information</Text>
           <FormControl>
             <FormLabel>Name</FormLabel>
             <Input
               value={personalInfo.name}
-              onChange={(e) => setPersonalInfo({ ...personalInfo, name: e.target.value })}
+              onChange={
+                (e) => setPersonalInfo(
+                  { ...personalInfo, name: e.target.value })
+              }
               borderWidth="0px"
               borderColor="gray.400"
               bg="white"
-              width={{ base: '100%', md: '400px' }}
+              width={'100%'}
             />
           </FormControl>
           <FormControl>
             <FormLabel>Surname</FormLabel>
             <Input
               value={personalInfo.surname}
-              onChange={(e) => setPersonalInfo({ ...personalInfo, surname: e.target.value })}
+              onChange={(e) => setPersonalInfo({
+                ...personalInfo,
+                surname: e.target.value
+              })}
               borderWidth="0px"
               borderColor="gray.400"
               bg="white"
-              width={{ base: '100%', md: '400px' }}
+              width={'100%'}
             />
           </FormControl>
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
               value={personalInfo.email}
-              onChange={(e) => setPersonalInfo({ ...personalInfo, email: e.target.value })}
+              onChange={(e) => setPersonalInfo({
+                ...personalInfo,
+                email: e.target.value
+              })}
               borderWidth="0px"
               borderColor="gray.400"
               bg="white"
-              width={{ base: '100%', md: '400px' }}
+              width={'100%'}
             />
           </FormControl>
-          <Button colorScheme="blue" onClick={() => setShowPasswordUpdate(!showPasswordUpdate)}>
-            {showPasswordUpdate ? 'Close' : 'Update Password'}
+          <Button
+            colorScheme="blue"
+            mt={6}
+            onClick={() => {
+              console.log('Open')
+              // @ts-ignore
+              resetPasswordModalRef?.current?.open()
+            }}
+          >
+            Update Password
           </Button>
+
+          {/* FOr more information */}
+          <Box marginTop={5} width={{ base: '100%' }}>
+            <Text fontSize="lg" fontWeight="bold" mb={4}>
+              Billing Information
+            </Text>
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+              <FormControl>
+                <FormLabel>Institution Name</FormLabel>
+                <Input
+                  value={billingInfo.billingName}
+                  onChange={(e) => setBillingInfo({
+                    ...billingInfo,
+                    billingName: e.target.value
+                  })}
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                  width={'100%'}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Billing Address</FormLabel>
+                <Input
+                  value={billingInfo.address}
+                  onChange={(e) => setBillingInfo({
+                    ...billingInfo,
+                    address: e.target.value
+                  })}
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                  width={'100%'}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Postal Code</FormLabel>
+                <Input
+                  value={billingInfo.postalCode}
+                  onChange={(e) => setBillingInfo({
+                    ...billingInfo,
+                    postalCode: e.target.value
+                  })}
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                  width={'100%'}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Country</FormLabel>
+                <Input
+                  value={billingInfo.country}
+                  onChange={(e) => setBillingInfo({
+                    ...billingInfo,
+                    country: e.target.value
+                  })}
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                  width={'100%'}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>City</FormLabel>
+                <Input
+                  value={billingInfo.city}
+                  onChange={(e) => setBillingInfo({
+                    ...billingInfo,
+                    city: e.target.value
+                  })}
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                  width={'100%'}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Region</FormLabel>
+                <Input
+                  value={billingInfo.region}
+                  onChange={(e) => setBillingInfo({
+                    ...billingInfo,
+                    region: e.target.value
+                  })}
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>VAT/Tax number</FormLabel>
+                <Input
+                  value={billingInfo.region}
+                  onChange={(e) => setBillingInfo({
+                    ...billingInfo,
+                    region: e.target.value
+                  })}
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                  width={'100%'}
+                />
+              </FormControl>
+            </SimpleGrid>
+            <Button colorScheme="orange" onClick={handleProfileUpdate} mt={4}>
+              Update Profile
+            </Button>
+          </Box>
+
+          {/* Reset password modal */}
+          <PasswordResetModal ref={resetPasswordModalRef}/>
         </VStack>
       </Flex>
-
-      {showPasswordUpdate && (
-        <Box mt={6}>
-          <PasswordResetTab />
-        </Box>
-      )}
-
-      <Box mt={14} width={{ base: '100%', md: '60%' }} ml={{base: 'auto', md: 44}}>
-        <Text fontSize="lg" fontWeight="bold" mb={4}>Billing Information</Text>
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-          <FormControl>
-            <FormLabel>Institution Name</FormLabel>
-            <Input
-              value={billingInfo.billingName}
-              onChange={(e) => setBillingInfo({ ...billingInfo, billingName: e.target.value })}
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={{ base: '100%', md: '400px' }}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Billing Address</FormLabel>
-            <Input
-              value={billingInfo.address}
-              onChange={(e) => setBillingInfo({ ...billingInfo, address: e.target.value })}
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={{ base: '100%', md: '400px' }}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Postal Code</FormLabel>
-            <Input
-              value={billingInfo.postalCode}
-              onChange={(e) => setBillingInfo({ ...billingInfo, postalCode: e.target.value })}
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={{ base: '100%', md: '400px' }}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Country</FormLabel>
-            <Input
-              value={billingInfo.country}
-              onChange={(e) => setBillingInfo({ ...billingInfo, country: e.target.value })}
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={{ base: '100%', md: '400px' }}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>City</FormLabel>
-            <Input
-              value={billingInfo.city}
-              onChange={(e) => setBillingInfo({ ...billingInfo, city: e.target.value })}
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={{ base: '100%', md: '400px' }}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Region</FormLabel>
-            <Input
-              value={billingInfo.region}
-              onChange={(e) => setBillingInfo({ ...billingInfo, region: e.target.value })}
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={{ base: '100%', md: '400px' }}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>VAT/Tax number</FormLabel>
-            <Input
-              value={billingInfo.region}
-              onChange={(e) => setBillingInfo({ ...billingInfo, region: e.target.value })}
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={{ base: '100%', md: '400px' }}
-            />
-          </FormControl>
-        </SimpleGrid>
-        <Button colorScheme="orange" onClick={handleProfileUpdate} mt={4}>
-          Update Profile
-        </Button>
-      </Box>
-      
     </Box>
   );
 };
