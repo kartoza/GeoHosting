@@ -1,4 +1,9 @@
-import { createAsyncThunk, createSlice, SerializedError } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  SerializedError
+} from '@reduxjs/toolkit';
+import axios from "axios";
 
 interface ProfileState {
   user: any;
@@ -28,6 +33,29 @@ export const updateUserProfile = createAsyncThunk(
       body: JSON.stringify(profileData),
     });
     return response.json();
+  }
+);
+
+// Async thunk for change password
+export const changePassword = createAsyncThunk(
+  'auth/change-password/',
+  async ({ oldPassword, newPassword }: {
+    oldPassword: string;
+    newPassword: string
+  }, thunkAPI) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put('/api/user/profile/change-password/', {
+        old_password: oldPassword,
+        new_password: newPassword
+      }, {
+        headers: { Authorization: `Token ${token}` }
+      });
+      return true;
+    } catch (error: any) {
+      const errorData = error.response.data;
+      return thunkAPI.rejectWithValue(errorData);
+    }
   }
 );
 

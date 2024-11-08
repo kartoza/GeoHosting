@@ -17,6 +17,13 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { logout } from "../../redux/reducers/authSlice";
+import { toast } from "react-toastify";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { thunkAPIFulfilled, thunkAPIRejected } from "../../utils/utils";
+import { useNavigate } from "react-router-dom";
+import { changePassword } from "../../redux/reducers/profileSlice";
 
 interface Props {
 
@@ -25,7 +32,10 @@ interface Props {
 export const PasswordResetModal = forwardRef(
   (props: Props, ref
   ) => {
+    const dispatch: AppDispatch = useDispatch();
+    const navigate = useNavigate();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [submitting, setSubmitting] = useState<boolean>(false);
     const [passwords, setPasswords] = useState({
       oldPassword: '',
       newPassword: '',
@@ -41,13 +51,28 @@ export const PasswordResetModal = forwardRef(
     // Open
     useImperativeHandle(ref, () => ({
       open() {
-        console.log('Open')
         onOpen()
       }
     }));
 
     const handlePasswordUpdate = () => {
       // Implement password update logic
+      setSubmitting(true)
+      dispatch(changePassword({
+        oldPassword: passwords.oldPassword,
+        newPassword: passwords.newPassword
+      })).then((result: any) => {
+        setSubmitting(false)
+        if (thunkAPIRejected(result)) {
+          toast.error(result.payload);
+        } else if (thunkAPIFulfilled(result)) {
+          toast.error('Your password has changed, please re-login.');
+          dispatch(logout()).then(() => {
+            onClose();
+            navigate('/');
+          });
+        }
+      });
     };
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof typeof passwords) => {
@@ -74,6 +99,7 @@ export const PasswordResetModal = forwardRef(
             borderWidth="0px"
             bg="white"
             width="400px"
+            disabled={submitting}
           />
           <InputRightElement>
             <IconButton
@@ -113,7 +139,7 @@ export const PasswordResetModal = forwardRef(
               colorScheme="blue"
               onClick={handlePasswordUpdate}
               alignSelf="flex-start"
-              isDisabled={!!passwordError || passwords.newPassword !== passwords.repeatPassword}
+              isDisabled={!!passwordError || !passwords.newPassword || passwords.newPassword !== passwords.repeatPassword || submitting}
             >
               Change Password
             </Button>
