@@ -17,6 +17,7 @@ from geohosting.models import (
     Cluster, ProductCluster, Instance, Package, WebhookEvent, ProductMedia,
     SalesOrder, UserProfile, UserBillingInformation
 )
+from geohosting.models.erp import ErpRequestLog
 from geohosting.models.support import Ticket, Attachment
 
 
@@ -316,3 +317,10 @@ class ActivityCreateInstanceForm(admin.ModelAdmin):
     def has_view_permission(self, request, obj=None):
         """Return view permission."""
         return False
+
+
+@admin.register(ErpRequestLog)
+class ErpRequestLogAdmin(admin.ModelAdmin):
+    list_display = (
+        'url', 'method', 'request_at'
+    )
