@@ -3,6 +3,8 @@ GeoHosting Controller.
 
 .. note:: User.
 """
+import threading
+
 from django.http import HttpResponseBadRequest
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -61,6 +63,9 @@ class UserProfileView(APIView):
                 )
                 if billing_serializer.is_valid():
                     billing_serializer.save()
+                    threading.Thread(
+                        target=request.user.userprofile.post_to_erpnext
+                    ).start()
                     return Response(serializer.data)
                 else:
                     raise Exception(billing_serializer.errors)

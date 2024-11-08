@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from geohosting.utils.erpnext import post_to_erpnext
+from geohosting.utils.erpnext import post_to_erpnext, put_to_erpnext
 
 
 class UserBillingInformation(models.Model):
@@ -65,19 +65,27 @@ class UserProfile(models.Model):
         data = {
             "doctype": "Customer",
             "customer_name": self.user.get_full_name(),
-            "customer_type": "Individual",
-            "customer_group": "Commercial",
-            "territory": "All Territories",
-            "tax_category": "VAT"
         }
-        result = post_to_erpnext(
-            data,
-            'Customer'
-        )
-        if result['status'] == 'success':
-            self.erpnext_code = result['id']
-            self.save()
-
+        if not self.erpnext_code:
+            data = {
+                "customer_type": "Individual",
+                "customer_group": "Commercial",
+                "territory": "All Territories",
+                "tax_category": "VAT"
+            }
+            result = post_to_erpnext(
+                data,
+                'Customer'
+            )
+            if result['status'] == 'success':
+                self.erpnext_code = result['id']
+                self.save()
+        else:
+            result = put_to_erpnext(
+                data,
+                'Customer',
+                self.erpnext_code
+            )
         return result
 
 
