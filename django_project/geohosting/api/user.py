@@ -8,7 +8,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from geohosting.serializer.change_password import ChangePasswordSerializer
+from geohosting.serializer.user import (
+    ChangePasswordSerializer, UserSerializer
+)
 
 
 class ChangePasswordView(APIView):
@@ -32,3 +34,16 @@ class ChangePasswordView(APIView):
                 return Response('password changed successfully')
         except KeyError as e:
             return HttpResponseBadRequest(f'{e} is required')
+
+
+class UserProfileView(APIView):
+    """User Profile view."""
+
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """Get user profile."""
+        return Response(
+            UserSerializer(request.user).data
+        )

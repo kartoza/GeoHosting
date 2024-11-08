@@ -45,18 +45,19 @@ const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     if (user) {
+      const { profile, billing_information } = user;
       setPersonalInfo({
-        name: user.name,
-        surname: user.surname,
+        name: user.first_name,
+        surname: user.last_name,
         email: user.email,
       });
       setBillingInfo({
-        billingName: user.billingName,
-        address: user.address,
-        postalCode: user.postalCode,
-        country: user.country,
-        city: user.city,
-        region: user.region,
+        billingName: billing_information.name,
+        address: billing_information.address,
+        postalCode: billing_information.postal_code,
+        country: billing_information.country,
+        city: billing_information.city,
+        region: billing_information.region,
       });
     }
   }, [user]);
@@ -88,9 +89,15 @@ const ProfilePage: React.FC = () => {
         gap={4}
       >
         <VStack spacing={2} alignItems="center" padding="0 1rem">
-          <Avatar size="2xl" src={user?.profileImageUrl}/>
+          <Avatar size="2xl" src={user?.profile.avatar}/>
           <Button
-            colorScheme="orange" onClick={() => console.log("Update Avatar")}
+            disabled={true}
+            colorScheme="orange"
+            style={{
+              cursor: "not-allowed",
+              background: 'var(--chakra-colors-customOrange-600)'
+            }}
+            // onClick={() => console.log("Update Avatar")}
           >
             Update Avatar
           </Button>

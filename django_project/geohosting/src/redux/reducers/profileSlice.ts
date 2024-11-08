@@ -5,8 +5,29 @@ import {
 } from '@reduxjs/toolkit';
 import axios from "axios";
 
+export interface Profile {
+  avatar: string;
+}
+
+export interface BillingInformation {
+  name: string
+  address: string
+  postal_code: string
+  country: string
+  city: string
+  region: string
+}
+
+export interface User {
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile: Profile;
+  billing_information: BillingInformation;
+}
+
 interface ProfileState {
-  user: any;
+  user: User | null;
   loading: boolean;
   error: SerializedError | null;
 }
@@ -17,11 +38,15 @@ const initialState: ProfileState = {
   error: null,
 };
 
+// Async thunk for change password
 export const fetchUserProfile = createAsyncThunk(
   'profile/fetchUserProfile',
   async () => {
-    const response = await fetch('/api/user/profile');
-    return response.json();
+    const token = localStorage.getItem('token');
+    const response = await axios.get('/api/user/profile', {
+      headers: { Authorization: `Token ${token}` }
+    });
+    return response.data;
   }
 );
 
@@ -38,14 +63,14 @@ export const updateUserProfile = createAsyncThunk(
 
 // Async thunk for change password
 export const changePassword = createAsyncThunk(
-  'auth/change-password/',
+  'profile/changePassword',
   async ({ oldPassword, newPassword }: {
     oldPassword: string;
     newPassword: string
   }, thunkAPI) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put('/api/user/profile/change-password/', {
+      await axios.put('/api/user/profile/change-password/', {
         old_password: oldPassword,
         new_password: newPassword
       }, {

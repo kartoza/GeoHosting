@@ -15,7 +15,7 @@ from geohosting.models import (
     Activity, ActivityType, ActivityTypeMapping, Region, Product, PackageGroup,
     ProductMetadata,
     Cluster, ProductCluster, Instance, Package, WebhookEvent, ProductMedia,
-    SalesOrder, UserProfile
+    SalesOrder, UserProfile, UserBillingInformation
 )
 from geohosting.models.support import Ticket, Attachment
 
@@ -262,8 +262,14 @@ class UserProfileInline(admin.StackedInline):
     fields = ('erpnext_code',)
 
 
+class UserBillingInformationInline(admin.StackedInline):
+    model = UserBillingInformation
+    can_delete = False
+    fields = ('name',)
+
+
 class UserAdmin(BaseUserAdmin):
-    inlines = (UserProfileInline,)
+    inlines = (UserProfileInline, UserBillingInformationInline)
     actions = [push_user_to_erpnext]
 
     def get_inline_instances(self, request, obj=None):

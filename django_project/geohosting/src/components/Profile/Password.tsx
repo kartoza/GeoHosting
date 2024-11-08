@@ -64,9 +64,11 @@ export const PasswordResetModal = forwardRef(
       })).then((result: any) => {
         setSubmitting(false)
         if (thunkAPIRejected(result)) {
-          toast.error(result.payload);
+          setPasswordError(result.payload);
         } else if (thunkAPIFulfilled(result)) {
-          toast.error('Your password has changed, please re-login.');
+          toast.success(
+            'Your password has been successfully changed. Please log in again to continue.'
+          );
           dispatch(logout()).then(() => {
             onClose();
             navigate('/');

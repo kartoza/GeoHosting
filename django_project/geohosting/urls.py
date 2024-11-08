@@ -16,7 +16,7 @@ from geohosting.api.sales_order import (
     SalesOrderPaymentPaystackSessionAPI
 )
 from geohosting.api.token import CreateToken
-from geohosting.api.user import ChangePasswordView
+from geohosting.api.user import (UserProfileView, ChangePasswordView)
 from geohosting.api.webhook import WebhookView
 from geohosting.views.auth import (
     CustomAuthToken,
@@ -49,6 +49,11 @@ user_profile = [
         'change-password/',
         ChangePasswordView.as_view(),
         name='change-password'
+    ),
+    path(
+        '',
+        UserProfileView.as_view(),
+        name='user-profile'
     ),
 ]
 
