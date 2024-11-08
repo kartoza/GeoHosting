@@ -19,7 +19,7 @@ class ChangePasswordTests(TestCase):
             email=self.email,
             password='password'
         )
-        self.url = reverse('change-password')
+        self.url = reverse('user-change-password')
         self.client = APIClient()
 
     def tearDown(self):

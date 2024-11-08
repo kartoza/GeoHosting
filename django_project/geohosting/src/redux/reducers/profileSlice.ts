@@ -16,6 +16,7 @@ export interface BillingInformation {
   country: string
   city: string
   region: string
+  tax_number: string
 }
 
 export interface User {

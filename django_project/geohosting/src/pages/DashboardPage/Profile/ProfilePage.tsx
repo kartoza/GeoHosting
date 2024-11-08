@@ -41,6 +41,7 @@ const ProfilePage: React.FC = () => {
     country: '',
     city: '',
     region: '',
+    tax_number: '',
   });
 
   useEffect(() => {
@@ -72,6 +73,7 @@ const ProfilePage: React.FC = () => {
         country: billing_information.country,
         city: billing_information.city,
         region: billing_information.region,
+        tax_number: billing_information.tax_number
       });
     }
   }, [user]);
@@ -287,10 +289,10 @@ const ProfilePage: React.FC = () => {
                 <FormLabel>VAT/Tax number</FormLabel>
                 <Input
                   disabled={submitting}
-                  value={billingInfo.region}
+                  value={billingInfo.tax_number}
                   onChange={(e) => setBillingInfo({
                     ...billingInfo,
-                    region: e.target.value
+                    tax_number: e.target.value
                   })}
                   borderWidth="0px"
                   borderColor="gray.400"

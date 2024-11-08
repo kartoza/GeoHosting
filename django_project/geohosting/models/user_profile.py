@@ -34,6 +34,10 @@ class UserBillingInformation(models.Model):
         max_length=256,
         blank=True, null=True
     )
+    tax_number = models.CharField(
+        max_length=256,
+        blank=True, null=True
+    )
 
 
 class UserProfile(models.Model):
