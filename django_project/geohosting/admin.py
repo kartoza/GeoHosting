@@ -259,13 +259,11 @@ class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
     verbose_name_plural = 'user profiles'
-    fields = ('erpnext_code',)
 
 
 class UserBillingInformationInline(admin.StackedInline):
     model = UserBillingInformation
     can_delete = False
-    fields = ('name',)
 
 
 class UserAdmin(BaseUserAdmin):

@@ -43,7 +43,7 @@ export const fetchUserProfile = createAsyncThunk(
   'profile/fetchUserProfile',
   async () => {
     const token = localStorage.getItem('token');
-    const response = await axios.get('/api/user/profile', {
+    const response = await axios.get('/api/user/profile/', {
       headers: { Authorization: `Token ${token}` }
     });
     return response.data;
@@ -53,11 +53,11 @@ export const fetchUserProfile = createAsyncThunk(
 export const updateUserProfile = createAsyncThunk(
   'profile/updateUserProfile',
   async (profileData: any) => {
-    const response = await fetch('/api/user/profile', {
-      method: 'PUT',
-      body: JSON.stringify(profileData),
+    const token = localStorage.getItem('token');
+    const response = await axios.put('/api/user/profile/', profileData, {
+      headers: { Authorization: `Token ${token}` }
     });
-    return response.json();
+    return response.data;
   }
 );
 

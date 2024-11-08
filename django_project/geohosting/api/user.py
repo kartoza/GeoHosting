@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from geohosting.serializer.user import (
-    ChangePasswordSerializer, UserSerializer
+    ChangePasswordSerializer, UserSerializer, UserBillingInformationSerializer
 )
 
 
@@ -44,6 +44,29 @@ class UserProfileView(APIView):
 
     def get(self, request):
         """Get user profile."""
-        return Response(
-            UserSerializer(request.user).data
-        )
+        return Response(UserSerializer(request.user).data)
+
+    def put(self, request):
+        """Put method to change password."""
+        try:
+            serializer = UserSerializer(request.user, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+
+                billing_data = request.data['billing_information']
+                billing_data['user'] = request.user.pk
+                billing_serializer = UserBillingInformationSerializer(
+                    request.user.userbillinginformation,
+                    data=billing_data
+                )
+                if billing_serializer.is_valid():
+                    billing_serializer.save()
+                    return Response(serializer.data)
+                else:
+                    raise Exception(billing_serializer.errors)
+            else:
+                raise Exception(serializer.errors)
+        except KeyError as e:
+            return HttpResponseBadRequest(f'{e} is required')
+        except Exception as e:
+            return HttpResponseBadRequest(f'{e}')
