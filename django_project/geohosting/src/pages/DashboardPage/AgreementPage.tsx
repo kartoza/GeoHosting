@@ -1,13 +1,37 @@
 import React, { useState } from 'react';
-import { Box, Table, Thead, Tbody, Tr, Th, Td, IconButton, Tooltip, Flex, Checkbox, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Checkbox,
+  IconButton,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tooltip,
+  Tr
+} from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Pagination from "../../components/Pagination/Pagination";
 
 const agreements = [
-  { name: 'User Agreement', file: '/path/to/user-agreement.pdf', dateIssued: '2023-01-01' },
-  { name: 'Privacy Policy', file: '/path/to/privacy-policy.pdf', dateIssued: '2023-02-15' },
-  { name: 'Terms of Service', file: '/path/to/terms-of-service.pdf', dateIssued: '2023-03-10' },
+  {
+    name: 'User Agreement',
+    file: '/path/to/user-agreement.pdf',
+    dateIssued: '2023-01-01'
+  },
+  {
+    name: 'Privacy Policy',
+    file: '/path/to/privacy-policy.pdf',
+    dateIssued: '2023-02-15'
+  },
+  {
+    name: 'Terms of Service',
+    file: '/path/to/terms-of-service.pdf',
+    dateIssued: '2023-03-10'
+  },
 ];
 
 const AgreementPage: React.FC = () => {
@@ -51,85 +75,100 @@ const AgreementPage: React.FC = () => {
 
   return (
     <Box>
-    <Box width="100%" margin="0 auto" textAlign="left" minHeight={{ base: 'auto', md: '80vh' }}>
-      <Text fontSize="2xl" fontWeight="bold" mb={2} color={'#3e3e3e'}>Agreements</Text>
-      <Box height="2px" bg="blue.500" width="100%" mb={4} />
+      <Box width="100%" margin="0 auto" textAlign="left">
+        <Text fontSize="2xl" fontWeight="bold" mb={2}
+              color={'#3e3e3e'}>
+          Agreements
+        </Text>
+        <Box height="2px" bg="blue.500" width="100%" mb={4}/>
 
-      <SearchBar
-        onSearch={handleSearch}
-        showDateFields={false}
-        showClearButton={false}
-        placeholder={'Search Agreements'}
-      />
+        <SearchBar
+          onSearch={handleSearch}
+          showDateFields={false}
+          showClearButton={false}
+          placeholder={'Search Title'}
+        />
 
-      {/* Responsive Table Container */}
-      <Box
-        width={['100%', '100%', '70%']}
-        overflowX="auto"
-        mb={4}
-      >
-        <Table variant="simple" borderWidth="0px" borderColor="gray.300" minWidth="600px">
-          <Thead>
-            <Tr>
-              <Th width="5%" border="0px" borderColor="gray.300"></Th>
-              <Th border="0px" borderColor="gray.300">Agreement</Th>
-              <Th width="10%" border="0px" borderColor="gray.300">Date Issued</Th>
-              <Th width="5%" textAlign="left" border="0px" borderColor="gray.300"></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {currentAgreements.map((agreement, index) => (
-              <Tr key={index}>
-                <Td border="0px" borderColor="gray.300">
-                  <Checkbox
-                    colorScheme="blue"
-                    isChecked={checkedItems[index]}
-                    onChange={() => handleCheckboxChange(index)}
-                    borderColor="gray.500"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </Td>
-                <Td border="0px" borderColor="gray.300">
-                  <div
-                    style={{
-                      height: '40px',
-                      backgroundColor: 'white',
-                      padding: '5px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      color: checkedItems[index] || hoverIndex === index ? 'blue.500' : 'gray',
-                      width: '110%',
-                      borderRadius: '10px 0 0 10px',
-                      cursor: 'pointer',
-                    }}
-                    onMouseEnter={() => setHoverIndex(index)}
-                    onMouseLeave={() => setHoverIndex(null)}
+        {/* Responsive Table Container */}
+        <Box
+          overflowX="auto"
+          mb={4}
+        >
+          <Table
+            variant="simple"
+            width={{ base: "100%", lg: "75%", xl: "60%" }}
+            style={{ borderCollapse: "separate", borderSpacing: "0 1em" }}
+          >
+            <Thead>
+              <Tr>
+                <Th width="0" p={0} border={"none"}></Th>
+                <Th border={"none"} padding={4}>
+                  Title
+                </Th>
+                <Th padding={4} whiteSpace={'nowrap'} paddingLeft={0}
+                    border={"none"}>
+                  Date Issued
+                </Th>
+                <Th textAlign="left" border={"none"}>
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {currentAgreements.map((agreement, index) => (
+                <Tr key={index} height='40px' border={"none"}>
+                  <Td padding={0} paddingRight={5}
+                      border={"none"}>
+                    <Checkbox
+                      colorScheme="blue"
+                      isChecked={checkedItems[index]}
+                      onChange={() => handleCheckboxChange(index)}
+                      borderColor="gray.500"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </Td>
+                  <Td padding={0} backgroundColor='white' border={"none"}>
+                    <Box
+                      paddingLeft={4}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: checkedItems[index] || hoverIndex === index ? 'blue.500' : 'gray',
+                        borderRadius: '4px 0 0 4px',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={() => setHoverIndex(index)}
+                      onMouseLeave={() => setHoverIndex(null)}
+                    >
+                      {agreement.name}
+                    </Box>
+                  </Td>
+                  <Td
+                    padding={0} backgroundColor='white' width='100px'
+                    borderRadius='0 4px 4px 0' paddingRight={4}
+                    border={"none"}
                   >
-                    {agreement.name}
-                  </div>
-                </Td>
-                <Td border="0px" borderColor="gray.300">
-                  <div style={{
-                    height: '40px',
-                    backgroundColor: 'white',
-                    padding: '5px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    color: 'gray',
-                    borderRadius: '0 10px 10px 0',
-                  }}>
-                    {agreement.dateIssued}
-                  </div>
-                </Td>
-                <Td textAlign="left" border="0px" borderColor="gray.300">
-                  <Flex justify="flex-start">
+                    <Box
+                      whiteSpace={'nowrap'}
+                      style={{
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: 'gray',
+                        borderRadius: '0 10px 10px 0',
+                      }}>
+                      {agreement.dateIssued}
+                    </Box>
+                  </Td>
+                  <Td textAlign="left" padding={0} paddingLeft={4}
+                      width='40px'
+                      border={"none"}>
                     <Tooltip label="Download">
                       <IconButton
                         as="a"
                         href={agreement.file}
                         download
                         aria-label={`Download ${agreement.name}`}
-                        icon={<DownloadIcon />}
+                        icon={<DownloadIcon/>}
                         colorScheme="orange"
                         bg="orange.300"
                         color="white"
@@ -137,24 +176,23 @@ const AgreementPage: React.FC = () => {
                         _hover={{ bg: 'orange.400' }}
                       />
                     </Tooltip>
-                  </Flex>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </Box>
+
+
       </Box>
-
-
-    </Box>
-    {filteredAgreements.length > rowsPerPage && (
-      <Pagination
-        totalItems={filteredAgreements.length}
-        itemsPerPage={rowsPerPage}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
-    )}
+      {filteredAgreements.length > rowsPerPage && (
+        <Pagination
+          totalItems={filteredAgreements.length}
+          itemsPerPage={rowsPerPage}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </Box>
   );
 };

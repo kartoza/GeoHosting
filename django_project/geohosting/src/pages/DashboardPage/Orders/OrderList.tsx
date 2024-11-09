@@ -106,6 +106,7 @@ const OrdersList: React.FC = () => {
                 key={order.id}
                 onClick={() => handleRowClick(order)}
                 style={{ cursor: 'pointer' }}
+                background={"white"}
                 _hover={{ bg: 'gray.100' }}
               >
                 <Td>{order.package.name}</Td>
