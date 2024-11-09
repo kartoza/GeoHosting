@@ -53,9 +53,19 @@ export const fetchUserProfile = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
   'profile/updateUserProfile',
-  async (profileData: any) => {
+  async ({ profileData, files }: {
+    profileData: any,
+    files: Array<{ name: string, file: File | null }>
+  }) => {
     const token = localStorage.getItem('token');
-    const response = await axios.put('/api/user/profile/', profileData, {
+    const data = new FormData();
+    data.append("payload", JSON.stringify(profileData));
+    files.map(file => {
+      if (file.file) {
+        data.append(file.name, file.file);
+      }
+    })
+    const response = await axios.put('/api/user/profile/', data, {
       headers: { Authorization: `Token ${token}` }
     });
     return response.data;

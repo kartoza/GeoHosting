@@ -20,6 +20,7 @@ import {
 import { PasswordResetModal } from '../../../components/Profile/Password';
 import { thunkAPIFulfilled, thunkAPIRejected } from "../../../utils/utils";
 import { toast } from "react-toastify";
+import { returnAsString } from "../../../utils/helpers";
 
 const ProfilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -28,11 +29,16 @@ const ProfilePage: React.FC = () => {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  const [avataSrc, setAvatarSrc] = useState<string>('');
+
   // Updated info values
   const [personalInfo, setPersonalInfo] = useState({
     first_name: '',
     last_name: '',
     email: '',
+  });
+  const [profile, setProfile] = useState({
+    avatar: null,
   });
   const [billingInfo, setBillingInfo] = useState({
     name: '',
@@ -61,31 +67,49 @@ const ProfilePage: React.FC = () => {
   useEffect(() => {
     if (user) {
       const { profile, billing_information } = user;
+      setAvatarSrc(profile.avatar)
       setPersonalInfo({
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
+        first_name: returnAsString(user.first_name),
+        last_name: returnAsString(user.last_name),
+        email: returnAsString(user.email),
       });
       setBillingInfo({
-        name: billing_information.name,
-        address: billing_information.address,
-        postal_code: billing_information.postal_code,
-        country: billing_information.country,
-        city: billing_information.city,
-        region: billing_information.region,
-        tax_number: billing_information.tax_number
+        name: returnAsString(billing_information.name),
+        address: returnAsString(billing_information.address),
+        postal_code: returnAsString(billing_information.postal_code),
+        country: returnAsString(billing_information.country),
+        city: returnAsString(billing_information.city),
+        region: returnAsString(billing_information.region),
+        tax_number: returnAsString(billing_information.tax_number)
       });
     }
   }, [user]);
+
+  /** Image changed */
+  const imageChanged = (event) => {
+    if (user) {
+      const [file] = event.target.files
+      const { profile } = user;
+      if (file) {
+        setAvatarSrc(URL.createObjectURL(file));
+        setProfile({ avatar: file });
+      } else {
+        setAvatarSrc(profile.avatar);
+        setProfile({ avatar: null });
+      }
+    }
+  }
 
   // Handle profile update
   const handleProfileUpdate = () => {
     setSubmitting(true);
     dispatch(
-      updateUserProfile({
-        ...personalInfo,
-        billing_information: billingInfo
-      })
+      updateUserProfile(
+        {
+          profileData: { ...personalInfo, billing_information: billingInfo },
+          files: [{ name: 'avatar', file: profile.avatar }]
+        }
+      )
     ).then((result: any) => {
       setSubmitting(false)
       if (thunkAPIRejected(result)) {
@@ -113,18 +137,30 @@ const ProfilePage: React.FC = () => {
         gap={4}
       >
         <VStack spacing={2} alignItems="center" padding="0 1rem">
-          <Avatar size="2xl" src={user?.profile.avatar}/>
-          <Button
-            disabled={true}
-            colorScheme="orange"
-            style={{
-              cursor: "not-allowed",
-              background: 'var(--chakra-colors-customOrange-600)'
-            }}
-            // onClick={() => console.log("Update Avatar")}
-          >
-            Update Avatar
-          </Button>
+          <Avatar size="2xl" src={avataSrc}/>
+          <Box pos='relative'>
+            <Input
+              id={'avatar-input'}
+              pos='absolute'
+              top={0}
+              left={0}
+              height='100%'
+              width='100%'
+              opacity={0}
+              type="file" name="avatar" accept="image/png, image/jpeg"
+              onChange={imageChanged}
+            />
+            <Button
+              disabled={true}
+              colorScheme="orange"
+              onClick={() => {
+                // @ts-ignore
+                document.getElementById("avatar-input").click();
+              }}
+            >
+              Update Avatar
+            </Button>
+          </Box>
         </VStack>
 
         <VStack
