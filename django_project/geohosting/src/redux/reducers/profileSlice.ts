@@ -113,7 +113,12 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.error as SerializedError;
       })
+      .addCase(updateUserProfile.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
         state.user = action.payload;
       })
       .addCase(updateUserProfile.rejected, (state, action) => {

@@ -25,9 +25,11 @@ import { returnAsString } from "../../../utils/helpers";
 const ProfilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const resetPasswordModalRef = useRef(null);
-  const { user, error } = useSelector((state: RootState) => state.profile);
-
-  const [submitting, setSubmitting] = useState<boolean>(false);
+  const {
+    user,
+    loading,
+    error
+  } = useSelector((state: RootState) => state.profile);
 
   const [avataSrc, setAvatarSrc] = useState<string>('');
 
@@ -102,7 +104,6 @@ const ProfilePage: React.FC = () => {
 
   // Handle profile update
   const handleProfileUpdate = () => {
-    setSubmitting(true);
     dispatch(
       updateUserProfile(
         {
@@ -111,7 +112,6 @@ const ProfilePage: React.FC = () => {
         }
       )
     ).then((result: any) => {
-      setSubmitting(false)
       if (thunkAPIRejected(result)) {
         toast.error(
           result.payload
@@ -171,7 +171,7 @@ const ProfilePage: React.FC = () => {
           <FormControl>
             <FormLabel>Name</FormLabel>
             <Input
-              disabled={submitting}
+              disabled={loading}
               value={personalInfo.first_name}
               onChange={
                 (e) => setPersonalInfo(
@@ -186,7 +186,7 @@ const ProfilePage: React.FC = () => {
           <FormControl>
             <FormLabel>Surname</FormLabel>
             <Input
-              disabled={submitting}
+              disabled={loading}
               value={personalInfo.last_name}
               onChange={(e) => setPersonalInfo({
                 ...personalInfo,
@@ -201,7 +201,7 @@ const ProfilePage: React.FC = () => {
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
-              disabled={submitting}
+              disabled={loading}
               value={personalInfo.email}
               onChange={(e) => setPersonalInfo({
                 ...personalInfo,
@@ -214,7 +214,7 @@ const ProfilePage: React.FC = () => {
             />
           </FormControl>
           <Button
-            disabled={submitting}
+            disabled={loading}
             colorScheme="blue"
             mt={6}
             onClick={() => {
@@ -235,7 +235,7 @@ const ProfilePage: React.FC = () => {
               <FormControl>
                 <FormLabel>Institution Name</FormLabel>
                 <Input
-                  disabled={submitting}
+                  disabled={loading}
                   value={billingInfo.name}
                   onChange={(e) => setBillingInfo({
                     ...billingInfo,
@@ -250,7 +250,7 @@ const ProfilePage: React.FC = () => {
               <FormControl>
                 <FormLabel>Billing Address</FormLabel>
                 <Input
-                  disabled={submitting}
+                  disabled={loading}
                   value={billingInfo.address}
                   onChange={(e) => setBillingInfo({
                     ...billingInfo,
@@ -265,7 +265,7 @@ const ProfilePage: React.FC = () => {
               <FormControl>
                 <FormLabel>Postal Code</FormLabel>
                 <Input
-                  disabled={submitting}
+                  disabled={loading}
                   value={billingInfo.postal_code}
                   onChange={(e) => setBillingInfo({
                     ...billingInfo,
@@ -280,7 +280,7 @@ const ProfilePage: React.FC = () => {
               <FormControl>
                 <FormLabel>Country</FormLabel>
                 <Input
-                  disabled={submitting}
+                  disabled={loading}
                   value={billingInfo.country}
                   onChange={(e) => setBillingInfo({
                     ...billingInfo,
@@ -295,7 +295,7 @@ const ProfilePage: React.FC = () => {
               <FormControl>
                 <FormLabel>City</FormLabel>
                 <Input
-                  disabled={submitting}
+                  disabled={loading}
                   value={billingInfo.city}
                   onChange={(e) => setBillingInfo({
                     ...billingInfo,
@@ -310,7 +310,7 @@ const ProfilePage: React.FC = () => {
               <FormControl>
                 <FormLabel>Region</FormLabel>
                 <Input
-                  disabled={submitting}
+                  disabled={loading}
                   value={billingInfo.region}
                   onChange={(e) => setBillingInfo({
                     ...billingInfo,
@@ -324,7 +324,7 @@ const ProfilePage: React.FC = () => {
               <FormControl>
                 <FormLabel>VAT/Tax number</FormLabel>
                 <Input
-                  disabled={submitting}
+                  disabled={loading}
                   value={billingInfo.tax_number}
                   onChange={(e) => setBillingInfo({
                     ...billingInfo,
