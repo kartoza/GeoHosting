@@ -17,7 +17,9 @@ import {
   fetchUserProfile,
   updateUserProfile
 } from '../../../redux/reducers/profileSlice';
-import { PasswordResetModal } from '../../../components/Profile/Password';
+import {
+  ChangePasswordModal
+} from '../../../components/Profile/ChangePasswordModal';
 import { thunkAPIFulfilled, thunkAPIRejected } from "../../../utils/utils";
 import { toast } from "react-toastify";
 import { returnAsString } from "../../../utils/helpers";
@@ -147,7 +149,7 @@ const ProfilePage: React.FC = () => {
               height='100%'
               width='100%'
               opacity={0}
-              type="file" name="avatar" accept="image/png, image/jpeg"
+              type="file" name="avatar" accept="image/png, image/jpeg, image/svg+xml"
               onChange={imageChanged}
             />
             <Button
@@ -218,7 +220,6 @@ const ProfilePage: React.FC = () => {
             colorScheme="blue"
             mt={6}
             onClick={() => {
-              console.log('Open')
               // @ts-ignore
               resetPasswordModalRef?.current?.open()
             }}
@@ -343,7 +344,7 @@ const ProfilePage: React.FC = () => {
           </Box>
 
           {/* Reset password modal */}
-          <PasswordResetModal ref={resetPasswordModalRef}/>
+          <ChangePasswordModal ref={resetPasswordModalRef}/>
         </VStack>
       </Flex>
     </Box>

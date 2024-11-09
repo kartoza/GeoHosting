@@ -1,11 +1,14 @@
 # models.py
 from django.db import models
-from geohosting.utils.erpnext import post_to_erpnext
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.response import Response
+
+from geohosting.utils.erpnext import post_to_erpnext
 
 
 class Ticket(models.Model):
+    """Ticket model."""
+
     STATUS_CHOICES = [
         ('open', 'Open'),
         ('closed', 'Closed'),
@@ -21,9 +24,11 @@ class Ticket(models.Model):
     subject = models.CharField(max_length=255)
     details = models.TextField()
     status = models.CharField(
-        max_length=7, choices=STATUS_CHOICES, default='open')
+        max_length=7, choices=STATUS_CHOICES, default='open'
+    )
     issue_type = models.CharField(
-        max_length=15, choices=ISSUE_CHOICES, default='Support')
+        max_length=15, choices=ISSUE_CHOICES, default='Support'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,13 +43,14 @@ class Ticket(models.Model):
         }
         result = post_to_erpnext(data, 'Issue')
         if result['status'] == 'success':
+            self.erpnext_code = result['id']
             self.save()
-
 
 
 class Attachment(models.Model):
     ticket = models.ForeignKey(
-        Ticket, related_name='attachments', on_delete=models.CASCADE)
+        Ticket, related_name='attachments', on_delete=models.CASCADE
+    )
     file = models.FileField(upload_to='ticket_attachments/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 

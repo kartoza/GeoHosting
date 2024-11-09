@@ -85,7 +85,7 @@ const ServicesPage: React.FC = () => {
   return (
     <Box>
       <Box p={0} display="flex" flexDirection="column"
-           height={{ base: 'auto', md: '80vh' }}>
+           minHeight={{ base: 'auto', md: '80vh' }}>
 
         {/* Dashboard title */}
         <DashboardTitle title={'Hosted Services'}/>
