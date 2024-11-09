@@ -15,14 +15,14 @@ import {
   Tr,
   VStack,
 } from '@chakra-ui/react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, DeleteIcon, WarningIcon } from '@chakra-ui/icons';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import {
   createTicket,
   updateTicket,
-  uploadAttachments
+  uploadAttachment
 } from '../../redux/reducers/supportSlice';
 import { toast } from 'react-toastify';
 
@@ -41,6 +41,9 @@ const FormContainer = styled(Box)`
 interface Attachment {
   name: string;
   file: File;
+  uploading: boolean;
+  uploaded: boolean;
+  error: string;
 }
 
 interface SupportTicketFormProps {
@@ -56,10 +59,8 @@ interface SupportTicketFormProps {
   };
 }
 
-const SupportTicketForm: React.FC<SupportTicketFormProps> = ({
-                                                               onClose,
-                                                               ticket
-                                                             }) => {
+const SupportTicketForm: React.FC<SupportTicketFormProps> = (
+  { onClose, ticket }) => {
   const dispatch: AppDispatch = useDispatch();
   const { loading, error } = useSelector((state: RootState) => state.support);
   const [subject, setSubject] = useState<string>('');
@@ -93,8 +94,13 @@ const SupportTicketForm: React.FC<SupportTicketFormProps> = ({
       const newAttachments = Array.from(e.target.files).map(file => ({
         name: file.name,
         file: file,
+        uploading: false,
+        uploaded: false,
+        error: '',
       }));
-      setAttachments(prevAttachments => [...prevAttachments, ...newAttachments]);
+      setAttachments(
+        prevAttachments => [...prevAttachments, ...newAttachments]
+      );
     }
   };
 
@@ -102,7 +108,43 @@ const SupportTicketForm: React.FC<SupportTicketFormProps> = ({
     setAttachments(attachments.filter((_, i) => i !== index));
   };
 
+  /**
+   * Upload attachment
+   * @param ticketId
+   */
+  const uploadAttachmentFn = async (ticketId: number) => {
+    let success = true;
+    // Upload attachment after ticket
+    if (attachments?.length) {
+      for (let i = 0; i < attachments.length; i++) {
+        const attachment = attachments[i]
+        if (attachment.uploaded) {
+          return
+        }
+        attachment.uploading = true
+        setAttachments([...attachments]);
+
+        await dispatch(
+          uploadAttachment({
+            ticketId, file: attachment.file
+          })
+        ).then((result: any) => {
+          attachment.uploading = false
+          if (result.meta.requestStatus === 'fulfilled') {
+            attachment.uploaded = true
+          } else {
+            attachment.error = 'Failed to upload attachment.'
+            success = false;
+          }
+        });
+        setAttachments([...attachments])
+      }
+    }
+    return success
+  }
+
   const handleSubmit = () => {
+    // Upload attachment after ticket
     const customer = customerEmail;
     const ticketData = {
       subject,
@@ -130,31 +172,32 @@ const SupportTicketForm: React.FC<SupportTicketFormProps> = ({
         createTicket(ticketData)
       ).then((result: any) => {
         if (result.meta.requestStatus === 'fulfilled') {
-          toast.success('Ticket created successfully.');
-
-          // Upload attachment after ticket
-          if (attachments?.length) {
-            const ticketId = result.payload.id;
-            dispatch(
-              uploadAttachments({
-                ticketId,
-                files: attachments.map(attachment => attachment.file)
-              })
-            ).then((result: any) => {
-              if (result.meta.requestStatus === 'fulfilled') {
-                toast.success('Attachment uploaded successfully.');
+          toast.success(
+            'Ticket created successfully. Now uploading attachments.'
+          );
+          (
+            async () => {
+              const ticketId = result.payload.id;
+              const success = await uploadAttachmentFn(ticketId)
+              if (success) {
+                toast.success(
+                  'All attachment uploaded successfully.'
+                );
               } else {
-                toast.error('Failed to upload attachment.');
+                toast.error(
+                  'Some of attachments are failed. Please reupload.'
+                );
+                return
               }
-            });
-          }
 
-          // Close and make default
-          onClose();
-          setSubject('');
-          setIssueType('');
-          setEditorData('');
-          setAttachments([]);
+              // Close and make default
+              onClose();
+              setSubject('');
+              setIssueType('');
+              setEditorData('');
+              setAttachments([]);
+            }
+          )()
         } else {
           toast.error('Failed to create ticket.');
         }
@@ -234,20 +277,33 @@ const SupportTicketForm: React.FC<SupportTicketFormProps> = ({
           attachments.length > 0 && (
             <Table variant="simple">
               <Tbody>
-                {attachments.map((attachment, index) => (
-                  <Tr key={index}>
-                    <Td padding={0}>{attachment.name}</Td>
-                    <Td padding={0}>
-                      <IconButton
-                        size={'xs'}
-                        aria-label="Delete attachment"
-                        icon={<DeleteIcon/>}
-                        onClick={() => handleDeleteAttachment(index)}
-                        colorScheme="red"
-                      />
-                    </Td>
-                  </Tr>
-                ))}
+                {
+                  attachments.map((attachment, index) => (
+                    <Tr key={index}>
+                      <Td padding={0}>{attachment.name}</Td>
+                      <Td padding={0}>
+                        {
+                          attachment.uploading ?
+                            <span>uploading</span> : attachment.error ?
+                              <WarningIcon color='red'/> : null
+                        }
+                      </Td>
+                      <Td padding={0}>
+                        {
+                          attachment.uploaded ?
+                            <CheckCircleIcon color='green'/> :
+                            <IconButton
+                              size={'xs'}
+                              aria-label="Delete attachment"
+                              icon={<DeleteIcon/>}
+                              onClick={() => handleDeleteAttachment(index)}
+                              colorScheme="red"
+                            />
+                        }
+                      </Td>
+                    </Tr>
+                  ))
+                }
               </Tbody>
             </Table>
           )
