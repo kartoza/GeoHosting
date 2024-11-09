@@ -23,6 +23,12 @@ def test_connection():
 
 
 def fetch_erpnext_detail_data(doctype, filters=None):
+    """Fetch erpnext detail data."""
+    if not settings.ERPNEXT_BASE_URL:
+        return {
+            "status": "error",
+            "message": 'ERPNEXT_BASE_URL is not set.'
+        }
     url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}"
     params = {
         'fields': '["*"]'
@@ -61,7 +67,10 @@ def fetch_erpnext_data(doctype, filters=None):
         response (dict): The response from the ERPNext API.
     """
     if not settings.ERPNEXT_BASE_URL:
-        return
+        return {
+            "status": "error",
+            "message": 'ERPNEXT_BASE_URL is not set.'
+        }
 
     url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}"
     params = {
@@ -120,7 +129,10 @@ def post_to_erpnext(data, doctype, file=None):
         result (dict): The result containing the status and message.
     """
     if not settings.ERPNEXT_BASE_URL:
-        return
+        return {
+            "status": "error",
+            "message": 'ERPNEXT_BASE_URL is not set.'
+        }
 
     url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}"
 
@@ -178,7 +190,10 @@ def put_to_erpnext(data, doctype, id, file=None):
         result (dict): The result containing the status and message.
     """
     if not settings.ERPNEXT_BASE_URL:
-        return
+        return {
+            "status": "error",
+            "message": 'ERPNEXT_BASE_URL is not set.'
+        }
 
     url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}/{id}"
 
@@ -222,6 +237,12 @@ def put_to_erpnext(data, doctype, id, file=None):
 
 def add_erp_next_comment(user, doctype: str, id: str, comment: str):
     """Add a comment to ERPNext."""
+    if not settings.ERPNEXT_BASE_URL:
+        return {
+            "status": "error",
+            "message": 'ERPNEXT_BASE_URL is not set.'
+        }
+
     url = (
         f"{settings.ERPNEXT_BASE_URL}/api/method/"
         f"frappe.desk.form.utils.add_comment"
