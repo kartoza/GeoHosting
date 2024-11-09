@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Checkbox,
   IconButton,
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tooltip,
   Tr
 } from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
-import SearchBar from "../../components/SearchBar/SearchBar";
 import Pagination from "../../components/Pagination/Pagination";
+import TopNavigation from "../../components/DashboardPage/TopNavigation";
+import DashboardTitle from "../../components/DashboardPage/DashboardTitle";
 
 const agreements = [
   {
@@ -76,18 +75,12 @@ const AgreementPage: React.FC = () => {
   return (
     <Box>
       <Box width="100%" margin="0 auto" textAlign="left">
-        <Text fontSize="2xl" fontWeight="bold" mb={2}
-              color={'#3e3e3e'}>
-          Agreements
-        </Text>
-        <Box height="2px" bg="blue.500" width="100%" mb={4}/>
 
-        <SearchBar
-          onSearch={handleSearch}
-          showDateFields={false}
-          showClearButton={false}
-          placeholder={'Search Title'}
-        />
+        {/* Dashboard title */}
+        <DashboardTitle title={'Agreements'}/>
+
+        {/* Top navigation of dashboard */}
+        <TopNavigation onSearch={handleSearch} placeholder='Search Title'/>
 
         {/* Responsive Table Container */}
         <Box
@@ -101,38 +94,35 @@ const AgreementPage: React.FC = () => {
           >
             <Thead>
               <Tr>
-                <Th width="0" p={0} border={"none"}></Th>
-                <Th border={"none"} padding={4}>
+                {/*<Th width="0" p={0} border={"none"} padding={0}></Th>*/}
+                <Th border={"none"} padding={0} paddingLeft={4}>
                   Title
                 </Th>
-                <Th padding={4} whiteSpace={'nowrap'} paddingLeft={0}
-                    border={"none"}>
+                <Th whiteSpace={'nowrap'} padding={0} border={"none"}>
                   Date Issued
                 </Th>
-                <Th textAlign="left" border={"none"}>
+                <Th textAlign="left" border={"none"} padding={0}>
                 </Th>
               </Tr>
             </Thead>
             <Tbody>
               {currentAgreements.map((agreement, index) => (
                 <Tr key={index} height='40px' border={"none"}>
-                  <Td padding={0} paddingRight={5}
-                      border={"none"}>
-                    <Checkbox
-                      colorScheme="blue"
-                      isChecked={checkedItems[index]}
-                      onChange={() => handleCheckboxChange(index)}
-                      borderColor="gray.500"
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  </Td>
+                  {/* TODO: Disable checbox because not sure what to do with this */}
+                  {/*<Td padding={0} paddingRight={5}*/}
+                  {/*    border={"none"}>*/}
+                  {/*  <Checkbox*/}
+                  {/*    colorScheme="blue"*/}
+                  {/*    isChecked={checkedItems[index]}*/}
+                  {/*    onChange={() => handleCheckboxChange(index)}*/}
+                  {/*    borderColor="gray.500"*/}
+                  {/*    onClick={(e) => e.stopPropagation()}*/}
+                  {/*  />*/}
+                  {/*</Td>*/}
                   <Td padding={0} backgroundColor='white' border={"none"}>
                     <Box
                       paddingLeft={4}
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        color: checkedItems[index] || hoverIndex === index ? 'blue.500' : 'gray',
                         borderRadius: '4px 0 0 4px',
                         cursor: 'pointer'
                       }}
@@ -150,11 +140,8 @@ const AgreementPage: React.FC = () => {
                     <Box
                       whiteSpace={'nowrap'}
                       style={{
-                        backgroundColor: 'white',
-                        display: 'flex',
-                        alignItems: 'center',
-                        color: 'gray',
                         borderRadius: '0 10px 10px 0',
+                        cursor: 'pointer',
                       }}>
                       {agreement.dateIssued}
                     </Box>

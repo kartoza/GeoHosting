@@ -10,14 +10,14 @@ import {
   Table,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr
 } from '@chakra-ui/react';
 import Pagination from '../../../components/Pagination/Pagination';
-import SearchBar from '../../../components/SearchBar/SearchBar';
 import { checkCheckoutUrl } from "../../CheckoutPage/utils";
+import DashboardTitle from "../../../components/DashboardPage/DashboardTitle";
+import TopNavigation from "../../../components/DashboardPage/TopNavigation";
 
 const OrdersList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -76,24 +76,20 @@ const OrdersList: React.FC = () => {
   return (
     <Box>
       <Box minHeight={{ base: 'auto', md: '80vh' }}>
-        <Box mb={4}>
-          <Text fontSize="2xl" fontWeight="bold" mb={2}
-                color={'#3e3e3e'}>Orders</Text>
-          <Box height="2px" bg="blue.500" width="100%" mb={4}/>
-        </Box>
 
-        {/* Search Bar */}
-        <SearchBar
-          onSearch={setSearchTerm}
-          showDateFields={false}
-          showClearButton={false}
-          placeholder={'Search by Order ID'}
+        {/* Dashboard title */}
+        <DashboardTitle title={'Orders'}/>
+
+        {/* Top navigation of dashboard */}
+        <TopNavigation
+          onSearch={setSearchTerm} placeholder='Search by Order ID'
         />
 
         {/* Orders Table */}
         <Table variant='simple'>
           <Thead>
             <Tr>
+              <Th>Order ID</Th>
               <Th>Package</Th>
               <Th>Status</Th>
               <Th>Payment Method</Th>
@@ -109,6 +105,7 @@ const OrdersList: React.FC = () => {
                 background={"white"}
                 _hover={{ bg: 'gray.100' }}
               >
+                <Td>{order.erpnext_code}</Td>
                 <Td>{order.package.name}</Td>
                 <Td>{order.order_status}</Td>
                 <Td>{order.payment_method}</Td>
