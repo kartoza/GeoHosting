@@ -60,6 +60,9 @@ def fetch_erpnext_data(doctype, filters=None):
     Returns:
         response (dict): The response from the ERPNext API.
     """
+    if not settings.ERPNEXT_BASE_URL:
+        return
+
     url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}"
     params = {
         'fields': '["*"]'
@@ -116,6 +119,9 @@ def post_to_erpnext(data, doctype, file=None):
     Returns:
         result (dict): The result containing the status and message.
     """
+    if not settings.ERPNEXT_BASE_URL:
+        return
+
     url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}"
 
     files = {'file': file} if file else None
@@ -171,6 +177,9 @@ def put_to_erpnext(data, doctype, id, file=None):
     Returns:
         result (dict): The result containing the status and message.
     """
+    if not settings.ERPNEXT_BASE_URL:
+        return
+
     url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}/{id}"
 
     files = {'file': file} if file else None
