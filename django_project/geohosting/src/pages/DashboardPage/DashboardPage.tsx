@@ -16,7 +16,7 @@ import SupportPage from "./Support/SupportPage";
 import OrdersList from './Orders/OrderList';
 import OrderDetail from "./Orders/OrderDetail";
 import ProfilePage from './Profile/ProfilePage';
-import AgreementsTab from '../../components/Profile/Agreements';
+import AgreementPage from './AgreementPage';
 
 const DashboardPage = ({ title = "Dashboard" }) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -60,7 +60,7 @@ const DashboardPage = ({ title = "Dashboard" }) => {
           <Box p={8} flexGrow={1} position='relative'>
             <Routes>
               <Route path="/" element={<DashboardMainPage/>}/>
-              <Route path='/agreements' element={<AgreementsTab/>}/>
+              <Route path='/agreements' element={<AgreementPage/>}/>
               <Route path="/support" element={<SupportPage/>}/>
               <Route path="/orders/:id" element={<OrderDetail/>}/>
               <Route path="/orders" element={<OrdersList/>}/>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Table, Thead, Tbody, Tr, Th, Td, IconButton, Tooltip, Flex, Checkbox, Text } from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
-import SearchBar from '../SearchBar/SearchBar';
-import Pagination from '../Pagination/Pagination';
+import SearchBar from "../../components/SearchBar/SearchBar";
+import Pagination from "../../components/Pagination/Pagination";
 
 const agreements = [
   { name: 'User Agreement', file: '/path/to/user-agreement.pdf', dateIssued: '2023-01-01' },
@@ -10,7 +10,7 @@ const agreements = [
   { name: 'Terms of Service', file: '/path/to/terms-of-service.pdf', dateIssued: '2023-03-10' },
 ];
 
-const AgreementsTab: React.FC = () => {
+const AgreementPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -81,12 +81,12 @@ const AgreementsTab: React.FC = () => {
             {currentAgreements.map((agreement, index) => (
               <Tr key={index}>
                 <Td border="0px" borderColor="gray.300">
-                  <Checkbox 
-                    colorScheme="blue" 
-                    isChecked={checkedItems[index]} 
-                    onChange={() => handleCheckboxChange(index)} 
-                    borderColor="gray.500" 
-                    onClick={(e) => e.stopPropagation()} 
+                  <Checkbox
+                    colorScheme="blue"
+                    isChecked={checkedItems[index]}
+                    onChange={() => handleCheckboxChange(index)}
+                    borderColor="gray.500"
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </Td>
                 <Td border="0px" borderColor="gray.300">
@@ -96,14 +96,14 @@ const AgreementsTab: React.FC = () => {
                       backgroundColor: 'white',
                       padding: '5px',
                       display: 'flex',
-                      alignItems: 'center', 
-                      color: checkedItems[index] || hoverIndex === index ? 'blue.500' : 'gray', 
+                      alignItems: 'center',
+                      color: checkedItems[index] || hoverIndex === index ? 'blue.500' : 'gray',
                       width: '110%',
                       borderRadius: '10px 0 0 10px',
                       cursor: 'pointer',
                     }}
-                    onMouseEnter={() => setHoverIndex(index)}  
-                    onMouseLeave={() => setHoverIndex(null)}  
+                    onMouseEnter={() => setHoverIndex(index)}
+                    onMouseLeave={() => setHoverIndex(null)}
                   >
                     {agreement.name}
                   </div>
@@ -122,7 +122,7 @@ const AgreementsTab: React.FC = () => {
                   </div>
                 </Td>
                 <Td textAlign="left" border="0px" borderColor="gray.300">
-                  <Flex justify="flex-start"> 
+                  <Flex justify="flex-start">
                     <Tooltip label="Download">
                       <IconButton
                         as="a"
@@ -145,7 +145,7 @@ const AgreementsTab: React.FC = () => {
         </Table>
       </Box>
 
-      
+
     </Box>
     {filteredAgreements.length > rowsPerPage && (
       <Pagination
@@ -159,4 +159,4 @@ const AgreementsTab: React.FC = () => {
   );
 };
 
-export default AgreementsTab;
+export default AgreementPage;
