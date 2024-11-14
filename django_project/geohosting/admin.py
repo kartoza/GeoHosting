@@ -40,7 +40,7 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 def send_attachment(modeladmin, request, queryset):
-    """Return jenkins status."""
+    """Send attachment to erpnext."""
     for config in queryset:
         config.post_to_erpnext()
 
@@ -67,8 +67,7 @@ class ActivityAdmin(admin.ModelAdmin):
     list_filter = ('instance', 'triggered_at', 'triggered_by')
     readonly_fields = (
         'activity_type', 'instance', 'triggered_at', 'triggered_by',
-        'client_data', 'post_data', 'note', 'jenkins_queue_url',
-        'jenkins_build_url'
+        'client_data', 'post_data', 'note'
     )
 
     def has_add_permission(*args, **kwargs):
@@ -96,7 +95,7 @@ class ClusterAdmin(admin.ModelAdmin):
 
 
 def send_credentials(modeladmin, request, queryset):
-    """Return jenkins status."""
+    """Send credentials ."""
     for config in queryset:
         config.send_credentials()
 
