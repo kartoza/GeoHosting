@@ -61,13 +61,13 @@ class ActivityAdmin(admin.ModelAdmin):
     """Activity admin."""
 
     list_display = (
-        'id', 'instance', 'activity_type', 'triggered_at', 'triggered_by',
-        'status', 'note'
+        'id', 'instance', 'activity_type', 'triggered_at',
+        'status', 'jenkins_queue_url', 'note'
     )
     list_filter = ('instance', 'triggered_at', 'triggered_by')
     readonly_fields = (
         'activity_type', 'instance', 'triggered_at', 'triggered_by',
-        'client_data', 'post_data', 'note'
+        'client_data', 'post_data', 'note', 'jenkins_queue_url'
     )
 
     def has_add_permission(*args, **kwargs):
@@ -181,7 +181,7 @@ def auto_deploy(modeladmin, request, queryset):
 class SalesOrderAdmin(admin.ModelAdmin):
     list_display = (
         'date', 'package', 'customer', 'order_status', 'payment_method',
-        'erpnext_code', 'activities'
+        'erpnext_code', 'activities', 'app_name'
     )
     list_filter = ('order_status', 'payment_method')
     search_fields = ('erpnext_code',)
