@@ -5,7 +5,7 @@ GeoHosting Controller.
 """
 
 from rest_framework import mixins, viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 from geohosting.models.support import Ticket, Attachment
 from geohosting.serializer.support import (
@@ -23,7 +23,7 @@ class TicketSetView(
     """Sales order viewset."""
 
     serializer_class = TicketSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     # TODO: We need to enable this after the frontend has been paginated
     pagination_class = None
@@ -44,7 +44,7 @@ class AttachmentSetView(
     """Sales order viewset."""
 
     serializer_class = AttachmentSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     # TODO: We need to enable this after the frontend has been paginated
     pagination_class = None
