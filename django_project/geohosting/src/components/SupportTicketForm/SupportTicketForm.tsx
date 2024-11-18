@@ -212,6 +212,7 @@ const SupportTicketForm: React.FC<SupportTicketFormProps> = (
           <FormLabel>Email</FormLabel>
           <Input
             type="email"
+            placeholder="Enter email address"
             value={customerEmail}
             onChange={(e) => setCustomerEmail(e.target.value)}
           />
