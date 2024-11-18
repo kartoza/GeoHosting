@@ -68,9 +68,13 @@ const CheckoutConfiguration: React.FC<Props> = ({ salesOrderDetail }) => {
         />
         <GridItem>
           <Box>
-            <Text fontSize={22} color={'black'}>
+            <Box
+              fontSize={22} color={'black'} display='flex' alignItems='center'>
               App name
-            </Text>
+              <Box fontSize={16} ml={2}>
+                (Please provide a name for your app)
+              </Box>
+            </Box>
           </Box>
           <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
             <Input
