@@ -120,7 +120,6 @@ const Navbar: React.FC = () => {
                 src='/static/images/kartoza-logo-only.png'
                 alt='Kartoza Logo'
                 style={{ 'cursor': 'pointer' }}
-                onClick={() => navigate('/')}
                 width={8}
                 mr={2}
               />

@@ -24,12 +24,6 @@ import CheckoutTracker
   from "../../../components/ProgressTracker/CheckoutTracker";
 import { OrderSummary } from "../OrderSummary"
 import { getUserLocation } from "../../../utils/helpers";
-import OrderConfiguration from "../OrderConfiguration";
-
-interface LocationState {
-  productName: string;
-  pkg: Package;
-}
 
 const PaymentMethods = {
   STRIPE: 'STRIPE',
@@ -41,20 +35,18 @@ interface CheckoutPageModalProps {
   pkg: Package;
   stripeUrl: string;
   paystackUrl: string;
+  appName: string;
+  activeStep?: number;
 }
 
 export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
-  { product, pkg, stripeUrl, paystackUrl }
+  { product, pkg, stripeUrl, paystackUrl, appName }
 ) => {
   /** For the payment component **/
   const columns = useBreakpointValue({ base: 1, md: 2 });
   const [paymentMethods, setPaymentMethods] = useState<Array<string> | null>(null);
   const stripePaymentModalRef = useRef(null);
   const paystackPaymentModalRef = useRef(null);
-
-  // App name is ok
-  const [appName, setAppName] = useState<string>('');
-  const [appNameIsOk, setAppNameIsOk] = useState<boolean>(false);
 
   useEffect(() => {
     (
@@ -71,9 +63,6 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
 
   // Checkout function
   async function checkout(method) {
-    if (!appNameIsOk) {
-      return
-    }
     switch (method) {
       case PaymentMethods.STRIPE: {
         if (stripePaymentModalRef?.current) {
@@ -95,14 +84,10 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
   return (
     <>
       <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
-        <OrderSummary product={product} pkg={pkg}/>
+        <OrderSummary product={product} pkg={pkg} appName={appName}/>
         <GridItem>
-          <OrderConfiguration
-            product={product} appName={appName} setAppName={setAppName}
-            appNameIsOk={appNameIsOk} setAppNameIsOk={setAppNameIsOk}
-          />
           <Box>
-            <Text fontSize={22} color={'black'} mt={4}>
+            <Text fontSize={22} color={'black'}>
               Payment Method
             </Text>
           </Box>
@@ -125,7 +110,6 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
                         colorScheme='blue'
                         size="lg"
                         onClick={() => checkout(PaymentMethods.STRIPE)}
-                        isDisabled={!appNameIsOk}
                       >
                         Pay with Stripe
                       </Button> : null
@@ -137,7 +121,6 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
                         colorScheme='blue'
                         size="lg"
                         onClick={() => checkout(PaymentMethods.PAYSTACK)}
-                        isDisabled={!appNameIsOk}
                       >
                         Pay with Paystack
                       </Button> : null
@@ -173,7 +156,10 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
 }
 
 const MainCheckoutPage: React.FC<CheckoutPageModalProps> = (
-  { product, pkg, stripeUrl, paystackUrl }
+  {
+    product, pkg, stripeUrl,
+    paystackUrl, appName, activeStep = 0
+  }
 ) => {
   return (
     <ChakraProvider theme={customTheme}>
@@ -183,12 +169,15 @@ const MainCheckoutPage: React.FC<CheckoutPageModalProps> = (
           <Background/>
           <Container maxW='container.xl' mt="80px" mb="80px" bg="transparent">
             <Box mb={10}>
-              <CheckoutTracker activeStep={0}/>
+              <CheckoutTracker activeStep={activeStep}/>
             </Box>
             <MainCheckoutPageComponent
-              product={product} pkg={pkg}
+              appName={appName}
+              product={product}
+              pkg={pkg}
               stripeUrl={stripeUrl}
-              paystackUrl={paystackUrl}/>
+              paystackUrl={paystackUrl}
+            />
           </Container>
         </Box>
         <Box
