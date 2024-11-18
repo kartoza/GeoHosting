@@ -208,9 +208,13 @@ const SupportTicketForm: React.FC<SupportTicketFormProps> = (
   return (
     <FormContainer p={4}>
       <VStack spacing={4}>
-        <FormControl id="customer" isReadOnly>
-          <FormLabel>Customer</FormLabel>
-          <Input type="text" value={customerEmail} isReadOnly bg="gray.100"/>
+        <FormControl id="customer" isRequired>
+          <FormLabel>Email</FormLabel>
+          <Input
+            type="email"
+            value={customerEmail}
+            onChange={(e) => setCustomerEmail(e.target.value)}
+          />
         </FormControl>
 
         <FormControl id="subject" isRequired>
