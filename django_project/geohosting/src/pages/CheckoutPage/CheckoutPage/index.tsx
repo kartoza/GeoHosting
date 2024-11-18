@@ -24,6 +24,7 @@ import CheckoutTracker
   from "../../../components/ProgressTracker/CheckoutTracker";
 import { OrderSummary } from "../OrderSummary"
 import { getUserLocation } from "../../../utils/helpers";
+import OrderConfiguration from "../OrderConfiguration";
 
 interface LocationState {
   productName: string;
@@ -51,6 +52,10 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
   const stripePaymentModalRef = useRef(null);
   const paystackPaymentModalRef = useRef(null);
 
+  // App name is ok
+  const [appName, setAppName] = useState<string>('');
+  const [appNameIsOk, setAppNameIsOk] = useState<boolean>(false);
+
   useEffect(() => {
     (
       async () => {
@@ -66,6 +71,9 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
 
   // Checkout function
   async function checkout(method) {
+    if (!appNameIsOk) {
+      return
+    }
     switch (method) {
       case PaymentMethods.STRIPE: {
         if (stripePaymentModalRef?.current) {
@@ -87,9 +95,14 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
   return (
     <>
       <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
+        <OrderSummary product={product} pkg={pkg}/>
         <GridItem>
+          <OrderConfiguration
+            product={product} appName={appName} setAppName={setAppName}
+            appNameIsOk={appNameIsOk} setAppNameIsOk={setAppNameIsOk}
+          />
           <Box>
-            <Text fontSize={22} color={'black'}>
+            <Text fontSize={22} color={'black'} mt={4}>
               Payment Method
             </Text>
           </Box>
@@ -104,7 +117,7 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
                   terms</Link>, electronic document delivery, and
                   acknowledge the <Link href="#">privacy policy</Link>.
                 </Text>
-                <Box style={{ minHeight: "106px" }}>
+                <Box>
                   {
                     paymentMethods?.includes(PaymentMethods.STRIPE) ?
                       <Button
@@ -112,6 +125,7 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
                         colorScheme='blue'
                         size="lg"
                         onClick={() => checkout(PaymentMethods.STRIPE)}
+                        isDisabled={!appNameIsOk}
                       >
                         Pay with Stripe
                       </Button> : null
@@ -123,14 +137,17 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
                         colorScheme='blue'
                         size="lg"
                         onClick={() => checkout(PaymentMethods.PAYSTACK)}
+                        isDisabled={!appNameIsOk}
                       >
                         Pay with Paystack
                       </Button> : null
                   }
-                  {!paymentMethods ?
-                    <Box paddingTop={5} fontStyle={"italic"} color={"gray"}>
-                      Loading payment methods
-                    </Box> : null}
+                  {
+                    !paymentMethods ?
+                      <Box paddingTop={5} fontStyle={"italic"} color={"gray"}>
+                        Loading payment methods
+                      </Box> : null
+                  }
                 </Box>
                 <Divider mt={4}/>
                 <Text mt={2} fontSize="sm">Payments are processed
@@ -140,15 +157,16 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
             </VStack>
           </Box>
         </GridItem>
-        <OrderSummary product={product} pkg={pkg}/>
       </Grid>
       <StripePaymentModal
         ref={stripePaymentModalRef}
         url={stripeUrl}
+        appName={appName}
       />
       <PaystackPaymentModal
         ref={paystackPaymentModalRef}
         url={paystackUrl}
+        appName={appName}
       />
     </>
   )
