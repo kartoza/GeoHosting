@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { PaginationResult } from "../types/paginationTypes";
+import { headerWithToken } from "../../utils/helpers";
 
 interface Ticket {
   id: number;
@@ -14,8 +16,12 @@ interface AttachmentsState {
   [key: number]: File[];
 }
 
+interface TicketPaginationResult extends PaginationResult {
+  results: Ticket[]
+}
+
 interface SupportState {
-  tickets: Ticket[];
+  listData: TicketPaginationResult;
   selectedTicket: Ticket | null;
   attachments: AttachmentsState;
   loading: boolean;
@@ -24,7 +30,12 @@ interface SupportState {
 
 // Initial state
 const initialState: SupportState = {
-  tickets: [],
+  listData: {
+    count: 0,
+    next: null,
+    previous: null,
+    results: []
+  },
   selectedTicket: null,
   attachments: {},
   loading: false,
@@ -42,11 +53,11 @@ interface CreateTicketData {
 // Async thunk for fetching tickets
 export const fetchTickets = createAsyncThunk(
   'support/fetchTickets',
-  async (_, thunkAPI) => {
+  async (url: string, thunkAPI) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/tickets/', {
-        headers: { Authorization: `Token ${token}` }
+      const response = await axios.get(url, {
+        headers: headerWithToken()
       });
       return response.data;
     } catch (error: any) {
@@ -74,8 +85,7 @@ export const createTicket = createAsyncThunk(
   'support/createTicket',
   async (ticketData: CreateTicketData, thunkAPI) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post('/api/tickets/', ticketData, { headers: { Authorization: `Token ${token}` } });
+      const response = await axios.post('/api/tickets/', ticketData, { headers: headerWithToken() });
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data || 'An unknown error occurred');
@@ -105,15 +115,16 @@ export const uploadAttachment = createAsyncThunk(
   'support/uploadAttachments',
   async ({ ticketId, file }: { ticketId: number; file: File }, thunkAPI) => {
     const formData = new FormData();
-    const token = localStorage.getItem('token');
     formData.append('file', file);
     formData.append('ticket', ticketId.toString());
 
     try {
       const response = await axios.post(`/api/tickets/${ticketId}/attachments/`, formData, {
         headers: {
-          'Authorization': `Token ${token}`,
-          'Content-Type': 'multipart/form-data'
+          ...{
+            'Content-Type': 'multipart/form-data'
+          },
+          ...headerWithToken()
         }
       });
       return response.data;
@@ -150,7 +161,7 @@ const supportSlice = createSlice({
       })
       .addCase(fetchTickets.fulfilled, (state, action) => {
         state.loading = false;
-        state.tickets = action.payload;
+        state.listData = action.payload;
       })
       .addCase(fetchTickets.rejected, (state, action) => {
         state.loading = false;
@@ -174,7 +185,6 @@ const supportSlice = createSlice({
       })
       .addCase(createTicket.fulfilled, (state, action) => {
         state.loading = false;
-        state.tickets.push(action.payload);
       })
       .addCase(createTicket.rejected, (state, action) => {
         state.loading = false;
@@ -187,7 +197,7 @@ const supportSlice = createSlice({
       .addCase(updateTicket.fulfilled, (state, action) => {
         state.loading = false;
         const updatedTicket = action.payload;
-        state.tickets = state.tickets.map(ticket =>
+        state.listData.results = state.listData.results.map(ticket =>
           ticket.id === updatedTicket.id ? updatedTicket : ticket
         );
         if (state.selectedTicket?.id === updatedTicket.id) {

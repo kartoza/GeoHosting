@@ -207,7 +207,7 @@ const SupportTicketForm: React.FC<SupportTicketFormProps> = (
       });
     }
   };
-  console.log(errors)
+
   return (
     <FormContainer p={4}>
       <VStack spacing={4}>

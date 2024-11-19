@@ -23,17 +23,14 @@ class TicketSetView(
     """Sales order viewset."""
 
     serializer_class = TicketSerializer
-    authentication_classes = []
-    permission_classes = (AllowAny,)
-
-    # TODO: We need to enable this after the frontend has been paginated
-    pagination_class = None
 
     def get_queryset(self):
         """Return querysets."""
         try:
             user_email = self.request.user.email
-            Ticket.fetch_ticket_from_erp(user_email)
+            # TODO:
+            #  Need to put this on a ticket level
+            # Ticket.fetch_ticket_from_erp(user_email)
             return Ticket.objects.filter(customer=user_email)
         except AttributeError:
             return Ticket.objects.none()
