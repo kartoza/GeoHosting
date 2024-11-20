@@ -1,7 +1,10 @@
-import React from 'react';
-import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import React, { useRef, useState } from 'react';
+import { Box, Button, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { fetchTickets, Ticket } from "../../../redux/reducers/supportSlice";
-import { PagintationPage } from "../PaginationPage";
+import { PaginationPage } from "../PaginationPage";
+import {
+  SupportTicketFormModal
+} from "../../../components/SupportTicketForm/SupportTicketFormModal";
 
 const stripHtmlTags = (html: string) => {
   const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -68,15 +71,41 @@ const Card = (ticket: Ticket) => {
 
 /** Support List Page in pagination */
 const SupportList: React.FC = () => {
+  const [currentTicket, setCurrentTicket] = useState<any>(null);
+  const supportTicketModalRef = useRef(null);
+
+  /**
+   * Handling when create issue.
+   */
+  const handleCreateIssue = () => {
+    setCurrentTicket(null);
+    // @ts-ignore
+    supportTicketModalRef?.current?.open()
+  };
+
   return (
-    <PagintationPage
-      title='Supports'
-      url='/api/tickets/'
-      action={fetchTickets}
-      stateKey='support'
-      searchPlaceholder='Search by Title'
-      renderCard={Card}
-    />
+    <>
+      <SupportTicketFormModal
+        ticket={currentTicket}
+        onClose={() => {
+          setCurrentTicket(null);
+        }}
+        ref={supportTicketModalRef}
+      />
+      <PaginationPage
+        title='Supports'
+        url='/api/tickets/'
+        action={fetchTickets}
+        stateKey='support'
+        searchPlaceholder='Search by Title'
+        renderCard={Card}
+        rightNavigation={
+          <Button colorScheme="blue" onClick={handleCreateIssue}>
+            Create Issue
+          </Button>
+        }
+      />
+    </>
   );
 };
 

@@ -15,6 +15,8 @@ interface Props {
   stateKey: string;
   action: AsyncThunk<any, string, AsyncThunkConfig>;
   url: string;
+  leftNavigation?: React.ReactElement;
+  rightNavigation?: React.ReactElement;
   renderCard: (data: any) => React.ReactElement;
 }
 
@@ -22,16 +24,29 @@ let lastSearchTerm: string | null = null;
 let session: string | null = null;
 
 /** Abstract for pagination page */
-export const PagintationPage: React.FC<Props> = (
-  { title, searchPlaceholder, stateKey, action, url, renderCard }
+export const PaginationPage: React.FC<Props> = (
+  {
+    title, searchPlaceholder, stateKey, action, url,
+    leftNavigation, rightNavigation, renderCard
+  }
 ) => {
   const dispatch = useDispatch<AppDispatch>();
   const rowsPerPage = 10;
   const {
-    listData,
+    data: listData,
     loading,
     error
-  } = useSelector((state: RootState) => state[stateKey]);
+  } = useSelector((state: RootState) => state[stateKey]['list']);
+
+  const {
+    loading: createLoading,
+    error: createError
+  } = useSelector((state: RootState) => state[stateKey]['create']);
+  const {
+    loading: editLoading,
+    error: editError
+  } = useSelector((state: RootState) => state[stateKey]['edit']);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -43,7 +58,7 @@ export const PagintationPage: React.FC<Props> = (
     }
   }, 500);
 
-  const request = () => {
+  const request = (force: boolean = false) => {
     const exampleDomain = 'http://example.com/'
     let usedUrl = url
     if (!url.includes('http')) {
@@ -57,11 +72,20 @@ export const PagintationPage: React.FC<Props> = (
     }
 
     const urlRequest = _url.toString().replace(exampleDomain, '')
-    if (session !== urlRequest) {
+    if (force || session !== urlRequest) {
       dispatch(action(urlRequest));
     }
     session = urlRequest
   }
+
+  /** When create and edit is done, do request */
+  useEffect(() => {
+    if (session && !createLoading && !editLoading) {
+      if (!createError && !editError) {
+        request(true)
+      }
+    }
+  }, [createLoading, editLoading]);
 
   /** When first dispatch created */
   useEffect(() => {
@@ -93,6 +117,8 @@ export const PagintationPage: React.FC<Props> = (
         {/* Top navigation of dashboard */}
         <TopNavigation
           onSearch={setSearchTerm} placeholder={searchPlaceholder}
+          leftElement={leftNavigation}
+          rightElement={rightNavigation}
         />
 
         <Box mt={4}>

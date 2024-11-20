@@ -63,7 +63,8 @@ interface SupportTicketFormProps {
 const SupportTicketForm: React.FC<SupportTicketFormProps> = (
   { onClose, ticket }) => {
   const dispatch: AppDispatch = useDispatch();
-  const { loading, error } = useSelector((state: RootState) => state.support);
+  const key = ticket ? 'detail' : 'create'
+  const { loading } = useSelector((state: RootState) => state.support[key]);
   const [subject, setSubject] = useState<string>('');
   const [issueType, setIssueType] = useState<string>('');
   const [editorData, setEditorData] = useState<string>('');
