@@ -104,11 +104,6 @@ class PasswordResetView(APIView):
 
         reset_link = f"{FRONTEND_URL}/#/reset-password?token={reset_token}"
         reset_link = reset_link.replace('#/#', '#')
-        message = (
-            'Please use the following link to reset your password: '
-            f'{reset_link}'
-        )
-
         html_content = render_to_string(
             template_name='emails/GeoHosting_Reset Password.html',
             context={
@@ -119,7 +114,7 @@ class PasswordResetView(APIView):
 
         # Create the email message
         email = EmailMessage(
-            subject=f'Password Reset Request',
+            subject='Password Reset Request',
             body=html_content,
             from_email=DEFAULT_FROM_EMAIL,
             to=[email]
