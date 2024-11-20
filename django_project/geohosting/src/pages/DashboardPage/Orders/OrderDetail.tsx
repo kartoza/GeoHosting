@@ -51,7 +51,7 @@ const OrderDetail: React.FC = () => {
           {orderDetail.invoice_url && (
             <Box mt={4}>
               <Link href={orderDetail.invoice_url} isExternal>
-                Invoice <FaPrint style={{ display: "inline-block" }} />
+                <b>Invoice <FaPrint style={{ display: "inline-block" }} /></b>
               </Link>
             </Box>
           )}
