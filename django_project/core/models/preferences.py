@@ -37,7 +37,7 @@ class Preferences(SingletonModel):
     )
     support_email = models.EmailField(
         max_length=255,
-        default='suppport@kartoza.com'
+        default='info@kartoza.com'
 
     )
 
