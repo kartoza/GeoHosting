@@ -11,12 +11,12 @@ import customTheme from '../../theme/theme';
 import DashboardSidePanel
   from "../../components/DashboardSidePanel/DashboardSidePanel";
 import { Route, Routes, useLocation } from "react-router-dom";
-import DashboardMainPage from "./DashboardMainPage";
 import OrdersList from './Orders/OrderList';
 import OrderDetail from "./Orders/OrderDetail";
 import ProfilePage from './Profile/ProfilePage';
 import AgreementPage from './AgreementPage';
 import SupportList from "./Support/SupportList";
+import ServicesPage from "./ServicesPage";
 
 const DashboardPage = ({ title = "Dashboard" }) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -59,7 +59,7 @@ const DashboardPage = ({ title = "Dashboard" }) => {
           {/* Main content area below the header */}
           <Box p={8} flexGrow={1} position='relative'>
             <Routes>
-              <Route path="/" element={<DashboardMainPage/>}/>
+              <Route path="/" element={<ServicesPage/>}/>
               <Route path='/agreements' element={<AgreementPage/>}/>
               <Route path="/support" element={<SupportList/>}/>
               <Route path="/orders/:id" element={<OrderDetail/>}/>

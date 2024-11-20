@@ -7,6 +7,7 @@ GeoHosting Controller.
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import AllowAny
 
+from core.api import FilteredAPI
 from geohosting.models.support import Ticket, Attachment
 from geohosting.serializer.support import (
     TicketSerializer, AttachmentSerializer
@@ -14,6 +15,7 @@ from geohosting.serializer.support import (
 
 
 class TicketSetView(
+    FilteredAPI,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
@@ -31,9 +33,10 @@ class TicketSetView(
             # TODO:
             #  Need to put this on a ticket level
             # Ticket.fetch_ticket_from_erp(user_email)
-            return Ticket.objects.filter(customer=user_email)
+            query = Ticket.objects.filter(customer=user_email)
         except AttributeError:
-            return Ticket.objects.none()
+            query = Ticket.objects.none()
+        return self.filter_query(self.request, query)
 
 
 class AttachmentSetView(

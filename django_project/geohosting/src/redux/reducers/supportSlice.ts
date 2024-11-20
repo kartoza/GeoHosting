@@ -3,7 +3,7 @@ import axios from 'axios';
 import { PaginationResult } from "../types/paginationTypes";
 import { headerWithToken } from "../../utils/helpers";
 
-interface Ticket {
+export interface Ticket {
   id: number;
   subject: string;
   details: string;
