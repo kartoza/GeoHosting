@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Avatar,
   Box,
   Button,
@@ -7,6 +12,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  SimpleGrid,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -164,51 +170,55 @@ const ProfilePage: React.FC = () => {
           width={{ base: '100%', lg: '60%' }}
         >
           <Text fontSize="lg" fontWeight="bold">User Information</Text>
-          <FormControl>
-            <FormLabel>Name</FormLabel>
-            <Input
-              disabled={loading}
-              value={personalInfo.first_name}
-              onChange={
-                (e) => setPersonalInfo(
-                  { ...personalInfo, first_name: e.target.value })
-              }
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={'100%'}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Surname</FormLabel>
-            <Input
-              disabled={loading}
-              value={personalInfo.last_name}
-              onChange={(e) => setPersonalInfo({
-                ...personalInfo,
-                last_name: e.target.value
-              })}
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={'100%'}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Email</FormLabel>
-            <Input
-              disabled={loading}
-              value={personalInfo.email}
-              onChange={(e) => setPersonalInfo({
-                ...personalInfo,
-                email: e.target.value
-              })}
-              borderWidth="0px"
-              borderColor="gray.400"
-              bg="white"
-              width={'100%'}
-            />
-          </FormControl>
+          <Box width={{ base: '100%' }}>
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+              <FormControl>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  disabled={loading}
+                  value={personalInfo.first_name}
+                  onChange={
+                    (e) => setPersonalInfo(
+                      { ...personalInfo, first_name: e.target.value })
+                  }
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                  width={'100%'}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Surname</FormLabel>
+                <Input
+                  disabled={loading}
+                  value={personalInfo.last_name}
+                  onChange={(e) => setPersonalInfo({
+                    ...personalInfo,
+                    last_name: e.target.value
+                  })}
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                  width={'100%'}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  disabled={loading}
+                  value={personalInfo.email}
+                  onChange={(e) => setPersonalInfo({
+                    ...personalInfo,
+                    email: e.target.value
+                  })}
+                  borderWidth="0px"
+                  borderColor="gray.400"
+                  bg="white"
+                  width={'100%'}
+                />
+              </FormControl>
+            </SimpleGrid>
+          </Box>
           <Button
             disabled={loading}
             colorScheme="blue"
@@ -221,11 +231,25 @@ const ProfilePage: React.FC = () => {
             Update Password
           </Button>
 
-          {/* Billing information */}
-          <BillingInformationForm
-            disable={loading}
-            data={billingInfo} setData={setBillingInfo}
-          />
+          <Accordion allowToggle width={{ base: '100%' }}>
+            <AccordionItem>
+              <h2>
+                <AccordionButton ml={-4}>
+                  <Text fontSize="lg" fontWeight="bold">
+                    Billing Information
+                  </Text>
+                  <AccordionIcon/>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel p={0}>
+                {/* Billing information */}
+                <BillingInformationForm
+                  disable={loading}
+                  data={billingInfo} setData={setBillingInfo}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
           <Button colorScheme="orange" onClick={handleProfileUpdate} mt={4}>
             Update Profile
           </Button>

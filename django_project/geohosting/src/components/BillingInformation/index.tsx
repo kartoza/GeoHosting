@@ -22,9 +22,6 @@ export const BillingInformationForm: React.FC<Props> = (
 ) => {
   return (
     <Box marginTop={5} width={{ base: '100%' }}>
-      <Text fontSize="lg" fontWeight="bold" mb={4}>
-        Billing Information
-      </Text>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
         <FormControl>
           <FormLabel>Name</FormLabel>
