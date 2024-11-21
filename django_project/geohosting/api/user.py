@@ -75,11 +75,13 @@ class UserProfileView(APIView):
 
                 billing_data = data['billing_information']
                 country = billing_data.get('country', None)
+                country_obj = None
                 if country:
                     try:
-                        billing_data['country'] = Country.objects.get(
+                        country_obj = Country.objects.get(
                             name=country
                         )
+                        billing_data['country'] = country_obj
                     except Country.DoesNotExist:
                         return HttpResponseBadRequest(
                             f'Country {country} does not exist'
@@ -91,7 +93,7 @@ class UserProfileView(APIView):
                 )
                 if billing_serializer.is_valid():
                     billing_serializer.save()
-                    billing.country = billing_data['country']
+                    billing.country = country_obj
                     billing.save()
                     threading.Thread(
                         target=user.userprofile.post_to_erpnext

@@ -15,6 +15,11 @@ class UserBillingInformation(BillingInformation):
         User, on_delete=models.CASCADE
     )
 
+    @property
+    def customer_name(self):
+        """Return customer name."""
+        return self.user.userprofile.erpnext_code
+
 
 class UserProfile(ErpModel):
     """User profile model."""
@@ -56,6 +61,11 @@ class UserProfile(ErpModel):
             "customer_name": self.user.get_full_name(),
             "customer_group": CUSTOMER_GROUP
         }
+
+    def post_to_erpnext(self):
+        """Post data to erp."""
+        super().post_to_erpnext()
+        self.user.userbillinginformation.post_to_erpnext()
 
     def __str__(self):
         return self.user.username

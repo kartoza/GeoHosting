@@ -27,7 +27,7 @@ export const BillingInformationForm: React.FC<Props> = (
       </Text>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
         <FormControl>
-          <FormLabel>Institution Name</FormLabel>
+          <FormLabel>Name</FormLabel>
           <Input
             disabled={disable}
             value={data.name}

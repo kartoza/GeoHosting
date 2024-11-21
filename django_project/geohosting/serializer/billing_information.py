@@ -10,4 +10,4 @@ class BillingInformationSerializer(serializers.ModelSerializer):
 
     def get_country(self, obj: BillingInformation):
         """Return country of billing information."""
-        return obj.country.name
+        return obj.country_name
