@@ -32,6 +32,7 @@ import { returnAsString } from "../../../utils/helpers";
 import {
   BillingInformationForm
 } from "../../../components/BillingInformation";
+import CompanyList from "./CompanyList";
 
 const ProfilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -127,9 +128,13 @@ const ProfilePage: React.FC = () => {
 
   return (
     <Box p={0} mx="auto">
-      <Text fontSize="2xl" fontWeight="bold" mb={2} color={'#3e3e3e'}>
-        Profile
-      </Text>
+      <Box fontSize="2xl" fontWeight="bold" mb={2} color={'#3e3e3e'}
+           display='flex' alignItems='center' justifyContent='space-between'>
+        <Box>Profile</Box>
+        <Button colorScheme="orange" onClick={handleProfileUpdate}>
+          Update Profile
+        </Button>
+      </Box>
       <Box height="2px" bg="blue.500" width="100%" mb={8}/>
 
       <Flex
@@ -231,7 +236,7 @@ const ProfilePage: React.FC = () => {
             Update Password
           </Button>
 
-          <Accordion allowToggle width={{ base: '100%' }}>
+          <Accordion allowToggle width={{ base: '100%' }} defaultIndex={[0]}>
             <AccordionItem>
               <h2>
                 <AccordionButton ml={-4}>
@@ -243,16 +248,20 @@ const ProfilePage: React.FC = () => {
               </h2>
               <AccordionPanel p={0}>
                 {/* Billing information */}
-                <BillingInformationForm
-                  disable={loading}
-                  data={billingInfo} setData={setBillingInfo}
-                />
+                <Box marginTop={5} width={{ base: '100%' }}>
+                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+                    <BillingInformationForm
+                      disable={loading}
+                      data={billingInfo} setData={setBillingInfo}
+                    />
+                  </SimpleGrid>
+                </Box>
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
-          <Button colorScheme="orange" onClick={handleProfileUpdate} mt={4}>
-            Update Profile
-          </Button>
+
+          <Text mt={8} fontSize="lg" fontWeight="bold">Company List</Text>
+          <CompanyList/>
 
           {/* Reset password modal */}
           <ChangePasswordModal ref={resetPasswordModalRef}/>
