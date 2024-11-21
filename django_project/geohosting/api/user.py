@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from geohosting.models.country import Country
 from geohosting.serializer.user import (
     ChangePasswordSerializer,
     UserSerializer, UserBillingInformationSerializer
@@ -73,13 +74,25 @@ class UserProfileView(APIView):
                     pass
 
                 billing_data = data['billing_information']
+                country = billing_data.get('country', None)
+                if country:
+                    try:
+                        billing_data['country'] = Country.objects.get(
+                            name=country
+                        )
+                    except Country.DoesNotExist:
+                        return HttpResponseBadRequest(
+                            f'Country {country} does not exist'
+                        )
                 billing_data['user'] = user.pk
+                billing = user.userbillinginformation
                 billing_serializer = UserBillingInformationSerializer(
-                    user.userbillinginformation,
-                    data=billing_data
+                    billing, data=billing_data
                 )
                 if billing_serializer.is_valid():
                     billing_serializer.save()
+                    billing.country = billing_data['country']
+                    billing.save()
                     threading.Thread(
                         target=user.userprofile.post_to_erpnext
                     ).start()

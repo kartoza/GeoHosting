@@ -16,20 +16,21 @@ class Country(ErpModel):
     id_field_in_erpnext = 'name'
 
     name = models.CharField(
-        max_length=1028
+        max_length=256
     )
     code = models.CharField(
-        max_length=1028, null=True, blank=True
+        max_length=256, null=True, blank=True
     )
-    time_zones = models.CharField(
-        max_length=1028, null=True, blank=True
+    time_zones = models.TextField(
+        null=True, blank=True
     )
     country_name = models.CharField(
-        max_length=1028, null=True, blank=True
+        max_length=256, null=True, blank=True
     )
 
     class Meta:  # noqa: D106
         ordering = ('name',)
+        verbose_name_plural = 'Countries'
 
     def __str__(self):
         """Return country name."""

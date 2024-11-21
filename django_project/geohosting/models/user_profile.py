@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from geohosting.models._data_types import CUSTOMER_GROUP
-from geohosting.models.billing import BillingInformation
+from geohosting.models.billing_information import BillingInformation
 from geohosting.models.erp_model import ErpModel
 
 
