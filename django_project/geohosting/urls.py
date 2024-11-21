@@ -10,6 +10,7 @@ from geohosting.api.activity import (
 from geohosting.api.checkout import (
     CheckoutStripeSessionAPI, CheckoutPaystackSessionAPI
 )
+from geohosting.api.erp import ERPApiView
 from geohosting.api.instance import InstanceViewSet
 from geohosting.api.product import ProductViewSet
 from geohosting.api.sales_order import (
@@ -89,6 +90,9 @@ order_payment = [
 
 api = [
     path('webhook/', WebhookView.as_view(), name='webhook-api'),
+    path(
+        'sync-erp-data/', ERPApiView.as_view(), name='sync-with-erp'
+    ),
     path('fetch-products/',
          fetch_products,
          name='fetch_products'),

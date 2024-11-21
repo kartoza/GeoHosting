@@ -3,40 +3,16 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from geohosting.models._data_types import CUSTOMER_GROUP
+from geohosting.models.billing import BillingInformation
 from geohosting.models.erp_model import ErpModel
 
 
-class UserBillingInformation(models.Model):
+class UserBillingInformation(BillingInformation):
     """User billing information model."""
 
     user = models.OneToOneField(
         User, on_delete=models.CASCADE
-    )
-    name = models.TextField(
-        blank=True, null=True
-    )
-    address = models.TextField(
-        blank=True, null=True
-    )
-    postal_code = models.CharField(
-        max_length=256,
-        blank=True, null=True
-    )
-    country = models.CharField(
-        max_length=256,
-        blank=True, null=True
-    )
-    city = models.CharField(
-        max_length=256,
-        blank=True, null=True
-    )
-    region = models.CharField(
-        max_length=256,
-        blank=True, null=True
-    )
-    tax_number = models.CharField(
-        max_length=256,
-        blank=True, null=True
     )
 
 
@@ -64,10 +40,10 @@ class UserProfile(ErpModel):
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
         return {
-            "doctype": "Customer",
+            "doctype": self.doc_type,
             "customer_name": self.user.get_full_name(),
             "customer_type": "Individual",
-            "customer_group": "Commercial",
+            "customer_group": CUSTOMER_GROUP,
             "territory": "All Territories",
             "tax_category": "VAT"
         }
@@ -76,8 +52,9 @@ class UserProfile(ErpModel):
     def erp_payload_for_edit(self):
         """ERP Payload for edit request."""
         return {
-            "doctype": "Customer",
+            "doctype": self.doc_type,
             "customer_name": self.user.get_full_name(),
+            "customer_group": CUSTOMER_GROUP
         }
 
     def __str__(self):
