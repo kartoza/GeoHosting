@@ -1,5 +1,15 @@
-import React from 'react';
-import { Box, Link, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import {
+  Box,
+  Link,
+  Select,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr
+} from '@chakra-ui/react';
 import { PaginationPage } from "../PaginationPage";
 import {
   fetchSalesOrders,
@@ -81,6 +91,10 @@ const renderCards = (orders: SalesOrder[]) => {
 }
 /** Support List Page in pagination */
 const OrderList: React.FC = () => {
+  const [filters, setFilters] = useState({
+    order_status: ''
+  });
+
   return (
     <>
       <PaginationPage
@@ -90,6 +104,24 @@ const OrderList: React.FC = () => {
         stateKey='orders'
         searchPlaceholder='Search by id or app name'
         renderCards={renderCards}
+        additionalFilters={filters}
+        leftNavigation={
+          <Select
+            placeholder="Filter by status"
+            backgroundColor='white'
+            width={250}
+            value={filters.order_status}
+            onChange={
+              (e) => setFilters(
+                { ...filters, order_status: e.target.value }
+              )
+            }
+          >
+            <option value="Waiting Payment">Waiting Payment</option>
+            <option value="Waiting Deployment">Waiting Deployment</option>
+            <option value="Deployed">Deployed</option>
+          </Select>
+        }
       />
     </>
   );

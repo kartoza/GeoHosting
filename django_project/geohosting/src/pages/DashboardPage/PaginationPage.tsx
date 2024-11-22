@@ -20,6 +20,9 @@ interface Props {
   leftNavigation?: React.ReactElement;
   rightNavigation?: React.ReactElement;
   renderCards: (data: any[]) => React.ReactElement;
+
+  // additional filters
+  additionalFilters?: {};
 }
 
 let lastSearchTerm: string | null = null;
@@ -42,7 +45,8 @@ const RenderContent: React.FC<RenderContentProps> = (
 export const PaginationPage: React.FC<Props> = (
   {
     title, searchPlaceholder, stateKey, action, url,
-    leftNavigation, rightNavigation, renderCards
+    leftNavigation, rightNavigation, renderCards,
+    additionalFilters
   }
 ) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -86,7 +90,13 @@ export const PaginationPage: React.FC<Props> = (
     if (searchTerm) {
       _url.searchParams.set('q', searchTerm);
     }
-
+    if (additionalFilters) {
+      for (const [key, value] of Object.entries(additionalFilters)) {
+        if (value) {
+          _url.searchParams.set(key, value.toString());
+        }
+      }
+    }
     const urlRequest = _url.toString().replace(exampleDomain, '')
     if (force || session !== urlRequest) {
       dispatch(action(urlRequest));
@@ -121,6 +131,12 @@ export const PaginationPage: React.FC<Props> = (
     lastSearchTerm = searchTerm;
     debouncedSearchTerm(searchTerm);
   }, [searchTerm]);
+
+  /** When first dispatch created */
+  useEffect(() => {
+    setCurrentPage(1);
+    request()
+  }, [additionalFilters]);
 
   const data = listData?.results
   return (
