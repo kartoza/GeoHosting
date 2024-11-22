@@ -77,10 +77,7 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = (
         <Box>
           <Box
             fontSize={22} color={'black'} display='flex' alignItems='center'>
-            App name
-            <Box fontSize={16} ml={2}>
-              (Please provide a name for your app)
-            </Box>
+            Application name
           </Box>
         </Box>
         <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
@@ -90,7 +87,7 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = (
                 textAlign='right'
                 value={appName}
                 backgroundColor="white"
-                placeholder='Name may only contain lowercase letters, numbers or dashes.'
+                placeholder='Please provide a name for your application'
                 size='lg'
                 onChange={handleChange}
                 isInvalid={!!error}
@@ -114,9 +111,11 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = (
           <Box color='red' fontSize={14} minHeight={8}>{error}</Box>
           <Box>
             <Text
-              fontSize={12} color={'gray'} fontStyle={"italic"}
+              fontSize={13} color={'gray'} fontStyle={"italic"}
               marginTop={'1rem'}>
               <i>
+                Name may only contain lowercase letters, numbers or
+                dashes.<br/>
                 This will be used for subdomain and also application
                 name.
                 e.g: appname.geonode.kartoza.com
