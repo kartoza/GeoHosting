@@ -246,12 +246,16 @@ class Activity(models.Model):
                     id=product_cluster_id
                 )
                 cluster = product_cluster.cluster
+                try:
+                    company = self.sales_order.company
+                except Exception:
+                    company = None
                 instance = Instance.objects.create(
                     name=self.client_data['app_name'],
                     price=price,
                     cluster=cluster,
                     owner=self.triggered_by,
-                    company=self.sales_order.company
+                    company=company
                 )
                 self.instance = instance
                 self.save()
