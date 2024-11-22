@@ -41,7 +41,10 @@ interface CheckoutPageModalProps {
 }
 
 export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
-  { product, pkg, stripeUrl, paystackUrl, appName, companyName }
+  {
+    product, pkg, stripeUrl, paystackUrl,
+    appName, companyName
+  }
 ) => {
   /** For the payment component **/
   const columns = useBreakpointValue({ base: 1, md: 2 });
@@ -149,11 +152,13 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
         ref={stripePaymentModalRef}
         url={stripeUrl}
         appName={appName}
+        companyName={companyName}
       />
       <PaystackPaymentModal
         ref={paystackPaymentModalRef}
         url={paystackUrl}
         appName={appName}
+        companyName={companyName}
       />
     </>
   )

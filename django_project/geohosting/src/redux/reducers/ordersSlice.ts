@@ -22,6 +22,7 @@ export interface SalesOrder {
   product: Product,
   package: Package,
   app_name: string,
+  company_name: string,
   instance: Instance
 }
 

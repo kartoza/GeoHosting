@@ -250,7 +250,8 @@ class Activity(models.Model):
                     name=self.client_data['app_name'],
                     price=price,
                     cluster=cluster,
-                    owner=self.triggered_by
+                    owner=self.triggered_by,
+                    company=self.sales_order.company
                 )
                 self.instance = instance
                 self.save()
