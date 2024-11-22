@@ -1,12 +1,11 @@
 import React from 'react';
-import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Link, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { PaginationPage } from "../PaginationPage";
 import {
   fetchSalesOrders,
   SalesOrder
 } from "../../../redux/reducers/ordersSlice";
 import { checkCheckoutUrl } from "../../CheckoutPage/utils";
-import { useNavigate } from "react-router-dom";
 import { FaPrint } from "react-icons/fa";
 
 
@@ -16,35 +15,34 @@ interface CardProps {
 
 /** Card for order **/
 const Card: React.FC<CardProps> = ({ order }) => {
-  const navigate = useNavigate();
-  const handleRowClick = (salesOrderDetail: any) => {
-    if (salesOrderDetail && salesOrderDetail.id + '') {
-      checkCheckoutUrl(salesOrderDetail, navigate)
-    }
-  };
   return <Tr
     key={order.id}
-
-    style={{ cursor: 'pointer' }}
     background={"white"}
     _hover={{ bg: 'gray.100' }}
   >
-    <Td onClick={() => handleRowClick(order)}>
-      {order.erpnext_code}
+    <Td>
+      <Link
+        href={`/#${checkCheckoutUrl(order)}`}
+        target='_blank'
+        as="a"
+        color='blue.500'
+      >
+        {order.erpnext_code}
+      </Link>
     </Td>
-    <Td onClick={() => handleRowClick(order)}>
+    <Td>
       {order.package.name}
     </Td>
-    <Td onClick={() => handleRowClick(order)}>
+    <Td>
       {order.app_name}
     </Td>
-    <Td onClick={() => handleRowClick(order)}>
+    <Td>
       {order.order_status}
     </Td>
-    <Td onClick={() => handleRowClick(order)}>
+    <Td>
       {order.company_name}
     </Td>
-    <Td onClick={() => handleRowClick(order)}>
+    <Td>
       {new Date(order.date).toLocaleDateString()}</Td>
     <Td>
       {
@@ -65,7 +63,7 @@ const renderCards = (orders: SalesOrder[]) => {
   return <Table variant='simple'>
     <Thead>
       <Tr>
-        <Th>Order ID</Th>
+        <Th>ID</Th>
         <Th>Package</Th>
         <Th>App Name</Th>
         <Th>Status</Th>
@@ -90,7 +88,7 @@ const OrderList: React.FC = () => {
         url='/api/orders/'
         action={fetchSalesOrders}
         stateKey='orders'
-        searchPlaceholder='Search by order id'
+        searchPlaceholder='Search by id or app name'
         renderCards={renderCards}
       />
     </>

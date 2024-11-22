@@ -9,6 +9,7 @@ import TopNavigation from "../../components/DashboardPage/TopNavigation";
 import Pagination from "../../components/Pagination/Pagination";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import { Instance } from "../../redux/reducers/instanceSlice";
+import { urlParameters } from "../../utils/helpers";
 
 interface Props {
   title: string;
@@ -62,7 +63,8 @@ export const PaginationPage: React.FC<Props> = (
   } = useSelector((state: RootState) => state[stateKey]['update']);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
+  const parameters = urlParameters();
+  const [searchTerm, setSearchTerm] = useState(parameters['q'] ? parameters['q'] : '');
 
 
   /** Check app name */
@@ -130,7 +132,9 @@ export const PaginationPage: React.FC<Props> = (
 
         {/* Top navigation of dashboard */}
         <TopNavigation
-          onSearch={setSearchTerm} placeholder={searchPlaceholder}
+          initSearch={searchTerm}
+          onSearch={setSearchTerm}
+          placeholder={searchPlaceholder}
           leftElement={leftNavigation}
           rightElement={rightNavigation}
         />
