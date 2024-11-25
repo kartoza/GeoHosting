@@ -99,6 +99,36 @@ class SalesOrderPaymentMethod:
     PAYSTACK = 'Paystack'
 
 
+class SalesOrderErpCompany(models.Model):
+    """This is sales order company that will be pushed to ERP
+    based on payment method.
+    """
+
+    payment_method = models.CharField(
+        default=SalesOrderPaymentMethod.STRIPE,
+        choices=(
+            (
+                SalesOrderPaymentMethod.STRIPE,
+                SalesOrderPaymentMethod.STRIPE
+            ),
+            (
+                SalesOrderPaymentMethod.PAYSTACK,
+                SalesOrderPaymentMethod.PAYSTACK
+            )
+        ),
+        max_length=256,
+        help_text='The status of order.',
+        unique=True
+    )
+    erp_company = models.CharField(
+        max_length=256,
+        help_text='The erp company that will be used to push to ERP.'
+    )
+
+    class Meta:  # noqa: D106
+        verbose_name_plural = 'Sales order erp companies'
+
+
 class SalesOrder(ErpModel):
     """Sales Order."""
 
@@ -225,6 +255,14 @@ class SalesOrder(ErpModel):
                 customer = self.company.erpnext_code
         except Exception:
             pass
+
+        company = None
+        try:
+            company = SalesOrderErpCompany.objects.get(
+                payment_method=self.payment_method
+            ).erp_company
+        except SalesOrderErpCompany.DoesNotExist:
+            pass
         return {
             # status is not billed
             'billing_status': order_status_obj.billing_status,
@@ -249,7 +287,8 @@ class SalesOrder(ErpModel):
                     ),
                     'qty': 1.0,
                 }
-            ]
+            ],
+            'company': company
         }
 
     @property

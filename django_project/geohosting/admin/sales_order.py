@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.safestring import mark_safe
 
-from geohosting.models import Instance, SalesOrder
+from geohosting.models import Instance, SalesOrder, SalesOrderErpCompany
 
 
 @admin.action(description="Publish sales order")
@@ -51,3 +51,8 @@ class SalesOrderAdmin(admin.ModelAdmin):
             f'sales_order__id__exact={obj.id}" target="_blank"'
             f'>activities</a>'
         )
+
+
+@admin.register(SalesOrderErpCompany)
+class SalesOrderErpCompanyAdmin(admin.ModelAdmin):
+    list_display = ('payment_method', 'erp_company')
