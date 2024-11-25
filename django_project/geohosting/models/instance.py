@@ -12,6 +12,7 @@ from django.db import models
 from django.template.loader import render_to_string
 
 from core.models.preferences import Preferences
+from core.settings.base import FRONTEND_URL
 from geohosting.models.cluster import Cluster
 from geohosting.models.company import Company
 from geohosting.models.package import Package
@@ -91,6 +92,14 @@ class Instance(models.Model):
         self.status = InstanceStatus.OFFLINE
         self.save()
 
+    @property
+    def credentials(self):
+        """Return credentials."""
+        return get_credentials(
+            self.price.package_group.vault_url,
+            self.name
+        )
+
     def send_credentials(self):
         """Send credentials."""
         if self.status != InstanceStatus.ONLINE:
@@ -106,23 +115,21 @@ class Instance(models.Model):
             )
         else:
             try:
-                credentials = get_credentials(
+                get_credentials(
                     self.price.package_group.vault_url,
                     self.name
                 )
+                instance_url = (
+                    f"{FRONTEND_URL}#/dashboard?q={self.name}"
+                )
+                instance_url = instance_url.replace('#/#', '#')
                 html_content = render_to_string(
                     template_name='emails/GeoHosting_Product is Ready.html',
                     context={
                         'name': name,
                         'url': self.url,
+                        'instance_url': instance_url,
                         'app_name': self.name,
-                        'credentials': [
-                            {
-                                "key": key.lower().replace('_', ' ').title(),
-                                "value": value
-                            } for key, value in
-                            credentials.items()
-                        ],
                         'support_email': pref.support_email,
                     }
                 )
