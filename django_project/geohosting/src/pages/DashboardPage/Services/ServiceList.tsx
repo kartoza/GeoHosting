@@ -104,8 +104,10 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
       navigator.clipboard.writeText(JSON.stringify(response.data, null, 4))
         .then(() => {
           toast.success(
-            'Your credentials have been successfully copied to the clipboard.\n' +
             'Please ensure that you change your password within the application for security purposes.'
+          );
+          toast.success(
+            'Your credentials have been successfully copied to the clipboard.'
           );
         })
         .catch(() => {
