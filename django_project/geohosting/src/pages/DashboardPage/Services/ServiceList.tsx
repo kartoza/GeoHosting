@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { FaGear } from "react-icons/fa6";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { PaginationPage } from "../PaginationPage";
 import {
   fetchUserInstances,
@@ -23,7 +24,6 @@ import { FaLink } from "react-icons/fa";
 import Geoserver from "../../../assets/images/GeoServer.svg";
 import Geonode from "../../../assets/images/GeoNode.svg";
 import { headerWithToken } from "../../../utils/helpers";
-import { toast } from "react-toastify";
 
 const spin = keyframes`
   from {
