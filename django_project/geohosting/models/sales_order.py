@@ -99,36 +99,6 @@ class SalesOrderPaymentMethod:
     PAYSTACK = 'Paystack'
 
 
-class SalesOrderErpCompany(models.Model):
-    """This is sales order company that will be pushed to ERP
-    based on payment method.
-    """
-
-    payment_method = models.CharField(
-        default=SalesOrderPaymentMethod.STRIPE,
-        choices=(
-            (
-                SalesOrderPaymentMethod.STRIPE,
-                SalesOrderPaymentMethod.STRIPE
-            ),
-            (
-                SalesOrderPaymentMethod.PAYSTACK,
-                SalesOrderPaymentMethod.PAYSTACK
-            )
-        ),
-        max_length=256,
-        help_text='The status of order.',
-        unique=True
-    )
-    erp_company = models.CharField(
-        max_length=256,
-        help_text='The erp company that will be used to push to ERP.'
-    )
-
-    class Meta:  # noqa: D106
-        verbose_name_plural = 'Sales order erp companies'
-
-
 class SalesOrder(ErpModel):
     """Sales Order."""
 
@@ -245,6 +215,7 @@ class SalesOrder(ErpModel):
     @property
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
+        from geohosting.models.erp_company import ErpCompany
         user_profile = UserProfile.objects.get(
             user=self.customer
         )
@@ -258,11 +229,12 @@ class SalesOrder(ErpModel):
 
         company = None
         try:
-            company = SalesOrderErpCompany.objects.get(
+            company = ErpCompany.objects.get(
                 payment_method=self.payment_method
-            ).erp_company
-        except SalesOrderErpCompany.DoesNotExist:
+            ).erpnext_code
+        except ErpCompany.DoesNotExist:
             pass
+
         return {
             # status is not billed
             'billing_status': order_status_obj.billing_status,

@@ -7,15 +7,15 @@ GeoHosting.
 
 from django.test import TestCase
 
-from geohosting.factories import SalesOrderErpCompanyFactory
-from geohosting.models.sales_order import SalesOrderErpCompany
+from geohosting.factories import ErpCompanyFactory
+from geohosting.models.erp_company import ErpCompany
 
 
-class SalesOrderErpCompanyCRUDTest(TestCase):
-    """SalesOrderErpCompany test case."""
+class ErpCompanyCRUDTest(TestCase):
+    """ErpCompany test case."""
 
-    Factory = SalesOrderErpCompanyFactory
-    Model = SalesOrderErpCompany
+    Factory = ErpCompanyFactory
+    Model = ErpCompany
 
     def test_create_object(self):
         """Test create object."""
@@ -32,11 +32,11 @@ class SalesOrderErpCompanyCRUDTest(TestCase):
     def test_update_object(self):
         """Test update object."""
         obj = self.Factory()
-        new_company = "Updated Name"
-        obj.erp_company = new_company
+        new_name = "Updated Name"
+        obj.name = new_name
         obj.save()
         updated_obj = self.Model.objects.get(id=obj.id)
-        self.assertEqual(updated_obj.erp_company, new_company)
+        self.assertEqual(updated_obj.name, new_name)
 
     def test_delete_object(self):
         """Test delete object."""
