@@ -8,6 +8,7 @@ import {
   keyframes,
   Link,
   Select,
+  Spinner,
   Text,
   useBreakpointValue
 } from '@chakra-ui/react';
@@ -22,6 +23,7 @@ import { FaLink } from "react-icons/fa";
 import Geoserver from "../../../assets/images/GeoServer.svg";
 import Geonode from "../../../assets/images/GeoNode.svg";
 import { headerWithToken } from "../../../utils/helpers";
+import { toast } from "react-toastify";
 
 const spin = keyframes`
   from {
@@ -45,6 +47,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
   const Placeholder = 'https://via.placeholder.com/60';
 
   const [instance, setInstance] = useState(instanceInput);
+  const [fetchingCredentials, setFetchingCredentials] = useState<boolean>(false);
 
   // Function to determine the correct image based on package name
   const getImageForPackage = (packageName: string) => {
@@ -84,6 +87,36 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
       }
     )()
   }
+
+  /** Fetch credential **/
+  const fetchCredentials = async () => {
+    if (fetchingCredentials) {
+      return
+    }
+    setFetchingCredentials(true)
+    try {
+      const response = await axios.get(
+        `/api/instances/${instance.id}/credential/`,
+        {
+          headers: headerWithToken()
+        }
+      );
+      navigator.clipboard.writeText(JSON.stringify(response.data, null, 4))
+        .then(() => {
+          toast.success(
+            'Your credentials have been successfully copied to the clipboard.\n' +
+            'Please ensure that you change your password within the application for security purposes.'
+          );
+        })
+        .catch(() => {
+          toast.error('Failed to get credentials, please retry.');
+        });
+    } catch (err) {
+      toast.error('Failed to get credentials, please retry.');
+    }
+    setFetchingCredentials(false)
+  }
+
   /** Check app name */
   useEffect(() => {
     setTimeout(() => {
@@ -216,6 +249,20 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
           </GridItem>
         </Grid>
       )
+    }
+    {
+      instance.status == 'Online' &&
+      <Box
+        width='100%' color='yellow.500' mt={4} justifyContent='center'
+        cursor='pointer' display='flex' alignItems='center'
+        onClick={fetchCredentials}
+        _hover={{ opacity: 0.8 }}
+      >
+        Get credentials
+        <>
+          {fetchingCredentials && <Spinner width={4} height={4} ml={1}/>}
+        </>
+      </Box>
     }
   </Box>
 }

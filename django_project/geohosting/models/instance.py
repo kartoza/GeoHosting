@@ -95,10 +95,16 @@ class Instance(models.Model):
     @property
     def credentials(self):
         """Return credentials."""
-        return get_credentials(
-            self.price.package_group.vault_url,
-            self.name
+        credentials = {
+            'USERNAME': 'admin'
+        }
+        credentials.update(
+            get_credentials(
+                self.price.package_group.vault_url,
+                self.name
+            )
         )
+        return credentials
 
     def send_credentials(self):
         """Send credentials."""
