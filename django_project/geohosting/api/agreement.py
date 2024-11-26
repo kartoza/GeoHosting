@@ -1,6 +1,7 @@
 import io
 
 from django.http import FileResponse
+from markdown_pdf import MarkdownPdf, Section
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -58,13 +59,17 @@ class MyAgreementViewSet(
                 filename=f'{instance.name}.pdf'
             )
 
-        buffer = io.BytesIO()
-        buffer.write(
-            agreement.template.encode('utf-8')
+        css = (
+            "table {border-collapse: collapse;}"
+            "th, td {border: 1px solid gray; padding: 5px}"
         )
-        buffer.seek(0)
+        pdf = MarkdownPdf(toc_level=2)
+        pdf.add_section(Section(agreement.template), user_css=css)
+        pdf_buffer = io.BytesIO()
+        pdf.save(pdf_buffer)
+        pdf_buffer.seek(0)
         return FileResponse(
-            buffer,
+            pdf_buffer,
             as_attachment=True,
-            filename=f'{instance.name}.md'
+            filename=f'{instance.name}.pdf'
         )

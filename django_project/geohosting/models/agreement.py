@@ -37,6 +37,7 @@ class AgreementDetail(models.Model):
         blank=True, null=True
     )
     file = models.FileField(
+        upload_to='agreements/',
         blank=True, null=True
     )
     version = models.IntegerField(
@@ -77,6 +78,11 @@ class SalesOrderAgreement(models.Model):
     def __str__(self):
         """Return string representation."""
         return self.name
+
+    @property
+    def content(self):
+        """Return content of sales order agreement."""
+        return self.agreement_detail.template
 
 
 @receiver(post_save, sender=SalesOrderAgreement)

@@ -34,7 +34,7 @@ const Card: React.FC<CardProps> = ({ agreement }) => {
           headers: headerWithToken()
         }
       );
-      const filename = agreement.name + (agreement.file ? '.pdf' : '.md')
+      const filename = agreement.name + '.pdf'
       const blob = new Blob([response.data]);
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
