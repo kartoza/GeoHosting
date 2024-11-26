@@ -4,10 +4,10 @@ GeoHosting.
 
 .. note:: Instance model.
 """
-
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 from geohosting.models.sales_order import SalesOrder
 
@@ -66,6 +66,9 @@ class SalesOrderAgreement(models.Model):
     )
     name = models.CharField(
         max_length=256, null=True, blank=True
+    )
+    created_at = models.DateTimeField(
+        default=timezone.now
     )
 
     class Meta:  # noqa
