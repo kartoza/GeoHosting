@@ -84,13 +84,13 @@ def fetch_products_from_erpnext():
             desc = parse_description(description)
             if not desc.get('short_description'):
                 continue
-            product_detail = fetch_erpnext_detail_data(
-                f'{doctype}/{name}'
-            )
 
             # -----------------------
             # Extract attributes
-            attributes = product_detail.get('attributes', [])
+            _product_detail = fetch_erpnext_detail_data(
+                f'{doctype}/{name}'
+            )
+            attributes = _product_detail.get('attributes', [])
             host_attributes = {}
             for attribute in attributes:
                 if 'host specifications' in attribute.get('attribute').lower():
