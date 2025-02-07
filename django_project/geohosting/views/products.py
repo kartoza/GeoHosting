@@ -74,13 +74,38 @@ def fetch_products_from_erpnext():
 
     for product_detail in product_list:
         name = product_detail.get('item_name', '')
+
+        # Currently we focus on DO
         if name.endswith('DO'):
             packages.append(product_detail)
+
         description = product_detail.get('description', None)
         if description:
             desc = parse_description(description)
             if not desc.get('short_description'):
                 continue
+            product_detail = fetch_erpnext_detail_data(
+                f'{doctype}/{name}'
+            )
+
+            # -----------------------
+            # Extract attributes
+            attributes = product_detail.get('attributes', [])
+            host_attributes = {}
+            for attribute in attributes:
+                if 'host specifications' in attribute.get('attribute').lower():
+                    attribute_detail = fetch_erpnext_detail_data(
+                        f'Item Attribute/{attribute["attribute"]}'
+                    )
+                    if attribute_detail:
+                        for value in attribute_detail[
+                            'item_attribute_values'
+                        ]:
+                            host_attributes[value['abbr'].lower()] = value[
+                                'attribute_value'
+                            ]
+            product_detail['host_attributes'] = host_attributes
+            # -----------------------
             products.append(product_detail)
 
             # Extracting data from the product_detail dictionary
@@ -122,31 +147,39 @@ def fetch_products_from_erpnext():
                         'value': value,
                     }
                 )
-                metadata.value = metadata.value.strip()
-                metadata.save()
 
     # Get pricing
     for package_detail in packages:
-        package_detail = fetch_erpnext_detail_data(
-            f'{doctype}/{package_detail.get("name", "")}')
+        name = package_detail.get("name", "")
+        package_detail = fetch_erpnext_detail_data(f'{doctype}/{name}')
+        product_name = package_detail.get('variant_of', '')
+        try:
+            product_detail = [
+                product
+                for product in products if product['name'] == product_name
+            ][0]
+        except IndexError:
+            continue
+
         if package_detail:
-            attributes = package_detail.get('attributes', [])
             spec = {}
-            for attribute in attributes:
-                if 'host specifications' in attribute.get('attribute').lower():
+            for key, value in product_detail.get(
+                    'host_attributes', {}
+            ).items():
+                if key in name.lower():
                     spec = {
-                        'spec': attribute.get('attribute_value').split(';')
+                        'spec': [spec.strip() for spec in value.split(';')]
                     }
             pricing_list = fetch_erpnext_detail_data(
                 'Item Price', {
-                    'item_code': package_detail.get("name", "")
+                    'item_code': name
                 }
             )
             product = Product.objects.get(
-                upstream_id=package_detail.get('variant_of', '')
+                upstream_id=product_name
             )
             package_group, _ = PackageGroup.objects.update_or_create(
-                name=package_detail.get("name", "")
+                name=name
             )
             for item_price in pricing_list:
                 currency = item_price.get('currency', 'USD')
