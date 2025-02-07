@@ -115,13 +115,15 @@ def fetch_products_from_erpnext():
 
             # Save all description to product metadata
             for key, value in desc.items():
-                ProductMetadata.objects.update_or_create(
+                metadata, _ = ProductMetadata.objects.update_or_create(
                     product=product_obj,
                     key=key,
                     defaults={
                         'value': value,
                     }
                 )
+                metadata.value = metadata.value.strip()
+                metadata.save()
 
     # Get pricing
     for package_detail in packages:
