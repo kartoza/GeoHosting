@@ -96,8 +96,6 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
     }
   }
 
-  console.log(agreementIds)
-
   return (
     <>
       <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
@@ -177,6 +175,7 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = (
       />
       <AgreementModal
         ref={agreementModalRef}
+        companyName={companyName}
         isDone={(agreementIds) => {
           setAgreementIds(agreementIds)
           checkout()

@@ -1,5 +1,6 @@
 import React, {
   forwardRef,
+  memo,
   useEffect,
   useImperativeHandle,
   useState
@@ -21,25 +22,161 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
+import rehypeRaw from "rehype-raw";
 import { headerWithToken } from "../../../utils/helpers";
 
 import '../../../assets/styles/Markdown.css';
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { fetchUserProfile } from "../../../redux/reducers/profileSlice";
 
 interface Agreement {
   id: number,
   name: string;
   template: string;
-  file: string;
   signed?: boolean;
+  input?: object;
+
+  // We open this after able to change the pdf
+  // file: string;
 }
 
 interface Props {
+  companyName?: string | null;
   isDone: (agreementsIds: number[]) => void;
 }
 
+const MarkdownInput = ({ children, name, onChange }) => {
+  return (
+    <td>
+      {
+        children.split(name).map((part, index) => (
+          <React.Fragment key={index}>
+            {index > 0 &&
+              <input
+                type="text" id={name.replace(/[\s\[\]]/g, '')}
+                onChange={(evt) => onChange(evt.target.value)}
+              />}
+            {part}
+          </React.Fragment>
+        ))
+      }
+    </td>
+  );
+}
+const MarkdownRenderer = memo(
+  ({ content, onChange }: {
+    content: string;
+    onChange: (id: string, value: string) => void
+  }) => {
+    return (
+      <Markdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
+        components={{
+          td: ({ children }) => {
+            if (typeof children === "string") {
+              if (children.includes("[Representative Name]")) {
+                onChange('Representative Name', '')
+                return <MarkdownInput
+                  children={children}
+                  name={"[Representative Name]"}
+                  onChange={(val) => onChange('Representative Name', val)}
+                />
+              } else if (children.includes("[Title]")) {
+                onChange('Title', '')
+                return <MarkdownInput
+                  children={children} name={"[Title]"}
+                  onChange={(val) => onChange('Title', val)}
+                />
+              }
+            }
+            return <td>{children}</td>;
+          },
+        }}
+      >
+        {content}
+      </Markdown>
+    );
+  },
+  (prevProps, nextProps) => prevProps.content === nextProps.content
+);
+
+interface AgreementMarkdownProps {
+  unassignAgreement: Agreement;
+  onClose: () => void;
+  onAgree: (setInput: object) => void
+}
+
+export const AgreementMarkdown = (
+  { unassignAgreement, onClose, onAgree }: AgreementMarkdownProps
+) => {
+  const [input, setInput] = useState<object>({});
+
+  // Check input
+  let allInputFilled = true
+  if (input) {
+    Object.entries(input).forEach(([key, value]) => {
+      if (!value) {
+        allInputFilled = false
+      }
+    });
+  }
+
+  return <Box padding={8} paddingTop={0}>
+    <Box className='Markdown'>
+      <MarkdownRenderer
+        content={unassignAgreement.template}
+        onChange={
+          (id, value) => {
+            input[id] = value
+            console.log({ ...input })
+            setInput({ ...input })
+          }
+        }
+      />
+    </Box>
+    <HStack justifyContent='space-between'>
+      <Button
+        mt={4}
+        colorScheme='red'
+        size="lg"
+        onClick={() => onClose()}
+      >
+        Decline
+      </Button>
+      <Button
+        mt={4}
+        colorScheme='blue'
+        size="lg"
+        isDisabled={!allInputFilled}
+        onClick={() => {
+          onAgree(input)
+        }}
+      >
+        Accept
+      </Button>
+    </HStack>
+  </Box>
+}
+
 export const AgreementModal = forwardRef(
-  ({ isDone }: Props, ref
+  ({ companyName, isDone }: Props, ref
   ) => {
+    const dispatch: AppDispatch = useDispatch();
+    const {
+      user,
+      loading,
+      error
+    } = useSelector((state: RootState) => state.profile);
+
+    // Get first name and last name
+    let name = user ? user.first_name + ' ' + user.last_name : ''
+
+    useEffect(() => {
+      dispatch(fetchUserProfile());
+    }, [dispatch]);
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [agreements, setAgreements] = useState<Agreement[] | null>(null);
 
@@ -55,7 +192,18 @@ export const AgreementModal = forwardRef(
                   headers: headerWithToken()
                 }
               );
-              setAgreements(response.data.results)
+              const results = response.data.results;
+              results.map((result: Agreement) => {
+                result.template = result.template
+                  .replaceAll(
+                    '[Client Name]',
+                    companyName ? companyName : name
+                  ).replaceAll(
+                    '[Date]',
+                    new Date().toISOString().split('T')[0]
+                  )
+              })
+              setAgreements(results)
             } catch (error) {
               toast.error("There is error on loading term and condition.");
               onClose()
@@ -96,54 +244,30 @@ export const AgreementModal = forwardRef(
         <ModalHeader>{unassignAgreement?.name}</ModalHeader>
         <ModalBody padding='0' minHeight={300}>
           {
-            !agreements ?
+            agreements === null || loading ?
               <Box
                 position={'absolute'} display={'flex'}
                 justifyContent={'center'} width={'100%'} height={'100%'}
                 alignItems={'center'}>
                 <Spinner size='xl'/>
-              </Box> : unassignAgreement ? <Box padding={8}>
-                <Box className='Markdown'>
-                  {
-                    unassignAgreement.file ?
-                      <iframe
-                        src={unassignAgreement.file}
-                        width="100%"
-                        height="600px"
-                        style={{ border: "none" }}
-                        title="PDF Viewer"
-                      /> :
-                      <Markdown remarkPlugins={[remarkGfm]}>
-                        {unassignAgreement.template}
-                      </Markdown>
-                  }
-                </Box>
-                <HStack justifyContent='space-between'>
-                  <Button
-                    mt={4}
-                    colorScheme='red'
-                    size="lg"
-                    onClick={() => onClose()}
-                  >
-                    Decline
-                  </Button>
-                  <Button
-                    mt={4}
-                    colorScheme='blue'
-                    size="lg"
-                    onClick={() => {
-                      setAgreements(agreements.map(agreement => {
+              </Box> : error ? <Box>
+                There is error on fetching agreement, please refresh
+              </Box> : unassignAgreement ?
+                <AgreementMarkdown
+                  unassignAgreement={unassignAgreement}
+                  onClose={onClose}
+                  onAgree={(input) => {
+                    setAgreements(
+                      agreements.map(agreement => {
                         if (agreement.id === unassignAgreement?.id) {
-                          agreement.signed = true
+                          unassignAgreement.input = input
+                          unassignAgreement.signed = true
                         }
                         return agreement
-                      }))
-                    }}
-                  >
-                    Accept
-                  </Button>
-                </HStack>
-              </Box> : null
+                      })
+                    )
+                  }}
+                /> : null
           }
         </ModalBody>
       </ModalContent>
