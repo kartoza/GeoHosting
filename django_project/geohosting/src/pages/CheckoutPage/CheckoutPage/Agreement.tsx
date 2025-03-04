@@ -26,19 +26,20 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from "rehype-raw";
 import SignatureCanvas from "react-signature-canvas";
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { headerWithToken } from "../../../utils/helpers";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { fetchUserProfile } from "../../../redux/reducers/profileSlice";
 
 import '../../../assets/styles/Markdown.css';
 
-interface Agreement {
+export interface Agreement {
   id: number,
   name: string;
   template: string;
   signed?: boolean;
-  input?: object;
+  blob?: Blob;
 
   // We open this after able to change the pdf
   // file: string;
@@ -46,7 +47,7 @@ interface Agreement {
 
 interface Props {
   companyName?: string | null;
-  isDone: (agreementsIds: number[]) => void;
+  isDone: (agreements: Agreement[]) => void;
 }
 
 const MarkdownInput = ({ children, name, onChange }) => {
@@ -158,13 +159,14 @@ const MarkdownRenderer = memo(
 interface AgreementMarkdownProps {
   unassignAgreement: Agreement;
   onClose: () => void;
-  onAgree: (setInput: object) => void
+  onAgree: (blob: Blob) => void
 }
 
 export const AgreementMarkdown = (
   { unassignAgreement, onClose, onAgree }: AgreementMarkdownProps
 ) => {
   const [input, setInput] = useState<object>({});
+  const [generating, setGenerating] = useState<boolean>(false);
 
   // Check input
   let allInputFilled = true
@@ -176,8 +178,38 @@ export const AgreementMarkdown = (
     });
   }
 
-  return <Box padding={8} paddingTop={0}>
-    <Box className='Markdown'>
+  /** Generate pdf blob **/
+  const generatePdfBlob = async (element) => {
+    const canvas = await html2canvas(element, { scale: 2 }); // Increase scale for better quality
+    const imgData = canvas.toDataURL('image/png');
+
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = 210; // A4 width in mm
+    const pageHeight = 297; // A4 height in mm
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let yPosition = 0;
+
+    while (yPosition < imgHeight) {
+      pdf.addImage(imgData, 'PNG', 0, -yPosition, imgWidth, imgHeight);
+      yPosition += pageHeight;
+
+      if (yPosition < imgHeight) {
+        pdf.addPage();
+      }
+    }
+
+    return pdf.output('blob');
+  };
+
+  // @ts-ignore
+  return <Box>
+    <Box id="Markdown"
+         className='Markdown'
+         padding={8}
+         paddingTop={0}
+    >
       <MarkdownRenderer
         content={unassignAgreement.template}
         onChange={
@@ -188,7 +220,7 @@ export const AgreementMarkdown = (
         }
       />
     </Box>
-    <HStack justifyContent='space-between'>
+    <HStack justifyContent='space-between' padding={8} paddingTop={0}>
       <Button
         mt={4}
         colorScheme='red'
@@ -201,10 +233,16 @@ export const AgreementMarkdown = (
         mt={4}
         colorScheme='blue'
         size="lg"
-        isDisabled={!allInputFilled}
-        onClick={() => {
-          onAgree(input)
-        }}
+        isDisabled={!allInputFilled || generating}
+        onClick={
+          async () => {
+            setGenerating(true)
+            const element = document.getElementById('Markdown'); // Target element
+            const blob = await generatePdfBlob(element);
+            setGenerating(false)
+            onAgree(blob)
+          }
+        }
       >
         Accept
       </Button>
@@ -277,7 +315,7 @@ export const AgreementModal = forwardRef(
       if (isOpen && agreements) {
         if (!unassignAgreement) {
           onClose()
-          isDone(agreements.map(agreement => agreement.id))
+          isDone(agreements)
         }
       }
     }, [agreements]);
@@ -308,11 +346,11 @@ export const AgreementModal = forwardRef(
                 <AgreementMarkdown
                   unassignAgreement={unassignAgreement}
                   onClose={onClose}
-                  onAgree={(input) => {
+                  onAgree={(blob) => {
                     setAgreements(
                       agreements.map(agreement => {
                         if (agreement.id === unassignAgreement?.id) {
-                          unassignAgreement.input = input
+                          unassignAgreement.blob = blob
                           unassignAgreement.signed = true
                         }
                         return agreement
