@@ -95,7 +95,8 @@
   border: 1px solid gray;
 }
 
-.Markdown input {
+.Markdown input,
+.Markdown canvas {
   border: 1px solid #eee;
   width: 100%;
   background-color: rgba(200, 200, 200, 0.2);

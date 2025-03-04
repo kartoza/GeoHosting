@@ -3,6 +3,7 @@ import React, {
   memo,
   useEffect,
   useImperativeHandle,
+  useRef,
   useState
 } from 'react';
 import {
@@ -19,16 +20,18 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from "rehype-raw";
-import { headerWithToken } from "../../../utils/helpers";
+import SignatureCanvas from "react-signature-canvas";
 
-import '../../../assets/styles/Markdown.css';
-import { useDispatch, useSelector } from "react-redux";
+import { headerWithToken } from "../../../utils/helpers";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { fetchUserProfile } from "../../../redux/reducers/profileSlice";
+
+import '../../../assets/styles/Markdown.css';
 
 interface Agreement {
   id: number,
@@ -64,6 +67,51 @@ const MarkdownInput = ({ children, name, onChange }) => {
     </td>
   );
 }
+
+const SignaturePad = ({ onChange }) => {
+  const sigCanvas = useRef(null);
+  const [imageURL, setImageURL] = useState(null);
+
+  /** Clear signature */
+  const clearSignature = () => {
+    // @ts-ignore
+    sigCanvas.current.clear();
+    setImageURL(null);
+    onChange(null)
+  };
+
+  /** The signature end **/
+  const handleSignatureEnd = () => {
+    if (!sigCanvas.current) {
+      return
+    }
+    // @ts-ignore
+    const url = sigCanvas.current.getCanvas().toDataURL("image/png")
+    setImageURL(url);
+    onChange(url)
+  };
+
+  return <td>
+    <Box>Signature:</Box>
+    <SignatureCanvas
+      ref={sigCanvas}
+      penColor="black"
+      onEnd={handleSignatureEnd}
+      canvasProps={{
+        width: 300,
+        height: 100,
+        className: "border rounded-lg shadow-md",
+      }}
+    />
+    <Box
+      style={{ fontSize: "0.8rem", cursor: "pointer" }}
+      onClick={clearSignature}
+    >
+      Clear
+    </Box>
+  </td>
+}
+
 const MarkdownRenderer = memo(
   ({ content, onChange }: {
     content: string;
@@ -88,6 +136,11 @@ const MarkdownRenderer = memo(
                 return <MarkdownInput
                   children={children} name={"[Title]"}
                   onChange={(val) => onChange('Title', val)}
+                />
+              } else if (children.includes("[Signature]")) {
+                onChange('Signature', '')
+                return <SignaturePad
+                  onChange={(val) => onChange('Signature', val)}
                 />
               }
             }
@@ -130,7 +183,6 @@ export const AgreementMarkdown = (
         onChange={
           (id, value) => {
             input[id] = value
-            console.log({ ...input })
             setInput({ ...input })
           }
         }
