@@ -16,6 +16,7 @@ from core.models.preferences import Preferences
 from core.settings.base import FRONTEND_URL
 from geohosting.models.cluster import Cluster
 from geohosting.models.company import Company
+from geohosting.models.log import LogTracker
 from geohosting.models.package import Package
 from geohosting.models.product import ProductCluster
 from geohosting.utils.vault import get_credentials
@@ -89,6 +90,7 @@ class Instance(models.Model):
         if self.status == InstanceStatus.STARTING_UP:
             return
 
+        LogTracker.error(self, 'Server: STARTING UP')
         self.status = InstanceStatus.STARTING_UP
         self.save()
 
@@ -100,6 +102,7 @@ class Instance(models.Model):
         if self.status == InstanceStatus.ONLINE:
             return
 
+        LogTracker.error(self, 'Server: ONLINE')
         self.status = InstanceStatus.ONLINE
         self.save()
 
@@ -108,6 +111,7 @@ class Instance(models.Model):
         if self.status == InstanceStatus.OFFLINE:
             return
 
+        LogTracker.error(self, 'Server: OFFLINE')
         self.status = InstanceStatus.OFFLINE
         self.save()
 
@@ -117,17 +121,21 @@ class Instance(models.Model):
         credentials = {
             'USERNAME': 'admin'
         }
-        credentials.update(
-            get_credentials(
-                self.price.package_group.vault_url,
-                self.name
+        try:
+            credentials.update(
+                get_credentials(
+                    self.price.package_group.vault_url,
+                    self.name
+                )
             )
-        )
-        return credentials
+            LogTracker.success(self, f'Get credential')
+            return credentials
+        except Exception as e:
+            LogTracker.error(self, f'Get credential : {e}')
+            raise e
 
     def checking_server(self):
         """Check server is online or offline."""
-        print(self.url)
         if self.status == InstanceStatus.DEPLOYING:
             return
 
@@ -135,6 +143,9 @@ class Instance(models.Model):
         if response.status_code == 200:
             self.online()
         else:
+            LogTracker.error(
+                self, f'Server: {response.status_code} - {response.text}'
+            )
             self.offline()
 
     def send_credentials(self):
@@ -170,7 +181,9 @@ class Instance(models.Model):
                         'support_email': pref.support_email,
                     }
                 )
-            except Exception:
+                LogTracker.success(self, f'Get credential')
+            except Exception as e:
+                LogTracker.error(self, f'Get credential : {e}')
                 html_content = render_to_string(
                     template_name='emails/GeoHosting_Product is Error.html',
                     context={

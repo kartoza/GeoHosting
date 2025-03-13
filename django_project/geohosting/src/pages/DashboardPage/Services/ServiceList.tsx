@@ -230,23 +230,17 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
 
     {/* Package details */}
     {
-      instance.package.feature_list && (
+      instance.package.feature_list?.spec && (
         <Grid templateColumns={`repeat(${columns}, 1fr)`}>
-          <GridItem>
-            <Text fontSize="sm">
-              Storage: {instance.package.feature_list.spec[0]?.split(' ')[0]}
-            </Text>
-          </GridItem>
-          <GridItem>
-            <Text fontSize="sm" textAlign="right">
-              Memory: {instance.package.feature_list.spec[2]?.split(' ')[1]}
-            </Text>
-          </GridItem>
-          <GridItem>
-            <Text fontSize="sm">
-              CPUs: {instance.package.feature_list.spec[1]?.split(' ')[2]}
-            </Text>
-          </GridItem>
+          {
+            instance.package.feature_list.spec.map(
+              (feature: string, idx: number) => <GridItem>
+                <Text fontSize="sm" textAlign={idx % 2 != 0 ? 'right' : 'left'}>
+                  {feature}
+                </Text>
+              </GridItem>
+            )
+          }
         </Grid>
       )
     }

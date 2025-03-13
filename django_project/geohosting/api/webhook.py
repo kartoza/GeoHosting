@@ -24,9 +24,7 @@ class WebhookView(APIView):
     def post(self, request):
         """Create new instance."""
         data = request.data
-        webhook = WebhookEvent.objects.create(
-            data=data,
-        )
+        webhook = WebhookEvent.objects.create(data=data)
         try:
             app_name = data['app_name'].replace('devops-', '')
             activities = Activity.objects.filter(
