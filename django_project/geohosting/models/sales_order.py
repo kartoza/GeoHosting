@@ -15,7 +15,9 @@ from geohosting.utils.erpnext import (
     add_erp_next_comment, download_erp_file
 )
 from geohosting.utils.paystack import verify_paystack_payment
-from geohosting.utils.stripe import get_checkout_detail
+from geohosting.utils.stripe import (
+    get_checkout_detail, cancel_subscription
+)
 from geohosting.validators import name_validator, app_name_validator
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -371,3 +373,10 @@ class SalesOrder(ErpModel):
                 )
             else:
                 form.save()
+
+    def cancel_subscription(self):
+        """Cancel subscription."""
+        if not self.payment_id:
+            return
+        if self.payment_method == SalesOrderPaymentMethod.STRIPE:
+            cancel_subscription(self.payment_id)

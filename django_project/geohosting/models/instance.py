@@ -20,6 +20,7 @@ from geohosting.models.log import LogTracker
 from geohosting.models.package import Package
 from geohosting.models.product import ProductCluster
 from geohosting.utils.vault import get_credentials
+from geohosting.validators import app_name_validator
 
 User = get_user_model()
 
@@ -60,7 +61,7 @@ class Instance(models.Model):
             (InstanceStatus.ONLINE, InstanceStatus.ONLINE),
             (InstanceStatus.OFFLINE, InstanceStatus.OFFLINE),
             (InstanceStatus.TERMINATING, InstanceStatus.TERMINATING),
-            (InstanceStatus.TERMINATED, InstanceStatus.TERMINATING)
+            (InstanceStatus.TERMINATED, InstanceStatus.TERMINATED)
         )
     )
     company = models.ForeignKey(
@@ -76,7 +77,13 @@ class Instance(models.Model):
         return self.name
 
     class Meta:  # noqa
-        unique_together = ('name', 'cluster')
+        unique_together = ('name', 'cluster', 'status')
+
+    def save(self, *args, **kwargs):
+        """Save the instance"""
+        if not self.pk:
+            app_name_validator(self.name)
+        super().save(*args, **kwargs)
 
     @property
     def is_lock(self):
@@ -126,7 +133,7 @@ class Instance(models.Model):
     def offline(self):
         """Make instance offline."""
         if self.status == InstanceStatus.TERMINATING:
-            self._change_status(InstanceStatus.TERMINATED)
+            self.terminated()
         if self.is_lock:
             return
         self._change_status(InstanceStatus.OFFLINE)
@@ -138,7 +145,11 @@ class Instance(models.Model):
 
     def terminated(self):
         """Make instance terminated."""
+        from geohosting.models.activity import Activity, ActivityStatus
         self._change_status(InstanceStatus.TERMINATED)
+        for activity in Activity.running_activities(self.name):
+            activity.status = ActivityStatus.SUCCESS
+            activity.save()
 
     @property
     def credentials(self):
@@ -237,33 +248,15 @@ class Instance(models.Model):
         email.content_subtype = 'html'
         email.send()
 
-    def terminate(self, user: User):
-        """Terminate the instance."""
+    def cancel_subscription(self):
+        """Cancel subscription."""
+        if self.status != InstanceStatus.TERMINATED:
+            return
 
-        from geohosting_controller.exceptions import (
-            ActivityException
-        )
-        from geohosting.forms.activity.terminate_instance import (
-            TerminatingInstanceForm
-        )
         from geohosting.models.sales_order import SalesOrder
-        if not user.is_superuser and not self.owner != user:
-            raise PermissionError()
-
-        form = TerminatingInstanceForm({'application': self})
-        form.user = user
-        if not form.is_valid():
-            errors = []
-            for key, val in form.errors.items():
-                errors += val
-
-            error = f'AUTO TERMINATING: {', '.join(errors)}',
-            LogTracker.error(self, error)
-            for order in SalesOrder.objects.filter(app_name=self.name):
-                order.add_comment(
-                    error, is_error=True
-                )
-            raise ActivityException(error)
-        else:
-            form.save()
-        return form.instance
+        sales_orders = SalesOrder.objects.filter(
+            payment_id__isnull=False,
+            app_name=self.name
+        )
+        for sales_order in sales_orders:
+            sales_order.cancel_subscription()

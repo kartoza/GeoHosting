@@ -9,6 +9,7 @@ import re
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 
 from geohosting.models.instance import Instance
@@ -289,3 +290,11 @@ class Activity(models.Model):
         if self.jenkins_queue_url:
             LogTracker.success(self, 'TERMINATING')
             self.instance.terminating()
+
+    @staticmethod
+    def running_activities(app_name):
+        """Return running activities."""
+        return Activity.objects.filter(client_data__app_name=app_name).exclude(
+            Q(status=ActivityStatus.ERROR) |
+            Q(status=ActivityStatus.SUCCESS)
+        )

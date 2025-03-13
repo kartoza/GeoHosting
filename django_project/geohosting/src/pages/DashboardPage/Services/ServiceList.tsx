@@ -144,6 +144,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
     const { instance } = props
     switch (instance.status) {
       case 'Offline':
+      case 'Terminated':
         return <>
           <Box
             width='16px'
@@ -152,7 +153,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
             borderRadius='50'
             border='1px solid var(--chakra-colors-gray-600)'
           />
-          <Text>Offline</Text>
+          <Text>{instance.status}</Text>
         </>
       case 'Online':
         return <>

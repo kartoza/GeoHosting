@@ -6,15 +6,21 @@ from geohosting.models import Instance
 
 
 def send_credentials(modeladmin, request, queryset):
-    """Send credentials ."""
+    """Send credentials."""
     for config in queryset:
         config.send_credentials()
 
 
 def check_instance(modeladmin, request, queryset):
-    """Send instance ."""
+    """Send instance."""
     for config in queryset:
         config.checking_server()
+
+
+def cancel_subscription(modeladmin, request, queryset):
+    """Cancel subscription."""
+    for config in queryset:
+        config.cancel_subscription()
 
 
 @admin.register(Instance)
@@ -25,7 +31,7 @@ class InstanceAdmin(LogTrackerObjectAdmin):
         'name', 'product', 'cluster', 'price', 'owner', 'status', 'logs',
         'webhooks', 'link'
     )
-    actions = (send_credentials, check_instance)
+    actions = (send_credentials, check_instance, cancel_subscription)
 
     def has_add_permission(*args, **kwargs):
         return False
