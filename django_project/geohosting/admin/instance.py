@@ -11,6 +11,12 @@ def send_credentials(modeladmin, request, queryset):
         config.send_credentials()
 
 
+def check_instance(modeladmin, request, queryset):
+    """Send instance ."""
+    for config in queryset:
+        config.checking_server()
+
+
 @admin.register(Instance)
 class InstanceAdmin(LogTrackerObjectAdmin):
     """Instance admin."""
@@ -19,7 +25,7 @@ class InstanceAdmin(LogTrackerObjectAdmin):
         'name', 'product', 'cluster', 'price', 'owner', 'status', 'logs',
         'webhooks', 'link'
     )
-    actions = (send_credentials,)
+    actions = (send_credentials, check_instance)
 
     def has_add_permission(*args, **kwargs):
         return False
