@@ -21,8 +21,6 @@ import {
   Instance
 } from "../../../redux/reducers/instanceSlice";
 import { FaLink } from "react-icons/fa";
-import Geoserver from "../../../assets/images/GeoServer.svg";
-import Geonode from "../../../assets/images/GeoNode.svg";
 import { headerWithToken } from "../../../utils/helpers";
 
 const spin = keyframes`
@@ -48,17 +46,6 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
 
   const [instance, setInstance] = useState(instanceInput);
   const [fetchingCredentials, setFetchingCredentials] = useState<boolean>(false);
-
-  // Function to determine the correct image based on package name
-  const getImageForPackage = (packageName: string) => {
-    if (packageName.toLowerCase().includes('geoserver')) {
-      return Geoserver;
-    } else if (packageName.toLowerCase().includes('geonode')) {
-      return Geonode;
-    } else {
-      return Placeholder;
-    }
-  };
 
   const request = (_instance) => {
     let instance = _instance
@@ -178,7 +165,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
     {/* Logo and Switch */}
     <Flex justify="space-between" mb={4}>
       <Image
-        src={getImageForPackage(instance.product.name)}
+        src={instance.product.image}
         alt={`${instance.product.name} logo`}
         boxSize="80px"
         borderRadius="full"
