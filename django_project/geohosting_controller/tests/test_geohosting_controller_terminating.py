@@ -26,7 +26,6 @@ from geohosting_controller.exceptions import (
     ConnectionErrorException, NoProxyApiKeyException,
     ActivityException
 )
-from geohosting_controller.variables import ActivityTypeTerm
 
 User = get_user_model()
 
@@ -74,12 +73,12 @@ class ControllerTerminatingTest(TestCase):
             status=InstanceStatus.ONLINE
         )
 
-    def terminate_function(self) -> Activity:
+    def terminate_function(self, user) -> Activity:
         """Terminate function."""
         form = TerminatingInstanceForm(
             {'application': self.instance}
         )
-        form.user = self.admin
+        form.user = user
         if form.is_valid():
             form.save()
         else:
@@ -107,7 +106,7 @@ class ControllerTerminatingTest(TestCase):
 
             os.environ['PROXY_API_KEY'] = ''
             self.assertEqual(
-                self.terminate_function().note,
+                self.terminate_function(self.admin).note,
                 NoProxyApiKeyException().__str__()
             )
 
@@ -117,9 +116,13 @@ class ControllerTerminatingTest(TestCase):
             try:
                 os.environ['PROXY_API_KEY'] = 'Token'
 
+                # When the user is not owner
+                with self.assertRaises(ActivityException):
+                    self.terminate_function(self.user)
+
                 # Run create function, it will return create function
                 self.instance.refresh_from_db()
-                activity = self.terminate_function()
+                activity = self.terminate_function(self.admin)
 
                 # This is emulate when pooling build from jenkins
                 activity_obj = Activity.objects.get(id=activity.id)
@@ -138,7 +141,7 @@ class ControllerTerminatingTest(TestCase):
 
                 # When it is already being terminated
                 with self.assertRaises(ActivityException):
-                    self.terminate_function()
+                    self.terminate_function(self.admin)
 
                 # Run webhook, should be run by Argo CD
                 client = Client()
@@ -216,61 +219,6 @@ class ControllerTerminatingTest(TestCase):
                 )
                 self.assertEqual(
                     activity.instance.status, InstanceStatus.TERMINATED
-                )
-                return
-
-                activity.instance.checking_server()
-                self.assertEqual(
-                    activity.instance.status, InstanceStatus.ONLINE
-                )
-
-                # Get the activity status from server
-                activity.refresh_from_db()
-                self.assertEqual(
-                    activity.status, ActivityStatus.SUCCESS
-                )
-                self.assertEqual(
-                    activity.activity_type.identifier,
-                    ActivityTypeTerm.CREATE_INSTANCE.value
-                )
-                self.assertEqual(
-                    activity.client_data['app_name'], self.app_name
-                )
-                self.assertEqual(
-                    activity.client_data['package_code'], 'dev-1'
-                )
-                self.assertEqual(activity.triggered_by, self.admin)
-
-                # For data to jenkins
-                self.assertEqual(
-                    activity.post_data['k8s_cluster'], 'ktz-sta-ks-gn-01'
-                )
-                self.assertEqual(
-                    activity.post_data['geonode_env'], 'sta'
-                )
-                self.assertEqual(
-                    activity.post_data['geonode_name'], self.app_name
-                )
-                self.assertEqual(
-                    activity.post_data['geonode_size'], 'dev-1'
-                )
-
-                # Create another activity
-                # Should be error because the instance is already created
-                with self.assertRaises(ActivityException):
-                    self.terminate_function(self.app_name)
-                instance = Instance.objects.first()
-                self.assertEqual(
-                    instance.cluster.code, 'ktz-sta-ks-gn-01'
-                )
-                self.assertEqual(
-                    instance.name, self.app_name
-                )
-                self.assertEqual(
-                    instance.price.package_group.package_code, 'dev-1'
-                )
-                self.assertEqual(
-                    instance.owner, self.admin
                 )
             except ConnectionErrorException:
                 self.fail("create() raised ExceptionType unexpectedly!")

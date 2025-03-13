@@ -52,6 +52,11 @@ class TerminatingInstanceForm(forms.ModelForm):
         try:
             # Check activity
             application = cleaned_data['application']
+            if not self.user.is_superuser or application.owner != self.user:
+                raise forms.ValidationError(
+                    'You are not allowed to terminate this instance.'
+                )
+
             if application.is_lock:
                 raise Exception('Instance is already being terminated.')
 
