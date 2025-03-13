@@ -20,7 +20,6 @@ from geohosting.models.log import LogTracker
 from geohosting.models.package import Package
 from geohosting.models.product import ProductCluster
 from geohosting.utils.vault import get_credentials
-from geohosting.validators import app_name_validator
 
 User = get_user_model()
 
@@ -76,15 +75,6 @@ class Instance(models.Model):
         """Return activity type name."""
         return self.name
 
-    class Meta:  # noqa
-        unique_together = ('name', 'cluster', 'status')
-
-    def save(self, *args, **kwargs):
-        """Save the instance"""
-        if not self.pk:
-            app_name_validator(self.name)
-        super().save(*args, **kwargs)
-
     @property
     def is_lock(self):
         """Is lock is basically when the instance can't be updated."""
@@ -132,6 +122,8 @@ class Instance(models.Model):
 
     def offline(self):
         """Make instance offline."""
+        if self.status in [InstanceStatus.STARTING_UP]:
+            return
         if self.status == InstanceStatus.TERMINATING:
             self.terminated()
         if self.is_lock:

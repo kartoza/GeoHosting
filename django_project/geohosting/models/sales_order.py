@@ -14,9 +14,12 @@ from geohosting.models.user_profile import UserProfile
 from geohosting.utils.erpnext import (
     add_erp_next_comment, download_erp_file
 )
-from geohosting.utils.paystack import verify_paystack_payment
+from geohosting.utils.paystack import (
+    verify_paystack_payment,
+    cancel_subscription as cancel_paystack_subscription
+)
 from geohosting.utils.stripe import (
-    get_checkout_detail, cancel_subscription
+    get_checkout_detail, cancel_subscription as cancel_stripe_subscription
 )
 from geohosting.validators import name_validator, app_name_validator
 
@@ -379,4 +382,6 @@ class SalesOrder(ErpModel):
         if not self.payment_id:
             return
         if self.payment_method == SalesOrderPaymentMethod.STRIPE:
-            cancel_subscription(self.payment_id)
+            cancel_stripe_subscription(self.payment_id)
+        if self.payment_method == SalesOrderPaymentMethod.PAYSTACK:
+            cancel_paystack_subscription(self.payment_id)

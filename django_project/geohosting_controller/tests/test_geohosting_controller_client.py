@@ -152,6 +152,8 @@ class ControllerTest(TestCase):
 
                 # Run create function, it will return create function
                 activity = self.create_function(self.app_name)
+                activity.refresh_from_db()
+                self.assertEqual(activity.status, ActivityStatus.BUILD_ARGO)
 
                 # This is emulate when pooling build from jenkins
                 activity_obj = Activity.objects.get(id=activity.id)
@@ -166,6 +168,9 @@ class ControllerTest(TestCase):
                 # Should be error because another one is already running
                 with self.assertRaises(ActivityException):
                     self.create_function(self.app_name)
+
+                activity.refresh_from_db()
+                self.assertEqual(activity.status, ActivityStatus.BUILD_ARGO)
 
                 # Run webhook, should be run by Argo CD
                 client = Client()

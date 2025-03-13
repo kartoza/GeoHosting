@@ -32,7 +32,6 @@ export const packageName = (pkg: Package) => {
   }
 };
 export const getUserLocation = async () => {
-  return 'ZA'
   try {
     const response = await fetch('https://ipapi.co/json/');
     const locationData = await response.json();
