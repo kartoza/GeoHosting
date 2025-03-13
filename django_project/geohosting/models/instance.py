@@ -125,6 +125,8 @@ class Instance(models.Model):
 
     def offline(self):
         """Make instance offline."""
+        if self.status == InstanceStatus.TERMINATING:
+            self._change_status(InstanceStatus.TERMINATED)
         if self.is_lock:
             return
         self._change_status(InstanceStatus.OFFLINE)
@@ -161,17 +163,21 @@ class Instance(models.Model):
         """Check server is online or offline."""
         if self.status in [
             InstanceStatus.DEPLOYING,
-            InstanceStatus.TERMINATING,
             InstanceStatus.TERMINATED
         ]:
             return
-
-        response = requests.get(self.url)
-        if response.status_code == 200:
-            self.online()
-        else:
+        try:
+            response = requests.get(self.url)
+            if response.status_code == 200:
+                self.online()
+            else:
+                LogTracker.error(
+                    self, f'Server: {response.status_code} - {response.text}'
+                )
+                self.offline()
+        except requests.exceptions.ConnectionError as e:
             LogTracker.error(
-                self, f'Server: {response.status_code} - {response.text}'
+                self, f'Server: {e}'
             )
             self.offline()
 

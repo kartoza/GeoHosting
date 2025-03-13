@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Flex,
   Grid,
   GridItem,
+  IconButton,
   Image,
   keyframes,
   Link,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Spinner,
   Text,
@@ -22,6 +27,8 @@ import {
 } from "../../../redux/reducers/instanceSlice";
 import { FaLink } from "react-icons/fa";
 import { headerWithToken } from "../../../utils/helpers";
+import { MdDelete, MdMoreVert } from "react-icons/md";
+import InstanceTermination from "../../../components/Instance/Termination";
 
 const spin = keyframes`
   from {
@@ -39,13 +46,32 @@ interface CardProps {
   instanceInput: Instance;
 }
 
+const DeleteCard: React.FC<CardProps> = ({ instanceInput }) => {
+  const modalRef = useRef(null);
+  return <>
+    <InstanceTermination instance={instanceInput} ref={modalRef}/>
+    <MenuItem
+      icon={<MdDelete/>}
+      color="red.600"
+      _hover={{ bg: "red.100" }}
+      onClick={
+        // @ts-ignore
+        () => modalRef?.current?.open()
+      }
+    >
+      Terminate
+    </MenuItem>
+  </>
+}
+
 /** Card for support **/
 const Card: React.FC<CardProps> = ({ instanceInput }) => {
   const columns = useBreakpointValue({ base: 1, md: 2 });
-  const Placeholder = 'https://via.placeholder.com/60';
-
   const [instance, setInstance] = useState(instanceInput);
   const [fetchingCredentials, setFetchingCredentials] = useState<boolean>(false);
+  if (instanceInput.status === 'Terminated') {
+    location.reload()
+  }
 
   const request = (_instance) => {
     let instance = _instance
@@ -157,11 +183,32 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
     key={instance.id}
     borderWidth="1px"
     borderRadius="lg"
+    position="relative"
     p={6}
     width={{ base: "100%", md: "320px" }}
     bg="white"
     boxShadow="lg"
   >
+    <Box
+      position='absolute'
+      top={0}
+      left={0}
+    >
+      <Menu>
+        <MenuButton
+          as={IconButton}
+          icon={<MdMoreVert/>}
+          variant="ghost"
+          _hover={{ bg: "transparent" }}
+          _active={{ bg: "transparent" }}
+          _focus={{ boxShadow: "none" }}
+          padding={0}
+        />
+        <MenuList>
+          <DeleteCard instanceInput={instance}/>
+        </MenuList>
+      </Menu>
+    </Box>
     {/* Logo and Switch */}
     <Flex justify="space-between" mb={4}>
       <Image
