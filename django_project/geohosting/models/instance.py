@@ -32,6 +32,10 @@ class InstanceStatus:
     ONLINE = 'Online'
     OFFLINE = 'Offline'
 
+    # Termination status
+    TERMINATING = 'Terminating'
+    TERMINATED = 'Terminated'
+
 
 class Instance(models.Model):
     """Instance model."""
@@ -55,6 +59,8 @@ class Instance(models.Model):
             (InstanceStatus.STARTING_UP, InstanceStatus.STARTING_UP),
             (InstanceStatus.ONLINE, InstanceStatus.ONLINE),
             (InstanceStatus.OFFLINE, InstanceStatus.OFFLINE),
+            (InstanceStatus.TERMINATING, InstanceStatus.TERMINATING),
+            (InstanceStatus.TERMINATED, InstanceStatus.TERMINATING)
         )
     )
     company = models.ForeignKey(
@@ -85,35 +91,29 @@ class Instance(models.Model):
         """Return url."""
         return f'https://{self.name}.{self.cluster.domain}'
 
-    def starting_up(self):
-        """Make instance online."""
-        if self.status == InstanceStatus.STARTING_UP:
+    def _change_status(self, status):
+        """Change status."""""
+        if self.status == status:
             return
 
-        LogTracker.error(self, 'Server: STARTING UP')
-        self.status = InstanceStatus.STARTING_UP
+        LogTracker.error(self, f'Server: {status}')
+        self.status = status
         self.save()
+
+    def starting_up(self):
+        """Make instance online."""
+        self._change_status(InstanceStatus.STARTING_UP)
 
     def online(self):
         """Make instance online."""
         if self.status == InstanceStatus.STARTING_UP:
             self.send_credentials()
 
-        if self.status == InstanceStatus.ONLINE:
-            return
-
-        LogTracker.error(self, 'Server: ONLINE')
-        self.status = InstanceStatus.ONLINE
-        self.save()
+        self._change_status(InstanceStatus.ONLINE)
 
     def offline(self):
         """Make instance offline."""
-        if self.status == InstanceStatus.OFFLINE:
-            return
-
-        LogTracker.error(self, 'Server: OFFLINE')
-        self.status = InstanceStatus.OFFLINE
-        self.save()
+        self._change_status(InstanceStatus.OFFLINE)
 
     @property
     def credentials(self):
@@ -136,7 +136,10 @@ class Instance(models.Model):
 
     def checking_server(self):
         """Check server is online or offline."""
-        if self.status == InstanceStatus.DEPLOYING:
+        if self.status in [
+            InstanceStatus.DEPLOYING,
+            InstanceStatus.TERMINATED
+        ]:
             return
 
         response = requests.get(self.url)

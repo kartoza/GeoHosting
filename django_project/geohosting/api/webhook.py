@@ -26,11 +26,6 @@ class WebhookView(APIView):
         data = request.data
         webhook = WebhookEvent.objects.create(data=data)
         try:
-            app_name = data['app_name'].replace('devops-', '')
-            activities = Activity.objects.filter(
-                client_data__app_name=app_name
-            )
-
             # Check the data
             try:
                 status = data['Status'].lower()
@@ -45,6 +40,11 @@ class WebhookView(APIView):
             if status in ['running']:
                 return Response()
 
+            # Get the activities
+            app_name = data['app_name'].replace('devops-', '')
+            activities = Activity.objects.filter(
+                client_data__app_name=app_name
+            )
             # If source is argocd
             if source == self.ARGO_CD:
                 activity = activities.filter(
@@ -64,6 +64,7 @@ class WebhookView(APIView):
             if status not in ['success', 'succeeded', 'synced']:
                 raise KeyError('Status does not found')
 
+            # This is for deployment
             if source == self.ARGO_CD:
                 activity.note = json.dumps(data)
                 activity.update_status(ActivityStatus.SUCCESS)

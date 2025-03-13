@@ -6,7 +6,6 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.timezone import now
 
-from geohosting.models.activity import name_validator
 from geohosting.models.company import Company
 from geohosting.models.erp_model import ErpModel
 from geohosting.models.log import LogTracker
@@ -17,7 +16,7 @@ from geohosting.utils.erpnext import (
 )
 from geohosting.utils.paystack import verify_paystack_payment
 from geohosting.utils.stripe import get_checkout_detail
-from geohosting.validators import app_name_validator
+from geohosting.validators import name_validator, app_name_validator
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 User = get_user_model()

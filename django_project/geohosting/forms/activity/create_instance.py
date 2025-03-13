@@ -7,14 +7,12 @@ GeoHosting.
 from django import forms
 from django.contrib.auth import get_user_model
 
-from geohosting.models.activity import (
-    Activity, ActivityType, name_validator
-)
+from geohosting.models.activity import Activity, ActivityType
 from geohosting.models.package import Package
 from geohosting.models.product import ProductCluster
 from geohosting.models.region import Region
 from geohosting.models.sales_order import SalesOrder
-from geohosting.validators import app_name_validator
+from geohosting.validators import app_name_validator, name_validator
 from geohosting_controller.exceptions import (
     NoClusterException
 )

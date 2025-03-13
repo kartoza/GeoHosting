@@ -8,13 +8,15 @@ GeoHosting.
 import re
 
 from django.contrib.auth import get_user_model
-from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 
 from geohosting.models.instance import Instance
 from geohosting.models.package import Package
 from geohosting.models.product import Product, ProductCluster
+from geohosting.validators import (
+    regex_name, regex_name_error
+)
 from geohosting_controller.connection import request_post
 from geohosting_controller.exceptions import (
     ConnectionErrorException, ActivityException
@@ -92,13 +94,6 @@ class ActivityStatus:
     ERROR = 'ERROR'
 
 
-regex_name = r'^[a-z0-9-]*$'
-regex_name_error = (
-    'Name may only contain lowercase letters, numbers or dashes.'
-)
-name_validator = RegexValidator(regex_name, regex_name_error)
-
-
 class Activity(models.Model):
     """Activity of instance."""
 
@@ -168,7 +163,11 @@ class Activity(models.Model):
         if note:
             self.note = note
         self.save()
-        if self.sales_order:
+
+        # Update the sales order status
+        if self.sales_order and (
+                self.sales_order.order_status != SalesOrderStatus.DEPLOYED.key
+        ):
             comment = f'Auto deployment: {self.status}.'
             if self.note:
                 comment += f'\n{self.note}'

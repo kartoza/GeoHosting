@@ -98,7 +98,10 @@ class SalesOrderTests(TestCase):
             call(
                 self.user, sales_order.doc_type,
                 sales_order.erpnext_code,
-                'Activity type INSTANCE.CREATE does not exist.'
+                (
+                    'AUTO DEPLOY ERROR: '
+                    'Activity type INSTANCE.CREATE does not exist.'
+                )
             )
         ])
         mock_add_erp_next_comment.reset_mock()
@@ -121,7 +124,10 @@ class SalesOrderTests(TestCase):
             call(
                 self.user, sales_order.doc_type,
                 sales_order.erpnext_code,
-                'Product cluster for region Global does not exist.'
+                (
+                    'AUTO DEPLOY ERROR: '
+                    'Product cluster for region Global does not exist.'
+                )
             )
         ])
         mock_add_erp_next_comment.reset_mock()
