@@ -9,6 +9,7 @@ from django.utils.timezone import now
 from geohosting.models.activity import name_validator
 from geohosting.models.company import Company
 from geohosting.models.erp_model import ErpModel
+from geohosting.models.log import LogTracker
 from geohosting.models.region import Region
 from geohosting.models.user_profile import UserProfile
 from geohosting.utils.erpnext import (
@@ -198,8 +199,13 @@ class SalesOrder(ErpModel):
         if order_status_obj == SalesOrderStatus.WAITING_CONFIGURATION:
             self.auto_deploy()
 
-    def add_comment(self, comment):
+    def add_comment(self, comment, is_error=False):
         """Add comment."""
+        if is_error:
+            LogTracker.error(self, comment)
+        else:
+            LogTracker.success(self, comment)
+
         if self.erpnext_code:
             add_erp_next_comment(
                 self.customer, self.doc_type, self.erpnext_code, comment
@@ -360,6 +366,9 @@ class SalesOrder(ErpModel):
                 errors = []
                 for key, val in form.errors.items():
                     errors += val
-                self.add_comment(', '.join(errors))
+                self.add_comment(
+                    f'AUTO DEPLOY ERROR: {', '.join(errors)}',
+                    is_error=True
+                )
             else:
                 form.save()
