@@ -11,7 +11,7 @@ class PaymentGateway:
     """Payment Gateway."""
 
     def __init__(self, payment_id):
-        """Initialization."""
+        """Initialize payment gateway."""
         self.payment_id = payment_id
 
     def payment_verification(self):
