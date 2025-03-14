@@ -186,7 +186,7 @@ def fetch_products_from_erpnext():
                 name=name
             )
             for item_price in pricing_list:
-                print(f'Price: {item_price.get('name')}')
+                print(f'Price: {item_price.get("name")}')
                 currency = item_price.get('currency', 'USD')
                 price = item_price.get('price_list_rate', 0)
                 try:
