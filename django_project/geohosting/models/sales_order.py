@@ -8,18 +8,15 @@ from django.utils.timezone import now
 
 from geohosting.models.company import Company
 from geohosting.models.erp_model import ErpModel
+from geohosting.models.instance import Instance
 from geohosting.models.log import LogTracker
 from geohosting.models.region import Region
 from geohosting.models.user_profile import UserProfile
 from geohosting.utils.erpnext import (
     add_erp_next_comment, download_erp_file
 )
-from geohosting.utils.paystack import (
-    verify_paystack_payment,
-    cancel_subscription as cancel_paystack_subscription
-)
-from geohosting.utils.stripe import (
-    get_checkout_detail, cancel_subscription as cancel_stripe_subscription
+from geohosting.utils.payment import (
+    PaymentGateway, StripePaymentGateway, PaystackPaymentGateway
 )
 from geohosting.validators import name_validator, app_name_validator
 
@@ -185,10 +182,22 @@ class SalesOrder(ErpModel):
             'Keep blank if purchase for individual capacity..'
         )
     )
+    instance = models.ForeignKey(
+        Instance, on_delete=models.SET_NULL,
+        null=True, blank=True, editable=False
+    )
 
     class Meta:
         verbose_name = 'Sales Order'
         verbose_name_plural = 'Sales Orders'
+
+    @property
+    def payment_gateway(self) -> PaymentGateway:
+        """Return payment gateway."""
+        if self.payment_method == SalesOrderPaymentMethod.STRIPE:
+            return StripePaymentGateway(self.payment_id)
+        if self.payment_method == SalesOrderPaymentMethod.PAYSTACK:
+            return PaystackPaymentGateway(self.payment_id)
 
     def save(self, *args, **kwargs):
         """Save model."""
@@ -298,30 +307,14 @@ class SalesOrder(ErpModel):
 
     def update_payment_status(self):
         """Update payment status based on the checkout detail from payment."""
-        order_status_obj = self.sales_order_status_obj
         if (
-                order_status_obj == SalesOrderStatus.WAITING_PAYMENT
+                self.sales_order_status_obj == SalesOrderStatus.WAITING_PAYMENT
                 and self.payment_id
         ):
-            if self.payment_method == SalesOrderPaymentMethod.STRIPE:
-                detail = get_checkout_detail(self.payment_id)
-                if not detail:
-                    return
-                if detail.invoice:
-                    self.set_order_status(
-                        SalesOrderStatus.WAITING_CONFIGURATION
-                    )
-            elif self.payment_method == SalesOrderPaymentMethod.PAYSTACK:
-                response = verify_paystack_payment(self.payment_id)
-                if not response:
-                    return
-                try:
-                    if response['data']['status'] == 'success':
-                        self.set_order_status(
-                            SalesOrderStatus.WAITING_CONFIGURATION
-                        )
-                except KeyError:
-                    pass
+            if self.payment_gateway.payment_verification():
+                self.set_order_status(
+                    SalesOrderStatus.WAITING_CONFIGURATION
+                )
 
     @property
     def invoice_url(self):
@@ -356,7 +349,6 @@ class SalesOrder(ErpModel):
             # TODO:
             #  When we have multi region, we will change below
             #  Link region to sales order
-
             form = CreateInstanceForm(
                 {
                     'region': Region.default_region(),
@@ -381,7 +373,4 @@ class SalesOrder(ErpModel):
         """Cancel subscription."""
         if not self.payment_id:
             return
-        if self.payment_method == SalesOrderPaymentMethod.STRIPE:
-            cancel_stripe_subscription(self.payment_id)
-        if self.payment_method == SalesOrderPaymentMethod.PAYSTACK:
-            cancel_paystack_subscription(self.payment_id)
+        self.payment_gateway.cancel_subscription()

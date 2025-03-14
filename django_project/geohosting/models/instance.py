@@ -70,6 +70,14 @@ class Instance(models.Model):
             'Keep blank if instance is for individual capacity..'
         )
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True, blank=True
+    )
+    modified_at = models.DateTimeField(
+        auto_now=True,
+        null=True, blank=True
+    )
 
     def __str__(self):
         """Return activity type name."""
@@ -81,6 +89,13 @@ class Instance(models.Model):
         return self.status in [
             InstanceStatus.TERMINATING,
             InstanceStatus.TERMINATED
+        ]
+
+    @property
+    def is_ready(self):
+        """When the instance is up."""
+        return self.status in [
+            InstanceStatus.OFFLINE, InstanceStatus.ONLINE
         ]
 
     @property
@@ -122,10 +137,11 @@ class Instance(models.Model):
 
     def offline(self):
         """Make instance offline."""
-        if self.status in [InstanceStatus.STARTING_UP]:
+        if self.status in [
+            InstanceStatus.STARTING_UP,
+            InstanceStatus.TERMINATING
+        ]:
             return
-        if self.status == InstanceStatus.TERMINATING:
-            self.terminated()
         if self.is_lock:
             return
         self._change_status(InstanceStatus.OFFLINE)
@@ -142,6 +158,10 @@ class Instance(models.Model):
         for activity in Activity.running_activities(self.name):
             activity.status = ActivityStatus.SUCCESS
             activity.save()
+        try:
+            self.cancel_subscription()
+        except Exception as e:
+            LogTracker.error(self, f'Cancel subscription : {e}')
 
     @property
     def credentials(self):
@@ -248,7 +268,7 @@ class Instance(models.Model):
         from geohosting.models.sales_order import SalesOrder
         sales_orders = SalesOrder.objects.filter(
             payment_id__isnull=False,
-            app_name=self.name
+            instance=self
         )
         for sales_order in sales_orders:
             sales_order.cancel_subscription()

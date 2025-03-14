@@ -28,9 +28,10 @@ class InstanceAdmin(LogTrackerObjectAdmin):
     """Instance admin."""
 
     list_display = (
-        'name', 'product', 'cluster', 'price', 'owner', 'status', 'logs',
-        'webhooks', 'link'
+        'name', 'product', 'cluster', 'price', 'owner', 'status',
+        'created_at', 'logs', 'webhooks', 'link'
     )
+    list_filter = ('status',)
     actions = (send_credentials, check_instance, cancel_subscription)
 
     def has_add_permission(*args, **kwargs):
@@ -52,7 +53,7 @@ class InstanceAdmin(LogTrackerObjectAdmin):
         return mark_safe(
             '<a href="/admin/geohosting/webhookevent/?'
             f'data__app_name__exact={instance.name}"'
-            'target="_blank">logs</a>'
+            'target="_blank">webhooks</a>'
         )
 
     def link(self, instance):

@@ -72,10 +72,7 @@ def get_checkout_detail(checkout_id):
 
 def cancel_subscription(checkout_id):
     """Cancel subscription."""
-    try:
-        checkout = get_checkout_detail(checkout_id)
-        stripe.Subscription.modify(
-            checkout['subscription'], cancel_at_period_end=True
-        )
-    except Exception:
-        return None
+    checkout = get_checkout_detail(checkout_id)
+    stripe.Subscription.modify(
+        checkout['subscription'], cancel_at_period_end=True
+    )

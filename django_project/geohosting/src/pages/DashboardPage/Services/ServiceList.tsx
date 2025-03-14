@@ -190,26 +190,29 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
     bg="white"
     boxShadow="lg"
   >
-    <Box
-      position='absolute'
-      top={0}
-      left={0}
-    >
-      <Menu>
-        <MenuButton
-          as={IconButton}
-          icon={<MdMoreVert/>}
-          variant="ghost"
-          _hover={{ bg: "transparent" }}
-          _active={{ bg: "transparent" }}
-          _focus={{ boxShadow: "none" }}
-          padding={0}
-        />
-        <MenuList>
-          <DeleteCard instanceInput={instance}/>
-        </MenuList>
-      </Menu>
-    </Box>
+    {
+      ['Online', 'Offline'].includes(instance.status) &&
+      <Box
+        position='absolute'
+        top={0}
+        left={0}
+      >
+        <Menu>
+          <MenuButton
+            as={IconButton}
+            icon={<MdMoreVert/>}
+            variant="ghost"
+            _hover={{ bg: "transparent" }}
+            _active={{ bg: "transparent" }}
+            _focus={{ boxShadow: "none" }}
+            padding={0}
+          />
+          <MenuList>
+            <DeleteCard instanceInput={instance}/>
+          </MenuList>
+        </Menu>
+      </Box>
+    }
     {/* Logo and Switch */}
     <Flex justify="space-between" mb={4}>
       <Image

@@ -52,24 +52,31 @@ def verify_paystack_payment(reference):
 
 def get_subscription(reference):
     """Get subscription."""
-    try:
-        transaction = verify_paystack_payment(reference)
-        customer = transaction['data']['customer']['id']
-        signature = transaction['data']['authorization']['signature']
-        # Fetch subscriptions for the customer
-        subscriptions = Subscription.list(
-            customer=customer
-        )
+    transaction = verify_paystack_payment(reference)
+    customer = transaction['data']['customer']['id']
+    plan = transaction['data']['plan_object']['id']
+    authorization_code = transaction['data']['authorization'][
+        'authorization_code'
+    ]
+    # Fetch subscriptions for the customer
+    subscriptions = Subscription.list(
+        customer=customer, plan=plan
+    )
 
-        for sub in subscriptions['data']:
-            if sub['authorization']['signature'] == signature:
-                return sub
-    except Exception:
-        return None
+    for subscription in subscriptions['data']:
+        if subscription['authorization'][
+            'authorization_code'] == authorization_code:
+            return subscription
+    return None
 
 
 def cancel_subscription(reference):
     """Cancel subscription."""
     subscription = get_subscription(reference)
-    if subscription:
-        pass
+    if not subscription:
+        raise AttributeError('Subscription not found')
+    subscription = Subscription.fetch(subscription['subscription_code'])
+    Subscription.disable(
+        code=subscription['data']['subscription_code'],
+        token=subscription['data']['email_token'],
+    )

@@ -56,6 +56,10 @@ class TerminatingInstanceForm(forms.ModelForm):
                 raise forms.ValidationError(
                     'You are not allowed to terminate this instance.'
                 )
+            if not application.is_ready:
+                raise forms.ValidationError(
+                    'Instance is not ready.'
+                )
 
             if application.is_lock:
                 raise Exception('Instance is already being terminated.')

@@ -75,6 +75,7 @@ class WebhookView(APIView):
             webhook.save()
             return HttpResponseBadRequest(f'{e}')
         except Exception as e:
+            print(e)
             webhook.note = f'{e}'
             webhook.save()
             return HttpResponseServerError(f'{e}')

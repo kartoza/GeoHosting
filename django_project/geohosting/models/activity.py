@@ -10,6 +10,8 @@ import re
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Q
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 
 from geohosting.models.instance import Instance
@@ -178,8 +180,9 @@ class Activity(models.Model):
 
     def error(self):
         """Error."""
-        if self.instance:
-            self.instance.offline()
+        if not self.is_termination:
+            if self.instance:
+                self.instance.offline()
 
     def update_status(self, status, note=None):
         """Update activity status."""
@@ -298,3 +301,16 @@ class Activity(models.Model):
             Q(status=ActivityStatus.ERROR) |
             Q(status=ActivityStatus.SUCCESS)
         )
+
+
+@receiver(post_save, sender=Activity)
+def save_instance_to_sales_order(sender, instance, created, **kwargs):
+    """Save instance to sales order on post save."""
+    if instance.instance and not instance.instance.created_at:
+        instance.instance.created_at = instance.triggered_at
+        instance.instance.modified_at = instance.triggered_at
+        instance.instance.save()
+
+    if instance.instance and instance.sales_order:
+        instance.sales_order.instance = instance.instance
+        instance.sales_order.save()
