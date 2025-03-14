@@ -17,5 +17,5 @@ class WebhookEventAdmin(admin.ModelAdmin):
         """Return logs."""
         try:
             return obj.data['Sync Status']
-        except:
+        except Exception:
             return ''

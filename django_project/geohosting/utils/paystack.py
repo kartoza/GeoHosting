@@ -55,7 +55,6 @@ def get_subscription(reference):
     try:
         transaction = verify_paystack_payment(reference)
         customer = transaction['data']['customer']['id']
-        plan = transaction['data']['plan_object']['id']
         signature = transaction['data']['authorization']['signature']
         # Fetch subscriptions for the customer
         subscriptions = Subscription.list(

@@ -156,10 +156,10 @@ class Instance(models.Model):
                     self.name
                 )
             )
-            LogTracker.success(self, f'Get credential')
+            LogTracker.success(self, 'Get credential')
             return credentials
         except Exception as e:
-            LogTracker.error(self, f'Get credential : {e}')
+            LogTracker.error(self, 'Get credential : {e}')
             raise e
 
     def checking_server(self):
@@ -217,7 +217,7 @@ class Instance(models.Model):
                         'support_email': pref.support_email,
                     }
                 )
-                LogTracker.success(self, f'Get credential')
+                LogTracker.success(self, 'Get credential')
             except Exception as e:
                 LogTracker.error(self, f'Get credential : {e}')
                 html_content = render_to_string(

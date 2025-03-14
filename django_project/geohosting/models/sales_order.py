@@ -371,7 +371,7 @@ class SalesOrder(ErpModel):
                 for key, val in form.errors.items():
                     errors += val
                 self.add_comment(
-                    f'AUTO DEPLOY ERROR: {', '.join(errors)}',
+                    f'AUTO DEPLOY ERROR: {", ".join(errors)}',
                     is_error=True
                 )
             else:
