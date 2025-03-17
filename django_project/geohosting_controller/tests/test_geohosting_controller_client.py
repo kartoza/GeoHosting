@@ -2,6 +2,7 @@
 """GeoHosting Controller."""
 
 import os
+from unittest.mock import patch
 
 import requests_mock
 from django.contrib.auth import get_user_model
@@ -79,7 +80,8 @@ class ControllerTest(TestCase):
             raise ActivityException(f'{form.errors}')
         return form.instance
 
-    def test_create(self):
+    @patch('geohosting.models.instance.Instance.send_credentials')
+    def test_create(self, send_credentials):
         """Test create."""
         with requests_mock.Mocker() as requests_mocker:
             # Mock requests
@@ -222,6 +224,7 @@ class ControllerTest(TestCase):
                 self.assertEqual(
                     activity.instance.status, InstanceStatus.OFFLINE
                 )
+                self.assertEqual(send_credentials.call_count, 0)
 
                 # Success if admin but success
                 activity.update_status(ActivityStatus.BUILD_ARGO)
@@ -247,11 +250,13 @@ class ControllerTest(TestCase):
                 self.assertEqual(
                     activity.instance.status, InstanceStatus.STARTING_UP
                 )
+                self.assertEqual(send_credentials.call_count, 0)
 
                 activity.instance.checking_server()
                 self.assertEqual(
                     activity.instance.status, InstanceStatus.ONLINE
                 )
+                self.assertEqual(send_credentials.call_count, 1)
 
                 # Get the activity status from server
                 activity.refresh_from_db()
