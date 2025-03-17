@@ -80,8 +80,8 @@ class ControllerTest(TestCase):
             raise ActivityException(f'{form.errors}')
         return form.instance
 
-    @patch('geohosting.models.instance.Instance.send_credentials')
-    def test_create(self, send_credentials):
+    @patch('django.core.mail.EmailMessage.send')
+    def test_create(self, send_email):
         """Test create."""
         with requests_mock.Mocker() as requests_mocker:
             # Mock requests
@@ -125,7 +125,7 @@ class ControllerTest(TestCase):
                     "inProgress": False
                 }
             )
-            requests_mocker.get(
+            requests_mocker.head(
                 (
                     'https://server-test.sta.do.kartoza.com'
                 ),
@@ -224,7 +224,7 @@ class ControllerTest(TestCase):
                 self.assertEqual(
                     activity.instance.status, InstanceStatus.OFFLINE
                 )
-                self.assertEqual(send_credentials.call_count, 0)
+                self.assertEqual(send_email.call_count, 0)
 
                 # Success if admin but success
                 activity.update_status(ActivityStatus.BUILD_ARGO)
@@ -250,13 +250,15 @@ class ControllerTest(TestCase):
                 self.assertEqual(
                     activity.instance.status, InstanceStatus.STARTING_UP
                 )
-                self.assertEqual(send_credentials.call_count, 0)
+                self.assertEqual(send_email.call_count, 0)
 
                 activity.instance.checking_server()
                 self.assertEqual(
                     activity.instance.status, InstanceStatus.ONLINE
                 )
-                self.assertEqual(send_credentials.call_count, 1)
+                self.assertEqual(send_email.call_count, 1)
+                activity.instance.send_credentials()
+                self.assertEqual(send_email.call_count, 2)
 
                 # Get the activity status from server
                 activity.refresh_from_db()
