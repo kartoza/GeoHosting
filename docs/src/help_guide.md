@@ -1,4 +1,4 @@
-# Help Guide
+# GeoHosting User Guide
 
 Welcome to the GeoHosting! This guide will help you:
 - Navigate the interface
@@ -144,4 +144,5 @@ If you need to discontinue a service or stop a subscription, follow these steps:
 ## Feedback & Contributions
 
 We hope this guide helps you make the most of the GeoHosting platform!
+- **Got suggestions?** Submit a pull request or open an issue in the repo.
 - **Need more help?** Reach out via the official support channels listed in the platform.
