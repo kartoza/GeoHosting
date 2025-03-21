@@ -54,10 +54,13 @@ class WebhookView(APIView):
             instance = Instance.objects.get(name=app_name)
 
             # Get the activity
-            activity = Activity.objects.get(
-                instance=instance,
-                status__in=[ActivityStatus.BUILD_ARGO, ActivityStatus.ERROR]
-            )
+            activity = Activity.objects.filter(
+                instance=instance, status=ActivityStatus.BUILD_ARGO
+            ).first()
+            if not activity:
+                activity = Activity.objects.get(
+                    instance=instance, status=ActivityStatus.BUILD_ARGO
+                )
             webhook.activity = activity
             webhook.save()
 
