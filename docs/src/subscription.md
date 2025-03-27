@@ -128,7 +128,7 @@ This is the agreement of the platform which users have to agree to before procee
       ![Notification](./img/subscription-img-25.png)
 
 * Users can view all the relevant information about the platform by scrolling down the page.
-
+<!-- 
 ## What G3W Can Do?
 
 ### QGIS on the Web
@@ -155,7 +155,7 @@ When you sign up on the platform, you will be given access to your own G3W insta
 G3W is for organisations who what to provide broader access to a QGIS project. Staff will need minimal training to use the simplified QGIS compatible environment.
 
 ### Open Platform
-G3W Suite is open source (MPL2) and has an open platform approach.
+G3W Suite is open source (MPL2) and has an open platform approach. -->
 
 ## Download Source Code
 
