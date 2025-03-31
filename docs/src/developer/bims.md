@@ -11,20 +11,113 @@ license: This program is free software; you can redistribute it and/or modify it
 context_id: nDU6LLGiXPTLADXY
 ---
 
-# BIMS
+# System architecture
 
-## The Where?
+## BIMS Architecture
 
-South Africa’s unique freshwater biodiversity is under enormous pressure from human activities, habitat transformation, climate change and invasive species impacts. River health is deteriorating faster than it can be measured, and existing data suggest that human impacts have, and continue to, severely compromise biodiversity and aquatic ecosystem function. This can also have serious adverse consequences for ecosystem services, such as the provision of food and safe, clean drinking water.
+![Architecture](img/bims-architecture.png)
 
-## The What?
+| Logo | Name | Notes |
+|------------|---------|----------------|
+| ![GeoServer](img/architecture-geoserver.png){: style="height:30px;width:30px"} | [GeoServer](http://geoserver.org) | An open-source server written in Java that allows users to share, process and edit geospatial data. GeoServer implements industry-standard OGC protocols such as Web Feature Service (WFS), Web Map Service (WMS), and Web Coverage Service (WCS). Additional formats and publication options are available as extensions, including Web Processing Service (WPS) and Web Map Tile Services (WMTS). |
+| ![Django](https://static.djangoproject.com/img/logos/django-logo-negative.svg){: style="height:30px;width:30px"} | [Django](https://www.djangoproject.com/) | BIMS is based on Django, which is a high-level python web framework. Django follows the model-template-views architecture pattern. |
+| ![Celery](img/architecture-celery.svg){: style="height:30px;width:30px"} | [Celery](https://docs.celeryq.dev/en/stable/getting-started/introduction.html) | Celery is a simple, flexible, and reliable distributed system to process vast amounts of messages, while providing operations with the tools required to maintain such a system. It’s a task queue with focus on real-time processing, while also supporting task scheduling. BIMS uses Celery for handling background tasks. |
+| ![PostgreSQL](img/architecture-postgresql.png){: style="height:30px;width:30px"} | [PostgreSQL](https://www.postgresql.org/) | PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. PostgreSQL helps to make up the database that stores and manages both the spatial data and information for BIMS. |
+| ![PostGIS](img/architecture-postgis.svg){: style="height:30px;width:30px"} | [PostGIS](https://postgis.net/) | PostGIS extends the capabilities of the PostgreSQL relational database by adding support storing, indexing and querying geographic data. PostGIS helps to make up the database that stores and manages both the spatial data and information for BIMS. |
+| ![OpenLayers](img/architecture-openlayers.png){: style="height:30px;width:30px"} | [OpenLayers](https://openlayers.org/) | OpenLayers makes it easy to put a dynamic map in any web page. It can display map tiles, vector data and markers loaded from any source. OpenLayers has been developed to further the use of geographic information of all kinds. It is completely free, Open Source JavaScript, released under the 2-clause BSD License (also known as the FreeBSD). It is used for map interactions and geospatial operations in BIMS. |
+| ![Backbone.js](https://backbonejs.org/docs/images/backbone.png){: style="height:30px;width:30px"} | [Backbone.js](https://backbonejs.org/) | Backbone.js is a JavaScript rich-client web app framework based on the model–view–controller design paradigm. BIMS uses it to provide specific front-end functionality.. |
+| ![CSS](img/architecture-css.png){: style="height:30px;width:30px"} | Cascading Style Sheets | CSS is a style sheet language used for describing the presentation of the page HTML in BIMS. |
 
-Managing our freshwater systems and biota requires reliable information on ecosystem change, as well as a backdrop of sound baseline data against which to gauge current trends. Rising to this challenge, the Freshwater Biodiversity Information System (FBIS) is a platform for hosting, visualising and sharing freshwater biodiversity information for South African rivers. Through consultations with data users and contributors, and through collaborations with key partners and stakeholders, the FBIS aims to provide South Africa’s first platform for rapid and reliable assessments of change in freshwater biodiversity and associated ecosystem condition. The project seeks to mobilize and import to the system baseline biodiversity data, identify strategic long-term monitoring sites, and train key organizations on how to use the information system. Through the use of map-based visualisations, user-friendly dashboards and rapid data extraction capabilities, the system will improve knowledge of freshwater biodiversity and long-term river health trends, thereby supporting better-informed river management decisions and conservation planning projects.
+## Software Architecture Overview
 
-## The How?
+### Python/Django
 
-The system accepts and serves data on species occurrence, abundance and associated habitat parameters, for freshwater algae, invertebrates and fish. In addition to data gleaned from scientific papers, reports and university theses, the FBIS serves (1) invertebrate data from the former ‘Rivers Database’ (national SASS (South African Scoring System) data), (2) invertebrate data from the legacy ‘Biobase Database’ (national aquatic invertebrate data), (3) fish data from the Global Biodiversity Information Facility (GBIF) database, which includes fish data records from the South Africa Institute for Aquatic Biodiversity (SAIAB).​​​​​​Through links with other systems (like the Department of Water and Sanitation’s Water Management System and [SANBI’s Biodiversity GIS platform](https://bgis.sanbi.org/)), the FBIS offers powerful spatial and temporal data filtering functionality designed to cater for the needs of end users ranging from consultants to conservation planners.
+BIMS is written with Django. It includes few apps to build the user interfaces. Several Python libraries are used
+in BIMS to realize its specific functionality.
 
-## The Who?
+#### BIMS Apps
 
-The FBIS project is led by the [Freshwater Reserach Centre (FRC)](https://www.frcsa.org.za/) in partnership [Kartoza Open Source Geospatial Solutions](https://kartoza.com/) and the [South African National Biodiversity Institute (SANBI)](https://www.sanbi.org/). The project is funded by the [JRS Biodiversity Foundation](https://jrsbiodiversity.org/) and the South African National Biodiversity Institute (SANBI).
+* `bims`: BIMS core functionality
+
+    Stores the core functionalities used in the ensemble of the BIMS application
+
+* `td_biblio`: Bibliography
+
+    Manages the bibliography in BIMS
+
+* `scripts`: BIMS scripts
+
+    Series of commands used to automatically manipulate (manage, remove, clean, or add) data in BIMS
+
+* `bims_theme`: BIMS theme
+
+    Manages the BIMS theme, like the logo, the section in landing page, and the menu.
+
+* `mobile`: API for BIMS mobile application
+
+    Stores the functionalities used in the BIMS mobile application
+
+#### BIMS Modules
+
+* Taxonomy
+* SASS
+* Physico-chemistry
+* Water Temperature
+
+#### Libraries
+
+There are multiple Python libraries used in BIMS, like:
+
+* Django REST framework
+
+    BIMS provides Web APIs by using the [django rest framework](https://www.django-rest-framework.org/)
+
+    `bims.api_views`
+
+    `bims.api_urls.py`
+
+* Celery
+
+    BIMS uses [celery](https://docs.celeryq.dev/en/stable/getting-started/introduction.html) for handling background
+tasks.
+
+    `bims.tasks`
+
+### JavaScript
+
+BIMS uses several JavaScript libraries to provide specific functionality in the front-end. They are found at
+`bims/static/js/libs`
+
+* **Backbone.js**: used in the map filters
+* **Highcharts**: used for the charts
+* **OpenLayers**: used for the web mapping
+
+### Settings
+
+The Django settings for BIMS can be found in `core.settings`
+
+### Docker/docker-compose
+
+### Testing Framework
+
+`bims/tests`: Tests are used to test separate units of the written code and to determine if the code works as expected.
+
+BIMS uses [factory_boy](https://factoryboy.readthedocs.io/en/stable/) library for test framework.
+
+## Data Model
+
+[//]: # (&#40;detailed walkthrough of the data model covering biological, abiotic, sass, etc parts of the data model too - )
+
+[//]: # (break down to enough high level sections&#41;)
+
+A [model](https://docs.djangoproject.com/en/3.0/topics/db/models/) is the single, definitive source of information about
+your data. It contains the essential fields and behaviors of the data that you’re storing. Generally, each model maps to a
+single database table.
+
+As a platform for managing and visualizing biodiversity data, the following models are often used in BIMS:
+
+### `bims.models.biological_collection_record`
+
+### `bims.models.taxonomy`
+
+### `bims.models.location_site`

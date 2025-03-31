@@ -76,8 +76,8 @@ nav:
           - products/mycivitas/index.md
           - Guide: products/mycivitas/guide.md
   - Developer Guide:
-      - developer/index.md
-      - GeoHosting: developer/geo_hosting.md
+    #   - developer/index.  
+      - GeoHosting: developer/geo-hosting.md
       - GeoNode: developer/geonode.md
       - G3W: developer/g3w.md
       - BIMS: developer/bims.md
