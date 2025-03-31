@@ -72,6 +72,9 @@ nav:
           - products/geosight/index.md
           - Introduction: products/geosight/introduction.md
           - Guide: products/geosight/guide.md
+      - MyCivitas:
+          - products/mycivitas/index.md
+          - Guide: products/mycivitas/guide.md
   - Developer Guide:
       - developer/index.md
       - GeoHosting: developer/geo_hosting.md
