@@ -12,3 +12,23 @@ context_id: nDU6LLGiXPTLADXY
 ---
 
 # Geo-Hosting
+
+## Create Use Case
+
+![Create User Case](./img/flow-Flow-Diagram-Create.drawio.png)
+
+## Delete Use Case
+
+![Delete User Case](./img/flow-Flow-Diagram-Delete.drawio.png)
+
+## Database
+
+![Database](./img/flow-Database.drawio.png)
+
+## Controller Flow Diagram - Create
+
+![Controller Flow Diagram - Create](./img/flow-Controller-Flow-Create.drawio.png)
+
+## Controller Flow Diagram - Delete
+
+![Controller Flow Diagram - Delete](./img/flow-Controller-Flow-Delete.drawio.png)
