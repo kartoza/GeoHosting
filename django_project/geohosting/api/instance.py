@@ -11,7 +11,9 @@ from geohosting.forms.activity.delete_instance import (
 from geohosting.models import (
     Instance, InstanceStatus
 )
-from geohosting.serializer.instance import InstanceSerializer
+from geohosting.serializer.instance import (
+    InstanceSerializer, InstanceDetailSerializer
+)
 
 
 class InstanceViewSet(
@@ -28,6 +30,12 @@ class InstanceViewSet(
     permission_classes = [IsAuthenticated]
     default_query_filter = ['name__icontains']
     lookup_field = 'name'
+
+    def get_serializer_class(self):
+        """Get serializer class."""
+        if self.action == 'retrieve':
+            return InstanceDetailSerializer
+        return super().get_serializer_class()
 
     def get_queryset(self):
         """Return instances for the authenticated user."""

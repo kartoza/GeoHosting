@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { Box, Flex, Link, Spinner, Table, Td, Tr } from "@chakra-ui/react";
 import { RenderInstanceStatus } from "./ServiceList";
 import { FaLink } from "react-icons/fa";
+import { DeleteInstance } from "./Delete";
 
 /** Service Detail Page in pagination */
 const ServiceDetail: React.FC = () => {
@@ -63,6 +64,24 @@ const ServiceDetail: React.FC = () => {
     );
   }
 
+  if (error) {
+    return (
+      <Box
+        top={0}
+        left={0}
+        position='absolute'
+        display='flex'
+        justifyContent='center'
+        width='100%'
+        height='100%'
+        alignItems='center'
+        color='red'
+      >
+        There is error when fetching data
+      </Box>
+    );
+  }
+
   if (!instance) {
     return (
       <Box
@@ -80,12 +99,12 @@ const ServiceDetail: React.FC = () => {
     );
   }
 
-  return (
+  return <Box>
     <Flex
       wrap="wrap"
       justify="flex-start" gap={6}
-      mb={8}
       width={{ base: "100%", xl: "75%", "2xl": "50%" }}
+      mb={6}
     >
       <Box
         flex="1"
@@ -112,10 +131,11 @@ const ServiceDetail: React.FC = () => {
             <Td px={4} fontWeight={600}>Creation date:</Td>
             <Td px={4}>{instance.created_at.split('T')[0]}</Td>
           </Tr>
-          <Tr>
-            <Td px={4} fontWeight={600}>
-              {
-                ['Online', 'Offline'].includes(instance.status) && instance.url ?
+
+          {
+            ['Online', 'Offline'].includes(instance.status) && instance.url ?
+              <Tr>
+                <Td px={4} fontWeight={600}>
                   <Link href={instance.url} target='_blank'>
                     <Flex
                       wrap="wrap" gap={1}
@@ -125,11 +145,10 @@ const ServiceDetail: React.FC = () => {
                     >
                       <FaLink/> {instance.name}
                     </Flex>
-                  </Link> :
-                  instance.name
-              }
-            </Td>
-          </Tr>
+                  </Link>
+                </Td>
+              </Tr> : null
+          }
         </Table>
       </Box>
       <Box
@@ -153,7 +172,32 @@ const ServiceDetail: React.FC = () => {
         </Table>
       </Box>
     </Flex>
-  );
+    <Flex
+      wrap="wrap"
+      justify="flex-start" gap={6}
+      width={{ base: "100%", xl: "75%", "2xl": "50%" }}
+    >
+      <Box
+        flex="1"
+        borderWidth="1px"
+        borderRadius="lg"
+        position="relative"
+        bg="white"
+        boxShadow="lg"
+      >
+        <Table>
+          <Tr>
+            <Td px={4} fontWeight={600}>Payments</Td>
+          </Tr>
+          <Tr>
+            <Td px={4} fontWeight={600}>Method:</Td>
+            <Td px={4}>{instance.sales_order.payment_method}</Td>
+          </Tr>
+        </Table>
+      </Box>
+    </Flex>
+    <DeleteInstance instanceInput={instance}/>
+  </Box>
 };
 
 export default ServiceDetail;
