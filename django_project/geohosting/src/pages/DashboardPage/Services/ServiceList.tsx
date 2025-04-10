@@ -242,7 +242,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
     <Flex justify="space-between" align="center" mb={4}>
       <Text fontWeight="bold" isTruncated>
         {
-          instance.status === 'Online' && instance.url ?
+          ['Online', 'Offline'].includes(instance.status) && instance.url ?
             <Link href={instance.url} target='_blank'>
               <Flex
                 wrap="wrap" gap={1}
