@@ -324,7 +324,6 @@ const ServiceList: React.FC = () => {
   return (
     <>
       <PaginationPage
-        title='Hosted Services'
         url='/api/instances/'
         action={fetchUserInstances}
         stateKey='instance'

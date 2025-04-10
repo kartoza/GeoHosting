@@ -11,7 +11,6 @@ import { Instance } from "../../redux/reducers/instanceSlice";
 import { urlParameters } from "../../utils/helpers";
 
 interface Props {
-  title: string;
   searchPlaceholder: string;
   stateKey: string;
   action: AsyncThunk<any, string, AsyncThunkConfig>;
@@ -43,7 +42,7 @@ const RenderContent: React.FC<RenderContentProps> = (
 /** Abstract for pagination page */
 export const PaginationPage: React.FC<Props> = (
   {
-    title, searchPlaceholder, stateKey, action, url,
+    searchPlaceholder, stateKey, action, url,
     leftNavigation, rightNavigation, renderCards,
     additionalFilters
   }
