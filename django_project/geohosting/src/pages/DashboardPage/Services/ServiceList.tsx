@@ -110,6 +110,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
   const navigate = useNavigate();
   const columns = useBreakpointValue({ base: 1, md: 2 });
   const [instance, setInstance] = useState(instanceInput);
+  const [lastRequest, setLastRequest] = useState(new Date());
   const [fetchingCredentials, setFetchingCredentials] = useState<boolean>(false);
   if (instanceInput.status === 'Deleted') {
     location.reload()
@@ -137,7 +138,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
 
         }
         setTimeout(() => {
-          request(instance)
+          setLastRequest(new Date())
         }, 5000);
       }
     )()
@@ -178,10 +179,15 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
 
   /** Check app name */
   useEffect(() => {
+    request(instance)
+  }, [lastRequest]);
+
+  /** Check app name */
+  useEffect(() => {
     setTimeout(() => {
-      request(instance)
+      setLastRequest(new Date())
     }, 5000);
-  }, [instanceInput]);
+  }, []);
 
   return <Box
     key={instance.id}
@@ -296,7 +302,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
         <Grid templateColumns={`repeat(${columns}, 1fr)`}>
           {
             instance.package.feature_list.spec.map(
-              (feature: string, idx: number) => <GridItem>
+              (feature: string, idx: number) => <GridItem key={idx}>
                 <Text fontSize="sm"
                       textAlign={idx % 2 != 0 ? 'right' : 'left'}>
                   {feature}

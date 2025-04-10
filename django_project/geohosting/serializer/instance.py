@@ -2,12 +2,10 @@ from rest_framework import serializers
 
 from geohosting.models import Instance, SalesOrder
 from geohosting.models.activity import Activity
-from geohosting.serializer.payment import PaymentSerializer
 from geohosting.serializer.product import (
     ProductPackageSerializer,
     ProductDetailSerializer
 )
-
 
 class InstanceSerializer(serializers.ModelSerializer):
     """Sales instance serializer."""
@@ -40,6 +38,10 @@ class InstanceDetailSerializer(InstanceSerializer):
 
     def get_sales_order(self, obj: Instance):
         """Return sales_order."""
+        from geohosting.serializer.sales_order import (
+            SalesOrderDetailWithPaymentSerializer
+        )
+
         # We update sales order
         for activity in Activity.objects.filter(
                 sales_order__instance__isnull=True
@@ -47,7 +49,7 @@ class InstanceDetailSerializer(InstanceSerializer):
             activity.update_sales_order()
 
         try:
-            return PaymentSerializer(
+            return SalesOrderDetailWithPaymentSerializer(
                 obj.salesorder_set.all().first()
             ).data
         except SalesOrder.DoesNotExist:
