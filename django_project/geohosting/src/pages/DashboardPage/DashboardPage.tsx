@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  ChakraProvider,
-  Flex,
-  Heading,
-  IconButton,
-} from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { Box, ChakraProvider, } from '@chakra-ui/react';
 import customTheme from '../../theme/theme';
 import DashboardSidePanel
   from "../../components/DashboardSidePanel/DashboardSidePanel";
@@ -14,9 +7,10 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import OrdersList from './Orders/OrderList';
 import OrderDetail from "./Orders/OrderDetail";
 import ProfilePage from './Profile/ProfilePage';
-import SupportList from "./Support/SupportList";
 import ServiceList from "./Services/ServiceList";
 import AgreementList from "./Agreements/AgreementList";
+import DashboardPageContent from "./DashboardPageContent";
+import SupportList from "./Support/SupportList";
 
 const DashboardPage = ({ title = "Dashboard" }) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -31,43 +25,68 @@ const DashboardPage = ({ title = "Dashboard" }) => {
           onClose={toggleSidebar}
           display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
         />
-        <Flex
-          ml={{ base: 0, md: 60 }} transition="0.3s ease" minH='100vh'
-          flexDirection={'column'}
-        >
-          <Flex
-            as="header"
-            align="center"
-            justify="space-between"
-            w="full"
-            px={4}
-            bg="#3e3e3e"
-            borderBottomWidth="1px"
-            borderColor="gray.200"
-            h="14"
-          >
-            <IconButton
-              aria-label="Open menu"
-              icon={<HamburgerIcon/>}
-              display={{ base: 'inline-flex', md: 'none' }}
-              onClick={toggleSidebar}
-            />
-            <Heading size="md" textAlign="center"
-                     color={'#ffffff'}>{title}</Heading>
-          </Flex>
-
-          {/* Main content area below the header */}
-          <Box p={8} flexGrow={1} position='relative'>
-            <Routes>
-              <Route path="/" element={<ServiceList/>}/>
-              <Route path='/agreements' element={<AgreementList/>}/>
-              <Route path="/support" element={<SupportList/>}/>
-              <Route path="/orders/:id" element={<OrderDetail/>}/>
-              <Route path="/orders" element={<OrdersList/>}/>
-              <Route path='/profile' element={<ProfilePage/>}/>
-            </Routes>
-          </Box>
-        </Flex>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <DashboardPageContent
+                title='Hosted Services'
+                element={<ServiceList/>}
+                toggleSidebar={toggleSidebar}
+              />
+            }
+          />
+          <Route
+            path="/agreements"
+            element={
+              <DashboardPageContent
+                title='Agreements'
+                element={<AgreementList/>}
+                toggleSidebar={toggleSidebar}
+              />
+            }
+          />
+          <Route
+            path="/orders/:id"
+            element={
+              <DashboardPageContent
+                title='Order'
+                element={<OrderDetail/>}
+                toggleSidebar={toggleSidebar}
+              />
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <DashboardPageContent
+                title='Orders'
+                element={<OrdersList/>}
+                toggleSidebar={toggleSidebar}
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <DashboardPageContent
+                title='Profile'
+                element={<ProfilePage/>}
+                toggleSidebar={toggleSidebar}
+              />
+            }
+          />
+          <Route
+            path="/support"
+            element={
+              <DashboardPageContent
+                title='Support'
+                element={<SupportList/>}
+                toggleSidebar={toggleSidebar}
+              />
+            }
+          />
+        </Routes>
       </Box>
     </ChakraProvider>
   );

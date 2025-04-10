@@ -13,7 +13,6 @@ import {
 import { DownloadIcon } from '@chakra-ui/icons';
 import Pagination from "../../components/Pagination/Pagination";
 import TopNavigation from "../../components/DashboardPage/TopNavigation";
-import DashboardTitle from "../../components/DashboardPage/DashboardTitle";
 
 const agreements = [
   {
@@ -75,9 +74,6 @@ const AgreementPage: React.FC = () => {
   return (
     <Box>
       <Box width="100%" margin="0 auto" textAlign="left">
-
-        {/* Dashboard title */}
-        <DashboardTitle title={'Agreements'}/>
 
         {/* Top navigation of dashboard */}
         <TopNavigation onSearch={handleSearch} placeholder='Search Title'/>
