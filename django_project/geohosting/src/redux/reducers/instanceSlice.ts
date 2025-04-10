@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction
+} from '@reduxjs/toolkit';
 import axios from 'axios';
 import { PaginationResult } from "../types/paginationTypes";
 import { ReduxState, ReduxStateInit } from "../types/reduxState";
@@ -18,6 +22,7 @@ export interface Instance {
   owner: number,
   product: Product,
   package: Package,
+  created_at: string
 }
 
 interface InstancePaginationResult extends PaginationResult {
@@ -92,28 +97,89 @@ export const fetchUserInstances = createAsyncThunk(
     }
   }
 );
+export const fetchUserInstanceDetail = createAsyncThunk(
+  'instance/fetchUserInstancesDetail',
+  async (id: string, thunkAPI) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`/api/instances/${id}/`, {
+        headers: { Authorization: `Token ${token}` }
+      });
+      return response.data;
+    } catch (error: any) {
+      const errorData = error.response.data;
+      return thunkAPI.rejectWithValue(errorData);
+    }
+  }
+);
+
+const handlePending = (state: InstanceState, action: PayloadAction<any>) => {
+  switch (action.type) {
+    case fetchUserInstances.pending.type: {
+      state.list.loading = true;
+      state.list.error = null;
+      break
+    }
+    case fetchUserInstanceDetail.pending.type: {
+      state.detail.loading = true;
+      state.detail.error = null;
+      break
+    }
+  }
+};
+
+const handleFulfilled = (state: InstanceState, action: PayloadAction<any>) => {
+  switch (action.type) {
+    case fetchUserInstances.fulfilled.type: {
+      state.list.loading = false;
+      state.list.data = action.payload;
+      break
+    }
+    case fetchUserInstanceDetail.fulfilled.type: {
+      state.detail.loading = false;
+      state.detail.data = action.payload;
+      break
+    }
+  }
+};
+
+const handleRejected = (state: InstanceState, action: PayloadAction<any>) => {
+  switch (action.type) {
+    case fetchUserInstances.rejected.type: {
+      if (action.payload === ABORTED) {
+        return
+      }
+      state.list.loading = false;
+      state.list.error = action.payload as string;
+      break
+    }
+    case fetchUserInstanceDetail.rejected.type: {
+      state.detail.loading = false;
+      if (action.payload.detail) {
+        state.detail.error = action.payload.detail as string;
+      } else {
+        state.detail.error = action.payload as string;
+      }
+      break
+    }
+  }
+};
 
 const instanceSlice = createSlice({
   name: 'instance',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchUserInstances.pending, (state) => {
-        state.list.loading = true;
-        state.list.error = null;
-      })
-      .addCase(fetchUserInstances.fulfilled, (state, action) => {
-        state.list.loading = false;
-        state.list.data = action.payload;
-      })
-      .addCase(fetchUserInstances.rejected, (state, action) => {
-        if (action.payload === ABORTED) {
-          return
-        }
-        state.list.loading = false;
-        state.list.error = action.payload as string; // Ensure error is string
-      });
+    const actions = [
+      fetchUserInstances,
+      fetchUserInstanceDetail
+    ];
+
+    actions.forEach(action => {
+      builder.addCase(action.pending, handlePending);
+      builder.addCase(action.fulfilled, handleFulfilled);
+      builder.addCase(action.rejected, handleRejected);
+    });
   },
 });
 

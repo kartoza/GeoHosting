@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Box, Flex, Heading, IconButton, } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
+import { useParams } from "react-router-dom";
 
 interface Props {
   title: string;
@@ -11,6 +12,7 @@ interface Props {
 const DashboardPageContent = (
   { title, toggleSidebar, element }: Props
 ) => {
+  const { id } = useParams<{ id: string }>();
 
   return (
     <Flex
@@ -35,8 +37,12 @@ const DashboardPageContent = (
           color="#3e3e3e"
           onClick={toggleSidebar}
         />
-        <Heading size="md" textAlign="center"
-                 color={'#ffffff'}>{title}</Heading>
+        <Heading
+          size="md" textAlign="center"
+          color={'#ffffff'}>
+          {title} {id ? <><span
+          style={{ margin: "0 0.5rem" }}>/</span>{id}</> : null}
+        </Heading>
       </Flex>
 
       {/* Main content area below the header */}

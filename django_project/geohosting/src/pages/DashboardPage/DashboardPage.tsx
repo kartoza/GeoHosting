@@ -11,6 +11,7 @@ import ServiceList from "./Services/ServiceList";
 import AgreementList from "./Agreements/AgreementList";
 import DashboardPageContent from "./DashboardPageContent";
 import SupportList from "./Support/SupportList";
+import ServiceDetail from "./Services/ServiceDetail";
 
 const DashboardPage = ({ title = "Dashboard" }) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -26,6 +27,16 @@ const DashboardPage = ({ title = "Dashboard" }) => {
           display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
         />
         <Routes>
+          <Route
+            path="/instances/:id"
+            element={
+              <DashboardPageContent
+                title='Hosted Service'
+                element={<ServiceDetail/>}
+                toggleSidebar={toggleSidebar}
+              />
+            }
+          />
           <Route
             path="/"
             element={

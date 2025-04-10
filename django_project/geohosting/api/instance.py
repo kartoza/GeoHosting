@@ -27,12 +27,13 @@ class InstanceViewSet(
     serializer_class = InstanceSerializer
     permission_classes = [IsAuthenticated]
     default_query_filter = ['name__icontains']
+    lookup_field = 'name'
 
     def get_queryset(self):
         """Return instances for the authenticated user."""
-        query = Instance.objects.filter(owner=self.request.user).order_by(
-            'name'
-        )
+        query = Instance.objects.filter(
+            owner=self.request.user
+        ).order_by('name')
         return self.filter_query(self.request, query)
 
     def list(self, request, *args, **kwargs):
@@ -49,7 +50,7 @@ class InstanceViewSet(
         return Response(serializer.data)
 
     @action(detail=True, methods=["get"])
-    def credential(self, request, pk=None):
+    def credential(self, request, name=None):
         instance = self.get_object()
         credentials = {
             key: value for key,
