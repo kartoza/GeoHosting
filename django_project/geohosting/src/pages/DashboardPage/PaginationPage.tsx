@@ -4,7 +4,6 @@ import { debounce } from "debounce";
 import { Box, Flex, Spinner } from '@chakra-ui/react';
 import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { AppDispatch, RootState } from "../../redux/store";
-import DashboardTitle from "../../components/DashboardPage/DashboardTitle";
 import TopNavigation from "../../components/DashboardPage/TopNavigation";
 import Pagination from "../../components/Pagination/Pagination";
 import { AsyncThunk } from "@reduxjs/toolkit";
@@ -12,7 +11,6 @@ import { Instance } from "../../redux/reducers/instanceSlice";
 import { urlParameters } from "../../utils/helpers";
 
 interface Props {
-  title: string;
   searchPlaceholder: string;
   stateKey: string;
   action: AsyncThunk<any, string, AsyncThunkConfig>;
@@ -44,7 +42,7 @@ const RenderContent: React.FC<RenderContentProps> = (
 /** Abstract for pagination page */
 export const PaginationPage: React.FC<Props> = (
   {
-    title, searchPlaceholder, stateKey, action, url,
+    searchPlaceholder, stateKey, action, url,
     leftNavigation, rightNavigation, renderCards,
     additionalFilters
   }
@@ -141,9 +139,6 @@ export const PaginationPage: React.FC<Props> = (
   return (
     <Box>
       <Box minHeight={{ base: 'auto', md: '80vh' }}>
-
-        {/* Dashboard title */}
-        <DashboardTitle title={title}/>
 
         {/* Top navigation of dashboard */}
         <TopNavigation

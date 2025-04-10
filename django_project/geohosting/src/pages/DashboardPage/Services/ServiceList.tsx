@@ -29,6 +29,7 @@ import { FaLink } from "react-icons/fa";
 import { headerWithToken } from "../../../utils/helpers";
 import { MdDelete, MdMoreVert } from "react-icons/md";
 import InstanceDeletion from "../../../components/Instance/Deletion";
+import { useNavigate } from "react-router-dom";
 
 const spin = keyframes`
   from {
@@ -64,10 +65,52 @@ const DeleteCard: React.FC<CardProps> = ({ instanceInput }) => {
   </>
 }
 
+// Render instance status
+export const RenderInstanceStatus = ({ instance }) => {
+  switch (instance.status) {
+    case 'Offline':
+    case 'Deleted':
+      return <>
+        <Box
+          width='16px'
+          height='16px'
+          backgroundColor="var(--chakra-colors-red-300)"
+          borderRadius='50'
+          border='1px solid var(--chakra-colors-gray-600)'
+        />
+        <Text>{instance.status}</Text>
+      </>
+    case 'Online':
+      return <>
+        <Box
+          width='16px'
+          height='16px'
+          backgroundColor="var(--chakra-colors-green-300)"
+          borderRadius='50'
+          border='1px solid var(--chakra-colors-gray-600)'
+        />
+        <Text>Online</Text>
+      </>
+    default:
+      return <>
+        <Box
+          animation={spinAnimation}
+          width='fit-content'
+          height='fit-content'
+        >
+          <FaGear/>
+        </Box>
+        <Text>{instance.status}</Text>
+      </>
+  }
+}
+
 /** Card for support **/
 const Card: React.FC<CardProps> = ({ instanceInput }) => {
+  const navigate = useNavigate();
   const columns = useBreakpointValue({ base: 1, md: 2 });
   const [instance, setInstance] = useState(instanceInput);
+  const [lastRequest, setLastRequest] = useState(new Date());
   const [fetchingCredentials, setFetchingCredentials] = useState<boolean>(false);
   if (instanceInput.status === 'Deleted') {
     location.reload()
@@ -82,7 +125,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
       async () => {
         try {
           const response = await axios.get(
-            `/api/instances/${instance.id}/`,
+            `/api/instances/${instance.name}/`,
             {
               headers: headerWithToken()
             }
@@ -95,21 +138,23 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
 
         }
         setTimeout(() => {
-          request(instance)
+          setLastRequest(new Date())
         }, 5000);
       }
     )()
   }
 
   /** Fetch credential **/
-  const fetchCredentials = async () => {
+  const fetchCredentials = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (fetchingCredentials) {
       return
     }
     setFetchingCredentials(true)
     try {
       const response = await axios.get(
-        `/api/instances/${instance.id}/credential/`,
+        `/api/instances/${instance.name}/credential/`,
         {
           headers: headerWithToken()
         }
@@ -134,51 +179,15 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
 
   /** Check app name */
   useEffect(() => {
-    setTimeout(() => {
-      request(instance)
-    }, 5000);
-  }, [instanceInput]);
+    request(instance)
+  }, [lastRequest]);
 
-  // Render instance status
-  const RenderInstanceStatus = (props) => {
-    const { instance } = props
-    switch (instance.status) {
-      case 'Offline':
-      case 'Deleted':
-        return <>
-          <Box
-            width='16px'
-            height='16px'
-            backgroundColor="var(--chakra-colors-red-300)"
-            borderRadius='50'
-            border='1px solid var(--chakra-colors-gray-600)'
-          />
-          <Text>{instance.status}</Text>
-        </>
-      case 'Online':
-        return <>
-          <Box
-            width='16px'
-            height='16px'
-            backgroundColor="var(--chakra-colors-green-300)"
-            borderRadius='50'
-            border='1px solid var(--chakra-colors-gray-600)'
-          />
-          <Text>Online</Text>
-        </>
-      default:
-        return <>
-          <Box
-            animation={spinAnimation}
-            width='fit-content'
-            height='fit-content'
-          >
-            <FaGear/>
-          </Box>
-          <Text>{instance.status}</Text>
-        </>
-    }
-  }
+  /** Check app name */
+  useEffect(() => {
+    setTimeout(() => {
+      setLastRequest(new Date())
+    }, 5000);
+  }, []);
 
   return <Box
     key={instance.id}
@@ -187,8 +196,16 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
     position="relative"
     p={6}
     width={{ base: "100%", md: "320px" }}
+    style={{ transition: "margin .1s ease" }}
+    _hover={{
+      cursor: "pointer",
+      margin: "-3px 3px 3px -3px"
+    }}
     bg="white"
     boxShadow="lg"
+    onClick={(e) => {
+      navigate('/dashboard/instances/' + instance.name)
+    }}
   >
     {
       ['Online', 'Offline'].includes(instance.status) &&
@@ -206,8 +223,15 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
             _active={{ bg: "transparent" }}
             _focus={{ boxShadow: "none" }}
             padding={0}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
           />
-          <MenuList>
+          <MenuList
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <DeleteCard instanceInput={instance}/>
           </MenuList>
         </Menu>
@@ -240,9 +264,15 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
 
     {/* Package name and Edit Icon */}
     <Flex justify="space-between" align="center" mb={4}>
-      <Text fontWeight="bold" isTruncated>
+      <Text
+        fontWeight="bold"
+        isTruncated
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         {
-          instance.status === 'Online' && instance.url ?
+          ['Online', 'Offline'].includes(instance.status) && instance.url ?
             <Link href={instance.url} target='_blank'>
               <Flex
                 wrap="wrap" gap={1}
@@ -272,8 +302,9 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
         <Grid templateColumns={`repeat(${columns}, 1fr)`}>
           {
             instance.package.feature_list.spec.map(
-              (feature: string, idx: number) => <GridItem>
-                <Text fontSize="sm" textAlign={idx % 2 != 0 ? 'right' : 'left'}>
+              (feature: string, idx: number) => <GridItem key={idx}>
+                <Text fontSize="sm"
+                      textAlign={idx % 2 != 0 ? 'right' : 'left'}>
                   {feature}
                 </Text>
               </GridItem>
@@ -324,7 +355,6 @@ const ServiceList: React.FC = () => {
   return (
     <>
       <PaginationPage
-        title='Hosted Services'
         url='/api/instances/'
         action={fetchUserInstances}
         stateKey='instance'

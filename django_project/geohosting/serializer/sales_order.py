@@ -41,34 +41,15 @@ class SalesOrderSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SalesOrderDetailSerializer(serializers.ModelSerializer):
+class SalesOrderDetailSerializer(SalesOrderSerializer):
     """Sales order detail serializer."""
 
     product = serializers.SerializerMethodField()
-    package = serializers.SerializerMethodField()
-    invoice_url = serializers.SerializerMethodField()
     instance = serializers.SerializerMethodField()
-    order_status = serializers.SerializerMethodField()
-    company_name = serializers.SerializerMethodField()
 
     def get_product(self, obj: SalesOrder):
         """Return product."""
         return ProductDetailSerializer(obj.package.product).data
-
-    def get_package(self, obj: SalesOrder):
-        """Return package."""
-        return ProductPackageSerializer(obj.package).data
-
-    def get_invoice_url(self, obj: SalesOrder):
-        """Return package."""
-        return obj.invoice_url
-
-    def get_company_name(self, obj: SalesOrder):
-        """Return package."""
-        try:
-            return obj.company.name
-        except Exception:
-            return ''
 
     def get_instance(self, obj: SalesOrder):
         """Return package."""
@@ -81,11 +62,16 @@ class SalesOrderDetailSerializer(serializers.ModelSerializer):
         except Instance.DoesNotExist:
             return None
 
-    def get_order_status(self, obj: SalesOrder):
-        """Return package."""
-        obj.update_payment_status()
-        return obj.order_status
-
     class Meta:
         model = SalesOrder
         fields = '__all__'
+
+
+class SalesOrderDetailWithPaymentSerializer(SalesOrderDetailSerializer):
+    """Sales order detail serializer."""
+
+    subscription = serializers.SerializerMethodField()
+
+    def get_subscription(self, obj: SalesOrder):
+        """Return subscription status."""
+        return obj.subscription

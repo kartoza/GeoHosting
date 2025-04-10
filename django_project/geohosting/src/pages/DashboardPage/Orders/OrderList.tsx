@@ -98,7 +98,6 @@ const OrderList: React.FC = () => {
   return (
     <>
       <PaginationPage
-        title='Orders'
         url='/api/orders/'
         action={fetchSalesOrders}
         stateKey='orders'

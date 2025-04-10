@@ -287,6 +287,8 @@ class Activity(models.Model):
                 )
                 self.instance = instance
                 self.save()
+                self.sales_order.instance = instance
+                self.sales_order.save()
 
     def delete_instance(self):
         """Delete instance."""
@@ -302,6 +304,12 @@ class Activity(models.Model):
             Q(status=ActivityStatus.SUCCESS)
         )
 
+    def update_sales_order(self):
+        """Update sales order."""
+        if self.instance and self.sales_order:
+            self.sales_order.instance = self.instance
+            self.sales_order.save()
+
 
 @receiver(post_save, sender=Activity)
 def save_instance_to_sales_order(sender, instance, created, **kwargs):
@@ -311,6 +319,4 @@ def save_instance_to_sales_order(sender, instance, created, **kwargs):
         instance.instance.modified_at = instance.triggered_at
         instance.instance.save()
 
-    if instance.instance and instance.sales_order:
-        instance.sales_order.instance = instance.instance
-        instance.sales_order.save()
+    instance.update_sales_order()

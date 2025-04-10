@@ -70,6 +70,15 @@ def get_checkout_detail(checkout_id):
         return None
 
 
+def get_subscription_detail(checkout_id):
+    """Return subscription detail."""
+    try:
+        session = stripe.checkout.Session.retrieve(checkout_id)
+        return stripe.Subscription.retrieve(session['subscription'])
+    except Exception:
+        return None
+
+
 def cancel_subscription(checkout_id):
     """Cancel subscription."""
     checkout = get_checkout_detail(checkout_id)

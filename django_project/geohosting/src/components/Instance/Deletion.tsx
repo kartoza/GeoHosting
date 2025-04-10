@@ -39,7 +39,7 @@ export const InstanceDeletion = forwardRef(
     // Handle create company
     const submit = () => {
       axios.delete(
-        '/api/instances/' + instance.id + '/',
+        '/api/instances/' + instance.name + '/',
         {
           headers: headerWithToken()
         }

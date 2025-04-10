@@ -119,7 +119,6 @@ const SupportList: React.FC = () => {
         ref={supportTicketModalRef}
       />
       <PaginationPage
-        title='Supports'
         url='/api/tickets/'
         action={fetchTickets}
         stateKey='support'
