@@ -7,6 +7,7 @@ from geohosting.serializer.product import (
     ProductDetailSerializer
 )
 
+
 class InstanceSerializer(serializers.ModelSerializer):
     """Sales instance serializer."""
 
