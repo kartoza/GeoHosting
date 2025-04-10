@@ -32,6 +32,7 @@ const DashboardPageContent = (
           aria-label="Open menu"
           icon={<HamburgerIcon/>}
           display={{ base: 'inline-flex', md: 'none' }}
+          color="#3e3e3e"
           onClick={toggleSidebar}
         />
         <Heading size="md" textAlign="center"

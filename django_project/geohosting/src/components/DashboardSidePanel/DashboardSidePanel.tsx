@@ -2,7 +2,14 @@ import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../redux/reducers/authSlice";
-import { Box, CloseButton, Flex, Heading, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  CloseButton,
+  Flex,
+  Heading,
+  Image,
+  VStack
+} from "@chakra-ui/react";
 import React from "react";
 
 const SidebarItem = ({ label, isSelected, onClick }) => {
@@ -50,14 +57,20 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
           _hover={{ opacity: 0.5 }}
           onClick={() => navigate('/')}
         >
-          GeoSpatialHosting
+          <Image
+            src='/static/images/logos/geohosting-all-white.svg'
+            alt='Kartoza Logo'
+            style={{ 'cursor': 'pointer' }}
+            width='100%'
+          />
         </Heading>
         <CloseButton
           display={{ base: 'flex', md: 'none' }}
           onClick={onClose}
-          color="white"/>
+          color="#3e3e3e"
+        />
       </Flex>
-      <VStack spacing={0} align="start" mt={5}>
+      <VStack spacing={0} align="start">
         <SidebarItem
           label="Hosted Services"
           isSelected={selected === 'dashboard'}
