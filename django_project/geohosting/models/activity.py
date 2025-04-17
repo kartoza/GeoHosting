@@ -287,8 +287,9 @@ class Activity(models.Model):
                 )
                 self.instance = instance
                 self.save()
-                self.sales_order.instance = instance
-                self.sales_order.save()
+                if self.sales_order:
+                    self.sales_order.instance = instance
+                    self.sales_order.save()
 
     def delete_instance(self):
         """Delete instance."""
