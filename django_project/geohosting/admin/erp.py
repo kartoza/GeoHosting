@@ -1,14 +1,6 @@
 from django.contrib import admin
 
-from geohosting.models.erp import ErpRequestLog
 from geohosting.models.erp_company import ErpCompany
-
-
-@admin.register(ErpRequestLog)
-class ErpRequestLogAdmin(admin.ModelAdmin):
-    list_display = (
-        'url', 'method', 'request_at'
-    )
 
 
 @admin.register(ErpCompany)
