@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from geohosting.models import WebhookEvent
+from geohosting_event.models import WebhookEvent
 
 
 def clean_webhook_event(modeladmin, request, queryset):

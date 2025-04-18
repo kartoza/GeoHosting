@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
 from django.utils.safestring import mark_safe
 
-from geohosting.models import LogTracker
+from geohosting_event.models import LogTracker
 
 
 @admin.register(LogTracker)

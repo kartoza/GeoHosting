@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
-from geohosting.models.erp import ErpRequestLog, RequestMethod
+from geohosting_event.models.erp import ErpRequestLog, RequestMethod
 
 headers = {
     "Authorization": (

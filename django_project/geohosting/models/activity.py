@@ -15,7 +15,6 @@ from django.dispatch import receiver
 from django.utils import timezone
 
 from geohosting.models.instance import Instance
-from geohosting.models.log import LogTracker
 from geohosting.models.package import Package
 from geohosting.models.product import Product, ProductCluster
 from geohosting.validators import regex_name, regex_name_error
@@ -24,6 +23,7 @@ from geohosting_controller.exceptions import (
     ConnectionErrorException, ActivityException
 )
 from geohosting_controller.variables import ActivityTypeTerm
+from geohosting_event.models.log import LogTracker
 
 User = get_user_model()
 

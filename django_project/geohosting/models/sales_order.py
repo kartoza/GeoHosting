@@ -9,7 +9,6 @@ from django.utils.timezone import now
 from geohosting.models.company import Company
 from geohosting.models.erp_model import ErpModel
 from geohosting.models.instance import Instance
-from geohosting.models.log import LogTracker
 from geohosting.models.region import Region
 from geohosting.models.user_profile import UserProfile
 from geohosting.utils.erpnext import (
@@ -19,6 +18,7 @@ from geohosting.utils.payment import (
     PaymentGateway, StripePaymentGateway, PaystackPaymentGateway
 )
 from geohosting.validators import name_validator, app_name_validator
+from geohosting_event.models.log import LogTracker
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 User = get_user_model()

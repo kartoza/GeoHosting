@@ -16,8 +16,9 @@ from geohosting.factories.package import (
 )
 from geohosting.forms.activity import CreateInstanceForm
 from geohosting.models import (
-    Activity, Instance, Region, WebhookEvent, ActivityStatus, InstanceStatus
+    Activity, Instance, Region, ActivityStatus, InstanceStatus
 )
+from geohosting_event.models import WebhookEvent
 from geohosting_controller.default_data import (
     generate_cluster, generate_regions
 )

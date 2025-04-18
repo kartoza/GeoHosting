@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from geohosting.admin.log import LogTrackerObjectAdmin
 from geohosting.models import Instance
+from geohosting_event.admin.log import LogTrackerObjectAdmin
 
 
 def send_credentials(modeladmin, request, queryset):
