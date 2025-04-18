@@ -1,7 +1,7 @@
 from django.db import models
 
+from geohosting.models.data_types import PaymentMethod
 from geohosting.models.erp_model import ErpModel
-from geohosting.models.sales_order import SalesOrderPaymentMethod
 
 
 class ErpCompany(ErpModel):
@@ -19,17 +19,8 @@ class ErpCompany(ErpModel):
 
     # Based on payment
     payment_method = models.CharField(
-        default=SalesOrderPaymentMethod.STRIPE,
-        choices=(
-            (
-                SalesOrderPaymentMethod.STRIPE,
-                SalesOrderPaymentMethod.STRIPE
-            ),
-            (
-                SalesOrderPaymentMethod.PAYSTACK,
-                SalesOrderPaymentMethod.PAYSTACK
-            )
-        ),
+        default=PaymentMethod.default_choice,
+        choices=PaymentMethod.choices,
         max_length=256,
         help_text='The status of order.'
     )

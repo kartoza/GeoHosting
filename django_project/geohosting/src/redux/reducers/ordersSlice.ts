@@ -16,9 +16,9 @@ const ABORTED = 'Aborted';
 
 export interface Subscription {
   id: string,
-  current_period_end: number,
-  current_period_start: number,
-  canceled: boolean,
+  current_period_end: string,
+  current_period_start: string,
+  is_active: boolean,
 }
 
 export interface SalesOrder {
@@ -33,8 +33,7 @@ export interface SalesOrder {
   package: Package,
   app_name: string,
   company_name: string,
-  instance: Instance,
-  subscription: Subscription
+  instance: Instance
 }
 
 interface SalesOrderPaginationResult extends PaginationResult {

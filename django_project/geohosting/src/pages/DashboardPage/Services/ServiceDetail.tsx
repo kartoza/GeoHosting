@@ -56,18 +56,22 @@ const ServiceDetail: React.FC = () => {
     if (!instance) {
       return null
     }
-    if (instance.sales_order.subscription.canceled) {
+    if (instance.subscription?.is_active) {
       return <>
         Your subscription has been canceled
-        (End of subscription at {new Date(instance.sales_order.subscription.current_period_end * 1000).toISOString().replaceAll('.000Z', '').replaceAll('T', ' ')})
+        (End of subscription at {instance.subscription.current_period_end})
       </>
-    } else if (instance.sales_order.subscription.current_period_end) {
+    } else if (instance.subscription?.current_period_end) {
       return <>
         Your next payment
-        is {new Date(instance.sales_order.subscription.current_period_end * 1000).toISOString().replaceAll('.000Z', '').replaceAll('T', ' ')}
+        is {instance.subscription?.current_period_end}
+      </>
+    } else {
+      return <>
+        No subscription was found for this instance.
+        Please contact us for assistance with this issue.
       </>
     }
-    return null
   }
 
   if (loading && !instance) {

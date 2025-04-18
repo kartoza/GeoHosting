@@ -16,4 +16,5 @@ from geohosting.models.package import *
 from geohosting.models.product import *
 from geohosting.models.region import *
 from geohosting.models.sales_order import *
+from geohosting.models.subscription import *
 from geohosting.models.user_profile import *

@@ -70,7 +70,7 @@ def get_checkout_detail(checkout_id):
         return None
 
 
-def get_subscription_detail(checkout_id):
+def get_subscription_detail_from_payment(checkout_id):
     """Return subscription detail."""
     try:
         session = stripe.checkout.Session.retrieve(checkout_id)
@@ -79,9 +79,18 @@ def get_subscription_detail(checkout_id):
         return None
 
 
-def cancel_subscription(checkout_id):
+def get_subscription(subscription_id):
+    """Get subscription."""
+    subscription = stripe.Subscription.retrieve(
+        subscription_id
+    )
+    if not subscription:
+        raise AttributeError('Subscription not found')
+    return subscription
+
+
+def cancel_subscription(subscription_id):
     """Cancel subscription."""
-    checkout = get_checkout_detail(checkout_id)
     stripe.Subscription.modify(
-        checkout['subscription'], cancel_at_period_end=True
+        subscription_id, cancel_at_period_end=True
     )

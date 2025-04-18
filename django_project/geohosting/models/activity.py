@@ -287,9 +287,7 @@ class Activity(models.Model):
                 )
                 self.instance = instance
                 self.save()
-                if self.sales_order:
-                    self.sales_order.instance = instance
-                    self.sales_order.save()
+                self.update_sales_order()
 
     def delete_instance(self):
         """Delete instance."""
@@ -310,6 +308,7 @@ class Activity(models.Model):
         if self.instance and self.sales_order:
             self.sales_order.instance = self.instance
             self.sales_order.save()
+            self.sales_order.sync_subscription()
 
 
 @receiver(post_save, sender=Activity)

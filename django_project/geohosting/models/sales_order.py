@@ -7,9 +7,11 @@ from django.db import models
 from django.utils.timezone import now
 
 from geohosting.models.company import Company
+from geohosting.models.data_types import PaymentMethod
 from geohosting.models.erp_model import ErpModel
 from geohosting.models.instance import Instance
 from geohosting.models.region import Region
+from geohosting.models.subscription import Subscription
 from geohosting.models.user_profile import UserProfile
 from geohosting.utils.erpnext import (
     add_erp_next_comment, download_erp_file
@@ -94,13 +96,6 @@ class SalesOrderStatus:
         return output
 
 
-class SalesOrderPaymentMethod:
-    """Order payment method."""
-
-    STRIPE = 'Stripe'
-    PAYSTACK = 'Paystack'
-
-
 class SalesOrder(ErpModel):
     """Sales Order."""
 
@@ -139,18 +134,10 @@ class SalesOrder(ErpModel):
         help_text='The status of order.'
     )
 
+    # Payment detail
     payment_method = models.CharField(
-        default=SalesOrderPaymentMethod.STRIPE,
-        choices=(
-            (
-                SalesOrderPaymentMethod.STRIPE,
-                SalesOrderPaymentMethod.STRIPE
-            ),
-            (
-                SalesOrderPaymentMethod.PAYSTACK,
-                SalesOrderPaymentMethod.PAYSTACK
-            )
-        ),
+        default=PaymentMethod.default_choice,
+        choices=PaymentMethod.choices,
         max_length=256,
         help_text='The status of order.'
     )
@@ -187,6 +174,15 @@ class SalesOrder(ErpModel):
         null=True, blank=True, editable=False
     )
 
+    # This is what subscription for this instance
+    subscription = models.ForeignKey(
+        Subscription, on_delete=models.SET_NULL,
+        null=True, blank=True,
+        help_text=(
+            'Subscription of the instance.'
+        )
+    )
+
     class Meta:
         verbose_name = 'Sales Order'
         verbose_name_plural = 'Sales Orders'
@@ -194,10 +190,17 @@ class SalesOrder(ErpModel):
     @property
     def payment_gateway(self) -> PaymentGateway:
         """Return payment gateway."""
-        if self.payment_method == SalesOrderPaymentMethod.STRIPE:
+        if self.payment_method == PaymentMethod.STRIPE:
             return StripePaymentGateway(self.payment_id)
-        if self.payment_method == SalesOrderPaymentMethod.PAYSTACK:
+        if self.payment_method == PaymentMethod.PAYSTACK:
             return PaystackPaymentGateway(self.payment_id)
+
+    def __str__(self):
+        return (
+            f"SalesOrder {self.id} for "
+            f"{self.customer.username} - "
+            f"{self.package.name}"
+        )
 
     def save(self, *args, **kwargs):
         """Save model."""
@@ -223,13 +226,6 @@ class SalesOrder(ErpModel):
             add_erp_next_comment(
                 self.customer, self.doc_type, self.erpnext_code, comment
             )
-
-    def __str__(self):
-        return (
-            f"SalesOrder {self.id} for "
-            f"{self.customer.username} - "
-            f"{self.package.name}"
-        )
 
     @property
     def erp_payload_for_create(self):
@@ -315,6 +311,7 @@ class SalesOrder(ErpModel):
                 self.set_order_status(
                     SalesOrderStatus.WAITING_CONFIGURATION
                 )
+                self.sync_subscription()
 
     @property
     def invoice_url(self):
@@ -369,13 +366,16 @@ class SalesOrder(ErpModel):
             else:
                 form.save()
 
-    def cancel_subscription(self):
-        """Cancel subscription."""
-        if not self.payment_id:
-            return
-        self.payment_gateway.cancel_subscription()
+    def sync_subscription(self):
+        """Sync subscription."""
+        if not self.subscription:
+            subscription = self.payment_gateway.subscription(
+                self.customer
+            )
+            if subscription:
+                self.subscription = subscription
+                self.save()
 
-    @property
-    def subscription(self):
-        """Return subscription."""
-        return self.payment_gateway.subscription()
+        # Sync instance subscription
+        if self.instance:
+            self.instance.sync_subscription()

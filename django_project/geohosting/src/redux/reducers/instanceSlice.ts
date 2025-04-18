@@ -8,7 +8,7 @@ import { PaginationResult } from "../types/paginationTypes";
 import { ReduxState, ReduxStateInit } from "../types/reduxState";
 import { headerWithToken } from "../../utils/helpers";
 import { Package, Product } from "./productsSlice";
-import { SalesOrder } from "./ordersSlice";
+import { SalesOrder, Subscription } from "./ordersSlice";
 
 let _lastAbortController: AbortController | null = null;
 const ABORTED = 'Aborted';
@@ -25,6 +25,7 @@ export interface Instance {
   package: Package,
   created_at: string,
   sales_order: SalesOrder
+  subscription?: Subscription
 }
 
 interface InstancePaginationResult extends PaginationResult {

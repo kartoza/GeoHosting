@@ -10,7 +10,7 @@ from geohosting.factories import (
     PackageFactory, SalesOrderFactory, ErpCompanyFactory
 )
 from geohosting.models import (
-    SalesOrderStatus, SalesOrderPaymentMethod, ActivityType, Cluster,
+    SalesOrderStatus, PaymentMethod, ActivityType, Cluster,
     Region, ProductCluster, Instance, InstanceStatus
 )
 from geohosting_controller.variables import ActivityTypeTerm
@@ -76,7 +76,7 @@ class SalesOrderTests(TestCase):
         )
 
         sales_order.payment_id = 'payment_id'
-        sales_order.payment_method = SalesOrderPaymentMethod.PAYSTACK
+        sales_order.payment_method = PaymentMethod.PAYSTACK
         sales_order.save()
 
         # Payment success
