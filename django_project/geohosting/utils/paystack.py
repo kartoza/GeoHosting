@@ -78,7 +78,7 @@ def get_subscription(subscription_id):
     subscription = Subscription.fetch(subscription_id)
     if not subscription:
         raise AttributeError('Subscription not found')
-    return subscription
+    return subscription['data']
 
 
 def cancel_subscription(subscription_id):
