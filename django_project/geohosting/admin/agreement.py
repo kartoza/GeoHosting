@@ -18,12 +18,6 @@ class AgreementAdmin(admin.ModelAdmin):
     inlines = [AgreementDetailInline]
 
 
-@admin.register(AgreementDetail)
-class AgreementDetailAdmin(admin.ModelAdmin):
-    list_display = ('agreement', 'version')
-    list_filter = ('agreement',)
-
-
 @admin.register(SalesOrderAgreement)
 class SalesOrderAgreementAdmin(admin.ModelAdmin):
     list_display = ('name', 'sales_order', 'agreement_detail')
