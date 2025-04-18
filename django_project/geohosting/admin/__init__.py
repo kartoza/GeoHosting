@@ -12,4 +12,3 @@ from geohosting.admin.region import *
 from geohosting.admin.sales_order import *
 from geohosting.admin.ticket import *
 from geohosting.admin.user import *
-from geohosting.admin.webhook import *

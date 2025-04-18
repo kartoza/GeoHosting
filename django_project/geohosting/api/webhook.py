@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 
 from geohosting.models import Activity, ActivityStatus, Instance, Package
 from geohosting.models.instance import InstanceStatus
-from geohosting.models.webhook import WebhookStatus, WebhookEvent
+from geohosting_event.models.webhook import WebhookStatus, WebhookEvent
 
 
 class WebhookView(APIView):

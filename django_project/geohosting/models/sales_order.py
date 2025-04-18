@@ -18,7 +18,7 @@ from geohosting.utils.payment import (
     PaymentGateway, StripePaymentGateway, PaystackPaymentGateway
 )
 from geohosting.validators import name_validator, app_name_validator
-from geohosting_log.models.log import LogTracker
+from geohosting_event.models.log import LogTracker
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 User = get_user_model()

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from geohosting_log.models.erp import ErpRequestLog
+from geohosting_event.models.erp import ErpRequestLog
 
 
 @admin.register(ErpRequestLog)

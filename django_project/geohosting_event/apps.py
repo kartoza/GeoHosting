@@ -13,5 +13,5 @@ from django.utils.translation import gettext_lazy as _
 class Config(AppConfig):
     """Config App."""
 
-    name = 'geohosting_log'
-    verbose_name = _('GeoHosting Log')
+    name = 'geohosting_event'
+    verbose_name = _('GeoHosting Event')

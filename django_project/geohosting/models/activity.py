@@ -23,7 +23,7 @@ from geohosting_controller.exceptions import (
     ConnectionErrorException, ActivityException
 )
 from geohosting_controller.variables import ActivityTypeTerm
-from geohosting_log.models.log import LogTracker
+from geohosting_event.models.log import LogTracker
 
 User = get_user_model()
 

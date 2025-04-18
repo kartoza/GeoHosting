@@ -17,4 +17,3 @@ from geohosting.models.product import *
 from geohosting.models.region import *
 from geohosting.models.sales_order import *
 from geohosting.models.user_profile import *
-from geohosting.models.webhook import *

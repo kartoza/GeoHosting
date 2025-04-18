@@ -19,7 +19,7 @@ from geohosting.models.company import Company
 from geohosting.models.package import Package
 from geohosting.models.product import ProductCluster
 from geohosting.utils.vault import get_credentials
-from geohosting_log.models.log import LogTracker
+from geohosting_event.models.log import LogTracker
 
 User = get_user_model()
 
@@ -200,7 +200,7 @@ class Instance(models.Model):
 
     def checking_server(self):
         """Check server is online or offline."""
-        from geohosting.models.webhook import WebhookEvent, WebhookStatus
+        from geohosting_event.models.webhook import WebhookEvent, WebhookStatus
         # If deleted, no need to check
         if self.status in [InstanceStatus.DELETED]:
             return

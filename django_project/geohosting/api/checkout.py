@@ -14,7 +14,7 @@ from geohosting.models.agreement import AgreementDetail, SalesOrderAgreement
 from geohosting.models.company import Company
 from geohosting.models.sales_order import SalesOrder
 from geohosting.validators import name_validator, app_name_validator
-from geohosting_log.models.log import LogTracker
+from geohosting_event.models.log import LogTracker
 
 
 class CheckoutAPI(PaymentAPI):

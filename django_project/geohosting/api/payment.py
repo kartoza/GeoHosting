@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 
 from geohosting.models import Package
 from geohosting.models.sales_order import SalesOrder, SalesOrderPaymentMethod
-from geohosting_log.models.log import LogTracker
+from geohosting_event.models.log import LogTracker
 
 paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
 
