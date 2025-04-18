@@ -85,6 +85,6 @@ def cancel_subscription(subscription_id):
     """Cancel subscription."""
     subscription = get_subscription(subscription_id)
     Subscription.disable(
-        code=subscription['data']['subscription_code'],
-        token=subscription['data']['email_token'],
+        code=subscription['subscription_code'],
+        token=subscription['email_token'],
     )
