@@ -36,11 +36,12 @@ class InstanceDetailSerializer(InstanceSerializer):
     """Sales instance detail serializer."""
 
     sales_order = serializers.SerializerMethodField()
+    subscription = serializers.SerializerMethodField()
 
     def get_sales_order(self, obj: Instance):
         """Return sales_order."""
         from geohosting.serializer.sales_order import (
-            SalesOrderDetailWithPaymentSerializer
+            SalesOrderDetailSerializer
         )
 
         # We update sales order
@@ -50,8 +51,18 @@ class InstanceDetailSerializer(InstanceSerializer):
             activity.update_sales_order()
 
         try:
-            return SalesOrderDetailWithPaymentSerializer(
+            return SalesOrderDetailSerializer(
                 obj.salesorder_set.all().first()
             ).data
         except SalesOrder.DoesNotExist:
             return None
+
+    def get_subscription(self, obj: Instance):
+        """Return subscription."""
+        from geohosting.serializer.subscription import (
+            SubscriptionSerializer
+        )
+        if not obj.subscription:
+            return None
+
+        return SubscriptionSerializer(obj.subscription).data

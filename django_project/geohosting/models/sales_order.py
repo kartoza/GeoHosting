@@ -206,9 +206,9 @@ class SalesOrder(ErpModel):
         """Save model."""
         super(SalesOrder, self).save(*args, **kwargs)
         # Push to erp
-        # result = self.post_to_erpnext()
-        # if result['status'] != 'success':
-        #     raise Exception(result['message'])
+        result = self.post_to_erpnext()
+        if result['status'] != 'success':
+            raise Exception(result['message'])
 
         # Check if order status is waiting configuration
         order_status_obj = self.sales_order_status_obj
@@ -311,6 +311,7 @@ class SalesOrder(ErpModel):
                 self.set_order_status(
                     SalesOrderStatus.WAITING_CONFIGURATION
                 )
+                self.sync_subscription()
 
     @property
     def invoice_url(self):
@@ -374,3 +375,7 @@ class SalesOrder(ErpModel):
             if subscription:
                 self.subscription = subscription
                 self.save()
+
+        # Sync instance subscription
+        if self.instance:
+            self.instance.sync_subscription()
