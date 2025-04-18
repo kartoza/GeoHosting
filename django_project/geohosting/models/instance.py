@@ -315,7 +315,6 @@ class Instance(models.Model):
         """Sync subscription."""
         from geohosting.models.sales_order import SalesOrder
         sales_orders = SalesOrder.objects.filter(
-            payment_id__isnull=False,
             subscription__isnull=False,
             instance=self
         )
