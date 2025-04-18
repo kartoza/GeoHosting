@@ -50,7 +50,7 @@ def verify_paystack_payment(reference):
     return Transaction.verify(reference)
 
 
-def get_subscription(reference):
+def get_subscription_detail(reference):
     """Get subscription."""
     transaction = verify_paystack_payment(reference)
     customer = transaction['data']['customer']['id']
@@ -72,7 +72,7 @@ def get_subscription(reference):
 
 def cancel_subscription(reference):
     """Cancel subscription."""
-    subscription = get_subscription(reference)
+    subscription = get_subscription_detail(reference)
     if not subscription:
         raise AttributeError('Subscription not found')
     subscription = Subscription.fetch(subscription['subscription_code'])

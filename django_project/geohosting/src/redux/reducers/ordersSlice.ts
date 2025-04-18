@@ -18,7 +18,7 @@ export interface Subscription {
   id: string,
   current_period_end: number,
   current_period_start: number,
-  canceled_at: number,
+  canceled: boolean,
 }
 
 export interface SalesOrder {

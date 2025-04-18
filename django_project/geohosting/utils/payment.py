@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from geohosting.utils.paystack import (
     verify_paystack_payment,
-    cancel_subscription as cancel_paystack_subscription
+    cancel_subscription as cancel_paystack_subscription,
+    get_subscription_detail as get_paystack_subscription_detail
 )
 from geohosting.utils.stripe import (
     get_checkout_detail, cancel_subscription as cancel_stripe_subscription,
@@ -14,16 +17,19 @@ class Subscription:
     id = None
     current_period_start = None
     current_period_end = None
-    canceled_at = None
+    canceled = False
 
     def __init__(
-            self, id, current_period_start, current_period_end, canceled_at
+            self, id,
+            current_period_start: float,
+            current_period_end: float,
+            canceled: bool
     ):
         """Initialize Payment Status."""
         self.id = id
         self.current_period_start = current_period_start
         self.current_period_end = current_period_end
-        self.canceled_at = canceled_at
+        self.canceled = canceled
 
     @property
     def json(self):
@@ -32,7 +38,7 @@ class Subscription:
             'id': self.id,
             'current_period_start': self.current_period_start,
             'current_period_end': self.current_period_end,
-            'canceled_at': self.canceled_at,
+            'canceled': self.canceled,
         }
 
 
@@ -76,12 +82,12 @@ class StripePaymentGateway(PaymentGateway):
         """Return subscription status."""
         subscription = get_stripe_subscription_detail(self.payment_id)
         if not subscription:
-            return None
+            return {}
         return Subscription(
             id=subscription['id'],
             current_period_start=subscription['current_period_start'],
             current_period_end=subscription['current_period_end'],
-            canceled_at=subscription['canceled_at']
+            canceled=True if subscription['canceled_at'] else False
         ).json
 
 
@@ -105,4 +111,21 @@ class PaystackPaymentGateway(PaymentGateway):
 
     def subscription(self):
         """Return subscription status."""
-        return None
+        subscription = get_paystack_subscription_detail(self.payment_id)
+        if not subscription:
+            return {}
+        current_period_start = datetime.fromisoformat(
+            subscription['createdAt'].replace('Z', '+00:00')
+        ).timestamp()
+        current_period_end = datetime.fromisoformat(
+            subscription['next_payment_date'].replace('Z', '+00:00')
+        ).timestamp()
+        status = subscription['status']
+        return Subscription(
+            id=subscription['id'],
+            current_period_start=current_period_start,
+            current_period_end=current_period_end,
+            canceled=(
+                    status in ['cancel', 'cancelled', 'non-renewing']
+            )
+        ).json

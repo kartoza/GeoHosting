@@ -56,11 +56,10 @@ const ServiceDetail: React.FC = () => {
     if (!instance) {
       return null
     }
-    if (instance.sales_order.subscription.canceled_at) {
+    if (instance.sales_order.subscription.canceled) {
       return <>
         Your subscription has been canceled
-        (Cancelled
-        at {new Date(instance.sales_order.subscription.canceled_at * 1000).toISOString().replaceAll('.000Z', '').replaceAll('T', ' ')})
+        (End of subscription at {new Date(instance.sales_order.subscription.current_period_end * 1000).toISOString().replaceAll('.000Z', '').replaceAll('T', ' ')})
       </>
     } else if (instance.sales_order.subscription.current_period_end) {
       return <>
@@ -231,7 +230,10 @@ const ServiceDetail: React.FC = () => {
         </Table>
       </Box>
     </Flex>
-    <DeleteInstance instanceInput={instance}/>
+    {
+      ['Online', 'Offline'].includes(instance.status) &&
+      <DeleteInstance instanceInput={instance}/>
+    }
   </Box>
 };
 
