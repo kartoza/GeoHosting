@@ -117,7 +117,7 @@ class PaymentPaystackSessionAPI:
 
         Return id of payment and string of challenge.
         """
-        plan = Plan.get(package.get_paystack_price_id())['data']
+        plan = Plan.get(package.get_paystack_price_id(email))['data']
         transaction = Transaction.initialize(
             email=email,
             amount=float(package.price * 100),

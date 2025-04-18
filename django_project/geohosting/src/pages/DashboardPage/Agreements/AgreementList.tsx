@@ -144,7 +144,6 @@ const AgreementList: React.FC = () => {
   return (
     <>
       <PaginationPage
-        title='Agreements'
         url='/api/agreements/'
         action={fetchUserAgreements}
         stateKey='agreements'

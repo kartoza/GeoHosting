@@ -6,6 +6,7 @@ GeoHosting.
 """
 from django.db import models
 from django.db.models import JSONField
+from django.utils import timezone
 
 from geohosting.models.product import Product
 from geohosting.utils.paystack import create_paystack_price
@@ -133,23 +134,30 @@ class Package(models.Model):
     # ----------------------------------------------------
     # PAYSTACK
     # ----------------------------------------------------
-    def _create_paystack_price_id(self):
+    def _create_paystack_price_id(self, email):
         """Create price id on paystack."""
         features = []
         try:
             features = self.feature_list['spec']
         except KeyError:
             pass
-        if self.price and not self.paystack_id:
+        # TODO: Always create new plan
+        # if self.price and not self.paystack_id:
+        if self.price:
+            now = int(timezone.now().timestamp())
             self.paystack_id = create_paystack_price(
-                self.name, self.currency, self.price,
+                f'{self.name} - {email} - {now}', self.currency, self.price,
                 self.periodicity,
                 features
             )
             self.save()
-
-    def get_paystack_price_id(self):
-        """Return price id on paystack."""
-        if not self.paystack_id:
-            self._create_paystack_price_id()
         return self.paystack_id
+
+    def get_paystack_price_id(self, email):
+        """Return price id on paystack."""
+        # TODO: Paystack price plan is created everytime
+        #  As it does not able to have multiple subscription with one plan
+        # if not self.paystack_id:
+        #     self._create_paystack_price_id()
+        # return self.paystack_id
+        return self._create_paystack_price_id(email)

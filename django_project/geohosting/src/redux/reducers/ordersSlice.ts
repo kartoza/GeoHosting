@@ -14,6 +14,13 @@ import { headerWithToken } from "../../utils/helpers";
 let _lastAbortController: AbortController | null = null;
 const ABORTED = 'Aborted';
 
+export interface Subscription {
+  id: string,
+  current_period_end: number,
+  current_period_start: number,
+  canceled: boolean,
+}
+
 export interface SalesOrder {
   id: string,
   erpnext_code: string,
@@ -26,7 +33,8 @@ export interface SalesOrder {
   package: Package,
   app_name: string,
   company_name: string,
-  instance: Instance
+  instance: Instance,
+  subscription: Subscription
 }
 
 interface SalesOrderPaginationResult extends PaginationResult {

@@ -374,3 +374,8 @@ class SalesOrder(ErpModel):
         if not self.payment_id:
             return
         self.payment_gateway.cancel_subscription()
+
+    @property
+    def subscription(self):
+        """Return subscription."""
+        return self.payment_gateway.subscription()
