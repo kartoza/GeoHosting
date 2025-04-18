@@ -18,6 +18,7 @@ from geohosting.models.cluster import Cluster
 from geohosting.models.company import Company
 from geohosting.models.package import Package
 from geohosting.models.product import ProductCluster
+from geohosting.models.subscription import Subscription
 from geohosting.utils.vault import get_credentials
 from geohosting_event.models.log import LogTracker
 
@@ -84,6 +85,15 @@ class Instance(models.Model):
         help_text=(
             'The time when the service will expire due to non-payment.'
             'There will be grace time before being deleted.'
+        )
+    )
+
+    # This is what subscription for this instance
+    subscription = models.ForeignKey(
+        Subscription, on_delete=models.SET_NULL,
+        null=True, blank=True,
+        help_text=(
+            'Subscription of the instance.'
         )
     )
 
@@ -295,10 +305,20 @@ class Instance(models.Model):
         if self.status != InstanceStatus.DELETED:
             return
 
+        if not self.subscription:
+            return
+
+        self.subscription.cancel_subscription()
+        self.subscription.sync_subscription()
+
+    def sync_subscription(self):
+        """Sync subscription."""
         from geohosting.models.sales_order import SalesOrder
         sales_orders = SalesOrder.objects.filter(
             payment_id__isnull=False,
+            subscription__isnull=False,
             instance=self
         )
         for sales_order in sales_orders:
-            sales_order.cancel_subscription()
+            self.subscription = sales_order.subscription
+            self.save()

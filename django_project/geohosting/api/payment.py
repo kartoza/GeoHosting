@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from geohosting.models import Package
-from geohosting.models.sales_order import SalesOrder, SalesOrderPaymentMethod
+from geohosting.models.sales_order import SalesOrder, PaymentMethod
 from geohosting_event.models.log import LogTracker
 
 paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
@@ -83,7 +83,7 @@ class PaymentAPI(APIView):
 class PaymentStripeSessionAPI:
     """API creating stripe checkout session."""
 
-    payment_method = SalesOrderPaymentMethod.STRIPE
+    payment_method = PaymentMethod.STRIPE
 
     def create_payload(
             self, email, package: Package, callback_url
@@ -111,7 +111,7 @@ class PaymentStripeSessionAPI:
 class PaymentPaystackSessionAPI:
     """API creating paystack checkout session."""
 
-    payment_method = SalesOrderPaymentMethod.PAYSTACK
+    payment_method = PaymentMethod.PAYSTACK
 
     def create_payload(
             self, email, package: Package, callback_url

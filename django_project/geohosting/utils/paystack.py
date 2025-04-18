@@ -50,32 +50,40 @@ def verify_paystack_payment(reference):
     return Transaction.verify(reference)
 
 
-def get_subscription_detail(reference):
+def get_subscription_detail_from_payment(reference):
     """Get subscription."""
-    transaction = verify_paystack_payment(reference)
-    customer = transaction['data']['customer']['id']
-    plan = transaction['data']['plan_object']['id']
-    authorization_code = transaction['data']['authorization'][
-        'authorization_code'
-    ]
-    # Fetch subscriptions for the customer
-    subscriptions = Subscription.list(
-        customer=customer, plan=plan
-    )
+    try:
+        transaction = verify_paystack_payment(reference)
+        customer = transaction['data']['customer']['id']
+        plan = transaction['data']['plan_object']['id']
+        authorization_code = transaction['data']['authorization'][
+            'authorization_code'
+        ]
+        # Fetch subscriptions for the customer
+        subscriptions = Subscription.list(
+            customer=customer, plan=plan
+        )
 
-    for subscription in subscriptions['data']:
-        if subscription['authorization'][
-            'authorization_code'] == authorization_code:
-            return subscription
-    return None
+        for subscription in subscriptions['data']:
+            if subscription['authorization'][
+                'authorization_code'] == authorization_code:
+                return subscription
+        return None
+    except Exception:
+        return None
 
 
-def cancel_subscription(reference):
-    """Cancel subscription."""
-    subscription = get_subscription_detail(reference)
+def get_subscription(subscription_id):
+    """Get subscription."""
+    subscription = Subscription.fetch(subscription_id)
     if not subscription:
         raise AttributeError('Subscription not found')
-    subscription = Subscription.fetch(subscription['subscription_code'])
+    return subscription
+
+
+def cancel_subscription(subscription_id):
+    """Cancel subscription."""
+    subscription = get_subscription(subscription_id)
     Subscription.disable(
         code=subscription['data']['subscription_code'],
         token=subscription['data']['email_token'],

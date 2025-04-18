@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.safestring import mark_safe
 
+from geohosting.admin.global_function import sync_subscriptions
 from geohosting.models import SalesOrder
 from geohosting_event.admin.log import LogTrackerObjectAdmin
 
@@ -39,11 +40,15 @@ def auto_deploy(modeladmin, request, queryset):
 class SalesOrderAdmin(LogTrackerObjectAdmin):
     list_display = (
         'date', 'package', 'customer', 'order_status', 'payment_method',
-        'erpnext_code', 'app_name', 'instance', 'activities', 'logs'
+        'erpnext_code', 'app_name', 'subscription',
+        'instance', 'activities', 'logs'
     )
     list_filter = ('order_status', 'payment_method',)
     search_fields = ('erpnext_code', 'instance__name')
-    actions = [publish_sales_order, update_payment_status, auto_deploy]
+    actions = [
+        publish_sales_order, update_payment_status,
+        sync_subscriptions, auto_deploy
+    ]
 
     def activities(self, obj: SalesOrder):
         """Return product."""
