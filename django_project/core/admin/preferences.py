@@ -35,6 +35,9 @@ class PreferencesAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('site_type', 'support_email')
         }),
+        ('Rule', {
+            'fields': ('grace_period_days', 'reminder_days_after_expiry')
+        }),
         ('Tests', {
             'fields': test_fields
         }),
