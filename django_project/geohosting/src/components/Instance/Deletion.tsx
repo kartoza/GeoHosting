@@ -64,16 +64,14 @@ export const InstanceDeletion = forwardRef(
           <ModalBody m={4}>
             <Box width={{ base: '100%' }}>
               <Box color="red.600">
-                Are you sure you want to delete the server
-                instance <b>{instance.name}</b>?
+                Are you certain you wish to terminate the server instance?
                 <br/>
                 <br/>
-                This action is irreversible and will permanently remove the
+                This action is irreversible and will permanently delete the
                 instance.
                 <br/>
-                Additionally, your subscription will be canceled, and the
-                server
-                cannot be restored once deleted.
+                Furthermore, your subscription will be canceled, and the server
+                cannot be restored after termination.
               </Box>
               <Box marginTop={8}>
                 <FormControl>
