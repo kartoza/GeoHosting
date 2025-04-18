@@ -6,7 +6,6 @@ from geohosting.admin.company import *
 from geohosting.admin.country import *
 from geohosting.admin.erp import *
 from geohosting.admin.instance import *
-from geohosting.admin.log import *
 from geohosting.admin.package import *
 from geohosting.admin.product import *
 from geohosting.admin.region import *

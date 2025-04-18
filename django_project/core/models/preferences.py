@@ -38,7 +38,21 @@ class Preferences(SingletonModel):
     support_email = models.EmailField(
         max_length=255,
         default='info@kartoza.com'
+    )
+    # For subscriptions settings
+    grace_period_days = models.IntegerField(
+        default=14,
+        help_text=(
+            'Number of days after expiration that '
+            'the instance remains active before deletion.'
+        )
+    )
 
+    reminder_days_after_expiry = models.IntegerField(
+        default=1,
+        help_text=(
+            'The number of days after expiration to send the reminder email.'
+        )
     )
 
     class Meta:  # noqa: D106

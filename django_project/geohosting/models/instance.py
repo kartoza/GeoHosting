@@ -16,10 +16,10 @@ from core.models.preferences import Preferences
 from core.settings.base import FRONTEND_URL
 from geohosting.models.cluster import Cluster
 from geohosting.models.company import Company
-from geohosting.models.log import LogTracker
 from geohosting.models.package import Package
 from geohosting.models.product import ProductCluster
 from geohosting.utils.vault import get_credentials
+from geohosting_log.models.log import LogTracker
 
 User = get_user_model()
 
@@ -79,6 +79,13 @@ class Instance(models.Model):
         auto_now=True,
         null=True, blank=True
     )
+    expiry_at = models.DateField(
+        null=True, blank=True,
+        help_text=(
+            'The time when the service will expire due to non-payment.'
+            'There will be grace time before being deleted.'
+        )
+    )
 
     def __str__(self):
         """Return activity type name."""
@@ -117,7 +124,7 @@ class Instance(models.Model):
         if self.status == status:
             return
 
-        LogTracker.error(self, f'Server: {status}')
+        LogTracker.success(self, f'Server: {status}')
         self.status = status
         self.save()
 
@@ -208,9 +215,7 @@ class Instance(models.Model):
             return
 
         try:
-            print(self.url)
             response = requests.head(self.url)
-            print(response.status_code)
             if response.status_code in [200, 302]:
                 self.online()
             else:

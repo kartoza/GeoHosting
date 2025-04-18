@@ -1,8 +1,8 @@
 from django.contrib import admin, messages
 from django.utils.safestring import mark_safe
 
-from geohosting.admin.log import LogTrackerObjectAdmin
 from geohosting.models import SalesOrder
+from geohosting_log.admin.log import LogTrackerObjectAdmin
 
 
 @admin.action(description="Publish sales order")

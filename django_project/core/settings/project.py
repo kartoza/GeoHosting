@@ -31,6 +31,7 @@ DEBUG = TEMPLATE_DEBUG = False
 # Extra installed apps
 INSTALLED_APPS = INSTALLED_APPS + (
     'core',
+    'geohosting_log',
     'geohosting',
     'geohosting_controller'
 )

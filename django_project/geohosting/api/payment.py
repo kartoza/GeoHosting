@@ -12,6 +12,7 @@ from rest_framework.views import APIView
 
 from geohosting.models import Package
 from geohosting.models.sales_order import SalesOrder, SalesOrderPaymentMethod
+from geohosting_log.models.log import LogTracker
 
 paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
 
@@ -51,6 +52,7 @@ class PaymentAPI(APIView):
                 "success_url": callback_url
             })
         except Exception as e:
+            LogTracker.error(order, f'{e}')
             return HttpResponseServerError(f'{e}')
 
     def post(self, request, pk):
@@ -74,6 +76,7 @@ class PaymentAPI(APIView):
                 "success_url": callback_url
             })
         except Exception as e:
+            LogTracker.error(order, f'{e}')
             return HttpResponseServerError(f'{e}')
 
 
