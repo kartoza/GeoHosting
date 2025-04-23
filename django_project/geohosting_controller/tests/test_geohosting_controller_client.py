@@ -53,6 +53,7 @@ class ControllerTest(TestCase):
         self.user_token = Token.objects.create(user=self.user)
         self.admin = User.objects.create(
             username='admin', password='password',
+            email='email@example.com',
             is_superuser=True,
             is_staff=True
         )
@@ -345,8 +346,12 @@ class ControllerTest(TestCase):
                 self.assertEqual(
                     email.category, EmailCategory.INSTANCE_NOTIFICATION
                 )
+                self.assertEqual(email.to, ['email@example.com'])
                 self.assertEqual(email.subject, 'server-test is ready')
-                self.assertEqual(email.tags, ['instance-2', 'server-test'])
+                self.assertEqual(
+                    email.tags,
+                    [f'instance-{activity.instance.id}', 'server-test']
+                )
 
                 activity.instance.send_credentials()
                 self.assertEqual(send_email.call_count, 2)
@@ -355,8 +360,12 @@ class ControllerTest(TestCase):
                 self.assertEqual(
                     email.category, EmailCategory.INSTANCE_NOTIFICATION
                 )
+                self.assertEqual(email.to, ['email@example.com'])
                 self.assertEqual(email.subject, 'server-test is ready')
-                self.assertEqual(email.tags, ['instance-2', 'server-test'])
+                self.assertEqual(
+                    email.tags,
+                    [f'instance-{activity.instance.id}', 'server-test']
+                )
 
                 # Get the activity status from server
                 activity.refresh_from_db()
