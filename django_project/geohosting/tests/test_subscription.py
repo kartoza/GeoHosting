@@ -78,9 +78,11 @@ class SubscriptionTests(APITestCase):
         'geohosting.forms.activity.delete_instance.DeletingInstanceForm'
     )
     @patch('geohosting.models.subscription.Subscription.payment_gateway')
+    @patch('geohosting.models.subscription.Subscription.cancel_subscription')
     @patch('django.utils.timezone.now')
     def test_subscription_status(
-            self, mock_now, mock_payment_gateway, mock_delete_form
+            self, mock_now, mock_cancel_subscription,
+            mock_payment_gateway, mock_delete_form
     ):
         """Test that get_queryset returns instances for the authenticated user."""
         mock_payment_gateway.return_value = None
@@ -137,6 +139,7 @@ class SubscriptionTests(APITestCase):
         )
         self.instance.subscription.sync_subscription()
         assert mock_delete_form.call_count == 1
+        assert mock_cancel_subscription.call_count == 1
         self.assertEqual(EmailEvent.objects.count(), 3)
 
         # When it is expired
@@ -145,3 +148,4 @@ class SubscriptionTests(APITestCase):
 
         self.instance.refresh_from_db()
         assert mock_delete_form.call_count == 2
+        assert mock_cancel_subscription.call_count == 2

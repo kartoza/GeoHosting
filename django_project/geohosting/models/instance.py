@@ -287,4 +287,5 @@ class Instance(models.Model):
                 form.user = self.owner
                 if form.is_valid():
                     form.save()
+                self.subscription.cancel_subscription()
         return is_expired
