@@ -2,7 +2,6 @@ import threading
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from rest_framework import status
@@ -14,10 +13,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.models.preferences import Preferences
-from core.settings.base import FRONTEND_URL, DEFAULT_FROM_EMAIL
+from core.settings.base import FRONTEND_URL
 from geohosting.models import UserProfile
 from geohosting.serializer.email_auth_token import EmailAuthTokenSerializer
 from geohosting.serializer.register import RegisterSerializer
+from geohosting_event.models.email import EmailEvent
 
 User = get_user_model()
 
@@ -112,15 +112,12 @@ class PasswordResetView(APIView):
             }
         )
 
-        # Create the email message
-        email = EmailMessage(
+        EmailEvent.send_email(
             subject='Password Reset Request',
             body=html_content,
-            from_email=DEFAULT_FROM_EMAIL,
-            to=[email]
+            to=[email],
+            category='Password Reset'
         )
-        email.content_subtype = 'html'
-        email.send()
 
         return Response(
             {'message': 'Password reset link sent.'},
