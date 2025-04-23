@@ -13,7 +13,7 @@ from core.settings.base import DEFAULT_FROM_EMAIL
 
 
 class EmailCategory:
-    """Email category"""
+    """Email category."""
 
     INSTANCE_NOTIFICATION = 'Instance Notification'
     SUBSCRIPTION_REMINDER = 'Subscription Remainder'

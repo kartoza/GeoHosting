@@ -313,7 +313,7 @@ class ControllerTest(TestCase):
                 self.assertEqual(
                     WebhookEvent.objects.first().data, {
                         'app_name': self.app_name,
-                        'Status': 'Created',
+                        'Status': 'synced',
                         'Source': 'ArgoCD'
                     }
                 )

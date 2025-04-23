@@ -5,7 +5,7 @@ GeoHosting.
 .. note:: Email utilities.
 """
 
-from datetime import timedelta, timezone
+from datetime import timedelta
 
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -19,6 +19,7 @@ from geohosting_event.models.log import LogTracker
 
 class InstanceEmail:
     """Instance email utilities."""
+
     from geohosting.models.instance import Instance
 
     def __init__(self, instance: Instance):
