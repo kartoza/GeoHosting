@@ -32,7 +32,6 @@ class WebhookView(APIView):
                 raise KeyError(
                     "Neither 'Status' nor 'status' key found in data"
                 )
-            status = status.lower()
 
             source = data.get('Source', data.get('source'))
             if source is None:
@@ -42,7 +41,7 @@ class WebhookView(APIView):
             source = source.lower()
 
             # Don't do anything if it is still running
-            if status in [WebhookStatus.RUNNING]:
+            if status.lower() in [WebhookStatus.RUNNING]:
                 return Response()
             if source != self.ARGO_CD:
                 return Response()
@@ -80,10 +79,10 @@ class WebhookView(APIView):
 
             # If it is synced
             if status not in [
-                WebhookStatus.SUCCESS, WebhookStatus.SUCCEEDED,
-                WebhookStatus.SYNCED, WebhookStatus.DELETED
+                WebhookStatus.CREATED, WebhookStatus.SUCCEEDED,
+                WebhookStatus.DELETED
             ]:
-                raise KeyError('Status does not found')
+                raise KeyError(f'Status {status} does not recognized')
 
             # This is for deployment
             if activity.is_deletion and status != WebhookStatus.DELETED:

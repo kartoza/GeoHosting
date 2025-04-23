@@ -24,10 +24,9 @@ class WebhookStatus:
     UNKNOWN = 'unknown'
 
     # Success statuses
-    SUCCESS = 'success'
+    CREATED = 'Created'
     SUCCEEDED = 'succeeded'
-    SYNCED = 'synced'
-    DELETED = 'deleted'
+    DELETED = 'Deleted'
 
 
 class WebhookEvent(models.Model):
