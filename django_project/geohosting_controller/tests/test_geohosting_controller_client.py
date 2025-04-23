@@ -302,18 +302,6 @@ class ControllerTest(TestCase):
                     },
                     headers={'Authorization': f'Token {self.admin_token}'}
                 )
-                self.assertEqual(response.status_code, 400)
-
-                # Success if admin but success
-                response = client.post(
-                    '/api/webhook/',
-                    data={
-                        'app_name': self.app_name,
-                        'Status': 'Created',
-                        'Source': 'ArgoCD'
-                    },
-                    headers={'Authorization': f'Token {self.admin_token}'}
-                )
                 self.assertEqual(response.status_code, 200)
                 activity.refresh_from_db()
                 self.assertEqual(

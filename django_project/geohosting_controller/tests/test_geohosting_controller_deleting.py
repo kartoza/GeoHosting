@@ -220,7 +220,7 @@ class ControllerDeletingTest(TestCase):
                     '/api/webhook/',
                     data={
                         'app_name': self.app_name,
-                        'status': 'Deleted',
+                        'status': 'deleted',
                         'source': 'ArgoCD'
                     },
                     headers={'Authorization': f'Token {self.admin_token}'}
