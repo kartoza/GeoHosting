@@ -10,6 +10,8 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     current_period_start = serializers.SerializerMethodField()
     current_period_end = serializers.SerializerMethodField()
+    current_expiry_at = serializers.SerializerMethodField()
+    is_waiting_payment = serializers.SerializerMethodField()
 
     class Meta:
         model = Subscription
@@ -26,3 +28,13 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         return localtime(obj.current_period_end).strftime(
             '%Y-%m-%d %H:%M:%S %Z'
         )
+
+    def get_current_expiry_at(self, obj: Subscription):
+        """Return current_expiry_at."""
+        return localtime(obj.hard_deadline_time).strftime(
+            '%Y-%m-%d %H:%M:%S %Z'
+        )
+
+    def get_is_waiting_payment(self, obj: Subscription):
+        """Return is is_waiting_payment."""
+        return obj.is_waiting_payment

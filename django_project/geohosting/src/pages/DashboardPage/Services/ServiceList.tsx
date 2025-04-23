@@ -314,7 +314,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
       )
     }
     {
-      instance.status == 'Online' &&
+      ['Online', 'Offline'].includes(instance.status) &&
       <Box
         width='100%' color='yellow.500' mt={4} justifyContent='center'
         cursor='pointer' display='flex' alignItems='center'
@@ -325,6 +325,39 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
         <>
           {fetchingCredentials && <Spinner width={4} height={4} ml={1}/>}
         </>
+      </Box>
+    }
+    {
+      !['Deleting', 'Deleted'].includes(instance.status) && !instance.subscription?.is_active && !instance.subscription?.is_waiting_payment && instance.subscription?.current_expiry_at &&
+      <Box
+        width='100%' backgroundColor='yellow.50' mt={4}
+        border="1px solid"
+        borderColor='yellow.100'
+        color='yellow.600'
+        p={2}
+        fontSize={14}
+        justifyContent='center'
+        cursor='pointer' display='flex' alignItems='center'
+      >
+        This subscription has been cancelled, and the instance is scheduled for
+        deletion on {instance.subscription?.current_expiry_at}.
+      </Box>
+    }
+    {
+      !instance.subscription?.is_active && instance.subscription?.is_waiting_payment && instance.subscription?.current_expiry_at &&
+      <Box
+        width='100%' backgroundColor='yellow.50' mt={4}
+        border="1px solid"
+        borderColor='yellow.100'
+        color='yellow.600'
+        p={2}
+        fontSize={14}
+        justifyContent='center'
+        cursor='pointer' display='flex' alignItems='center'
+      >
+        Unable to process subscription payment, and the instance is scheduled
+        for
+        deletion on {instance.subscription?.current_expiry_at}.
       </Box>
     }
   </Box>
