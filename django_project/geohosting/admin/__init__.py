@@ -10,5 +10,6 @@ from geohosting.admin.package import *
 from geohosting.admin.product import *
 from geohosting.admin.region import *
 from geohosting.admin.sales_order import *
+from geohosting.admin.subscription import *
 from geohosting.admin.ticket import *
 from geohosting.admin.user import *

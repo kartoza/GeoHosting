@@ -65,13 +65,3 @@ class SalesOrderDetailSerializer(SalesOrderSerializer):
     class Meta:
         model = SalesOrder
         fields = '__all__'
-
-
-class SalesOrderDetailWithPaymentSerializer(SalesOrderDetailSerializer):
-    """Sales order detail serializer."""
-
-    subscription = serializers.SerializerMethodField()
-
-    def get_subscription(self, obj: SalesOrder):
-        """Return subscription status."""
-        return obj.subscription

@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
+from geohosting.admin.global_function import (
+    sync_subscriptions, cancel_subscription
+)
 from geohosting.models import Instance
 from geohosting_event.admin.log import LogTrackerObjectAdmin
 
@@ -17,22 +20,19 @@ def check_instance(modeladmin, request, queryset):
         config.checking_server()
 
 
-def cancel_subscription(modeladmin, request, queryset):
-    """Cancel subscription."""
-    for config in queryset:
-        config.cancel_subscription()
-
-
 @admin.register(Instance)
 class InstanceAdmin(LogTrackerObjectAdmin):
     """Instance admin."""
 
     list_display = (
         'name', 'product', 'cluster', 'price', 'owner', 'status',
-        'created_at', 'logs', 'webhooks', 'link'
+        'subscription', 'created_at', 'logs', 'webhooks', 'link'
     )
     list_filter = ('status',)
-    actions = (send_credentials, check_instance, cancel_subscription)
+    actions = (
+        send_credentials, check_instance, sync_subscriptions,
+        cancel_subscription
+    )
 
     def has_add_permission(*args, **kwargs):
         return False

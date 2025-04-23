@@ -5,12 +5,12 @@ from django.utils.timezone import make_aware
 
 from geohosting.models.subscription import Subscription
 from geohosting.utils.paystack import (
-    verify_paystack_payment,
-    get_subscription_detail_from_payment as get_paystack_subscription_detail
+    cancel_subscription as cancel_paystack_subscription,
+    get_subscription as get_paystack_subscription_detail
 )
 from geohosting.utils.stripe import (
-    get_checkout_detail,
-    get_subscription_detail_from_payment as get_stripe_subscription_detail
+    cancel_subscription as cancel_stripe_subscription,
+    get_subscription as get_stripe_subscription_detail
 )
 
 User = get_user_model()
@@ -25,26 +25,26 @@ class SubscriptionType:
             current_period_end: float,
             canceled: bool
     ):
-        """Initialize Payment Status."""
+        """Initialize Subscription Status."""
         self.id = id
         self.current_period_start = current_period_start
         self.current_period_end = current_period_end
         self.canceled = canceled
 
 
-class PaymentGateway:
-    """Payment Gateway."""
+class SubscriptionGateway:
+    """Subscription Gateway."""
 
-    def __init__(self, payment_id):
-        """Initialize payment gateway."""
-        self.payment_id = payment_id
+    def __init__(self, subscription_id):
+        """Initialize subscription gateway."""
+        self.subscription_id = subscription_id
 
     def payment_method(self) -> str:
-        """Payment method."""
+        """Subscription method."""
         raise NotImplementedError
 
-    def payment_verification(self):
-        """Payment verification."""
+    def cancel_subscription(self):
+        """Get subscription id."""
         raise NotImplementedError
 
     def _get_subscription_data(self) -> SubscriptionType | None:
@@ -77,26 +77,21 @@ class PaymentGateway:
         return subscription
 
 
-class StripePaymentGateway(PaymentGateway):
-    """Stripe Payment Gateway."""
+class StripeSubscriptionGateway(SubscriptionGateway):
+    """Stripe Subscription Gateway."""
 
     def payment_method(self) -> str:
-        """Payment method."""
+        """Subscription method."""
         from geohosting.models.data_types import PaymentMethod
         return PaymentMethod.STRIPE
 
-    def payment_verification(self) -> bool:
-        """Payment verification."""
-        detail = get_checkout_detail(self.payment_id)
-        if not detail:
-            return False
-        if detail.invoice:
-            return True
-        return False
+    def cancel_subscription(self):
+        """Cancel subscription."""
+        cancel_stripe_subscription(self.subscription_id)
 
     def _get_subscription_data(self) -> SubscriptionType | None:
         """Get subscription data."""
-        subscription = get_stripe_subscription_detail(self.payment_id)
+        subscription = get_stripe_subscription_detail(self.subscription_id)
         if not subscription:
             return None
         return SubscriptionType(
@@ -107,28 +102,21 @@ class StripePaymentGateway(PaymentGateway):
         )
 
 
-class PaystackPaymentGateway(PaymentGateway):
-    """Paystack Payment Gateway."""
+class PaystackSubscriptionGateway(SubscriptionGateway):
+    """Paystack Subscription Gateway."""
 
     def payment_method(self) -> str:
-        """Payment method."""
+        """Subscription method."""
         from geohosting.models.data_types import PaymentMethod
         return PaymentMethod.PAYSTACK
 
-    def payment_verification(self) -> bool:
-        """Payment verification."""
-        response = verify_paystack_payment(self.payment_id)
-        if not response:
-            return False
-        try:
-            if response['data']['status'] == 'success':
-                return True
-        except KeyError:
-            return False
+    def cancel_subscription(self):
+        """Cancel subscription."""
+        cancel_paystack_subscription(self.subscription_id)
 
     def _get_subscription_data(self) -> SubscriptionType | None:
         """Get subscription data."""
-        subscription = get_paystack_subscription_detail(self.payment_id)
+        subscription = get_paystack_subscription_detail(self.subscription_id)
         if not subscription:
             return None
         current_period_start = datetime.fromisoformat(

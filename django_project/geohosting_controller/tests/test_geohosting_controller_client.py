@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.test.client import Client
 from django.test.testcases import TestCase
+from django.utils.timezone import now
 from rest_framework.authtoken.models import Token
 
 from geohosting.factories.package import (
@@ -16,9 +17,9 @@ from geohosting.factories.package import (
 )
 from geohosting.forms.activity import CreateInstanceForm
 from geohosting.models import (
-    Activity, Instance, Region, ActivityStatus, InstanceStatus
+    Activity, Instance, Region, ActivityStatus, InstanceStatus,
+    SalesOrder, Subscription
 )
-from geohosting_event.models import WebhookEvent
 from geohosting_controller.default_data import (
     generate_cluster, generate_regions
 )
@@ -27,6 +28,7 @@ from geohosting_controller.exceptions import (
     ActivityException
 )
 from geohosting_controller.variables import ActivityTypeTerm
+from geohosting_event.models import WebhookEvent
 
 User = get_user_model()
 
@@ -67,11 +69,23 @@ class ControllerTest(TestCase):
 
     def create_function(self, app_name) -> Activity:
         """Create function."""
+        sales_order = SalesOrder.objects.create(
+            app_name=app_name,
+            package=self.package,
+            customer=self.admin,
+            subscription=Subscription.objects.create(
+                subscription_id='AAA',
+                customer=self.admin,
+                current_period_start=now(),
+                current_period_end=now()
+            )
+        )
         form = CreateInstanceForm(
             {
                 'app_name': app_name,
                 'package': self.package,
-                'region': self.region
+                'region': self.region,
+                'sales_order': sales_order
             }
         )
         form.user = self.admin
@@ -82,8 +96,14 @@ class ControllerTest(TestCase):
         return form.instance
 
     @patch('django.core.mail.EmailMessage.send')
-    def test_create(self, send_email):
+    @patch('geohosting.models.sales_order.SalesOrder.post_to_erpnext')
+    def test_create(
+            self,
+            mock_post_to_erpnext, send_email
+    ):
         """Test create."""
+        mock_post_to_erpnext.return_value = {'status': 'success'}
+        os.environ['ERPNEXT_BASE_URL'] = 'erp.com'
         with requests_mock.Mocker() as requests_mocker:
             # Mock requests
             requests_mocker.get(
@@ -160,6 +180,10 @@ class ControllerTest(TestCase):
 
                 # This is emulate when pooling build from jenkins
                 activity_obj = Activity.objects.get(id=activity.id)
+                self.assertEqual(
+                    activity_obj.sales_order.subscription,
+                    activity_obj.instance.subscription
+                )
 
                 # Get jenkins build url
                 self.assertEqual(
