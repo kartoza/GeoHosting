@@ -80,13 +80,6 @@ class Instance(models.Model):
         auto_now=True,
         null=True, blank=True
     )
-    expiry_at = models.DateField(
-        null=True, blank=True,
-        help_text=(
-            'The time when the service will expire due to non-payment.'
-            'There will be grace time before being deleted.'
-        )
-    )
 
     # This is what subscription for this instance
     subscription = models.ForeignKey(
@@ -321,3 +314,17 @@ class Instance(models.Model):
         for sales_order in sales_orders:
             self.subscription = sales_order.subscription
             self.save()
+
+    @property
+    def is_waiting_payment(self) -> bool:
+        """Is instance is in waiting payment."""
+        if not self.subscription:
+            return False
+        return self.subscription.is_waiting_payment
+
+    @property
+    def is_expired(self) -> bool:
+        """Is instance is expired."""
+        if not self.subscription:
+            return False
+        return self.subscription.is_expired
