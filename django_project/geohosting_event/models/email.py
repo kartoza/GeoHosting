@@ -12,6 +12,13 @@ from django.utils import timezone
 from core.settings.base import DEFAULT_FROM_EMAIL
 
 
+class EmailCategory:
+    """Email category"""
+
+    INSTANCE_NOTIFICATION = 'Instance Notification'
+    SUBSCRIPTION_REMINDER = 'Subscription Remainder'
+
+
 class EmailEvent(models.Model):
     """Email event model."""
 
@@ -45,11 +52,7 @@ class EmailEvent(models.Model):
 
     @staticmethod
     def send_email(
-            subject,
-            body,
-            to,
-            category,
-            tags=None,
+            subject, body, to, category, tags=None,
             from_email=DEFAULT_FROM_EMAIL
     ):
         event = EmailEvent.objects.create(

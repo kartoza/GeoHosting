@@ -28,7 +28,7 @@ from geohosting_controller.exceptions import (
     ActivityException
 )
 from geohosting_controller.variables import ActivityTypeTerm
-from geohosting_event.models import WebhookEvent
+from geohosting_event.models import WebhookEvent, EmailEvent, EmailCategory
 
 User = get_user_model()
 
@@ -333,14 +333,30 @@ class ControllerTest(TestCase):
                     activity.instance.status, InstanceStatus.STARTING_UP
                 )
                 self.assertEqual(send_email.call_count, 0)
+                self.assertEqual(EmailEvent.objects.count(), 0)
 
                 activity.instance.checking_server()
                 self.assertEqual(
                     activity.instance.status, InstanceStatus.ONLINE
                 )
                 self.assertEqual(send_email.call_count, 1)
+                self.assertEqual(EmailEvent.objects.count(), 1)
+                email = EmailEvent.objects.first()
+                self.assertEqual(
+                    email.category, EmailCategory.INSTANCE_NOTIFICATION
+                )
+                self.assertEqual(email.subject, 'server-test is ready')
+                self.assertEqual(email.tags, ['instance-2', 'server-test'])
+
                 activity.instance.send_credentials()
                 self.assertEqual(send_email.call_count, 2)
+                self.assertEqual(EmailEvent.objects.count(), 2)
+                email = EmailEvent.objects.first()
+                self.assertEqual(
+                    email.category, EmailCategory.INSTANCE_NOTIFICATION
+                )
+                self.assertEqual(email.subject, 'server-test is ready')
+                self.assertEqual(email.tags, ['instance-2', 'server-test'])
 
                 # Get the activity status from server
                 activity.refresh_from_db()

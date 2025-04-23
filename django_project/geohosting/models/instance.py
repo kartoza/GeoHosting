@@ -6,9 +6,7 @@ GeoHosting.
 """
 
 import requests
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.mail import EmailMessage
 from django.db import models
 from django.template.loader import render_to_string
 
@@ -20,6 +18,7 @@ from geohosting.models.package import Package
 from geohosting.models.product import ProductCluster
 from geohosting.models.subscription import Subscription
 from geohosting.utils.vault import get_credentials
+from geohosting_event.models.email import EmailEvent, EmailCategory
 from geohosting_event.models.log import LogTracker
 
 User = get_user_model()
@@ -284,14 +283,13 @@ class Instance(models.Model):
                 )
 
         # Create the email message
-        email = EmailMessage(
+        EmailEvent.send_email(
             subject=f'{self.name} is ready',
             body=html_content,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[self.owner.email]
+            to=[self.owner.email],
+            category=EmailCategory.INSTANCE_NOTIFICATION,
+            tags=[f'instance-{self.id}', f'{self.name}']
         )
-        email.content_subtype = 'html'
-        email.send()
 
     def cancel_subscription(self):
         """Cancel subscription."""
