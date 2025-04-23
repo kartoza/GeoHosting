@@ -53,20 +53,25 @@ class Subscription(models.Model):
         """Sync subscription."""
         self.payment_gateway.subscription(self.customer)
 
+        for instance in self.instance_set.all():
+            instance.is_expired  # noqa
+
+    @property
+    def hard_deadline_time(self):
+        """Return hard deadline time."""
+        pref = Preferences.load()
+        return self.current_period_end + timedelta(
+            days=pref.grace_period_days
+        )
+
     @property
     def is_waiting_payment(self) -> bool:
         """Is instance is in waiting payment."""
-        self.sync_subscription()
-        self.refresh_from_db()
         return timezone.now() > self.current_period_end
 
     @property
     def is_expired(self) -> bool:
         """Is instance is expired."""
-        pref = Preferences.load()
         if not self.is_waiting_payment:
             return False
-        return timezone.now() > (
-                self.current_period_end + timedelta(
-            days=pref.grace_period_days)
-        )
+        return timezone.now() >= self.hard_deadline_time

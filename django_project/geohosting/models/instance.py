@@ -259,16 +259,19 @@ class Instance(models.Model):
     @property
     def is_waiting_payment(self) -> bool:
         """Is instance is in waiting payment."""
+        from geohosting.utils.email import InstanceEmail
         if not self.subscription:
             return False
         is_waiting_payment = self.subscription.is_waiting_payment
-        if is_waiting_payment:
-            pass
+        if is_waiting_payment and not self.subscription.is_expired:
+            InstanceEmail(self).send_payment_reminder()
         return is_waiting_payment
 
     @property
     def is_expired(self) -> bool:
         """Is instance is expired."""
         if not self.subscription:
+            return False
+        if not self.is_waiting_payment:
             return False
         return self.subscription.is_expired

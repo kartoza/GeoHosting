@@ -56,6 +56,7 @@ class EmailEvent(models.Model):
             from_email=DEFAULT_FROM_EMAIL
     ):
         event = EmailEvent.objects.create(
+            sent_at=timezone.now(),
             subject=subject,
             body=body,
             to=to,

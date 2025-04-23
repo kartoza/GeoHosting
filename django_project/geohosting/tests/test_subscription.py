@@ -9,6 +9,7 @@ from geohosting.models import (
     Instance, Package, Cluster, Region, Product, Subscription
 )
 from geohosting.models.data_types import PaymentMethod
+from geohosting_event.models import EmailEvent
 
 
 class SubscriptionTests(APITestCase):
@@ -71,11 +72,11 @@ class SubscriptionTests(APITestCase):
             )
         )
 
-    @patch('geohosting.models.subscription.Subscription.sync_subscription')
+    @patch('geohosting.models.subscription.Subscription.payment_gateway')
     @patch('django.utils.timezone.now')
-    def test_subscription_status(self, mock_now, mock_sync_subscription):
+    def test_subscription_status(self, mock_now, mock_payment_gateway):
         """Test that get_queryset returns instances for the authenticated user."""
-        mock_sync_subscription.return_value = None
+        mock_payment_gateway.return_value = None
         mock_now.return_value = make_aware(
             datetime(2000, 1, 2, 0, 0, 0)
         )
@@ -84,10 +85,43 @@ class SubscriptionTests(APITestCase):
         self.assertFalse(self.instance.is_expired)
 
         # If it is next month
-        mock_sync_subscription.return_value = None
         mock_now.return_value = make_aware(
             datetime(2000, 2, 2, 0, 0, 0)
         )
 
         self.assertTrue(self.instance.is_waiting_payment)
         self.assertFalse(self.instance.is_expired)
+
+        self.assertEqual(EmailEvent.objects.count(), 1)
+
+        # We check the email when subscription is sync
+        mock_now.return_value = make_aware(
+            datetime(2000, 2, 2, 1, 0, 0)
+        )
+        self.instance.subscription.sync_subscription()
+        self.assertEqual(EmailEvent.objects.count(), 1)
+
+        # We check the email when subscription next 1 hour
+        mock_now.return_value = make_aware(
+            datetime(2000, 2, 2, 1, 0, 0)
+        )
+        self.instance.subscription.sync_subscription()
+        self.assertEqual(EmailEvent.objects.count(), 1)
+
+        # We check the email when subscription next 1 day
+        mock_now.return_value = make_aware(
+            datetime(2000, 2, 3, 0, 0, 0)
+        )
+        self.instance.subscription.sync_subscription()
+        self.assertEqual(EmailEvent.objects.count(), 2)
+
+        # We check the email when subscription next 14 day
+        mock_now.return_value = make_aware(
+            datetime(2000, 2, 15, 0, 0, 0)
+        )
+        self.instance.subscription.sync_subscription()
+        self.assertEqual(EmailEvent.objects.count(), 2)
+
+        # When it is expired
+        self.assertTrue(self.instance.is_waiting_payment)
+        self.assertTrue(self.instance.is_expired)
