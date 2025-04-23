@@ -270,8 +270,21 @@ class Instance(models.Model):
     @property
     def is_expired(self) -> bool:
         """Is instance is expired."""
+        from geohosting.forms.activity.delete_instance import (
+            DeletingInstanceForm
+        )
         if not self.subscription:
             return False
+        self.subscription.refresh_from_db()
         if not self.is_waiting_payment:
             return False
-        return self.subscription.is_expired
+
+        # We run delete instance
+        is_expired = self.subscription.is_expired
+        if is_expired:
+            if not self.is_lock:
+                form = DeletingInstanceForm({'application': self})
+                form.user = self.owner
+                if form.is_valid():
+                    form.save()
+        return is_expired

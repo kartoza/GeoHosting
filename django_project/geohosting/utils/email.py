@@ -101,9 +101,6 @@ class InstanceEmail:
             expiry_date = email_event.sent_at + timedelta(
                 days=reminder_days_after_expiry
             )
-            print('----------------')
-            print(timezone.now())
-            print(expiry_date)
             if timezone.now() < expiry_date:
                 create_email = False
 

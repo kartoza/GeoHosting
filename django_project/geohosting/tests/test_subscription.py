@@ -6,7 +6,8 @@ from django.utils.timezone import make_aware
 from rest_framework.test import APITestCase
 
 from geohosting.models import (
-    Instance, Package, Cluster, Region, Product, Subscription
+    Instance, Package, Cluster, Region, Product, Subscription,
+    InstanceStatus
 )
 from geohosting.models.data_types import PaymentMethod
 from geohosting_event.models import EmailEvent
@@ -69,12 +70,18 @@ class SubscriptionTests(APITestCase):
                     datetime(2000, 2, 1, 0, 0, 0)
                 ),
                 is_active=True
-            )
+            ),
+            status=InstanceStatus.OFFLINE
         )
 
+    @patch(
+        'geohosting.forms.activity.delete_instance.DeletingInstanceForm'
+    )
     @patch('geohosting.models.subscription.Subscription.payment_gateway')
     @patch('django.utils.timezone.now')
-    def test_subscription_status(self, mock_now, mock_payment_gateway):
+    def test_subscription_status(
+            self, mock_now, mock_payment_gateway, mock_delete_form
+    ):
         """Test that get_queryset returns instances for the authenticated user."""
         mock_payment_gateway.return_value = None
         mock_now.return_value = make_aware(
@@ -120,8 +127,12 @@ class SubscriptionTests(APITestCase):
             datetime(2000, 2, 15, 0, 0, 0)
         )
         self.instance.subscription.sync_subscription()
+        assert mock_delete_form.call_count == 1
         self.assertEqual(EmailEvent.objects.count(), 2)
 
         # When it is expired
         self.assertTrue(self.instance.is_waiting_payment)
         self.assertTrue(self.instance.is_expired)
+
+        self.instance.refresh_from_db()
+        assert mock_delete_form.call_count == 2
