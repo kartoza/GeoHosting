@@ -1,6 +1,10 @@
+from datetime import timedelta
+
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
+from core.models.preferences import Preferences
 from geohosting.models.data_types import PaymentMethod
 
 User = get_user_model()
@@ -48,3 +52,26 @@ class Subscription(models.Model):
     def sync_subscription(self):
         """Sync subscription."""
         self.payment_gateway.subscription(self.customer)
+
+        for instance in self.instance_set.all():
+            instance.is_expired  # noqa
+
+    @property
+    def hard_deadline_time(self):
+        """Return hard deadline time."""
+        pref = Preferences.load()
+        return self.current_period_end + timedelta(
+            days=pref.grace_period_days
+        )
+
+    @property
+    def is_waiting_payment(self) -> bool:
+        """Is instance is in waiting payment."""
+        return timezone.now() > self.current_period_end
+
+    @property
+    def is_expired(self) -> bool:
+        """Is instance is expired."""
+        if not self.is_waiting_payment:
+            return False
+        return timezone.now() >= self.hard_deadline_time

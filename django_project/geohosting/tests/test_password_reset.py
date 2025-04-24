@@ -1,13 +1,13 @@
-from django.urls import reverse
 from django.contrib.auth.models import User
-from django.core.mail import outbox
 from django.test import TestCase
+from django.urls import reverse
+from django.utils.crypto import get_random_string
 from rest_framework import status
 from rest_framework.test import APIClient
-from django.utils.crypto import get_random_string
-from django.contrib.auth.hashers import make_password
 
+from core.settings.base import DEFAULT_FROM_EMAIL
 from geohosting.models.user_profile import UserProfile
+from geohosting_event.models.email import EmailEvent
 
 
 class PasswordResetTests(TestCase):
@@ -26,12 +26,18 @@ class PasswordResetTests(TestCase):
         UserProfile.objects.all().delete()
         User.objects.all().delete()
 
-
     def test_password_reset_success(self):
-        response = self.client.post(self.password_reset_url, {
-                                    'email': 'test@example.com'})
+        response = self.client.post(
+            self.password_reset_url, {'email': 'test@example.com'}
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['message'], 'Password reset link sent.')
+
+        email = EmailEvent.objects.first()
+        self.assertEqual(email.subject, 'Password Reset Request')
+        self.assertEqual(email.to, ['test@example.com'])
+        self.assertEqual(email.from_email, DEFAULT_FROM_EMAIL)
+        self.assertEqual(email.category, 'Password Reset')
 
     def test_password_reset_missing_email(self):
         response = self.client.post(self.password_reset_url, {'email': ''})
@@ -39,8 +45,9 @@ class PasswordResetTests(TestCase):
         self.assertEqual(response.data['error'], 'Email is required.')
 
     def test_password_reset_invalid_email(self):
-        response = self.client.post(self.password_reset_url, {
-                                    'email': 'invalid@example.com'})
+        response = self.client.post(
+            self.password_reset_url, {'email': 'invalid@example.com'}
+        )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data['error'], 'Email is not registered.')
 
@@ -48,10 +55,13 @@ class PasswordResetTests(TestCase):
         reset_token = get_random_string(32)
         self.user.userprofile.reset_token = reset_token
         self.user.userprofile.save()
-        response = self.client.post(self.password_reset_confirm_url, {
-            'token': reset_token,
-            'new_password': 'newpassword'
-        })
+        response = self.client.post(
+            self.password_reset_confirm_url,
+            {
+                'token': reset_token,
+                'new_password': 'newpassword'
+            }
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['message'], 'Password has been reset.')
         self.user.refresh_from_db()
@@ -63,8 +73,10 @@ class PasswordResetTests(TestCase):
             'new_password': ''
         })
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['error'],
-                         'Token and new password are required.')
+        self.assertEqual(
+            response.data['error'],
+            'Token and new password are required.'
+        )
 
     def test_password_reset_confirm_invalid_token(self):
         response = self.client.post(self.password_reset_confirm_url, {

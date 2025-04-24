@@ -56,7 +56,12 @@ const ServiceDetail: React.FC = () => {
     if (!instance) {
       return null
     }
-    if (instance.subscription?.is_active) {
+    if (instance.subscription && instance.subscription?.is_waiting_payment) {
+      return <>
+        We were unable to process your subscription payment. Please update your payment information to avoid service interruption.
+        (End of subscription at {instance.subscription.current_period_end})
+      </>
+    } else if (instance.subscription && !instance.subscription?.is_active) {
       return <>
         Your subscription has been canceled
         (End of subscription at {instance.subscription.current_period_end})

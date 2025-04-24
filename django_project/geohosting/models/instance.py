@@ -6,14 +6,9 @@ GeoHosting.
 """
 
 import requests
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.mail import EmailMessage
 from django.db import models
-from django.template.loader import render_to_string
 
-from core.models.preferences import Preferences
-from core.settings.base import FRONTEND_URL
 from geohosting.models.cluster import Cluster
 from geohosting.models.company import Company
 from geohosting.models.package import Package
@@ -79,13 +74,6 @@ class Instance(models.Model):
     modified_at = models.DateTimeField(
         auto_now=True,
         null=True, blank=True
-    )
-    expiry_at = models.DateField(
-        null=True, blank=True,
-        help_text=(
-            'The time when the service will expire due to non-payment.'
-            'There will be grace time before being deleted.'
-        )
     )
 
     # This is what subscription for this instance
@@ -243,62 +231,8 @@ class Instance(models.Model):
 
     def send_credentials(self):
         """Send credentials."""
-        if self.status not in [
-            InstanceStatus.STARTING_UP, InstanceStatus.ONLINE,
-            InstanceStatus.OFFLINE
-        ]:
-            return
-        pref = Preferences.load()
-        name = f'{self.owner.first_name} {self.owner.last_name}'
-        if not self.price.package_group.vault_url:
-            html_content = render_to_string(
-                template_name='emails/GeoHosting_Product is Error.html',
-                context={
-                    'name': name,
-                }
-            )
-        else:
-            try:
-                get_credentials(
-                    self.price.package_group.vault_url,
-                    self.name
-                )
-                instance_url = (
-                    f"{FRONTEND_URL}#/dashboard?q={self.name}"
-                )
-                instance_url = instance_url.replace('#/#', '#')
-                html_content = render_to_string(
-                    template_name='emails/GeoHosting_Product is Ready.html',
-                    context={
-                        'name': name,
-                        'url': self.url,
-                        'instance_url': instance_url,
-                        'app_name': self.name,
-                        'support_email': pref.support_email,
-                    }
-                )
-                LogTracker.success(self, 'Get credential')
-            except Exception as e:
-                LogTracker.error(self, f'Get credential : {e}')
-                html_content = render_to_string(
-                    template_name='emails/GeoHosting_Product is Error.html',
-                    context={
-                        'name': name,
-                        'app_name': self.name,
-                        'url': self.url,
-                        'support_email': pref.support_email,
-                    }
-                )
-
-        # Create the email message
-        email = EmailMessage(
-            subject=f'{self.name} is ready',
-            body=html_content,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[self.owner.email]
-        )
-        email.content_subtype = 'html'
-        email.send()
+        from geohosting.utils.email import InstanceEmail
+        InstanceEmail(self).send_credentials()
 
     def cancel_subscription(self):
         """Cancel subscription."""
@@ -321,3 +255,37 @@ class Instance(models.Model):
         for sales_order in sales_orders:
             self.subscription = sales_order.subscription
             self.save()
+
+    @property
+    def is_waiting_payment(self) -> bool:
+        """Is instance is in waiting payment."""
+        from geohosting.utils.email import InstanceEmail
+        if not self.subscription:
+            return False
+        is_waiting_payment = self.subscription.is_waiting_payment
+        if is_waiting_payment and not self.subscription.is_expired:
+            InstanceEmail(self).send_payment_reminder()
+        return is_waiting_payment
+
+    @property
+    def is_expired(self) -> bool:
+        """Is instance is expired."""
+        from geohosting.forms.activity.delete_instance import (
+            DeletingInstanceForm
+        )
+        if not self.subscription:
+            return False
+        self.subscription.refresh_from_db()
+        if not self.is_waiting_payment:
+            return False
+
+        # We run delete instance
+        is_expired = self.subscription.is_expired
+        if is_expired:
+            if not self.is_lock:
+                form = DeletingInstanceForm({'application': self})
+                form.user = self.owner
+                if form.is_valid():
+                    form.save()
+                self.subscription.cancel_subscription()
+        return is_expired

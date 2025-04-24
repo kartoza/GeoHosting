@@ -41,13 +41,11 @@ class InstanceViewSet(
         """Return instances for the authenticated user."""
         query = Instance.objects.filter(
             owner=self.request.user
-        ).order_by('name')
+        ).exclude(status=InstanceStatus.DELETED).order_by('name')
         return self.filter_query(self.request, query)
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(
-            self.get_queryset().exclude(status=InstanceStatus.DELETED),
-        )
+        queryset = self.get_queryset()
 
         page = self.paginate_queryset(queryset)
         if page is not None:
