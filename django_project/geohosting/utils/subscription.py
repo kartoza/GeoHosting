@@ -21,12 +21,14 @@ class SubscriptionType:
 
     def __init__(
             self, id: str,
+            customer_id: str,
             current_period_start: float,
             current_period_end: float,
             canceled: bool
     ):
         """Initialize Subscription Status."""
         self.id = id
+        self.customer_id = customer_id
         self.current_period_start = current_period_start
         self.current_period_end = current_period_end
         self.canceled = canceled
@@ -60,6 +62,7 @@ class SubscriptionGateway:
             subscription_id=subscription_data.id,
             defaults={
                 'customer': subscriber,
+                'customer_payment_id': subscription_data.customer_id,
                 'payment_method': self.payment_method(),
                 'current_period_start': make_aware(
                     datetime.fromtimestamp(
@@ -96,6 +99,7 @@ class StripeSubscriptionGateway(SubscriptionGateway):
             return None
         return SubscriptionType(
             id=subscription['id'],
+            customer_id=subscription['customer'],
             current_period_start=subscription['current_period_start'],
             current_period_end=subscription['current_period_end'],
             canceled=True if subscription['canceled_at'] else False
@@ -128,6 +132,7 @@ class PaystackSubscriptionGateway(SubscriptionGateway):
         status = subscription['status']
         return SubscriptionType(
             id=subscription['id'],
+            customer_id=subscription['customer']['customer_code'],
             current_period_start=current_period_start,
             current_period_end=current_period_end,
             canceled=(

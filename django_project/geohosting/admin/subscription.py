@@ -9,7 +9,7 @@ class SubscriptionAdmin(admin.ModelAdmin):
     """Subscription admin."""
 
     list_display = (
-        'subscription_id', 'payment_method',
+        'subscription_id', 'customer_payment_id', 'payment_method',
         'current_period_start', 'current_period_end',
         'is_active'
     )

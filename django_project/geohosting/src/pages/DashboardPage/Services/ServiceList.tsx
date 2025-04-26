@@ -355,9 +355,10 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
         justifyContent='center'
         cursor='pointer' display='flex' alignItems='center'
       >
-        Unable to process subscription payment, and the instance is scheduled
-        for
-        deletion on {instance.subscription?.current_expiry_at}.
+        Unable to process subscription payment, please click here to check the
+        instance detail and update payment button
+        or the instance is scheduled for deletion
+        on {instance.subscription?.current_expiry_at}.
       </Box>
     }
   </Box>

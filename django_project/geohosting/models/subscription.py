@@ -19,6 +19,9 @@ class Subscription(models.Model):
     customer = models.ForeignKey(
         User, on_delete=models.CASCADE
     )
+    customer_payment_id = models.TextField(
+        blank=True, null=True
+    )
 
     payment_method = models.CharField(
         default=PaymentMethod.default_choice,

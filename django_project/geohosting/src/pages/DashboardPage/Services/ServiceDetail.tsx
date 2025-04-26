@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
 import {
@@ -6,10 +6,22 @@ import {
   Instance
 } from "../../../redux/reducers/instanceSlice";
 import { useParams } from "react-router-dom";
-import { Box, Flex, Link, Spinner, Table, Td, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Link,
+  Spinner,
+  Table,
+  Td,
+  Tr
+} from "@chakra-ui/react";
 import { RenderInstanceStatus } from "./ServiceList";
 import { FaLink } from "react-icons/fa";
 import { DeleteInstance } from "./Delete";
+import { FaCcStripe } from "react-icons/fa6";
+import StripePaymentChangesModal
+  from "../../../components/PaymentChanges/Stripe";
 
 /** Service Detail Page in pagination */
 const ServiceDetail: React.FC = () => {
@@ -18,6 +30,9 @@ const ServiceDetail: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const [lastRequest, setLastRequest] = useState<Date | null>(null);
   const [instance, setInstance] = useState<Instance | null>(null);
+  const paymentChangesModalRef = useRef(null);
+  const isWaitingPayment = instance && instance?.subscription && instance?.subscription?.is_waiting_payment;
+
   const {
     data,
     loading,
@@ -56,10 +71,24 @@ const ServiceDetail: React.FC = () => {
     if (!instance) {
       return null
     }
-    if (instance.subscription && instance.subscription?.is_waiting_payment) {
+    if (isWaitingPayment) {
       return <>
-        We were unable to process your subscription payment. Please update your payment information to avoid service interruption.
-        (End of subscription at {instance.subscription.current_period_end})
+        We were unable to process your subscription payment. Please update your
+        payment information to avoid service interruption.
+        (End of subscription at {instance?.subscription?.current_period_end}).
+        <Button
+          display={'block'}
+          mt={4} leftIcon={<FaCcStripe/>} mr={1}
+          colorScheme='blue'
+          size="lg"
+          onClick={
+            //@ts-ignore
+            () => paymentChangesModalRef?.current?.open()
+          }
+        >
+          Update payment
+        </Button>
+
       </>
     } else if (instance.subscription && !instance.subscription?.is_active) {
       return <>
@@ -242,6 +271,11 @@ const ServiceDetail: React.FC = () => {
     {
       ['Online', 'Offline'].includes(instance.status) &&
       <DeleteInstance instanceInput={instance}/>
+    }
+    {
+      isWaitingPayment &&
+      <StripePaymentChangesModal
+        instance={instance} ref={paymentChangesModalRef}/>
     }
   </Box>
 };
