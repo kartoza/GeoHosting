@@ -184,8 +184,8 @@ class SalesOrder(ErpModel):
     )
 
     class Meta:
-        verbose_name = 'Sales Order'
-        verbose_name_plural = 'Sales Orders'
+        verbose_name = 'Sales order'
+        verbose_name_plural = 'Sales orders'
 
     @property
     def payment_gateway(self) -> PaymentGateway:

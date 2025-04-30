@@ -186,7 +186,7 @@ class Instance(models.Model):
         try:
             credentials.update(
                 get_credentials(
-                    self.price.package_group.vault_url,
+                    self.price.product.vault_url,
                     self.name
                 )
             )
@@ -213,7 +213,7 @@ class Instance(models.Model):
             return
 
         try:
-            response = requests.head(self.url)
+            response = requests.head(self.url, allow_redirects=True)
             if response.status_code in [200, 302]:
                 self.online()
             else:

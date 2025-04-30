@@ -23,10 +23,6 @@ class PackageGroup(models.Model):
         null=True,
         help_text='This is the package code of the product on jenkins.'
     )
-    vault_url = models.URLField(
-        null=True,
-        blank=True
-    )
 
     def __str__(self):
         """Return package group name."""

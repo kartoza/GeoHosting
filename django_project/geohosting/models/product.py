@@ -40,6 +40,11 @@ class Product(models.Model):
         default=False
     )
 
+    # All related deployment settings
+    vault_url = models.URLField(
+        null=True, blank=True
+    )
+
     class Meta:
         ordering = ['order']
 
