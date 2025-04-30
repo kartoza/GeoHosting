@@ -186,7 +186,7 @@ class Instance(models.Model):
         try:
             credentials.update(
                 get_credentials(
-                    self.price.package_group.vault_url,
+                    self.price.product.vault_url,
                     self.name
                 )
             )

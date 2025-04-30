@@ -15,3 +15,23 @@ class SubscriptionAdmin(admin.ModelAdmin):
     )
     list_filter = ('payment_method', 'is_active')
     actions = (sync_subscriptions,)
+    readonly_fields = (
+        'payment_method', 'subscription_id', 'customer',
+        'current_period_start', 'current_period_end'
+    )
+    fieldsets = (
+        (
+            None, {
+                'fields': (
+                    'payment_method', 'subscription_id', 'customer'
+                )
+            }
+        ),
+        (
+            'Status', {
+                'fields': (
+                    'current_period_start', 'current_period_end', 'is_active'
+                )
+            }
+        ),
+    )

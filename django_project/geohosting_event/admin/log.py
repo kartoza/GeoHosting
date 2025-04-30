@@ -13,6 +13,9 @@ class LogTrackerAdmin(admin.ModelAdmin):
         'created_at', 'content_type', 'object_id', 'type', 'note'
     )
     list_filter = ('type', 'created_at', 'content_type')
+    readonly_fields = (
+        'content_type', 'object_id', 'type', 'note', 'created_at'
+    )
 
     def has_add_permission(*args, **kwargs):
         """Can't add log tracker."""

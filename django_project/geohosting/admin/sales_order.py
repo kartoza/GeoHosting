@@ -49,6 +49,39 @@ class SalesOrderAdmin(LogTrackerObjectAdmin):
         publish_sales_order, update_payment_status,
         sync_subscriptions, auto_deploy
     ]
+    readonly_fields = (
+        'erpnext_code', 'package', 'customer', 'company',
+        'date', 'delivery_date', 'instance',
+        'app_name',
+        'payment_method', 'payment_id', 'subscription', 'invoice'
+    )
+    fieldsets = (
+        (
+            None, {
+                'fields': (
+                    'erpnext_code', 'package', 'customer', 'company',
+                    'date', 'delivery_date'
+                )
+            }
+        ),
+        (
+            'Status', {
+                'fields': ('order_status',)
+            }
+        ),
+        (
+            'Instance', {
+                'fields': ('app_name', 'instance')
+            }
+        ),
+        (
+            'Subscription', {
+                'fields': (
+                    'payment_method', 'payment_id', 'subscription', 'invoice'
+                )
+            }
+        )
+    )
 
     def activities(self, obj: SalesOrder):
         """Return product."""

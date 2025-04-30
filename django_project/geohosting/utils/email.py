@@ -38,7 +38,7 @@ class InstanceEmail:
             return
         pref = Preferences.load()
         name = f'{instance.owner.first_name} {instance.owner.last_name}'
-        if not instance.price.package_group.vault_url:
+        if not instance.price.product.vault_url:
             html_content = render_to_string(
                 template_name='emails/GeoHosting_Product is Error.html',
                 context={
@@ -48,7 +48,7 @@ class InstanceEmail:
         else:
             try:
                 get_credentials(
-                    instance.price.package_group.vault_url,
+                    instance.price.product.vault_url,
                     instance.name
                 )
                 instance_url = (
@@ -65,9 +65,9 @@ class InstanceEmail:
                         'support_email': pref.support_email,
                     }
                 )
-                LogTracker.success(self, 'Get credential')
+                LogTracker.success(self.instance, 'Get credential')
             except Exception as e:
-                LogTracker.error(self, f'Get credential : {e}')
+                LogTracker.error(self.instance, f'Get credential : {e}')
                 html_content = render_to_string(
                     template_name='emails/GeoHosting_Product is Error.html',
                     context={

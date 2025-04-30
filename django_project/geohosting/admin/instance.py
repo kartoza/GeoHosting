@@ -33,6 +33,27 @@ class InstanceAdmin(LogTrackerObjectAdmin):
         send_credentials, check_instance, sync_subscriptions,
         cancel_subscription
     )
+    readonly_fields = ('created_at', 'modified_at')
+    fieldsets = (
+        (
+            None, {
+                'fields': (
+                    'name', 'cluster', 'owner', 'company',
+                    'created_at', 'modified_at'
+                )
+            }
+        ),
+        (
+            'Status', {
+                'fields': ('status',)
+            }
+        ),
+        (
+            'Subscription', {
+                'fields': ('price', 'subscription')
+            }
+        )
+    )
 
     def has_add_permission(*args, **kwargs):
         return False

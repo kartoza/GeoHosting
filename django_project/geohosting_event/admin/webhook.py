@@ -19,6 +19,9 @@ class WebhookEventAdmin(admin.ModelAdmin):
     )
     search_fields = ('data__app_name',)
     actions = (clean_webhook_event,)
+    readonly_fields = (
+        'data', 'note', 'app_name', 'activity'
+    )
 
     def sync_status(self, obj: WebhookEvent):
         """Return logs."""

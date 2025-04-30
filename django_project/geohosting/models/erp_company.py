@@ -35,4 +35,4 @@ class ErpCompany(ErpModel):
 
     class Meta:  # noqa: D106
         ordering = ('name',)
-        verbose_name_plural = 'Erp Companies'
+        verbose_name_plural = 'Erp companies'
