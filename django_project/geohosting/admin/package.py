@@ -45,8 +45,8 @@ class PackageAdmin(admin.ModelAdmin):
         (
             'Price', {
                 'fields': ('currency', 'price', 'price_list', 'periodicity')
-            })
-        ,
+            }
+        ),
         (
             'Detail', {
                 'fields': ('feature_list', 'order', 'package_group'),
