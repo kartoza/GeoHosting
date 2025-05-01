@@ -3,7 +3,7 @@
 import stripe
 from django.conf import settings
 from django.http import (
-    HttpResponseServerError, JsonResponse, HttpResponseForbidden
+    HttpResponseForbidden, HttpResponseServerError, JsonResponse
 )
 from django.shortcuts import get_object_or_404
 from paystackapi.paystack import Paystack
@@ -41,6 +41,7 @@ class SubscriptionChangeAPI(APIView):
             )
             return JsonResponse({
                 "url": payload,
+                "key": payload,
                 "success_url": request.data['url']
             })
         except Exception as e:
@@ -63,3 +64,31 @@ class SubscriptionStripeChangeAPI(SubscriptionChangeAPI):
             return_url=callback_url,
         )
         return session.id, session.url
+
+
+class SubscriptionPaystackChangeAPI(SubscriptionChangeAPI):
+    """API creating stripe change Subscription session."""
+
+    def create_payload(
+            self, subscription: Subscription, callback_url
+    ) -> (int, str):
+        """Create payload of data from gateway.
+
+        Return id of subscription and string of challenge.
+        """
+        from paystackapi.subscription import (
+            Subscription as PaystackSubscription
+        )
+        from paystackapi.transaction import Transaction
+
+        paystack_subscription = PaystackSubscription.fetch(
+            subscription.subscription_id
+        )
+        transaction = Transaction.initialize(
+            email=paystack_subscription['data']['customer']['email'],
+            amount=paystack_subscription['data']['plan']['amount'],
+            plan=paystack_subscription['data']['plan']['plan_code']
+        )['data']
+        subscription.payment_id = transaction['reference']
+        subscription.save()
+        return transaction['reference'], transaction['access_code']

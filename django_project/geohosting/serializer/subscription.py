@@ -47,4 +47,5 @@ class SubscriptionDetailSerializer(SubscriptionSerializer):
 
     def get_detail(self, obj: Subscription):
         """Return is detail."""
+        obj.update_payment()
         return obj.detail

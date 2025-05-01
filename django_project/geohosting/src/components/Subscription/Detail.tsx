@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { FaCcStripe } from "react-icons/fa6";
 import StripePaymentChangesModal from "../PaymentChanges/Stripe";
+import PaystackPaymentChangesModal from "../PaymentChanges/Paystack";
 
 interface Props {
   subscription_id: string;
@@ -183,26 +184,51 @@ export const SubscriptionDetail = memo(
                   <Box>
                     {
                       subscriptionData?.payment_method.toLocaleLowerCase() === 'stripe' &&
-                      <Button
-                        display={'block'}
-                        mt={4}
-                        width={'100%'}
-                        leftIcon={<FaCcStripe/>} mr={1}
-                        colorScheme='blue'
-                        size="lg"
-                        onClick={
-                          //@ts-ignore
-                          () => paymentChangesModalRef?.current?.open()
-                        }
-                      >
-                        Update payment
-                      </Button>
+                      <>
+                        <Button
+                          display={'block'}
+                          mt={4}
+                          width={'100%'}
+                          leftIcon={<FaCcStripe/>} mr={1}
+                          colorScheme='blue'
+                          size="lg"
+                          onClick={
+                            //@ts-ignore
+                            () => paymentChangesModalRef?.current?.open()
+                          }
+                        >
+                          Update payment
+                        </Button>
+                        <StripePaymentChangesModal
+                          subscription_id={subscription_id}
+                          ref={paymentChangesModalRef}
+                        />
+                      </>
+                    }
+                    {
+                      subscriptionData?.payment_method.toLocaleLowerCase() === 'paystack' &&
+                      <>
+                        <Button
+                          display={'block'}
+                          mt={4}
+                          width={'100%'}
+                          mr={1}
+                          colorScheme='blue'
+                          size="lg"
+                          onClick={
+                            //@ts-ignore
+                            () => paymentChangesModalRef?.current?.open()
+                          }
+                        >
+                          Update payment
+                        </Button>
+                        <PaystackPaymentChangesModal
+                          subscription_id={subscription_id}
+                          ref={paymentChangesModalRef}
+                        />
+                      </>
                     }
                   </Box>
-                  <StripePaymentChangesModal
-                    subscription_id={subscription_id}
-                    ref={paymentChangesModalRef}
-                  />
                 </>
               }
             </ModalBody>

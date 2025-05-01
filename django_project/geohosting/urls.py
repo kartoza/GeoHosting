@@ -15,15 +15,15 @@ from geohosting.api.company import CompanyViewSet
 from geohosting.api.country import CountryViewSet
 from geohosting.api.erp import ERPApiView
 from geohosting.api.instance import InstanceViewSet
-from geohosting.api.subscription_changes import (
-    SubscriptionStripeChangeAPI
-)
 from geohosting.api.product import ProductViewSet
 from geohosting.api.sales_order import (
     SalesOrderSetView, SalesOrderPaymentStripeSessionAPI,
     SalesOrderPaymentPaystackSessionAPI, CheckAppNameAPI
 )
 from geohosting.api.subscription import SubscriptionSetView
+from geohosting.api.subscription_changes import (
+    SubscriptionStripeChangeAPI, SubscriptionPaystackChangeAPI
+)
 from geohosting.api.support import TicketSetView, AttachmentSetView
 from geohosting.api.token import CreateToken
 from geohosting.api.user import UserProfileView, ChangePasswordView
@@ -110,6 +110,11 @@ subscription_changes = [
         'stripe/',
         SubscriptionStripeChangeAPI.as_view(),
         name='payment-changes-stripe-session'
+    ),
+    path(
+        'paystack/',
+        SubscriptionPaystackChangeAPI.as_view(),
+        name='payment-changes-paystack-session'
     ),
 ]
 

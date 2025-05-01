@@ -383,6 +383,6 @@ class PaystackSubscriptionGateway(SubscriptionGateway):
                     brand=card['card_type']
                 )
                 subscription_data.billing_detail = billing_detail
-            except Exception as e:
+            except Exception:
                 pass
         return subscription_data

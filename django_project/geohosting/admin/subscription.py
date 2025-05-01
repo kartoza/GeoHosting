@@ -17,13 +17,15 @@ class SubscriptionAdmin(admin.ModelAdmin):
     actions = (sync_subscriptions,)
     readonly_fields = (
         'payment_method', 'subscription_id', 'customer',
-        'current_period_start', 'current_period_end'
+        'current_period_start', 'current_period_end',
+        'payment_id'
     )
     fieldsets = (
         (
             None, {
                 'fields': (
-                    'payment_method', 'subscription_id', 'customer'
+                    'payment_method', 'subscription_id', 'customer',
+                    'payment_id'
                 )
             }
         ),
