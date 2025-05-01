@@ -90,7 +90,10 @@ class Subscription(models.Model):
     @property
     def detail(self) -> bool:
         """Remote detail data."""
-        return self.payment_gateway.get_subscription_data().json
+        if self.payment_gateway.get_subscription_data():
+            return self.payment_gateway.get_subscription_data().json
+        else:
+            return {}
 
     def update_payment(self):
         """Update payment for paystack."""

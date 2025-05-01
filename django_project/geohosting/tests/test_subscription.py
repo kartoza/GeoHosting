@@ -157,8 +157,12 @@ class SubscriptionTests(APITestCase):
         response = self.client.get('/api/subscription/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_api_detail(self):
+    @patch(
+        'geohosting.utils.subscription.SubscriptionGateway.get_subscription_data'
+    )
+    def test_api_detail(self, mock_get_subscription_data):
         """Test api list."""
+        mock_get_subscription_data.return_value = None
         response = self.client.get('/api/subscription/1000/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
