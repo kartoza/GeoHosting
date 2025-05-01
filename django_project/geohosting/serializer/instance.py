@@ -14,6 +14,7 @@ class InstanceSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
     package = serializers.SerializerMethodField()
     product = serializers.SerializerMethodField()
+    subscription = serializers.SerializerMethodField()
 
     class Meta:
         model = Instance
@@ -31,12 +32,21 @@ class InstanceSerializer(serializers.ModelSerializer):
         """Return product."""
         return ProductDetailSerializer(obj.price.product).data
 
+    def get_subscription(self, obj: Instance):
+        """Return subscription."""
+        from geohosting.serializer.subscription import (
+            SubscriptionSerializer
+        )
+        if not obj.subscription:
+            return None
+
+        return SubscriptionSerializer(obj.subscription).data
+
 
 class InstanceDetailSerializer(InstanceSerializer):
     """Sales instance detail serializer."""
 
     sales_order = serializers.SerializerMethodField()
-    subscription = serializers.SerializerMethodField()
 
     def get_sales_order(self, obj: Instance):
         """Return sales_order."""
@@ -56,13 +66,3 @@ class InstanceDetailSerializer(InstanceSerializer):
             ).data
         except SalesOrder.DoesNotExist:
             return None
-
-    def get_subscription(self, obj: Instance):
-        """Return subscription."""
-        from geohosting.serializer.subscription import (
-            SubscriptionSerializer
-        )
-        if not obj.subscription:
-            return None
-
-        return SubscriptionSerializer(obj.subscription).data

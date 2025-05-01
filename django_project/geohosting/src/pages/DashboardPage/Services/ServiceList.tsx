@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Box,
   Flex,
@@ -44,13 +44,13 @@ let currentIds: number[] = []
 const spinAnimation = `${spin} infinite 2s linear`;
 
 interface CardProps {
-  instanceInput: Instance;
+  instance: Instance;
 }
 
-const DeleteCard: React.FC<CardProps> = ({ instanceInput }) => {
+const DeleteCard: React.FC<CardProps> = ({ instance }) => {
   const modalRef = useRef(null);
   return <>
-    <InstanceDeletion instance={instanceInput} ref={modalRef}/>
+    <InstanceDeletion instance={instance} ref={modalRef}/>
     <MenuItem
       icon={<MdDelete/>}
       color="red.600"
@@ -106,43 +106,10 @@ export const RenderInstanceStatus = ({ instance }) => {
 }
 
 /** Card for support **/
-const Card: React.FC<CardProps> = ({ instanceInput }) => {
+const Card: React.FC<CardProps> = ({ instance }) => {
   const navigate = useNavigate();
   const columns = useBreakpointValue({ base: 1, md: 2 });
-  const [instance, setInstance] = useState(instanceInput);
-  const [lastRequest, setLastRequest] = useState(new Date());
   const [fetchingCredentials, setFetchingCredentials] = useState<boolean>(false);
-  if (instanceInput.status === 'Deleted') {
-    location.reload()
-  }
-
-  const request = (_instance) => {
-    let instance = _instance
-    if (!currentIds.includes(instance.id)) {
-      return
-    }
-    (
-      async () => {
-        try {
-          const response = await axios.get(
-            `/api/instances/${instance.name}/`,
-            {
-              headers: headerWithToken()
-            }
-          );
-          if (JSON.stringify(response.data) !== JSON.stringify(instance)) {
-            instance = response.data
-            setInstance(response.data);
-          }
-        } catch (err) {
-
-        }
-        setTimeout(() => {
-          setLastRequest(new Date())
-        }, 5000);
-      }
-    )()
-  }
 
   /** Fetch credential **/
   const fetchCredentials = async (e) => {
@@ -176,18 +143,6 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
     }
     setFetchingCredentials(false)
   }
-
-  /** Check app name */
-  useEffect(() => {
-    request(instance)
-  }, [lastRequest]);
-
-  /** Check app name */
-  useEffect(() => {
-    setTimeout(() => {
-      setLastRequest(new Date())
-    }, 5000);
-  }, []);
 
   return <Box
     key={instance.id}
@@ -232,7 +187,7 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
               e.stopPropagation();
             }}
           >
-            <DeleteCard instanceInput={instance}/>
+            <DeleteCard instance={instance}/>
           </MenuList>
         </Menu>
       </Box>
@@ -366,7 +321,6 @@ const Card: React.FC<CardProps> = ({ instanceInput }) => {
 
 const renderCards = (instances: Instance[]) => {
   currentIds = instances.map(instance => instance.id)
-
   return <Flex
     wrap="wrap"
     justify="flex-start" gap={6}
@@ -375,7 +329,7 @@ const renderCards = (instances: Instance[]) => {
   >
     {
       instances.map((instance: Instance) => {
-        return <Card key={instance.name} instanceInput={instance}/>
+        return <Card key={instance.name} instance={instance}/>
       })
     }
   </Flex>
@@ -412,6 +366,7 @@ const ServiceList: React.FC = () => {
             <option value="Offline">Offline</option>
           </Select>
         }
+        autoRefresh={5}
       />
     </>
   );
