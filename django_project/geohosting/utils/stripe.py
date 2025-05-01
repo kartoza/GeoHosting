@@ -105,10 +105,7 @@ def get_payment_method_detail(subscription):
     # This just check last invoice
     invoice = stripe.Invoice.retrieve(subscription.latest_invoice)
     payment_intent = stripe.PaymentIntent.retrieve(invoice.payment_intent)
-    payment_method = stripe.PaymentMethod.retrieve(
-        payment_intent.payment_method
-    )
-    return payment_method
+    return stripe.PaymentMethod.retrieve(payment_intent.payment_method)
 
 
 def cancel_subscription(subscription_id):

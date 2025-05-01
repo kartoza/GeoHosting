@@ -103,7 +103,9 @@ export const SubscriptionDetail = memo(
                     </Tr>
                     <Tr>
                       <Td className='table-title'>Renewal period: </Td>
-                      <Td px={4}>{data.period}ly</Td>
+                      <Td px={4}>
+                        {!data.period?.includes('ly') ? data.period + 'ly' : data.period}
+                      </Td>
                     </Tr>
                     <Tr>
                       <Td className='table-title'>Cost: </Td>
@@ -115,10 +117,13 @@ export const SubscriptionDetail = memo(
                         {data.current_period_start.split(' ')[0]} UTC
                       </Td>
                     </Tr>
-                    <Tr>
-                      <Td className='table-title'>Payment type: </Td>
-                      <Td px={4}>{data.billing_detail.billing_type}</Td>
-                    </Tr>
+                    {
+                      data.billing_detail?.billing_type &&
+                      <Tr>
+                        <Td className='table-title'>Payment type: </Td>
+                        <Td px={4}>{data.billing_detail.billing_type}</Td>
+                      </Tr>
+                    }
                     {/* BILLING INFORMATION */}
                     {
                       data.billing_detail?.address &&

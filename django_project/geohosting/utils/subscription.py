@@ -7,7 +7,8 @@ from core.models.preferences import Preferences
 from geohosting.models.subscription import Subscription
 from geohosting.utils.paystack import (
     cancel_subscription as cancel_paystack_subscription,
-    get_subscription as get_paystack_subscription_detail
+    get_subscription as get_paystack_subscription_detail,
+    get_payment_method_detail as get_paystack_payment_method_detail
 )
 from geohosting.utils.stripe import (
     cancel_subscription as cancel_stripe_subscription,
@@ -342,12 +343,46 @@ class PaystackSubscriptionGateway(SubscriptionGateway):
             subscription['next_payment_date'].replace('Z', '+00:00')
         ).timestamp()
         status = subscription['status']
-        return SubscriptionData(
+
+        subscription_data = SubscriptionData(
             id=subscription['id'],
             customer_id=subscription['customer']['customer_code'],
             current_period_start=current_period_start,
             current_period_end=current_period_end,
             canceled=(
                     status in ['cancel', 'cancelled', 'non-renewing']
-            )
+            ),
+            amount=subscription['plan']['amount'],
+            currency=subscription['plan']['currency'],
+            period=subscription['plan']['interval'],
         )
+        if return_payment:
+            try:
+                card = get_paystack_payment_method_detail(
+                    self.subscription_id
+                )
+                name = []
+                if subscription['customer']['first_name']:
+                    name.append(subscription['customer']['first_name'])
+                if subscription['customer']['first_name']:
+                    name.append(subscription['customer']['first_name'])
+                billing_detail = BillingDetail(
+                    name=' '.join(name),
+                    email=subscription['customer']['email']
+                )
+                billing_detail.set_billing_detail_type_card(
+                    city='',
+                    country='',
+                    line1='',
+                    line2='',
+                    postal_code='',
+                    state='',
+                    last4=card['last4'],
+                    exp_month=card['exp_month'],
+                    exp_year=card['exp_year'],
+                    brand=card['card_type']
+                )
+                subscription_data.billing_detail = billing_detail
+            except Exception as e:
+                pass
+        return subscription_data
