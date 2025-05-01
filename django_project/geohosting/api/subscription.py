@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from core.api import FilteredAPI
 from geohosting.models.subscription import Subscription
 from geohosting.serializer.subscription import (
-    SubscriptionSerializer
+    SubscriptionSerializer, SubscriptionDetailSerializer
 )
 
 
@@ -20,7 +20,7 @@ class SubscriptionSetView(
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
-            return SubscriptionSerializer
+            return SubscriptionDetailSerializer
         return SubscriptionSerializer
 
     def get_queryset(self):

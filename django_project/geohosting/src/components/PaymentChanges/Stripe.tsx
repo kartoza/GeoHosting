@@ -18,7 +18,6 @@ import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Instance } from "../../redux/reducers/instanceSlice";
 import { RootState } from "../../redux/store";
 
 interface EmbeddedCheckoutProviderProps {
@@ -28,19 +27,17 @@ interface EmbeddedCheckoutProviderProps {
 }
 
 interface Props {
-  instance: Instance;
+  subscription_id: string;
 }
 
 export const StripePaymentChangesModal = forwardRef(
-  ({ instance }: Props, ref
+  ({ subscription_id }: Props, ref
   ) => {
     const { token } = useSelector((state: RootState) => state.auth);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [stripeOptions, setStripeOptions] = useState<EmbeddedCheckoutProviderProps | null>(null);
     const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);
 
     useEffect(() => {
-      setStripeOptions(null);
       if (isOpen) {
         (
           async () => {
@@ -53,7 +50,7 @@ export const StripePaymentChangesModal = forwardRef(
                 setStripePromise(loadStripe(setting.data))
               }
               const response = await axios.post(
-                `/api/instances/${instance.id}/payment-changes/stripe`,
+                `/api/subscription/${subscription_id}/payment-changes/stripe/`,
                 {
                   url: window.location.href
                 },

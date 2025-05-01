@@ -15,8 +15,8 @@ from geohosting.api.company import CompanyViewSet
 from geohosting.api.country import CountryViewSet
 from geohosting.api.erp import ERPApiView
 from geohosting.api.instance import InstanceViewSet
-from geohosting.api.payment_changes import (
-    PaymentStripeChangeAPI
+from geohosting.api.subscription_changes import (
+    SubscriptionStripeChangeAPI
 )
 from geohosting.api.product import ProductViewSet
 from geohosting.api.sales_order import (
@@ -105,16 +105,16 @@ order_payment = [
     ),
 ]
 
-payment_changes = [
+subscription_changes = [
     path(
-        'stripe',
-        PaymentStripeChangeAPI.as_view(),
+        'stripe/',
+        SubscriptionStripeChangeAPI.as_view(),
         name='payment-changes-stripe-session'
     ),
 ]
 
 api = [
-    path('instances/<pk>/payment-changes/', include(payment_changes)),
+    path('subscription/<pk>/payment-changes/', include(subscription_changes)),
     path('webhook/', WebhookView.as_view(), name='webhook-api'),
     path(
         'sync-erp-data/', ERPApiView.as_view(), name='sync-with-erp'

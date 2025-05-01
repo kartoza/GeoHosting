@@ -19,9 +19,7 @@ import {
 import { RenderInstanceStatus } from "./ServiceList";
 import { FaLink } from "react-icons/fa";
 import { DeleteInstance } from "./Delete";
-import { FaCcStripe } from "react-icons/fa6";
-import StripePaymentChangesModal
-  from "../../../components/PaymentChanges/Stripe";
+import SubscriptionDetail from "../../../components/Subscription/Detail";
 
 /** Service Detail Page in pagination */
 const ServiceDetail: React.FC = () => {
@@ -30,8 +28,8 @@ const ServiceDetail: React.FC = () => {
   const { token } = useSelector((state: RootState) => state.auth);
   const [lastRequest, setLastRequest] = useState<Date | null>(null);
   const [instance, setInstance] = useState<Instance | null>(null);
-  const paymentChangesModalRef = useRef(null);
   const isWaitingPayment = instance && instance?.subscription && instance?.subscription?.is_waiting_payment;
+  const paymentModalRef = useRef(null);
 
   const {
     data,
@@ -74,21 +72,8 @@ const ServiceDetail: React.FC = () => {
     if (isWaitingPayment) {
       return <>
         We were unable to process your subscription payment. Please update your
-        payment information to avoid service interruption.
-        (End of subscription at {instance?.subscription?.current_period_end}).
-        <Button
-          display={'block'}
-          mt={4} leftIcon={<FaCcStripe/>} mr={1}
-          colorScheme='blue'
-          size="lg"
-          onClick={
-            //@ts-ignore
-            () => paymentChangesModalRef?.current?.open()
-          }
-        >
-          Update payment
-        </Button>
-
+        payment information or the instance is scheduled for deletion
+        on {instance.subscription?.current_expiry_at}.
       </>
     } else if (instance.subscription && !instance.subscription?.is_active) {
       return <>
@@ -178,7 +163,7 @@ const ServiceDetail: React.FC = () => {
         <Table>
           <tbody>
           <Tr>
-            <Td px={4} fontWeight={600}>Status:</Td>
+            <Td className='table-title'>Status:</Td>
             <Td px={4}>
               <Flex align='center' gap={1}>
                 <RenderInstanceStatus instance={instance}/>
@@ -186,22 +171,22 @@ const ServiceDetail: React.FC = () => {
             </Td>
           </Tr>
           <Tr>
-            <Td px={4} fontWeight={600}>Product:</Td>
+            <Td className='table-title'>Product:</Td>
             <Td px={4}>{instance.product.name}</Td>
           </Tr>
           <Tr>
-            <Td px={4} fontWeight={600}>Product name:</Td>
+            <Td className='table-title'>Product name:</Td>
             <Td px={4}>{instance.name}</Td>
           </Tr>
           <Tr>
-            <Td px={4} fontWeight={600}>Creation date:</Td>
+            <Td className='table-title'>Creation date:</Td>
             <Td px={4}>{instance.created_at.split('T')[0]}</Td>
           </Tr>
 
           {
             ['Online', 'Offline'].includes(instance.status) && instance.url ?
               <Tr>
-                <Td px={4} fontWeight={600} colSpan={2}>
+                <Td className='table-title' colSpan={2}>
                   <Link href={instance.url} target='_blank'>
                     <Flex
                       wrap="wrap" gap={1}
@@ -229,12 +214,13 @@ const ServiceDetail: React.FC = () => {
         <Table>
           <tbody>
           <Tr>
-            <Td px={4} fontWeight={600}>Features</Td>
+            <Td className='table-title'>Features</Td>
           </Tr>
           {
             instance.package.feature_list?.spec && instance.package.feature_list.spec.map(
-              (feature: string, idx: number) => <Tr key={idx}><Td
-                px={4}>{feature}</Td></Tr>
+              (feature: string, idx: number) => <Tr key={idx}>
+                <Td px={4}>{feature}</Td>
+              </Tr>
             )
           }
           </tbody>
@@ -253,9 +239,23 @@ const ServiceDetail: React.FC = () => {
         position="relative"
         bg="white"
         boxShadow="lg"
-        p={4}
+        p={8}
       >
         <PaymentStatus/>
+        <Box>
+          <Button
+            display={'block'}
+            mt={4}
+            width={'100%'}
+            colorScheme='blue'
+            onClick={
+              //@ts-ignore
+              () => paymentModalRef?.current?.open()
+            }
+          >
+            Payment detail
+          </Button>
+        </Box>
       </Box>
     </Flex>
     {
@@ -263,9 +263,11 @@ const ServiceDetail: React.FC = () => {
       <DeleteInstance instanceInput={instance}/>
     }
     {
-      isWaitingPayment &&
-      <StripePaymentChangesModal
-        instance={instance} ref={paymentChangesModalRef}/>
+      instance.subscription &&
+      <SubscriptionDetail
+        subscription_id={instance.subscription.id}
+        ref={paymentModalRef}
+      />
     }
   </Box>
 };

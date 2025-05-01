@@ -31,10 +31,20 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     def get_current_expiry_at(self, obj: Subscription):
         """Return current_expiry_at."""
-        return localtime(obj.hard_deadline_time).strftime(
+        return localtime(obj.current_expiry_at).strftime(
             '%Y-%m-%d %H:%M:%S %Z'
         )
 
     def get_is_waiting_payment(self, obj: Subscription):
         """Return is is_waiting_payment."""
         return obj.is_waiting_payment
+
+
+class SubscriptionDetailSerializer(SubscriptionSerializer):
+    """Subscription detail serializer."""
+
+    detail = serializers.SerializerMethodField()
+
+    def get_detail(self, obj: Subscription):
+        """Return is detail."""
+        return obj.detail

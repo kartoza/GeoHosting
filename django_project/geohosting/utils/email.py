@@ -110,7 +110,7 @@ class InstanceEmail:
 
         pref = Preferences.load()
         name = f'{instance.owner.first_name} {instance.owner.last_name}'
-        hard_deadline_time = instance.subscription.hard_deadline_time
+        current_expiry_at = instance.subscription.current_expiry_at
         html_content = render_to_string(
             template_name=(
                 'emails/GeoHosting_Product payment reminder.html'
@@ -119,7 +119,7 @@ class InstanceEmail:
                 'name': name,
                 'app_name': instance.name,
                 'support_email': pref.support_email,
-                'delete_time': hard_deadline_time.strftime(
+                'delete_time': current_expiry_at.strftime(
                     '%Y-%m-%d %H:%M:%S %Z'
                 )
             }

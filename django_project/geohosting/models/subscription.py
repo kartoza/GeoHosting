@@ -60,7 +60,7 @@ class Subscription(models.Model):
             instance.is_expired  # noqa
 
     @property
-    def hard_deadline_time(self):
+    def current_expiry_at(self):
         """Return hard deadline time."""
         pref = Preferences.load()
         return self.current_period_end + timedelta(
@@ -77,4 +77,9 @@ class Subscription(models.Model):
         """Is instance is expired."""
         if not self.is_waiting_payment:
             return False
-        return timezone.now() >= self.hard_deadline_time
+        return timezone.now() >= self.current_expiry_at
+
+    @property
+    def detail(self) -> bool:
+        """Remote detail data."""
+        return self.payment_gateway.get_subscription_data().json
