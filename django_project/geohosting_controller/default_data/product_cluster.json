@@ -8,5 +8,10 @@
     "cluster": "ktz-sta-ks-gn-01",
     "region": "global",
     "environment": "sta"
+  },
+  "geoserver": {
+    "cluster": "ktz-sta-ks-gn-01",
+    "region": "global",
+    "environment": "sta"
   }
 }

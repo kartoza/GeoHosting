@@ -56,7 +56,7 @@ class ActivityType(models.Model):
         return self.identifier
 
     class Meta:  # noqa
-        verbose_name = 'Jenkins Activity Type'
+        verbose_name = 'Jenkins activity type'
         unique_together = ('identifier', 'product')
 
     def mapping_data(self, data: dict):

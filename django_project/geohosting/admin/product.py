@@ -1,12 +1,12 @@
 from django.contrib import admin
 
 from geohosting.models import (
-    Product, ProductMetadata, Package, ProductMedia, ProductCluster
+    Product, ProductMetadata, ProductMedia, ProductCluster
 )
 
 
-class PackageInline(admin.TabularInline):
-    model = Package
+class ProductClusterInline(admin.TabularInline):
+    model = ProductCluster
     extra = 1
 
 
@@ -23,12 +23,15 @@ class ProductMetadataInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     change_list_template = 'admin/product_change_list.html'
-    list_display = ('name', 'upstream_id', 'available')
+    list_display = (
+        'name', 'available', 'clusters', 'vault_url'
+    )
     search_fields = ('name', 'upstream_id')
-    inlines = [PackageInline, ProductMediaInline, ProductMetadataInline]
+    list_editable = ('vault_url', 'available')
+    inlines = [ProductClusterInline, ProductMediaInline, ProductMetadataInline]
 
-
-@admin.register(ProductCluster)
-class ProductClusterAdmin(admin.ModelAdmin):
-    list_display = ('product', 'cluster')
-    list_filter = ('product', 'cluster')
+    def clusters(self, obj: Product):
+        """Return clusters."""
+        return ', '.join(
+            obj.productcluster_set.values_list('cluster__code', flat=True)
+        )
