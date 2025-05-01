@@ -24,7 +24,6 @@ export interface Instance {
   product: Product,
   package: Package,
   created_at: string,
-  sales_order: SalesOrder
   subscription?: Subscription
 }
 

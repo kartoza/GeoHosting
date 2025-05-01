@@ -186,6 +186,10 @@ const ServiceDetail: React.FC = () => {
             </Td>
           </Tr>
           <Tr>
+            <Td px={4} fontWeight={600}>Product:</Td>
+            <Td px={4}>{instance.product.name}</Td>
+          </Tr>
+          <Tr>
             <Td px={4} fontWeight={600}>Product name:</Td>
             <Td px={4}>{instance.name}</Td>
           </Tr>
@@ -257,7 +261,7 @@ const ServiceDetail: React.FC = () => {
           </Tr>
           <Tr>
             <Td px={4} fontWeight={600}>Method:</Td>
-            <Td px={4}>{instance.sales_order.payment_method}</Td>
+            <Td px={4}>{instance.subscription?.payment_method}</Td>
           </Tr>
           <Tr>
             <Td px={4} colSpan={2}>

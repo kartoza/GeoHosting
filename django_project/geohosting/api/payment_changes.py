@@ -39,7 +39,8 @@ class PaymentChangeAPI(APIView):
         instance = get_object_or_404(Instance, pk=pk)
         if not instance.subscription:
             return HttpResponseServerError(
-                'This instance does not have subscription, please check with admin'
+                'This instance does not have subscription, '
+                'please check with admin'
             )
 
         try:

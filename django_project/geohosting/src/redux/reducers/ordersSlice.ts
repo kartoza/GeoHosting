@@ -21,6 +21,7 @@ export interface Subscription {
   current_expiry_at: string,
   is_waiting_payment: boolean,
   is_active: boolean,
+  payment_method: string,
 }
 
 export interface SalesOrder {
