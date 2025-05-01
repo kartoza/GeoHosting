@@ -13,7 +13,7 @@ class TicketTests(TestCase):
         self.client = APIClient()
         self.user = User.objects.create_user(
             username='testuser',
-            email='tinashe@test.com',
+            email='testuser@test.com',
             password='password123'
         )
         # Authenticate the client
@@ -25,7 +25,7 @@ class TicketTests(TestCase):
             'subject': 'Test Ticket',
             'details': 'Details of the test ticket',
             'status': 'open',
-            'customer': 'tinashe@test.com'
+            'customer': 'testuser@test.com'
         }
         response = self.client.post(
             '/api/tickets/', payload, format='json'
@@ -97,7 +97,7 @@ class AttachmentTests(TestCase):
         self.client = APIClient()
         self.user = User.objects.create_user(
             username='testuser',
-            email='tinashe@test.com',
+            email='testuser@test.com',
             password='password123'
         )
         # Authenticate the client

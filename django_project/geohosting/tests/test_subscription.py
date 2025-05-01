@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.utils.timezone import make_aware
+from rest_framework import status
 from rest_framework.test import APITestCase
 
 from geohosting.models import (
@@ -19,7 +20,7 @@ class SubscriptionTests(APITestCase):
         # Create a test user
         self.user = User.objects.create_user(
             username='testuser',
-            email='tinashe@test.com',
+            email='testuser@test.com',
             password='password123'
         )
         # Authenticate the client
@@ -54,23 +55,24 @@ class SubscriptionTests(APITestCase):
         )
 
         # Create test Instance object
+        self.subscription = Subscription.objects.create(
+            subscription_id='ID',
+            customer=self.user,
+            payment_method=PaymentMethod.STRIPE,
+            current_period_start=make_aware(
+                datetime(2000, 1, 1, 0, 0, 0)
+            ),
+            current_period_end=make_aware(
+                datetime(2000, 2, 1, 0, 0, 0)
+            ),
+            is_active=True
+        )
         self.instance = Instance.objects.create(
             name='Test Instance',
             price=self.package,
             cluster=self.cluster,
             owner=self.user,
-            subscription=Subscription.objects.create(
-                subscription_id='ID',
-                customer=self.user,
-                payment_method=PaymentMethod.STRIPE,
-                current_period_start=make_aware(
-                    datetime(2000, 1, 1, 0, 0, 0)
-                ),
-                current_period_end=make_aware(
-                    datetime(2000, 2, 1, 0, 0, 0)
-                ),
-                is_active=True
-            ),
+            subscription=self.subscription,
             status=InstanceStatus.OFFLINE
         )
 
@@ -149,3 +151,34 @@ class SubscriptionTests(APITestCase):
         self.instance.refresh_from_db()
         assert mock_delete_form.call_count == 2
         assert mock_cancel_subscription.call_count == 2
+
+    def test_api_list(self):
+        """Test api list."""
+        response = self.client.get('/api/subscription/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_api_detail(self):
+        """Test api list."""
+        response = self.client.get('/api/subscription/1000/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+        # Create a test user
+        user = User.objects.create_user(
+            username='testuser2',
+            email='testuser2@test.com',
+            password='password123'
+        )
+        # Authenticate new user
+        self.client.force_authenticate(user=user)
+        response = self.client.get(
+            f'/api/subscription/{self.subscription.id}/'
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(
+            f'/api/subscription/{self.subscription.id}/'
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data['id'], self.subscription.id)

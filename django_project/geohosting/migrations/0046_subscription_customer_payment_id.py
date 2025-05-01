@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('geohosting', '0043_remove_instance_expiry_at'),
+        ('geohosting', '0045_remove_packagegroup_vault_url'),
     ]
 
     operations = [

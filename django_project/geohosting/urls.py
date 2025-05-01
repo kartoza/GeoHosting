@@ -23,6 +23,7 @@ from geohosting.api.sales_order import (
     SalesOrderSetView, SalesOrderPaymentStripeSessionAPI,
     SalesOrderPaymentPaystackSessionAPI, CheckAppNameAPI
 )
+from geohosting.api.subscription import SubscriptionSetView
 from geohosting.api.support import TicketSetView, AttachmentSetView
 from geohosting.api.token import CreateToken
 from geohosting.api.user import UserProfileView, ChangePasswordView
@@ -60,6 +61,9 @@ tickets_router = NestedSimpleRouter(
 )
 tickets_router.register(
     'attachments', AttachmentSetView, basename='ticket_attachments'
+)
+router.register(
+    r'subscription', SubscriptionSetView, basename='subscription'
 )
 
 user_profile = [

@@ -253,23 +253,9 @@ const ServiceDetail: React.FC = () => {
         position="relative"
         bg="white"
         boxShadow="lg"
+        p={4}
       >
-        <Table>
-          <tbody>
-          <Tr>
-            <Td px={4} fontWeight={600} colSpan={2}>Payments</Td>
-          </Tr>
-          <Tr>
-            <Td px={4} fontWeight={600}>Method:</Td>
-            <Td px={4}>{instance.subscription?.payment_method}</Td>
-          </Tr>
-          <Tr>
-            <Td px={4} colSpan={2}>
-              <PaymentStatus/>
-            </Td>
-          </Tr>
-          </tbody>
-        </Table>
+        <PaymentStatus/>
       </Box>
     </Flex>
     {
