@@ -11,7 +11,7 @@ class InstanceViewSetTests(APITestCase):
         # Create a test user
         self.user = User.objects.create_user(
             username='testuser',
-            email='tinashe@test.com',
+            email='testuser@test.com',
             password='password123'
         )
         # Authenticate the client

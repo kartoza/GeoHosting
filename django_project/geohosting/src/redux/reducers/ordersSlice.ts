@@ -14,15 +14,6 @@ import { headerWithToken } from "../../utils/helpers";
 let _lastAbortController: AbortController | null = null;
 const ABORTED = 'Aborted';
 
-export interface Subscription {
-  id: string,
-  current_period_end: string,
-  current_period_start: string,
-  current_expiry_at: string,
-  is_waiting_payment: boolean,
-  is_active: boolean,
-}
-
 export interface SalesOrder {
   id: string,
   erpnext_code: string,

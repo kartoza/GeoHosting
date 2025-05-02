@@ -81,6 +81,12 @@ def get_subscription(subscription_id):
     return subscription['data']
 
 
+def get_payment_method_detail(subscription_id):
+    """Payment method detail."""
+    subscription = Subscription.fetch(subscription_id)
+    return subscription['data']['authorization']
+
+
 def cancel_subscription(subscription_id):
     """Cancel subscription."""
     subscription = get_subscription(subscription_id)

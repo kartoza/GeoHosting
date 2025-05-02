@@ -11,9 +11,7 @@ from geohosting.forms.activity.delete_instance import (
 from geohosting.models import (
     Instance, InstanceStatus
 )
-from geohosting.serializer.instance import (
-    InstanceSerializer, InstanceDetailSerializer
-)
+from geohosting.serializer.instance import InstanceSerializer
 
 
 class InstanceViewSet(
@@ -33,8 +31,6 @@ class InstanceViewSet(
 
     def get_serializer_class(self):
         """Get serializer class."""
-        if self.action == 'retrieve':
-            return InstanceDetailSerializer
         return super().get_serializer_class()
 
     def get_queryset(self):

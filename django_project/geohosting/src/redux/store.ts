@@ -8,6 +8,7 @@ import salesOrdersReducer from './reducers/ordersSlice';
 import instanceSlice from './reducers/instanceSlice';
 import profileSlice from './reducers/profileSlice';
 import companySlice from './reducers/companySlice';
+import subscriptionSlice from './reducers/subscriptionSlice';
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     orders: ordersSlice,
     profile: profileSlice,
     agreements: agreementSlice,
+    subscription: subscriptionSlice,
   },
 });
 

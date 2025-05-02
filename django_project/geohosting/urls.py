@@ -20,6 +20,10 @@ from geohosting.api.sales_order import (
     SalesOrderSetView, SalesOrderPaymentStripeSessionAPI,
     SalesOrderPaymentPaystackSessionAPI, CheckAppNameAPI
 )
+from geohosting.api.subscription import SubscriptionSetView
+from geohosting.api.subscription_changes import (
+    SubscriptionStripeChangeAPI, SubscriptionPaystackChangeAPI
+)
 from geohosting.api.support import TicketSetView, AttachmentSetView
 from geohosting.api.token import CreateToken
 from geohosting.api.user import UserProfileView, ChangePasswordView
@@ -57,6 +61,9 @@ tickets_router = NestedSimpleRouter(
 )
 tickets_router.register(
     'attachments', AttachmentSetView, basename='ticket_attachments'
+)
+router.register(
+    r'subscription', SubscriptionSetView, basename='subscription'
 )
 
 user_profile = [
@@ -98,7 +105,21 @@ order_payment = [
     ),
 ]
 
+subscription_changes = [
+    path(
+        'stripe/',
+        SubscriptionStripeChangeAPI.as_view(),
+        name='payment-changes-stripe-session'
+    ),
+    path(
+        'paystack/',
+        SubscriptionPaystackChangeAPI.as_view(),
+        name='payment-changes-paystack-session'
+    ),
+]
+
 api = [
+    path('subscription/<pk>/payment-changes/', include(subscription_changes)),
     path('webhook/', WebhookView.as_view(), name='webhook-api'),
     path(
         'sync-erp-data/', ERPApiView.as_view(), name='sync-with-erp'

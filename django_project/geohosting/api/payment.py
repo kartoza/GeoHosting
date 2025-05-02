@@ -103,7 +103,8 @@ class PaymentStripeSessionAPI:
                 },
             ],
             mode='subscription',
-            return_url=callback_url
+            return_url=callback_url,
+            billing_address_collection='required'
         )
         return checkout.id, checkout.client_secret
 

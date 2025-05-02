@@ -1,12 +1,18 @@
 body {
   margin: 0;
   font-family: 'Lato',
-    sans-serif;
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
+}
+
+.table-title {
+  font-weight: 600;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }

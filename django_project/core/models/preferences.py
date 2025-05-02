@@ -42,7 +42,7 @@ class Preferences(SingletonModel):
 
     # For subscriptions settings
     grace_period_days = models.IntegerField(
-        default=14,
+        default=7,
         help_text=(
             'Number of days after expiration that '
             'the instance remains active before deletion.'

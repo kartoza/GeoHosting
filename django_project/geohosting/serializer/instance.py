@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from geohosting.models import Instance, SalesOrder
-from geohosting.models.activity import Activity
+from geohosting.models import Instance
 from geohosting.serializer.product import (
     ProductPackageSerializer,
     ProductDetailSerializer
@@ -14,6 +13,7 @@ class InstanceSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
     package = serializers.SerializerMethodField()
     product = serializers.SerializerMethodField()
+    subscription = serializers.SerializerMethodField()
 
     class Meta:
         model = Instance
@@ -30,32 +30,6 @@ class InstanceSerializer(serializers.ModelSerializer):
     def get_product(self, obj: Instance):
         """Return product."""
         return ProductDetailSerializer(obj.price.product).data
-
-
-class InstanceDetailSerializer(InstanceSerializer):
-    """Sales instance detail serializer."""
-
-    sales_order = serializers.SerializerMethodField()
-    subscription = serializers.SerializerMethodField()
-
-    def get_sales_order(self, obj: Instance):
-        """Return sales_order."""
-        from geohosting.serializer.sales_order import (
-            SalesOrderDetailSerializer
-        )
-
-        # We update sales order
-        for activity in Activity.objects.filter(
-                sales_order__instance__isnull=True
-        ):
-            activity.update_sales_order()
-
-        try:
-            return SalesOrderDetailSerializer(
-                obj.salesorder_set.all().first()
-            ).data
-        except SalesOrder.DoesNotExist:
-            return None
 
     def get_subscription(self, obj: Instance):
         """Return subscription."""

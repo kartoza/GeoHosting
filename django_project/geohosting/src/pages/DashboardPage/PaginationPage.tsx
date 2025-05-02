@@ -19,12 +19,17 @@ interface Props {
   rightNavigation?: React.ReactElement;
   renderCards: (data: any[]) => React.ReactElement;
 
+  // Second of auto refresh
+  autoRefresh?: number;
+
   // additional filters
   additionalFilters?: {};
 }
 
 let lastSearchTerm: string | null = null;
 let session: string | null = null;
+let isForce: boolean | null = null;
+let lastTimeout: string | null = null;
 
 interface RenderContentProps {
   data: Instance[],
@@ -44,7 +49,7 @@ export const PaginationPage: React.FC<Props> = (
   {
     searchPlaceholder, stateKey, action, url,
     leftNavigation, rightNavigation, renderCards,
-    additionalFilters
+    additionalFilters, autoRefresh = 0
   }
 ) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -75,6 +80,7 @@ export const PaginationPage: React.FC<Props> = (
     }
   }, 500);
 
+  const isLoading = isForce ? false : loading
   const request = (force: boolean = false) => {
     const exampleDomain = 'http://example.com/'
     let usedUrl = url
@@ -110,8 +116,26 @@ export const PaginationPage: React.FC<Props> = (
     }
   }, [createLoading, editLoading]);
 
+  /** When create and edit is done, do request */
+  useEffect(() => {
+    if (autoRefresh && !loading) {
+      // If looping
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      // @ts-ignore
+      lastTimeout = setTimeout(() => {
+        isForce = true
+        request(true)
+      }, autoRefresh * 1000);
+    } else {
+      isForce = false
+    }
+  }, [loading]);
+
   /** When first dispatch created */
   useEffect(() => {
+    isForce = false
     request()
   }, [dispatch]);
 
@@ -152,7 +176,7 @@ export const PaginationPage: React.FC<Props> = (
         <Box mt={4}>
           {
             error ? <Box color='red'>{error.toString()}</Box> :
-              loading ?
+              isLoading ?
                 <Box
                   display={'flex'} justifyContent={'center'} width={'100%'}
                   height={'100%'} alignItems={'center'} paddingY={8}

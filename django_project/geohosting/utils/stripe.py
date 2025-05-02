@@ -89,6 +89,25 @@ def get_subscription(subscription_id):
     return subscription
 
 
+def get_payment_method_detail(subscription):
+    """Payment method detail."""
+    customer = stripe.Customer.retrieve(subscription['customer'])
+
+    # This is if customer has default payment method
+    if customer.invoice_settings.default_payment_method:
+        payment_method = stripe.PaymentMethod.retrieve(
+            customer.invoice_settings.default_payment_method
+        )
+        payment_method.billing_details.name = customer.name
+        payment_method.billing_details.email = customer.email
+        return payment_method
+
+    # This just check last invoice
+    invoice = stripe.Invoice.retrieve(subscription.latest_invoice)
+    payment_intent = stripe.PaymentIntent.retrieve(invoice.payment_intent)
+    return stripe.PaymentMethod.retrieve(payment_intent.payment_method)
+
+
 def cancel_subscription(subscription_id):
     """Cancel subscription."""
     stripe.Subscription.modify(
