@@ -101,6 +101,10 @@ def fetch_erpnext_data(
             params['limit_page_length'] = page_length
 
             response = requests.get(url, headers=headers, params=params)
+            print(
+                f'{url} params: {json.dumps(params)} : '
+                f'{response.status_code}'
+            )
 
             if response.status_code == 200:
                 data = response.json()
