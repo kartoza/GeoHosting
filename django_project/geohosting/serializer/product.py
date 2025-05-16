@@ -50,7 +50,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
         unique_packages = {}
         for currency in preferred_currency_order:
-            for package in obj.packages.filter(currency=currency):
+            for package in obj.packages.filter(currency=currency).filter(
+                    enabled=True
+            ):
                 if package.name not in unique_packages:
                     unique_packages[package.name] = package
 
