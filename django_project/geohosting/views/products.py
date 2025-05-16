@@ -90,9 +90,11 @@ def fetch_products_from_erpnext():
 
             # -----------------------
             # Extract attributes
+            print(f'Fetch product detail {name}')
             _product_detail = fetch_erpnext_detail_data(
                 f'{doctype}/{name}'
             )
+            print(_product_detail)
             attributes = _product_detail.get('attributes', [])
             host_attributes = {}
             for attribute in attributes:
@@ -114,7 +116,6 @@ def fetch_products_from_erpnext():
             # Extracting data from the product_detail dictionary
             upstream_id = product_detail.get('name', '')
             description = desc.get('short_description', '')
-            image_path = product_detail.get('image', '')
             available = product_detail.get(
                 'available_in_geohosting', 0) == 1
 
@@ -123,23 +124,27 @@ def fetch_products_from_erpnext():
                 'description': description,
                 'available': available
             }
-            if image_path:
-                defaults['image'] = download_erp_file(image_path)
+
+            # TODO:
+            #  We move this media sync to it is own script
+            # if image_path:
+            #     defaults['image'] = download_erp_file(image_path)
             product_obj, created = Product.objects.update_or_create(
                 upstream_id=upstream_id,
                 defaults=defaults
             )
-            save_product_image(
-                product_obj, desc, 'overview_header',
-                'overview_description',
-                f'/assets/geohosting/images/Product_Images/{name}/main.png'
-            )
-            save_product_image(
-                product_obj, desc, 'overview_continuation_header',
-                'overview_continuation',
-                f'/assets/geohosting/images/Product_Images/{name}/'
-                f'secondary.png'
-            )
+            # save_product_image(
+            #     product_obj, desc, 'overview_header',
+            #     'overview_description',
+            #     f'/assets/geohosting/images/Product_Images/{name}/main.png'
+            # )
+            # save_product_image(
+            #     product_obj, desc, 'overview_continuation_header',
+            #     'overview_continuation',
+            #     f'/assets/geohosting/images/Product_Images/{name}/'
+            #     f'secondary.png'
+            # )
+            print(defaults)
 
             # Save all description to product metadata
             for key, value in desc.items():
