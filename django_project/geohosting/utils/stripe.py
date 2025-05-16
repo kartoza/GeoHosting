@@ -21,21 +21,16 @@ def create_stripe_price(
     :rtype: str
     :return: Stripe price id
     """
-    prices = stripe.Price.list(limit=3, lookup_keys=[name]).data
-    try:
-        price = prices[0]
-    except IndexError:
-        price = stripe.Price.create(
-            currency=currency,
-            unit_amount_decimal=amount * 100,
-            lookup_key=name,
-            recurring={
-                "interval": interval
-            },
-            product_data={
-                "name": name
-            },
-        )
+    price = stripe.Price.create(
+        currency=currency,
+        unit_amount_decimal=amount * 100,
+        recurring={
+            "interval": interval
+        },
+        product_data={
+            "name": name
+        },
+    )
 
     try:
         for feature in features:
