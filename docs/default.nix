@@ -41,6 +41,7 @@ in pkgs.mkShell rec {
     pinnedPkgs.zlib
     pinnedPkgs.gnused
     pinnedPkgs.rpl
+    pinnedPkgs.pandoc
   ];
 
   # Run this command, only after creating the virtual environment

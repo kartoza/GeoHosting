@@ -10,3 +10,4 @@ site/*
 #direnv for docs building
 .direnv
 *.swp
+pandoc*
