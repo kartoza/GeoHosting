@@ -25,10 +25,11 @@ class PackageGroupAdmin(admin.ModelAdmin):
 class PackageAdmin(admin.ModelAdmin):
     list_display = (
         'name', 'product', 'price', 'currency',
-        'stripe_id', 'paystack_id'
+        'stripe_id', 'paystack_id', 'price_list', 'enabled'
     )
     search_fields = ('name', 'product__name')
-    list_filter = ('product',)
+    list_filter = ('enabled', 'product', 'price_list')
+    list_editable = ('enabled',)
     actions = [create_stripe_price, create_paystack_price]
     readonly_fields = ('created_at', 'updated_at')
     fieldsets = (

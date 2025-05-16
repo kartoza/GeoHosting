@@ -96,6 +96,11 @@ class Package(models.Model):
         null=True, blank=True
     )
 
+    # Is package enable
+    enabled = models.BooleanField(
+        default=True
+    )
+
     class Meta:
         ordering = ['product__order', 'order']
 
