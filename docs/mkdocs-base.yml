@@ -60,26 +60,25 @@ nav:
       - G3W:
           - products/g3w/index.md
           - Guide: products/g3w/guide.md
-      - BIMS:
-          - products/bims/index.md
-          - Introduction: products/bims/introduction.md
-          - Guide: products/bims/guide.md
+      #- BIMS:
+      #    - products/bims/index.md
+      #    - Introduction: products/bims/introduction.md
+      #    - Guide: products/bims/guide.md
       - GeoServer:
           - products/geoserver/index.md
-          - Introduction: products/geoserver/introduction.md
           - Guide: products/geoserver/guide.md
-      - GeoSight:
-          - products/geosight/index.md
-          - Introduction: products/geosight/introduction.md
-          - Guide: products/geosight/guide.md
-      - MyCivitas:
-          - products/mycivitas/index.md
-          - Guide: products/mycivitas/guide.md
+      #- GeoSight:
+      #    - products/geosight/index.md
+      #    - Introduction: products/geosight/introduction.md
+      #    - Guide: products/geosight/guide.md
+      #- MyCivitas:
+      #    - products/mycivitas/index.md
+      #    - Guide: products/mycivitas/guide.md
   - Developer Guide:
     #   - developer/index.  
       - GeoHosting: developer/geo-hosting.md
       - GeoNode: developer/geonode.md
       - G3W: developer/g3w.md
-      - BIMS: developer/bims.md
+    #  - BIMS: developer/bims.md
       - GeoServer: developer/geoserver.md
-      - GeoSight: developer/geosight.md
+    #  - GeoSight: developer/geosight.md
