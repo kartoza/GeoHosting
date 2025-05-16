@@ -12,3 +12,7 @@ context_id: nDU6LLGiXPTLADXY
 ---
 
 # View Profile
+
+On Dashboards, user can click on `Profile` to view profile information.
+
+[![Profile](./img/profile-img-1.png)](./img/profile-img-1.png)
