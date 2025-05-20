@@ -12,3 +12,7 @@ context_id: nDU6LLGiXPTLADXY
 ---
 
 # List
+
+[![Support List](./img/support-list-img-1.png)](./img/support-list-img-1.png)
+
+After users have created support tickets, they will be listed such as 1️⃣ and 2️⃣.
