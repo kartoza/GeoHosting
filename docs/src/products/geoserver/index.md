@@ -15,44 +15,57 @@ context_id: nDU6LLGiXPTLADXY
 
 ## What is GeoServer?
 
-GeoServer is a Java-based server that allows users to view and edit geospatial data. Using open standards set forth by the [Open Geospatial Consortium (OGC)](http://www.opengeospatial.org/), GeoServer allows for great flexibility in map creation and data sharing.
+GeoServer is a Java-based server that enables users to view, edit, and share geospatial data. Built on open standards defined by the [Open Geospatial Consortium (OGC)](http://www.opengeospatial.org/), it offers powerful flexibility for map creation and data interoperability.
+
+<div style="text-align: center;">
+  <img src="./img/geoserver-img-36.png" alt="GeoServer Logo" width="300">
+</div>
 
 ---
 
 ## Open and Share Your Spatial Data
 
-GeoServer allows you to display your spatial information to the world. Implementing the [Web Map Service (WMS)](http://www.opengeospatial.org/standards/wms) standard, GeoServer can create maps in a variety of output formats. [OpenLayers](http://openlayers.org/), a free mapping library, is integrated into GeoServer, making map generation quick and easy. GeoServer is built on [GeoTools](http://geotools.org), an open-source Java GIS toolkit.
+GeoServer allows you to share your spatial data with the world by implementing the [Web Map Service (WMS)](http://www.opengeospatial.org/standards/wms) standard. It can generate maps in various output formats, and integrates with [OpenLayers](http://openlayers.org/), a free mapping library, making map creation fast and straightforward. GeoServer itself is built on [GeoTools](http://geotools.org), an open-source Java GIS toolkit.
 
-GeoServer conforms to the [Web Feature Service (WFS)](http://www.opengeospatial.org/standards/wfs) and [Web Coverage Service (WCS)](http://www.opengeospatial.org/standards/wcs) standards, allowing data sharing and editing. It also uses the [Web Map Tile Service (WMTS)](http://www.opengeospatial.org/standards/wmts) standard to split maps into tiles for web and mobile applications.
+GeoServer also supports the [Web Feature Service (WFS)](http://www.opengeospatial.org/standards/wfs) and [Web Coverage Service (WCS)](http://www.opengeospatial.org/standards/wcs) standards, enabling data sharing and editing. Additionally, it uses the [Web Map Tile Service (WMTS)](http://www.opengeospatial.org/standards/wmts) standard to serve map tiles optimized for web and mobile apps.
 
-GeoServer is modular, with additional functionality available via extensions. An extension for the [Web Processing Service (WPS)](http://www.opengeospatial.org/standards/wps) opens up a wealth of processing options, and you can even write your own!
+The platform is modular, with extra capabilities available through extensions. For example, the [Web Processing Service (WPS)](http://www.opengeospatial.org/standards/wps) extension unlocks powerful geospatial processing features—and you can even create your own custom extensions!
 
-Enable others to incorporate your data into their websites and applications, freeing your data and permitting greater transparency.
+By using GeoServer, you empower others to embed your data in their websites and applications, promoting open access and greater transparency.
 
 ---
 
 ## Use Free and Open Source Software
 
-GeoServer is [free software](/license). This significantly lowers the financial barrier to entry compared to proprietary GIS products. In addition, GeoServer is open-source, allowing bug fixes and feature improvements to be made transparently and efficiently. Open-source software prevents vendor lock-in, saving costs on long-term support contracts.
+GeoServer is [free software](/license), which significantly reduces the financial barrier to entry compared to proprietary GIS solutions. Being open-source, GeoServer allows the community to transparently and efficiently contribute bug fixes and feature enhancements. This openness helps prevent vendor lock-in, ultimately saving costs on long-term support and licensing contracts.
+
+<div style="text-align: center;">
+  <img src="./img/geoserver-img-37.png" alt="Open Source vs Proprietary GIS" width="300">
+</div>
 
 ---
 
 ## Integrate With Mapping APIs
 
-We recommend both [OpenLayers](https://openlayers.org) and [Leaflet](https://leafletjs.com), which, when combined with GeoServer, provide an open-source solution for web mapping.
+We recommend both [OpenLayers](https://openlayers.org) and [Leaflet](https://leafletjs.com) as excellent open-source web mapping libraries. When combined with GeoServer, they provide a powerful, fully open-source solution for web mapping.
 
-GeoServer can also display data on popular mapping applications such as:
+GeoServer can also serve spatial data to popular mapping platforms, including:
+
 - [Google Maps](http://maps.google.com/)
 - [Google Earth](http://earth.google.com/)
 - [Microsoft Bing Maps](https://www.bing.com/maps)
 - [MapBox](http://mapbox.com)
 
-Additionally, GeoServer integrates with traditional GIS architectures such as [ESRI ArcGIS](http://www.esri.com/arcgis).
+Additionally, GeoServer integrates smoothly with traditional GIS architectures such as [ESRI ArcGIS](http://www.esri.com/arcgis).
+
+<div style="text-align: center;">
+  <img src="./img/geoserver-img-38.png" alt="OpenLayers & Leaflet Logo" width="450">
+</div>
 
 ---
 
 ## Join the Community
 
-GeoServer has a large and vibrant community consisting of users and developers worldwide. Support is available through various sources, such as [email lists](/comm#email). A fixed [release cycle](/roadmap) and [public issue tracker](/issues) provide transparency and reliable updates. Additionally, [commercial support](/support) is available from various providers. With GeoServer, you are always in good company.
+GeoServer benefits from a large and active global community of users and developers, providing support through multiple channels such as [email lists](/comm#email). It maintains a regular [release cycle](/roadmap) and a [public issue tracker](/issues), ensuring transparency and consistent updates. Additionally, commercial support is available from various providers, so with GeoServer, you are always backed by a strong and supportive community.
 
 ---

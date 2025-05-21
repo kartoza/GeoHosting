@@ -66,10 +66,7 @@ nav:
       #    - Guide: products/bims/guide.md
       - GeoServer:
           - products/geoserver/index.md
-<<<<<<< Updated upstream
-=======
         #   - Introduction: products/geoserver/introduction.md
->>>>>>> Stashed changes
           - Guide: products/geoserver/guide.md
       #- GeoSight:
       #    - products/geosight/index.md
