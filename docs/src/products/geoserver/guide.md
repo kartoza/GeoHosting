@@ -13,100 +13,44 @@ context_id: nDU6LLGiXPTLADXY
 
 # GeoServer Guide
 
-## Installation (Linux)
-
-1. Make sure you have a Java Runtime Environment (JRE) installed on your system. GeoServer requires **Java 11** or **Java 17**, available from [OpenJDK](https://openjdk.java.net), [Adoptium](https://adoptium.net), or your OS distribution.
-
-   > **Note**: For more information about Java and GeoServer compatibility, please see the section on [Java Considerations](http://docs.geoserver.org/latest/en/user/production/java.html#production-java).
-
-2. Navigate to the [GeoServer Download page](http://geoserver.org/download).
-
-3. Select the version of GeoServer that you wish to download. If unsure, select the [Stable](http://geoserver.org/release/stable) release.
-
-   These instructions are for GeoServer **2.27-SNAPSHOT**, provided as a [Nightly](http://geoserver.org/release/main) release. Testing a Nightly release is a great way to try out new features and test community modules. Nightly releases change on an ongoing basis and are not suitable for a production environment.
-
-4. Select **Platform Independent Binary** on the download page: [geoserver-2.27.x-latest-bin.zip](https://build.geoserver.org/geoserver/main/geoserver-2.27.x-latest-bin.zip).
-
-5. Download the `zip` archive and unpack it in your preferred location.
-
-   > **Note**: A suggested location would be `/usr/share/geoserver`.
-
-6. Add an environment variable to save the location of GeoServer:
-
-   ```bash
-   echo "export GEOSERVER_HOME=/usr/share/geoserver" >> ~/.profile
-   . ~/.profile
-   ```
-
-7. Make yourself the owner of the `geoserver` folder (replace `USER_NAME` with your username):
-
-   ```bash
-   sudo chown -R USER_NAME /usr/share/geoserver/
-   ```
-
-8. Start GeoServer by changing into the `geoserver/bin` directory and running the `startup.sh` script:
-
-   ```bash
-   cd geoserver/bin
-   sh startup.sh
-   ```
-
-9. Open a web browser and navigate to:
-
-   ```
-   http://localhost:8080/geoserver
-   ```
-
-   If you see the GeoServer Welcome page, then GeoServer is successfully installed.
-
-   ![GeoServer Welcome Page](./img/geoserver-img-1.png)
-
-10. To shut down GeoServer, either close the persistent command-line window or run the `shutdown.sh` file inside the `bin` directory.
-
-## Uninstallation
-
-1. Stop GeoServer (if it is running).
-2. Delete the directory where GeoServer is installed.
-
 ## Getting Started
 
 ## Using the web administration interface
 
-GeoServer has a browser-based web administration interface application used to configure all aspects of GeoServer, from adding and publishing data to changing service settings.
+GeoServer includes a browser-based web administration interface that allows users to configure all aspects of the server—from adding and publishing data to adjusting service settings.
 
-1. The web admin interface is accessed via a web browser at:
+This interface is accessed through a web browser at:
 
    ```
    http://<host>:<port>/geoserver
    ```
-
-2. For a default installation on a server, the link is:
+For a default installation, the address is typically:
 
    ```
    http://localhost:8080/geoserver
    ```
 
-3. When the application starts, it displays the Welcome page.
+When opened, the application displays the Welcome page containing links to the various web services used to access your spatial data. These links can be copied and pasted into Desktop GIS software, mobile apps, or web mapping applications to utilize the services provided.
 
-   ![Welcome Page](./img/geoserver-img-1.png)
+![Welcome Page](./img/geoserver-img-39.png)
 
-4. The welcome page provides links describing the web services used to access information.
-   
-   To use, copy and paste these links into a Desktop GIS, mobile, or web mapping application.
-
-> **Note:** For more information, please see the [Welcome](https://docs.geoserver.org/latest/en/user/webadmin/welcome.html#welcome) section.
+> **Note:** For more information, see the [Welcome](https://docs.geoserver.org/latest/en/user/webadmin/welcome.html#welcome) section in the GeoServer documentation.
 
 ## Logging In
 
-In order to change any server settings or configure data, a user must first be authenticated.
+To change server settings or configure data in GeoServer, the user must first be authenticated.
 
-1. Navigate to the upper right of the web interface to log into GeoServer. The default administration credentials are:
-   - **User name:** `admin`
-   - **Password:** `geoserver`
+To log in:
 
-   ![Login](./img/geoserver-img-2.png)
+1. Navigate to the upper-right corner of the web interface.
+2. Enter the default administrator credentials, which are:
 
-2. Once logged in, the Welcome screen changes to show the available admin functions. These are primarily shown in the menus on the left side of the page.
+    - **User name:** `admin`
+    - **Password:** `geoserver`
+
+![Login](./img/geoserver-img-40.png)
+
+Once logged in, the Welcome screen updates to display administrative functions, which are primarily accessed through the menus on the left side of the interface.
 
    ![Additional options when logged in](./img/geoserver-img-3.png)
 
