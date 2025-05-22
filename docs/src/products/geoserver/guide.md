@@ -19,26 +19,35 @@ context_id: nDU6LLGiXPTLADXY
 
 GeoServer includes a browser-based web administration interface that allows users to configure all aspects of the server—from adding and publishing data to adjusting service settings.
 
+<br>
+
 This interface is accessed through a web browser at:
 
    ```
    http://<host>:<port>/geoserver
    ```
+
 For a default installation, the address is typically:
 
    ```
    http://localhost:8080/geoserver
    ```
 
+<br>
+
 When opened, the application displays the Welcome page containing links to the various web services used to access your spatial data. These links can be copied and pasted into Desktop GIS software, mobile apps, or web mapping applications to utilize the services provided.
 
 ![Welcome Page](./img/geoserver-img-39.png)
+
+<br>
 
 > **Note:** For more information, see the [Welcome](https://docs.geoserver.org/latest/en/user/webadmin/welcome.html#welcome) section in the GeoServer documentation.
 
 ## Logging In
 
 To change server settings or configure data in GeoServer, the user must first be authenticated.
+
+<br>
 
 To log in:
 
@@ -50,115 +59,131 @@ To log in:
 
 ![Login](./img/geoserver-img-40.png)
 
+<br>
+
 Once logged in, the Welcome screen updates to display administrative functions, which are primarily accessed through the menus on the left side of the interface.
 
-   ![Additional options when logged in](./img/geoserver-img-3.png)
+![Additional options when logged in](./img/geoserver-img-41.png)
 
 ## Layer Preview
 
-The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview) page allows you to quickly view the output of published layers.
+The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview) page provides a quick way to view the output of published layers.
 
-1. Click the **Layer Preview** link on the menu to go to this page.
+1. Click the **Layer Preview** link in the menu to access this page.
    
-   ![Preview List](./img/geoserver-img-4.png)
-
-2. From here, you can find the layer you’d like to preview and click a link for an output format. Click the **OpenLayers** link for a given layer and the view will display.
-
-3. To sort a column alphabetically, click the column header.
+    ![Preview List](./img/geoserver-img-4.png)
    
-   ![Unsorted (left) and sorted (right) columns](./img/geoserver-img-5.png)
+    <br>
 
-4. Searching can be used to filter the number of items displayed. This is useful for working with data types that contain a large number of items. To search data type items, enter the search string in the search box and press **Enter**. GeoServer will search the data type for items that match your query and display a list view showing the search results.
+2. Locate the layer you want to preview and click a link under the desired output format. For example,  clicking the **OpenLayers** link will display a preview of that layer.
+   
+    <br>
 
-   ![Search results for the query “top” on the Workspace page](./img/geoserver-img-6.png)
+3. To sort any column alphabetically, simply click on the column header.
+   
+    ![Unsorted (left) and sorted (right) columns](./img/geoserver-img-5.png)
 
-> **Hint** Perform an exact term search by enclosing the search term in quotes or double-quotes, e.g. normally `ads` would also match `roads`, but `"ads"` wouldn’t.
+    <br>
 
-> **Note** Sorting and searching apply to all data configuration pages.
+4. Use the search box to filter the list of items — especially helpful when working with data types that include many layers. Enter your search term and press **Enter**. GeoServer will display a filtered list of items matching your query.
 
-* For more information, please see the [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview) section.
+    ![Search results for the query “top” on the Workspace page](./img/geoserver-img-6.png)
+
+    <br>
+
+> **Hint** For an exact match, enclose your search term in quotes or double quotes. For instance, `ads` would match `roads`, but `"ads"` would only match the exact term.
+
+> **Note** Sorting and searching functions are available on all data configuration pages..
+
+> **Note** For additional details, see the full [Layer Preview documentation](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview).
+
+<br>
 
 # Publishing a GeoPackage
 
-This tutorial walks through the steps of publishing a GeoPackage with GeoServer.
+This tutorial guides you through the steps to publish a GeoPackage using GeoServer.
 
-> **Note**
->
-> This tutorial assumes that GeoServer is running at `http://localhost:8080/geoserver`.
+> **Note** This tutorial assumes GeoServer is running at `http://localhost:8080/geoserver`.
 
 ## Data Preparation
 
-First, let’s gather the data that we’ll be publishing.
+Let’s start by preparing the data for publishing.
 
-1. The sample data folder includes `data/ne/natural_earth.gpkg`.
-2. This file contains small scale 1:110m data:
-   - [Coastlines](https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-coastline/)
-   - [Countries](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/)
-   - [Boundary lines](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-boundary-lines/)
-   - [Populated places](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-populated-places/)
+The sample data folder includes the file: `data/ne/natural_earth.gpkg`. This GeoPackage contains small-scale 1:110m datasets, including:
 
-> **Note**
->
-> The `data/ne/natural_earth.gpkg` file has been processed from [Natural Earth Data](https://www.naturalearthdata.com/downloads/). To download the original file, visit the site and download the [GeoPackage](https://naciscdn.org/naturalearth/packages/natural_earth_vector.gpkg.zip) link.
+- [Coastlines](https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-coastline/)
+- [Countries](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/)
+- [Boundary lines](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-boundary-lines/)
+- [Populated places](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-populated-places/)
+
+<br>
+
+> **Note** The file `data/ne/natural_earth.gpkg` is a processed version of the dataset from [Natural Earth Data](https://www.naturalearthdata.com/downloads/). To obtain the original version, visit the site and download it directly from this [GeoPackage link](https://naciscdn.org/naturalearth/packages/natural_earth_vector.gpkg.zip).
 
 ## Creating a New Workspace
 
-The next step is to create a workspace for the GeoPackage. A workspace is a folder used to group similar layers together.
+The next step is to create a workspace for the GeoPackage. A workspace is essentially a folder used to organize and group related layers.
 
-> **Note** This step is optional if you would like to use an existing workspace. Usually, a workspace is created for each project, which can include stores and layers that are related to each other.
+> **Note** This step is optional if you prefer to use an existing workspace. Typically, a new workspace is created for each project, allowing you to group related stores and layers together.
 
-1. In a web browser, navigate to `http://localhost:8080/geoserver`.
-2. Log into GeoServer as described in the [Logging In](https://docs.geoserver.org/latest/en/user/gettingstarted/web-admin-quickstart/index.html#logging-in) section.
+<br>
+
+1. Open a web browser and go to `http://localhost:8080/geoserver`.
+2. Log in to GeoServer as outlined in the [Logging In](https://docs.geoserver.org/latest/en/user/gettingstarted/web-admin-quickstart/index.html#logging-in) section.
 3. Navigate to **Data → Workspaces**.
 
-  ![Workspace](./img/geoserver-img-7.png)
+    ![Workspace](./img/geoserver-img-7.png)
 
-4. Click the **Add new workspace** button to display the **New Workspace** page.
-5. Enter the following details:
+4. Click the **Add new workspace** button to open the **New Workspace** page.
+5. Fill in the following fields:
 
-   | Field           | Value                                      |
-   |---------------|----------------------------------|
-   | Name          | `tutorial`                                |
-   | Namespace URI | `http://localhost:8080/geoserver/tutorial` |
+    | Field           | Value                                      |
+    |---------------|----------------------------------|
+    | Name          | `tutorial`                                |
+    | Namespace URI | `http://localhost:8080/geoserver/tutorial` |
 
-> **Note** A workspace name is an identifier describing your project. It must not exceed ten characters or contain spaces.
+    > **Note** The workspace name should describe your project. It must be 10 characters or fewer and cannot contain spaces.
 
-> **Note** A Namespace URI can be a URL associated with your project with an added trailing identifier indicating the workspace. The Namespace URI field does not need to resolve to an actual valid web address.
+    > **Note** The Namespace URI can be any URL-like string tied to your project. It typically includes a trailing identifier that reflects the workspace. This URI does not need to resolve to a real web address.
 
-6. Press the **Submit** button.
+    <br>
+
+6. Click the **Submit** button.
 
     ![Submit](./img/geoserver-img-8.png)
 
-7. The `tutorial` workspace will be added to the **Workspaces** list.
+7. The `tutorial` workspace should now appear in the **Workspaces** list.
 
 ## Create a Store
 
-Once the workspace is created, we are ready to add a new store. The store tells GeoServer how to connect to the GeoPackage.
+Once the workspace is set up, the next step is to add a new store. A store tells GeoServer how to connect to the GeoPackage.
 
 1. Navigate to **Data → Stores**.
 
-[![Store](./img/geoserver-img-9.png)](./img/geoserver-img-9.png)
+    [![Store](./img/geoserver-img-9.png)](./img/geoserver-img-9.png)
 
-2. In order to add the geopackage, you need to create a new store. Click the Add new Store button. You will be redirected to a list of the data sources supported by GeoServer. Note that the data sources are extensible, so your list may look slightly different.
+2. To add the GeoPackage, click the **Add new Store** button. This will take you to a list of data sources supported by GeoServer.
+
+    > **Note** Keep in mind that this list is extensible, so yours might look slightly different.
 
     [![](./img/geoserver-img-10.png)](./img/geoserver-img-10.png)
 
-3. From the list of **Vector Data Sources**, locate and click the **GeoPackage** link.
-4. Enter the following details:
+3. From the list of **Vector Data Sources**, find and click the **GeoPackage** option.
+4. Fill in the following fields:
 
-   | Field               | Value                      |
-   |--------------------|--------------------------|
-   | Workspace         | `tutorial`                |
-   | Data Source Name  | `NaturalEarth`            |
-   | Description       | `GeoPackage of NaturalEarth data` |
+    | Field               | Value                      |
+    |--------------------|--------------------------|
+    | Workspace         | `tutorial`                |
+    | Data Source Name  | `NaturalEarth`            |
+    | Description       | `GeoPackage of NaturalEarth data` |
 
-   ![](./img/geoserver-img-11.png)
+    ![](./img/geoserver-img-11.png)
 
-5. Under **Connection Parameters**, browse to the location of the GeoPackage:
-   - **Database**: `file:data/ne/natural_earth.gpkg`
-   - **Read only**: checked
+5. Under **Connection Parameters**, enter the following:
+    - **Database**: `file:data/ne/natural_earth.gpkg`
+    - **Read only**: checked
 
-   * The use of read_only above indicates that we will not be writing to this GeoPackage, allowing GeoServer to avoid managing write locks when accessing this content for greater performance.
+    > **Note** The use of read_only above indicates that we will not be writing to this GeoPackage, allowing GeoServer to avoid managing write locks when accessing this content for greater performance.
 
       [![](./img/geoserver-img-12.png)](./img/geoserver-img-12.png)
 

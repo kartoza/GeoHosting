@@ -39,6 +39,8 @@ By using GeoServer, you empower others to embed your data in their websites and 
 
 GeoServer is [free software](/license), which significantly reduces the financial barrier to entry compared to proprietary GIS solutions. Being open-source, GeoServer allows the community to transparently and efficiently contribute bug fixes and feature enhancements. This openness helps prevent vendor lock-in, ultimately saving costs on long-term support and licensing contracts.
 
+<br>
+
 <div style="text-align: center;">
   <img src="./img/geoserver-img-37.png" alt="Open Source vs Proprietary GIS" width="300">
 </div>
