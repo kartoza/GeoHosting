@@ -19,6 +19,8 @@ from geohosting.models.fields import SVGAndImageField
 class Product(models.Model):
     """Product model."""
 
+    doctype = 'Item'
+
     name = models.CharField(
         max_length=256
     )
@@ -113,6 +115,37 @@ class Product(models.Model):
         """Return product cluster."""
         return self.productcluster_set.get(
             cluster__region=region
+        )
+
+    def sync_media(self):
+        """Sync media from erp next."""
+        from geohosting.utils.erpnext import (
+            fetch_erpnext_detail_data,
+        )
+        from geohosting.utils.media import (
+            download_erp_file, save_product_image
+        )
+        from geohosting.views.products import parse_description
+        product_detail = fetch_erpnext_detail_data(
+            f'{self.doctype}/{self.name}'
+        )
+        image_path = product_detail.get('image', '')
+        if image_path:
+            self.image = download_erp_file(image_path)
+            self.save()
+
+        description = product_detail.get('description', None)
+        desc = parse_description(description)
+        save_product_image(
+            self, desc, 'overview_header',
+            'overview_description',
+            f'/assets/geohosting/images/Product_Images/{self.name}/main.png'
+        )
+        save_product_image(
+            self, desc, 'overview_continuation_header',
+            'overview_continuation',
+            f'/assets/geohosting/images/Product_Images/{self.name}/'
+            f'secondary.png'
         )
 
 
