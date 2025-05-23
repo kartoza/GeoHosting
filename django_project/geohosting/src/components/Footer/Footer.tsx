@@ -1,8 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Text, Flex, Link, Button, IconButton } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  IconButton,
+  Link,
+  ListItem,
+  Text,
+  UnorderedList
+} from '@chakra-ui/react';
 import { ChevronUpIcon } from '@chakra-ui/icons';
-import { UnorderedList, ListItem, Icon } from "@chakra-ui/react";
-import { FaTwitter, FaYoutube, FaInstagram, FaFacebook, FaLinkedin, FaGithub } from 'react-icons/fa6';
+import {
+  FaFacebook,
+  FaGithub,
+  FaInstagram,
+  FaLinkedin,
+  FaTwitter,
+  FaYoutube
+} from 'react-icons/fa6';
 import LoginForm from '../LoginForm/LoginForm';
 import { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
@@ -10,7 +26,11 @@ import { useSelector } from 'react-redux';
 const Footer: React.FC = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
-  const { token, loading, error } = useSelector((state: RootState) => state.auth);
+  const {
+    token,
+    loading,
+    error
+  } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,11 +75,15 @@ const Footer: React.FC = () => {
             <Text fontSize="lg" fontWeight="bold" mb="4" color="white">
               About Kartoza
             </Text>
-            <Text color="#b4b6b0" fontSize={{ base: "md", md: "md" , xl: 'md' }} >
-              We are a South Africa-based Free and Open Source GIS service provider. We develop and maintain geographic information systems and train teams to use geospatial software to its full potential.
+            <Text color="#b4b6b0"
+                  fontSize={{ base: "md", md: "md", xl: 'md' }}>
+              We are a South Africa-based Free and Open Source GIS service
+              provider. We develop and maintain geographic information systems
+              and train teams to use geospatial software to its full potential.
             </Text>
 
-            <Box mt={4} color='white' opacity={0.2}>Version {window.app_version}</Box>
+            <Box mt={4} color='white'
+                 opacity={0.2}>Version {window.app_version}</Box>
           </Box>
 
           {/* Navigation Links */}
@@ -67,56 +91,69 @@ const Footer: React.FC = () => {
             <Text fontSize="lg" fontWeight="bold" mb="4" color="white">
               Navigate
             </Text>
-            <UnorderedList listStyleType="none" m="0" p="0" fontSize={{ base: "md", md: "md" , xl: 'md' }} >
+            <UnorderedList listStyleType="none" m="0" p="0"
+                           fontSize={{ base: "md", md: "md", xl: 'md' }}>
               <ListItem>
-                <Link href="https://kartoza.com/crowdfunding" color="#b4b6b0">Crowdfunding</Link>
+                <Link href="https://kartoza.com/crowdfunding"
+                      color="#b4b6b0">Crowdfunding</Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/contact-us/new" color="#b4b6b0">Contact</Link>
+                <Link href="https://kartoza.com/contact-us/new"
+                      color="#b4b6b0">Contact</Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/internships" color="#b4b6b0">Internships</Link>
+                <Link href="https://kartoza.com/internships"
+                      color="#b4b6b0">Internships</Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/policies" color="#b4b6b0">Policies</Link>
+                <Link href="https://kartoza.com/policies"
+                      color="#b4b6b0">Policies</Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/careers" color="#b4b6b0">We're Hiring!</Link>
+                <Link href="https://kartoza.com/careers" color="#b4b6b0">We're
+                  Hiring!</Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/portfolio" color="#b4b6b0">Portfolio</Link>
+                <Link href="https://kartoza.com/portfolio"
+                      color="#b4b6b0">Portfolio</Link>
               </ListItem>
             </UnorderedList>
           </Box>
 
           {/* Follow Kartoza */}
           <Box flex="1" minW="300px">
-            <Text fontSize="lg" fontWeight="bold" mb="4" color="white"> {/* Increased margin-bottom */}
+            <Text fontSize="lg" fontWeight="bold" mb="4"
+                  color="white"> {/* Increased margin-bottom */}
               Follow Kartoza
             </Text>
             <Flex gap="1" mb="4">
               <Link href="https://twitter.com/KartozaGeo" target="_blank">
-                <Icon as={FaTwitter} w={9} h={9} color="white" />
+                <Icon as={FaTwitter} w={9} h={9} color="white"/>
               </Link>
-              <Link href="https://www.instagram.com/kartozageo/" target="_blank">
-                <Icon as={FaInstagram} w={9} h={9} color="white" />
+              <Link href="https://www.instagram.com/kartozageo/"
+                    target="_blank">
+                <Icon as={FaInstagram} w={9} h={9} color="white"/>
               </Link>
               <Link href="https://www.facebook.com/kartozaGIS" target="_blank">
-                <Icon as={FaFacebook} w={9} h={9} color="white" />
+                <Icon as={FaFacebook} w={9} h={9} color="white"/>
               </Link>
-              <Link href="https://www.linkedin.com/company/kartoza-pty-ltd" target="_blank">
-                <Icon as={FaLinkedin} w={9} h={9} color="white" />
+              <Link href="https://www.linkedin.com/company/kartoza-pty-ltd"
+                    target="_blank">
+                <Icon as={FaLinkedin} w={9} h={9} color="white"/>
               </Link>
               <Link href="https://www.github.com/orgs/kartoza" target="_blank">
-                <Icon as={FaGithub} w={9} h={9} color="white" />
+                <Icon as={FaGithub} w={9} h={9} color="white"/>
               </Link>
-              <Link href="https://www.youtube.com/user/kartozachannel/feed" target="_blank">
-                <Icon as={FaYoutube} w={9} h={9} color="white" />
+              <Link href="https://www.youtube.com/user/kartozachannel/feed"
+                    target="_blank">
+                <Icon as={FaYoutube} w={9} h={9} color="white"/>
               </Link>
             </Flex>
 
-            <Text mb="6" color="#b4b6b0" fontSize={{ base: "md", md: "md" , xl: 'md' }} >
-              Be the first to know! Sign up for our newsletter and stay in the loop with all things Kartoza.
+            <Text mb="6" color="#b4b6b0"
+                  fontSize={{ base: "md", md: "md", xl: 'md' }}>
+              Be the first to know! Sign up for our newsletter and stay in the
+              loop with all things Kartoza.
             </Text>
 
             <Flex gap="2">
@@ -141,21 +178,23 @@ const Footer: React.FC = () => {
         {showScrollButton && (
           <IconButton
             position="fixed"
-            bottom="50px"
-            right="30px"
+            bottom={{ base: "10px", md: "30px" }}
+            right={{ base: "10px", md: "30px" }}
             bg="#f8b54b"
             color="white"
             fontSize="2.5rem"
-            _hover={{ bg: '#57a0c7' }}
+            opacity={0.3}
+            _hover={{ bg: '#57a0c7', opacity: 1 }}
             aria-label="Scroll to top"
-            icon={<ChevronUpIcon />}
+            icon={<ChevronUpIcon/>}
             onClick={scrollToTop}
           />
         )}
       </Box>
 
       {/* Login Form Modal */}
-      <LoginForm isOpen={isLoginFormOpen} onClose={handleCloseLoginForm} formType={'signup'}/>
+      <LoginForm isOpen={isLoginFormOpen} onClose={handleCloseLoginForm}
+                 formType={'signup'}/>
     </>
   );
 };
