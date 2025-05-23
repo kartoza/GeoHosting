@@ -28,7 +28,7 @@ WORKDIR /home/web/django_project
 ENTRYPOINT ["/home/web/django_project/entrypoint.sh"]
 CMD ["uwsgi", "--ini", "/uwsgi.conf"]
 
-FROM prod as vscode
+FROM prod AS vscode
 
 ADD deployment/docker/requirements-dev.txt /requirements-dev.txt
 RUN pip install -r /requirements-dev.txt
@@ -54,7 +54,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # [Optional] Set the default user. Omit if you want to keep the default as root.
 USER $USERNAME
 
-FROM prod as dev
+FROM prod AS dev
 
 # This section taken on 2 July 2015 from
 # https://docs.docker.com/examples/running_ssh_service/
@@ -68,7 +68,7 @@ RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-ENV NOTVISIBLE "in users profile"
+ENV NOTVISIBLE="in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
 # End of cut & paste section
