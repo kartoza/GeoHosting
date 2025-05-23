@@ -41,7 +41,18 @@ services:
   worker:
     <<: *default-common-django
     entrypoint: [ ]
-    command: 'celery -A core worker --beat -l info  --scheduler django_celery_beat.schedulers:DatabaseScheduler'
+    command: 'celery -A core worker -l info'
+    links:
+      - db
+      - redis
+      - minio
+      - minio-create-bucket
+      - celery_beat
+
+  celery_beat:
+    <<: *default-common-django
+    entrypoint: [ ]
+    command: 'celery -A core beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler'
     links:
       - db
       - redis
