@@ -25,15 +25,15 @@ GeoServer includes a browser-based web administration interface that allows user
 
 This interface is accessed through a web browser at:
 
-   ```
-   http://<host>:<port>/geoserver
-   ```
+    ```
+    http://<host>:<port>/geoserver
+    ```
 
 For a default installation, the address is typically:
 
-   ```
-   http://localhost:8080/geoserver
-   ```
+    ```
+    http://localhost:8080/geoserver
+    ```
 
 <br>
 
@@ -60,8 +60,8 @@ To log in:
 1. Navigate to the upper-right corner of the web interface.
 2. Enter the default administrator credentials, which are:
 
-   - **User name:** `admin`
-   - **Password:** `geoserver`
+    - **User name:** `admin`
+    - **Password:** `geoserver`
 
     <br>
 
@@ -279,25 +279,25 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
 ## Creating a Layer
 
-Now that we have connected to the GeoPackage, we can publish the layer.
+Now that we've connected to the GeoPackage, we can proceed to publish a layer.
 
-1. On the New Layer page, click Publish beside the countries `layer name`.
+1. On the New Layer page, click Publish next to the `countries` layer name.
 
     [![](./img/geoserver-img-13.png)](./img/geoserver-img-13.png)
 
-2. The Edit Layer page defines the data and publishing parameters for a layer.
+2. The Edit Layer page defines the data and publishing parameters for the layer.
 
     [![](./img/geoserver-img-14.png)](./img/geoserver-img-14.png)
 
-3. There are three critical pieces of information required on the Data tab before we can even save.
+3. Three key sections on the Data tab must be completed before saving:
 
-  - **Basic Resource Info** - describes how the layer is presented to others
+    - **Basic Resource Info** – defines how the layer is presented
 
-  - **Coordinate Reference System** - establishes how the spatial data is to be interpreted or drawn on the world
+    - **Coordinate Reference System** – determines how spatial data is interpreted
 
-  - **Bounding Boxes** - establishes where the dataset is located in the world
+    - **Bounding Boxes** – establishes the dataset's geographic extent
 
-4. Locate Basic Resource Info and define the layer:
+4. In the Basic Resource Info section, enter the following:
 
     | Field | Value|
     |-----------|------------|
@@ -305,175 +305,184 @@ Now that we have connected to the GeoPackage, we can publish the layer.
     | Title | `Countries`|
     | Abstract | `Sovereign states`|
 
-* The naming of a layer is important, and while GeoServer does not offer restrictions many of the individual protocols will only work with very simple names.
+    > **Note** While GeoServer allows flexible naming, many external protocols require simple, standard layer names.
 
-  ![](./img/geoserver-img-15.png)
+    ![](./img/geoserver-img-15.png)
 
-5. Double check the Coordinate Reference Systems information is correct.
+5. Verify that the *Coordinate Reference System (CRS)* information is accurate:
 
-| Field | Value|
-|----------------|----------|
-|Native SRS| EPSG:4326|
-|Declaired SRS | EPSG:4326|
-| SRS Handling | Force declared|
+    | Field | Value|
+    |----------------|----------|
+    |Native SRS| EPSG:4326|
+    |Declaired SRS | EPSG:4326|
+    | SRS Handling | Force declared|
 
-  ![](./img/geoserver-img-16.png)
+    ![](./img/geoserver-img-16.png)
 
-6. Locate Bounding Boxes and generate the layer’s bounding boxes by clicking the Compute from data and then Compute from native bounds links.
+6. In the Bounding Boxes section, click **Compute from data**, then **Compute from native bounds** to auto-fill the bounding box fields.
 
-  ![](./img/geoserver-img-17.png)
+    ![](./img/geoserver-img-17.png)
 
-7. Press Apply to save your work thus far without closing the page.
+7. Click Apply to save your progress without closing the page.
 
-  - This is a good way to check that your information has been entered correctly, GeoServer will provide a warning if any required information is incomplete.
+    > **Hint** This is useful to confirm that all required fields are correctly filled; GeoServer will show a warning if anything is missing.
 
-8. Scroll to the top of the page and navigate to the Publishing tab.
+8. Scroll to the top and go to the Publishing tab.
 
-9. Locate the WMS Settings heading, where we can set the style.Ensure that the Default Style is set to polygon`.
+9. Under WMS Settings, set the Default Style to `polygon`.
 
-  ![](./img/geoserver-img-18.png)
+    ![](./img/geoserver-img-18.png)
 
-10. Press Save to complete your layer edits.
+10. Click Save to finalize the layer configuration.
 
-## Previewing the layer¶
+## Previewing the layer
 
-In order to verify that the `tutorial:countries` layer is published correctly, we can preview the layer.
+To confirm that the `tutorial:countries` layer has been published successfully, we can preview it in GeoServer.
 
-1. Navigate to the Data > Layer Preview page and find the tutorial:countries layer.
+1. Go to **Data → Layer Preview** and locate the `tutorial:countries` layer.
 
-> Note: Use the Search field with tutorial as shown to limit the number of layers to page through.
+    > Note: To filter results and make it easier to find, type `tutorial` in the search field.
 
-  ![](./img/geoserver-img-19.png)
+    ![](./img/geoserver-img-19.png)
 
 2. Click the OpenLayers link in the Common Formats column.
 
-3. An OpenLayers map will load in a new tab and display the shapefile data with the default line style.
+3. An OpenLayers map will open in a new tab, displaying the shapefile data with the default line style.
 
-You can use this preview map to zoom and pan around the dataset, as well as display the attributes of features.
+4. You can interact with the preview map by zooming, panning, and clicking on features to view their attribute data.
 
-  ![](./img/geoserver-img-20.png)
+![](./img/geoserver-img-20.png)
 
 # Publishing an Image
 
-This tutorial walks through the steps of publishing a World + Image with GeoServer.
+This tutorial outlines the process of publishing a World File and accompanying image using GeoServer.
 
-> **Note:** This tutorial assumes that GeoServer is running at `http://localhost:8080/geoserver`.
+> **Note:** This tutorial assumes GeoServer is accessible at `http://localhost:8080/geoserver`.
 
 ## Data Preparation
 
-First, let us gather the data that we will be publishing.
+Begin by gathering the data we will publish.
 
-1. Download the Natural Earth 1:50m Shaded Relief raster:
-   - [https://www.naturalearthdata.com/downloads/50m-raster-data/50m-shaded-relief/](https://www.naturalearthdata.com/downloads/50m-raster-data/50m-shaded-relief/)
+1. Download the Natural Earth 1:50m Shaded Relief raster from:
+    - [Natural Earth Data - 50m Shaded Relief](https://www.naturalearthdata.com/downloads/50m-raster-data/50m-shaded-relief/)
 
-2. This file contains small-scale 1:50m data:
-   - `SR_50M.prj`
-   - `SR_50M.README.html`
-   - `SR_50M.tfw`
-   - `SR_50M.tif`
-   - `SR_50M.VERSION.txt`
+2. The download includes small-scale 1:50m raster data consisting of:
+    - `SR_50M.prj`
+    - `SR_50M.README.html`
+    - `SR_50M.tfw`
+    - `SR_50M.tif`
+    - `SR_50M.VERSION.txt`
 
-   This forms a world (`tfw` file) plus image (`tif` file).
+    > **Note** These files together represent a world file (`.tfw`) and its associated image (`.tif`).
 
-3. Move these files into your GeoServer Data Directory `data/ne` folder.
+3. Move all files into the `data/ne` folder inside your GeoServer Data Directory.
 
 ## Creating a New Workspace
 
-The next step is to create a workspace for the data. A workspace is a folder used to group similar layers together.
+Next, we’ll create a workspace to organize the data. A workspace acts as a container for grouping related layers.
 
-> **Note:** This step is optional if you’d like to use an existing workspace. Usually, a workspace is created for each project, which can include stores and layers that are related to each other.
+> **Note:** This step is optional if you prefer to use an existing workspace. Typically, each project has its own workspace to group related stores and layers.
 
-1. In a web browser, navigate to `http://localhost:8080/geoserver`.
+1. Open a web browser and go to `http://localhost:8080/geoserver`.
+
 2. Log into GeoServer.
-3. Navigate to **Data > Workspaces**.
-4. Click **Add new workspace** to display the **New Workspace** page.
+
+3. Navigate to **Data → Workspaces**.
+
+4. Click Add new workspace to open the New Workspace page.
+
 5. Enter the following details:
-   - **Name:** `tutorial`
-   - **Namespace URI:** `http://localhost:8080/geoserver/tutorial`
 
-   > **Note:** A workspace name is an identifier describing your project. It must not exceed ten characters or contain spaces.
-   >
-   > **Note:** A Namespace URI (Uniform Resource Identifier) can usually be a URL associated with your project with an added trailing identifier indicating the workspace. It does not need to resolve to a valid web address.
+    - **Name:** `tutorial`
+    - **Namespace URI:** `http://localhost:8080/geoserver/tutorial`
 
-6. Press **Submit**.
-7. The `tutorial` workspace will be added to the **Workspaces** list.
+    > **Note:** The workspace name should represent your project and must not exceed ten characters or contain spaces.
+  
+    > **Note:** The Namespace URI is typically a URL associated with your project, followed by an identifier for the workspace. It does not need to point to a live address.
+
+6. Click **Submit**.
+
+7. The `tutorial` workspace will now appear in the Workspaces list.
 
 ## Creating a Store
 
-Once the workspace is created, we are ready to add a new store. The store tells GeoServer how to connect to the image.
+After creating the workspace, the next step is to add a new store. A store tells GeoServer how to access and connect to the image file.
 
-1. Navigate to Data‣Stores.
-2. This page displays a list of stores, including the type of store and the workspace that the store belongs to.
-3. In order to add the geopackage, you need to create a new store. Click the Add new Store button. You will be redirected to a list of data sources supported by GeoServer. Note that data sources are extensible, so your list may look slightly different.
-4. From the list of Raster Data Sources locate and click the WorldImage link.
+1. Go to **Data → Stores**.
 
-  ![](./img/geoserver-img-21.png)
+2. TThe Stores page shows existing stores, including their types and associated workspaces.
 
-5. The New Vector Data Source page will display.
+3. To add the image, click the Add new Store button. You’ll be taken to a list of supported data sources. Note that your list may vary depending on installed extensions.
 
-6. Begin by configuring the Basic Store Info.
+4. Under Raster Data Sources, click the WorldImage link.
 
-| workspace | tutorial|
-|-----------|-----------|
-|Data Source Name| ShadedRelief|
-| Description | Grayscale shaded relief of land areas. |
+    ![](./img/geoserver-img-21.png)
 
-  - This information is internal to GeoServer and is not used as part of the web service protocols. We recommend keeping the Data Source Name simple as it will be used to form folders in the data directory (so keep any operating system restrictions on character use in mind).
+5. The New Raster Data Source page will open.
 
-  ![](./img/geoserver-img-22.png)
+6. Fill in the Basic Store Info section:
 
-7. Connection parameters are used to establish the location of your data.
+    | workspace | tutorial|
+    |-----------|-----------|
+    |Data Source Name| ShadedRelief|
+    | Description | Grayscale shaded relief of land areas. |
 
-8. Under Connection Parameters, browse to the location URL of the image, in our example file:data/ne/SR_50M.tif.
+    > **Note:** This information is used internally in GeoServer. Keep the name simple, as it will form part of folder names in the data directory and should comply with your operating system’s character restrictions.
 
-9. The Connection Parameters for our geopackage are:
+    ![](./img/geoserver-img-22.png)
 
-  database : `file:data/ne/SR_50M.tif`
+7. Under Connection Parameters, specify the location of your image:
 
-10. Press `save`.
+    - **Database**: `file:data/ne/SR_50M.tif`
+
+8. Click Save.
+
+You will now be redirected to the **New Layer** page to begin publishing your image as a layer.
 
 ## Creating a Layer
 
-Now that we have located the image, we can publish it as a layer.
+With the image store created, the next step is to publish it as a layer.
 
-1. On the New Layer page, click Publish beside the SR_50M layer name.
+1. On the New Layer page, click Publish next to the `SR_50M` layer name.
 
-2. The Edit Layer page defines the data and publishing parameters for a layer.
+2. The Edit Layer page will open, allowing you to define both data and publishing parameters.
 
-3. There are three critical pieces of information required on the Data tab before we can even save.
+3. On the Data tab, complete the three critical sections:
 
-  - Basic Resource Info - describes how the layer is presented to others
+    - **Basic Resource Info** - Describes how the layer appears to users.
 
-  - Coordinate Reference System - establishes how the spatial data is to be interpreted or drawn on the world
+    - **Coordinate Reference System (CRS)** - Defines how spatial data aligns with the Earth.
 
-  - Bounding Boxes - establishes where the dataset is located in the world
+    - **Bounding Boxes** - Determines the spatial extent of the data.
 
-4. Locate Basic Resource Info and define the layer:
+4. Under Basic Resource Info, fill in the following:
 
-| Name|shaded|
-|---------|---------|
-|Title|Shaded Relief|
-|Abstract|Grayscale shaded relief of land areas.|
+    | Name|shaded|
+    |---------|---------|
+    |Title|Shaded Relief|
+    |Abstract|Grayscale shaded relief of land areas.|
 
-- The naming of a layer is important, and while GeoServer does not offer restrictions many of the individual protocols will only work with very simple names.
+    > **Note:** Keep layer names simple. Although GeoServer does not restrict naming, some services may reject complex names.
 
     ![](./img/geoserver-img-23.png)
 
-5. Check the Coordinate Reference Systems information.
+5. Ensure the Coordinate Reference System is detected and correct.
 
-6. Locate Bounding Boxes and generate the layer’s bounding boxes by clicking the Compute from SRS bounds and then Compute from native bounds links.
+6. Under Bounding Boxes, click Compute from SRS bounds and then Compute from native bounds.
 
     ![](./img/geoserver-img-24.png)
 
-7. Press Apply to save your work thus far without closing the page.
+7. Press Apply to save without closing the page.
 
-8. This is a good way to check that your information has been entered correctly, GeoServer will provide a warning if any required information is incomplete.
+    > **Note:** This is a good way to check that your information has been entered correctly, GeoServer will provide a warning if any required information is incomplete.
 
-9. Scroll to the top of the page and navigate to the Publishing tab.
+8. Scroll to the top and switch to the Publishing tab.
 
     ![](./img/geoserver-img-25.png)
 
-10. Locate the WMS Settings heading, where we can set the style. Ensure that the Default Style is set to raster.
+9. In the WMS Settings section, make sure the Default Style is set to `raster`.
+
+10. Once complete, click **Save** to finish publishing your layer.
 
 # Publishing a Layer Group
 
@@ -481,63 +490,60 @@ Now that we have located the image, we can publish it as a layer.
 
 ## Data preparation
 
-First let us gather the data that we will be publishing.
+Before we can publish a layer group, we need to ensure the required data is available.
 
-1. Complete the previous tutorials:
-   - [Publishing a GeoPackage](https://docs.geoserver.org/latest/en/user/gettingstarted/geopkg-quickstart/index.html#geopkg-quickstart) defining the `tutorial:countries` layer
-   - [Publishing an Image](https://docs.geoserver.org/latest/en/user/gettingstarted/image-quickstart/index.html#image-quickstart) defining the `tutorial:shaded` layer
+Complete the following previous tutorials to prepare the necessary layers:
+
+1. [Publishing a GeoPackage](https://docs.geoserver.org/latest/en/user/gettingstarted/geopkg-quickstart/index.html#geopkg-quickstart) — this defines the `tutorial:countries` layer.
+
+2. [Publishing an Image](https://docs.geoserver.org/latest/en/user/gettingstarted/image-quickstart/index.html#image-quickstart) — this defines the `tutorial:shaded` layer.
 
 ## Create a layer group
 
-1. Navigate to **Data > Layer Group** page.
+Now that we have the necessary layers published, we can group them together into a single map view using a layer group.
+
+1. Navigate to the **Data → Layer Groups** page.
    
-   ![Layer Groups](./img/geoserver-img-26.png)
+    ![Layer Groups](./img/geoserver-img-26.png)
    
-2. This page displays a list of layer groups and the workspace the group belongs to.
+2. This page displays a list of existing layer groups along with the workspace each belongs to.
    
-   > **Note:** Layer groups can be “global”, allowing a map to be created combining layers from several workspaces into a single visual.
+    > **Note:**  Layer groups can be *global*, allowing you to combine layers from multiple workspaces into one visual representation.
 
-3. At the top of the **Layer Groups** list, click **Add new layer group**.
+3. At the top of the Layer Groups list, click Add new layer group.
 
-4. The **Layer group** editor defines:
-   - **Basic Resource Info** - describes how the layer is presented to others
-   - **Coordinate Reference System** - establishes how the spatial data is to be interpreted or drawn on the world
-   - **Bounding Boxes** - establishes where the dataset is located in the world
-   - **Layers** - the layers to be drawn (listed in draw order)
+4. The Layer Group editor includes the following sections:
 
-5. Locate **Basic Resource Info** and define the layer:
+    - **Basic Resource Info** – defines how the layer group is presented externally
+    - **Coordinate Reference System** – determines how the data is geospatially projected
+    - **Bounding Boxes** – indicates the spatial extent of the group
+    - **Layers** – lists the individual layers included, in the order they are drawn
 
-   | Name    | `basemap` |
-   |---------|-----------|
-   | Title   | `Basemap` |
-   | Abstract | `Plain basemap suitable as a backdrop for geospatial data.` |
-   | Workspace | `tutorial` |
+5. Under Basic Resource Info, fill in the following:
+
+    | Name    | `basemap` |
+    |---------|-----------|
+    | Title   | `Basemap` |
+    | Abstract | `Plain basemap suitable as a backdrop for geospatial data.` |
+    | Workspace | `tutorial` |
    
-   ![Basic resource information](./img/geoserver-img-27.png)
+    ![Basic resource information](./img/geoserver-img-27.png)
 
-6. Scroll down to the **Layers** list, which is presently empty.
+6. Scroll down to the Layers list, which will initially be empty.
 
-7. Click **Add Layer**, select the `tutorial:shaded` layer first.
-   
-   - The raster should be drawn first, as other content will be shown over top of it.
+7. Click Add Layer, and select the `tutorial:shaded` layer first. The raster should be drawn first, as other content will be shown over top of it.
 
-8. Click **Add Layer**, select the `tutorial:countries` layer second.
-   
-   - This polygon layer will be drawn second.
+8. Click Add Layer again, and select the `tutorial:countries` layer. This polygon layer will be rendered on top of the shaded relief.
 
-9. Locate the `tutorial:countries` layer in the list and click the **Style** entry to change `polygon` to `line`.
-   
-   - By drawing only the outline of the countries, the shaded relief can show through.
+9. In the layer list, find the `tutorial:countries` entry, and click on its *Style* field. Change it from `polygon` to `line`. This ensures only the outlines of countries are drawn, allowing the shaded relief underneath to remain visible.
 
-   ![Layer group layers in drawing order](./img/geoserver-img-28.png)
+    ![Layer group layers in drawing order](./img/geoserver-img-28.png)
 
-10. Locate **Coordinate Reference Systems** and press **Generate Bounds**.
-    
-    - Now that layers are listed, they can be used to determine the coordinate reference system and bounds of the layer group.
+10. Scroll to Coordinate Reference System, and click Generate Bounds. Now that the layers are listed, GeoServer can determine the spatial extent and reference system automatically.
     
     ![Coordinate Reference Systems](./img/geoserver-img-29.png)
 
-11. Press **Save** to complete your layer group.
+11. Click **Save** to finish creating your layer group.
 
 # Publishing a style
 
@@ -547,79 +553,80 @@ This tutorial walks through the steps of defining a style and associating it wit
 
 ## Create a style
 
-1. Navigate to **Data > Style** page.
+1. Navigate to **Data → Style** page.
 
-   ![Styles](./img/geoserver-img-30.png)
+    ![Styles](./img/geoserver-img-30.png)
 
-2. This page displays a list of styles, including the workspace the style belongs to.
+2. This page lists existing styles, along with their associated workspaces.
 
-   > **Note**  
-   > Styles groups are allowed to be "global," allowing a style to be defined and used by any layer.
+    > **Note** Styles can be *global*, which means they can be defined once and applied to layers across different workspaces.
 
-3. At the top of the **Styles** list, locate and click the **Add a new style** link.
+3. At the top of the Styles list, click the Add a new style link.
 
-4. Locate **Style Data** and define the style:
+4. Under Style Data, fill in the following fields:
 
-   | Name       | Value          |
-   |------------|---------------|
-   | Name       | `background`   |
-   | Workspace  | `tutorial`     |
-   | Format     | `SLD`          |
+    | Name       | Value          |
+    |------------|---------------|
+    | Name       | `background`   |
+    | Workspace  | `tutorial`     |
+    | Format     | `SLD`          |
 
-   ![Style Data](./img/geoserver-img-31.png)
+    ![Style Data](./img/geoserver-img-31.png)
 
-5. Locate **Style Content** and configure:
-   - Under **Generate a default style**, select `Polygon`.
-   ![Style Content](./img/geoserver-img-32.png)
+5. Next, locate Style Content and under Generate a default style, select `Polygon`.
+  
+    ![Style Content](./img/geoserver-img-32.png)
 
-6. Click the **Generate** link to populate the style editor with a generated outline of a polygon style.
-   ![Generate](./img/geoserver-img-33.png)
+6. Click the Generate link to automatically populate the style editor with a basic polygon style outline.
 
-7. Press the **Apply** button to define this style.
-   - Now that the style is defined, there are more options for interactively working with the style.
+    ![Generate](./img/geoserver-img-33.png)
 
-8. Change to the **Publishing** tab.
-   - Use the search to filter with `tutorial` to locate `tutorial:countries`.
-   - Check the **Default** checkbox for `tutorial:countries` to use the `tutorial:background` style as the default for this layer.
-   ![Style Publish](./img/geoserver-img-34.png)
+7. Press Apply to save and define this style. Once saved, additional interactive editing options will become available.
 
-9. Navigate to the **Layer Preview** tab.
-   - Locate **Preview on layer** and click on the link to select `tutorial:countries` as a dataset to use when editing the style.
-   ![Layer Preview](./img/geoserver-img-35.png)
+8. Switch to the Publishing tab.
 
-10. Edit your style by inserting `fill-opacity` value of `0.25`.
+    - Use the search field to filter by `tutorial` and locate the `tutorial:countries` layer.
+    - Check the **Default** checkbox next to `tutorial:countries` to set the `tutorial:background` style as the default for this layer.
 
-```xml
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<StyledLayerDescriptor version="1.0.0"
-  xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd"
-  xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"
-  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    ![Style Publish](./img/geoserver-img-34.png)
 
-  <NamedLayer>
-    <Name>background</Name>
-    <UserStyle>
-      <Title>Background</Title>
-      <FeatureTypeStyle>
-        <Rule>
+9. Go to the Layer Preview tab. Under Preview on layer, click the link for `tutorial:countries` to use this dataset while editing the style.
+
+    ![Layer Preview](./img/geoserver-img-35.png)
+
+10. Edit your style by inserting a `fill-opacity` value of `0.25` to make the fill semi-transparent.
+
+    ```xml
+    <?xml version="1.0" encoding="ISO-8859-1"?>
+    <StyledLayerDescriptor version="1.0.0"
+      xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd"
+      xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"
+      xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+      <NamedLayer>
+        <Name>background</Name>
+        <UserStyle>
           <Title>Background</Title>
-          <PolygonSymbolizer>
-            <Fill>
-              <CssParameter name="fill">#444433</CssParameter>
-              <CssParameter name="fill-opacity">0.25</CssParameter>
-            </Fill>
-            <Stroke>
-              <CssParameter name="stroke">#000000</CssParameter>
-              <CssParameter name="stroke-width">0.25</CssParameter>
-            </Stroke>
-          </PolygonSymbolizer>
-        </Rule>
-      </FeatureTypeStyle>
-    </UserStyle>
-  </NamedLayer>
-</StyledLayerDescriptor>
-```
+          <FeatureTypeStyle>
+            <Rule>
+              <Title>Background</Title>
+              <PolygonSymbolizer>
+                <Fill>
+                  <CssParameter name="fill">#444433</CssParameter>
+                  <CssParameter name="fill-opacity">0.25</CssParameter>
+                </Fill>
+                <Stroke>
+                  <CssParameter name="stroke">#000000</CssParameter>
+                  <CssParameter name="stroke-width">0.25</CssParameter>
+                </Stroke>
+              </PolygonSymbolizer>
+            </Rule>
+          </FeatureTypeStyle>
+        </UserStyle>
+      </NamedLayer>
+    </StyledLayerDescriptor>
+    ```
 
-11. Press Apply to edit your style and check the resulting visual change in the layer preview.
+11. Press **Apply** to update the style and observe the visual change in the layer preview.
 
-* For more information you can go with [Official docs](https://docs.geoserver.org/latest/en/user/)
+For more information you can go with [Official docs](https://docs.geoserver.org/latest/en/user/)
