@@ -52,24 +52,31 @@ const OverviewPage: React.FC = () => {
               <LoadingSpinner/>
             </Box>
           )}
-          <Container maxW='100%' my={20} bg="transparent"  alignItems='center' display='flex' flexDirection='column'>
+          <Container maxW='100%' my={{base: 8, md: 20}} bg="transparent"  alignItems='center' display='flex' flexDirection='column'>
             <Box width={1240} maxWidth={"100%"}>
               {!detailLoading && productDetail && (
                 <>
-                  <Container maxW='container.xl' textAlign="center" >
-                      <Heading as="h1" size="xl" fontSize={{base: 40, sm: 50}} display={'flex'} justifyContent={'center'} alignItems={'center'} color={'gray.600'}>
+                  <Container
+                    maxW='container.xl'
+                    textAlign="center"
+                    paddingX={{base: 0, md: 1}}
+                    overflowX={{ base: "hidden", md: "auto" }}
+                  >
+                      <Heading as="h1" size="xl" fontSize={{base: 40, sm: 50}} display={{base: 'block', md: 'flex'}} justifyContent={'center'} alignItems={'center'} color={'gray.600'}>
                         <Box justifyContent={'center'} display={'flex'}>
                           <img src={productDetail.image} width={115}/>
                         </Box>
                         {productDetail.name} Hosting
                       </Heading>
                       <Container maxW='container.2lg'>
-                        <Heading fontSize={32} pt={6} pb={3} mb={12} fontWeight={'bold'} color={'gray.500'}>{productDetail.description}</Heading>
+                        <Heading fontSize={{base: 24, md: 32}} pt={6} pb={3} mb={12} fontWeight={'bold'} color={'gray.500'}>{productDetail.description}</Heading>
                       </Container>
                       <SimpleGrid columns={{ base: 1, md: 3, lg: 3 }}
                                   spacingX={{ base: '40px', md: '10px', xl: '30px' }}
                                   spacingY={{ base: 10, md: 10, lg: 0 }}
-                                  mt={5} mb={10} px={0}>
+                                  mt={5} mb={10} px={0}
+                                  overflowX='visible'
+                      >
                       {productDetail.packages.map((pkg: Package) => (
                           <Suspense fallback={<LoadingSpinner/>}>
                             <ProductPricing key={pkg.id} product={productDetail} pkg={pkg}/>
@@ -86,7 +93,7 @@ const OverviewPage: React.FC = () => {
                     textAlign={"center"}
                     mx="auto"
                   >
-                    <Text color={'gray.700'} fontWeight="bold" fontSize={48}  mb={12}>
+                    <Text color={'gray.700'} fontWeight="bold" fontSize={{base: 24, md: 48}}  mb={12}>
                       Why Choose {productDetail.name}?
                     </Text>
                     <Suspense fallback={<LoadingSpinner/>}>
@@ -102,7 +109,7 @@ const OverviewPage: React.FC = () => {
                     <Text
                       color={'gray.700'}
                       fontWeight="bold"
-                      fontSize={48}
+                      fontSize={{base: 24, md: 48}}
                     >
                       Start Transforming your Data with {productDetail.name} Today!
                     </Text>
