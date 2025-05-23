@@ -94,28 +94,44 @@ const Footer: React.FC = () => {
             <UnorderedList listStyleType="none" m="0" p="0"
                            fontSize={{ base: "md", md: "md", xl: 'md' }}>
               <ListItem>
-                <Link href="https://kartoza.com/crowdfunding"
-                      color="#b4b6b0">Crowdfunding</Link>
+                <Link
+                  href="https://kartoza.com/crowdfunding"
+                  color="#b4b6b0">
+                  Crowdfunding
+                </Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/contact-us/new"
-                      color="#b4b6b0">Contact</Link>
+                <Link
+                  href="https://kartoza.com/contact-us/new"
+                  color="#b4b6b0">
+                  Contact
+                </Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/internships"
-                      color="#b4b6b0">Internships</Link>
+                <Link
+                  href="https://kartoza.com/internships"
+                  color="#b4b6b0">
+                  Internships
+                </Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/policies"
-                      color="#b4b6b0">Policies</Link>
+                <Link
+                  href="https://kartoza.com/policies"
+                  color="#b4b6b0">
+                  Policies
+                </Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/careers" color="#b4b6b0">We're
-                  Hiring!</Link>
+                <Link href="https://kartoza.com/careers" color="#b4b6b0">
+                  We're Hiring!
+                </Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/portfolio"
-                      color="#b4b6b0">Portfolio</Link>
+                <Link
+                  href="https://kartoza.com/portfolio"
+                  color="#b4b6b0">
+                  Portfolio
+                </Link>
               </ListItem>
             </UnorderedList>
           </Box>
