@@ -13,6 +13,8 @@ context_id: nDU6LLGiXPTLADXY
 
 # GeoServer Guide
 
+> **Note** For installation instructions, refer to GeoServer Installation Guide.
+
 ## Getting Started
 
 ## Using the web administration interface
@@ -35,6 +37,10 @@ For a default installation, the address is typically:
 
 <br>
 
+> **Note:** The default URL may differ based on your specific local installation.
+
+<br>
+
 When opened, the application displays the Welcome page containing links to the various web services used to access your spatial data. These links can be copied and pasted into Desktop GIS software, mobile apps, or web mapping applications to utilize the services provided.
 
 ![Welcome Page](./img/geoserver-img-39.png)
@@ -54,10 +60,16 @@ To log in:
 1. Navigate to the upper-right corner of the web interface.
 2. Enter the default administrator credentials, which are:
 
-    - **User name:** `admin`
-    - **Password:** `geoserver`
+   - **User name:** `admin`
+   - **Password:** `geoserver`
 
-![Login](./img/geoserver-img-40.png)
+    <br>
+
+    ![Login](./img/geoserver-img-40.png)
+
+<br>
+
+> **Note:** These settings can be modified in the [Security](https://docs.geoserver.org/latest/en/user/security/index.html#security) section. 
 
 <br>
 
@@ -70,8 +82,10 @@ Once logged in, the Welcome screen updates to display administrative functions, 
 The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview) page provides a quick way to view the output of published layers.
 
 1. Click the **Layer Preview** link in the menu to access this page.
-   
-    ![Preview List](./img/geoserver-img-4.png)
+
+    <br>
+
+    ![Preview List](./img/geoserver-img-42.png)
    
     <br>
 
@@ -80,18 +94,24 @@ The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/laye
     <br>
 
 3. To sort any column alphabetically, simply click on the column header.
-   
-    ![Unsorted (left) and sorted (right) columns](./img/geoserver-img-5.png)
+
+    <br>
+
+    ![Unsorted (left) and sorted (right) columns](./img/geoserver-img-43.png)
 
     <br>
 
 4. Use the search box to filter the list of items — especially helpful when working with data types that include many layers. Enter your search term and press **Enter**. GeoServer will display a filtered list of items matching your query.
 
-    ![Search results for the query “top” on the Workspace page](./img/geoserver-img-6.png)
+    <br>
+
+    ![Search results for the query “countries” on the Workspace page](./img/geoserver-img-44.png)
 
     <br>
 
 > **Hint** For an exact match, enclose your search term in quotes or double quotes. For instance, `ads` would match `roads`, but `"ads"` would only match the exact term.
+
+<br>
 
 > **Note** Sorting and searching functions are available on all data configuration pages..
 
@@ -116,9 +136,46 @@ The sample data folder includes the file: `data/ne/natural_earth.gpkg`. This Geo
 - [Boundary lines](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-boundary-lines/)
 - [Populated places](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-populated-places/)
 
+> **Note** The file `data/ne/natural_earth.gpkg` is a processed version of the dataset from [Natural Earth Data](https://www.naturalearthdata.com/downloads/).
+
 <br>
 
-> **Note** The file `data/ne/natural_earth.gpkg` is a processed version of the dataset from [Natural Earth Data](https://www.naturalearthdata.com/downloads/). To obtain the original version, visit the site and download it directly from this [GeoPackage link](https://naciscdn.org/naturalearth/packages/natural_earth_vector.gpkg.zip).
+If the file is unavailable, you can manually download and upload the GeoPackage using the steps below:
+
+1. Download the GeoPackage from [Natural Earth Data Downloads](https://naciscdn.org/naturalearth/packages/natural_earth_vector.gpkg.zip)
+
+2. Open the file browser at:
+
+    ```
+    https://<your-instance>/files
+    ```
+
+3. Log in using the default administrator credentials:
+
+    - **User name:** `admin`
+    - **Password:** `geoserver` or `admin`
+
+    <br>
+
+    ![File Browser Login](./img/geoserver-img-45.png)
+
+    <br>
+
+4. Click the **Upload** button at the top right of the screen. When prompted, select file.
+
+    <br>
+
+    ![File Browser Upload](./img/geoserver-img-46.png)
+
+    <br>
+
+5. Locate and upload the downloaded Natural Earth Data file. 
+
+The GeoPackage will now be accessible in the Web Administration Interface.
+
+
+
+> **Note** This tutorial assumes the data is located at `data/ne/natural_earth.gpkg`. 
 
 ## Creating a New Workspace
 
@@ -129,10 +186,16 @@ The next step is to create a workspace for the GeoPackage. A workspace is essent
 <br>
 
 1. Open a web browser and go to `http://localhost:8080/geoserver`.
+
 2. Log in to GeoServer as outlined in the [Logging In](https://docs.geoserver.org/latest/en/user/gettingstarted/web-admin-quickstart/index.html#logging-in) section.
+
 3. Navigate to **Data → Workspaces**.
 
-    ![Workspace](./img/geoserver-img-7.png)
+    <br>
+
+    ![Workspace](./img/geoserver-img-47.png)
+
+    <br>
 
 4. Click the **Add new workspace** button to open the **New Workspace** page.
 5. Fill in the following fields:
@@ -148,11 +211,19 @@ The next step is to create a workspace for the GeoPackage. A workspace is essent
 
     <br>
 
-6. Click the **Submit** button.
+6. Click the **Save** button.
 
-    ![Submit](./img/geoserver-img-8.png)
+    <br>
+
+    ![Save](./img/geoserver-img-48.png)
+
+    <br>
 
 7. The `tutorial` workspace should now appear in the **Workspaces** list.
+
+    <br>
+
+    ![Update Workspace list](./img/geoserver-img-49.png)
 
 ## Create a Store
 
@@ -160,15 +231,26 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
 1. Navigate to **Data → Stores**.
 
-    [![Store](./img/geoserver-img-9.png)](./img/geoserver-img-9.png)
+    <br>
+
+    ![Store](./img/geoserver-img-50.png)
+
+    <br>
 
 2. To add the GeoPackage, click the **Add new Store** button. This will take you to a list of data sources supported by GeoServer.
 
     > **Note** Keep in mind that this list is extensible, so yours might look slightly different.
 
-    [![](./img/geoserver-img-10.png)](./img/geoserver-img-10.png)
+    <br>
 
 3. From the list of **Vector Data Sources**, find and click the **GeoPackage** option.
+
+    <br>
+
+    ![Vector Data Sources](./img/geoserver-img-51.png)
+
+    <br>
+
 4. Fill in the following fields:
 
     | Field               | Value                      |
@@ -177,15 +259,21 @@ Once the workspace is set up, the next step is to add a new store. A store tells
     | Data Source Name  | `NaturalEarth`            |
     | Description       | `GeoPackage of NaturalEarth data` |
 
-    ![](./img/geoserver-img-11.png)
-
 5. Under **Connection Parameters**, enter the following:
     - **Database**: `file:data/ne/natural_earth.gpkg`
     - **Read only**: checked
 
+    <br>
+
     > **Note** The use of read_only above indicates that we will not be writing to this GeoPackage, allowing GeoServer to avoid managing write locks when accessing this content for greater performance.
 
-      [![](./img/geoserver-img-12.png)](./img/geoserver-img-12.png)
+    > **Note** If you are using manually added files, click Browse... and navigate to the natural_earth.gpkg file.
+
+    <br>
+
+    ![New Vector Data Source](./img/geoserver-img-52.png)
+
+    <br>
 
 6. Press **Save**. You will be redirected to the **New Layer** page.
 
