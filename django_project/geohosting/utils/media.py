@@ -21,5 +21,5 @@ def save_product_image(
                 'description': description
             }
         )
-    except (KeyError, AttributeError) as e:
+    except (KeyError, AttributeError):
         pass
