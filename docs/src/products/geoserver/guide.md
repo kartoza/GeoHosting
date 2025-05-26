@@ -23,7 +23,7 @@ After your service has finished setting up, you will be redirected to the Hosted
 
 <br>
 
-To access your login credentials:
+**To access your login credentials:**
 
 1. Click the Get Credentials button under your Hosted Service.
 
@@ -33,7 +33,9 @@ To access your login credentials:
 
 3. Click the application name you selected for your GeoServer instance to open it.
 
-![Hosted Services](./img/geoserver-img-5.png)
+     <br>
+
+     ![Hosted Services](./img/geoserver-img-5.png)
 
 ## Getting Started
 
@@ -67,13 +69,15 @@ Once opened, the interface displays the Welcome page, which includes links to Ge
 
 > **Note:** For more details, refer to the Welcome section of the official GeoServer documentation.
 
+<br>
+
 ### Logging In
 
 To modify server settings or configure spatial data in GeoServer, you must first log in using the administrator credentials.
 
 <br>
 
-To log in:
+**To log in:**
 
 1. Navigate to the top-right corner of the web interface.
 
@@ -100,37 +104,39 @@ Once logged in, the Welcome screen expands to show administrative functions — 
 
 ![Additional options when logged in](./img/geoserver-img-8.png)
 
+<br>
+
 ### Layer Preview
 
 The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview) page provides a quick way to view the output of published layers.
 
 1. Click the **Layer Preview** link in the menu to access this page.
 
-    <br>
+     <br>
 
-    ![Layer Preview List](./img/geoserver-img-9.png)
+     ![Layer Preview List](./img/geoserver-img-9.png)
    
-    <br>
+     <br>
 
 2. Locate the layer you want to preview and click a link under the desired output format. For example,  clicking the **OpenLayers** link will display a preview of that layer.
    
-    <br>
+     <br>
 
 3. To sort any column alphabetically, simply click on the column header.
 
-    <br>
+     <br>
 
-    ![Unsorted (left) and sorted (right) columns](./img/geoserver-img-10.png)
+     ![Unsorted (left) and sorted (right) columns](./img/geoserver-img-10.png)
 
-    <br>
+     <br>
 
 4. Use the search box to filter the list of items — especially helpful when working with data types that include many layers. Enter your search term and press **Enter**. GeoServer will display a filtered list of items matching your query.
 
-    <br>
+     <br>
 
-    ![Search results for the query “countries” on the Workspace page](./img/geoserver-img-11.png)
+     ![Search results for the query “countries” on the Workspace page](./img/geoserver-img-11.png)
 
-    <br>
+     <br>
 
 > **Hint** For an exact match, enclose your search term in quotes or double quotes. For instance, `ads` would match `roads`, but `"ads"` would only match the exact term.
 
@@ -142,221 +148,291 @@ The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/laye
 
 <br>
 
-## Publishing a GeoPackage
+## Publishing a Layer
 
-This tutorial guides you through the steps to publish a GeoPackage using GeoServer.
+This tutorial guides you through the steps to publish a layer using GeoServer.
 
-> **Note** This tutorial assumes GeoServer is running at `http://localhost:8080/geoserver`.
-
-## Data Preparation
-
-Let’s start by preparing the data for publishing.
-
-The sample data folder includes the file: `data/ne/natural_earth.gpkg`. This GeoPackage contains small-scale 1:110m datasets, including:
-
-- [Coastlines](https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-coastline/)
-- [Countries](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/)
-- [Boundary lines](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-boundary-lines/)
-- [Populated places](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-populated-places/)
-
-> **Note** The file `data/ne/natural_earth.gpkg` is a processed version of the dataset from [Natural Earth Data](https://www.naturalearthdata.com/downloads/).
+> **Note** This tutorial assumes GeoServer is running at `http://<application_name>.sta.do.kartoza.com/geoserver`.
 
 <br>
 
-If the file is unavailable, you can manually download and upload the GeoPackage using the steps below:
+### Data Preparation
 
-1. Download the GeoPackage from [Natural Earth Data Downloads](https://naciscdn.org/naturalearth/packages/natural_earth_vector.gpkg.zip)
+Before publishing data in GeoServer, we need to gather and prepare a few shapefiles. In this tutorial, we’ll use four small-scale 1:110m datasets from [Natural Earth](https://www.naturalearthdata.com/).
 
-2. Open the file browser at:
+<br>
 
-    ```
-    https://<your-instance>/files
-    ```
+1. **Download Datasets**
 
-3. Log in using the default administrator credentials:
+     Click the links below to download the .zip archives containing the shapefiles:
 
-    - **User name:** `admin`
-    - **Password:** `geoserver` or `admin`
+     - [Coastlines](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_coastline.zip)
+     - [Countries](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip)
+     - [Boundary lines](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip)
+     - [Populated places](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_populated_places_simple.zip)
 
-    <br>
+     <br>
 
-    ![File Browser Login](./img/geoserver-img-45.png)
+2. **Organize Files**
 
-    <br>
+     After downloading, unzip each file and move the extracted files into a single folder called: `NaturalEarth`
 
-4. Click the **Upload** button at the top right of the screen. When prompted, select file.
+     <br>
 
-    <br>
+     > **Hint** Keep your folder structure tidy — it’ll help later when uploading or referencing your data in GeoServer.
 
-    ![File Browser Upload](./img/geoserver-img-46.png)
+<br>
 
-    <br>
+### Adding data to your File Browser
 
-5. Locate and upload the downloaded Natural Earth Data file. 
+In order for the data to be accessible in the Web Administration Interface, it first needs to be added to your File Browser. 
 
-The GeoPackage will now be accessible in the Web Administration Interface.
+<br>
 
+**To add data:**
 
+1. Open the file browser at:
 
-> **Note** This tutorial assumes the data is located at `data/ne/natural_earth.gpkg`. 
+     ```
+     http://<application_name>.sta.do.kartoza.com/file
+     ```
 
-## Creating a New Workspace
+2. Log in using the credentials you retrieved from the GeoSpatialHosting Dashboard:
 
-The next step is to create a workspace for the GeoPackage. A workspace is essentially a folder used to organize and group related layers.
+     - **Username:** `admin`
+     - **Password:** `FB_Password_Unhashed`
+
+     <br>
+
+     ![File Browser Login](./img/geoserver-img-12.png)
+
+     <br>
+
+      > **Hint** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](http://127.0.0.1:8000/products/geoserver/guide/#using-the-kartoza-geospatialhosting-dashboard)
+
+      <br>
+
+3. Double-click the `geoserver_user_data` folder to enter it.
+
+4. Click the **Upload** button at the top-right of the screen. When prompted, select Folder.
+
+     <br>
+
+     ![File Browser Upload](./img/geoserver-img-13.png)
+
+     <br>
+
+5. Locate and upload the `NaturalEarth` folder you previously prepared. 
+
+The data will now be accessible in the Web Administration Interface. 
+
+<br>
+
+### Creating a New Workspace
+
+The next step is to create a workspace for your layers. A workspace is essentially a container used to organize and group related layers within GeoServer.
 
 > **Note** This step is optional if you prefer to use an existing workspace. Typically, a new workspace is created for each project, allowing you to group related stores and layers together.
 
 <br>
 
-1. Open a web browser and go to `http://localhost:8080/geoserver`.
+1. Open a web browser and navigate to:
 
-2. Log in to GeoServer as outlined in the [Logging In](https://docs.geoserver.org/latest/en/user/gettingstarted/web-admin-quickstart/index.html#logging-in) section.
+     ```
+     http://<application_name>.sta.do.kartoza.com/geoserver
+     ```
 
-3. Navigate to **Data → Workspaces**.
+     <br>
 
-    <br>
+2. Log in to GeoServer using your credentials.
 
-    ![Workspace](./img/geoserver-img-47.png)
+3. In the left-hand menu, go to **Data → Workspaces**.
 
-    <br>
+     <br>
+
+     ![Workspace](./img/geoserver-img-14.png)
+
+     <br>
 
 4. Click the **Add new workspace** button to open the **New Workspace** page.
-5. Fill in the following fields:
 
-    | Field           | Value                                      |
-    |---------------|----------------------------------|
-    | Name          | `tutorial`                                |
-    | Namespace URI | `http://localhost:8080/geoserver/tutorial` |
+5. Complete the form with the following details:
 
-    > **Note** The workspace name should describe your project. It must be 10 characters or fewer and cannot contain spaces.
+     | Field           | Value                                      |
+     |---------------|----------------------------------|
+     | Name          | `tutorial`                                |
+     | Namespace URI | `http://<application_name>.sta.do.kartoza.com/geoserver/tutorial` |
 
-    > **Note** The Namespace URI can be any URL-like string tied to your project. It typically includes a trailing identifier that reflects the workspace. This URI does not need to resolve to a real web address.
+     <br>
+     
+     > **Note** The workspace name should describe your project. It must be 10 characters or fewer and cannot contain spaces.
 
-    <br>
+     > **Note** The Namespace URI can be any URL-like string tied to your project. It typically includes a trailing identifier that reflects the workspace. This URI does not need to resolve to a real web address.
+
+     <br>
 
 6. Click the **Save** button.
 
-    <br>
+     <br>
 
-    ![Save](./img/geoserver-img-48.png)
+     ![Save](./img/geoserver-img-15.png)
 
-    <br>
+     <br>
 
 7. The `tutorial` workspace should now appear in the **Workspaces** list.
 
-    <br>
+     <br>
 
-    ![Update Workspace list](./img/geoserver-img-49.png)
+     ![Update Workspace list](./img/geoserver-img-16.png)
 
-## Create a Store
+<br>
 
-Once the workspace is set up, the next step is to add a new store. A store tells GeoServer how to connect to the GeoPackage.
+### Create a Store
+
+Once the workspace is set up, the next step is to add a new store. A store tells GeoServer how to connect to the data.
+
+<br>
 
 1. Navigate to **Data → Stores**.
 
-    <br>
+     <br>
 
-    ![Store](./img/geoserver-img-50.png)
+     ![Store](./img/geoserver-img-17.png)
 
-    <br>
+     <br>
 
 2. To add the GeoPackage, click the **Add new Store** button. This will take you to a list of data sources supported by GeoServer.
 
-    > **Note** Keep in mind that this list is extensible, so yours might look slightly different.
+     > **Note** Keep in mind that this list is extensible, so yours might look slightly different.
 
-    <br>
+     <br>
 
-3. From the list of **Vector Data Sources**, find and click the **GeoPackage** option.
+3. From the list of **Vector Data Sources**, find and click the **Shapefile** option.
 
-    <br>
+     <br>
 
-    ![Vector Data Sources](./img/geoserver-img-51.png)
+     ![Vector Data Sources](./img/geoserver-img-18.png)
 
-    <br>
+     <br>
 
 4. Fill in the following fields:
 
-    | Field               | Value                      |
-    |--------------------|--------------------------|
-    | Workspace         | `tutorial`                |
-    | Data Source Name  | `NaturalEarth`            |
-    | Description       | `GeoPackage of NaturalEarth data` |
+     | Field             | Value                                         |
+     |-------------------|-----------------------------------------------|
+     | Workspace         | `tutorial`                                    |
+     | Data Source Name  | `Natural Earth - Coastlines`                   |
+     | Description       | `Shapefile of Natural Earth Coastlines data`  |
 
-5. Under **Connection Parameters**, enter the following:
-    - **Database**: `file:data/ne/natural_earth.gpkg`
-    - **Read only**: checked
+     <br>
 
-    <br>
+5. Under **Shapefile location**, enter the following:
 
-    > **Note** The use of read_only above indicates that we will not be writing to this GeoPackage, allowing GeoServer to avoid managing write locks when accessing this content for greater performance.
+     ```
+     file:///files/geoserver_user_data/NaturalEarth/ne_110m_coastline/ne_110m_coastline.shp
+     ```
 
-    > **Note** If you are using manually added files, click Browse... and navigate to the natural_earth.gpkg file.
+     <br>
 
-    <br>
+     ![New Vector Data Source](./img/geoserver-img-19.png)
 
-    ![New Vector Data Source](./img/geoserver-img-52.png)
-
-    <br>
+     <br>
 
 6. Press **Save**. You will be redirected to the **New Layer** page.
 
-## Creating a Layer
+<br>
 
-Now that we've connected to the GeoPackage, we can proceed to publish a layer.
+### Creating a Layer
 
-1. On the New Layer page, click Publish next to the `countries` layer name.
+Now that we've connected to the store, we can proceed to publish a layer.
 
-    [![](./img/geoserver-img-13.png)](./img/geoserver-img-13.png)
+<br>
+
+1. In the New Layer page, click Publish next to the `ne_110_coastline` layer name.
+
+     <br>
+     
+     ![New Layer Page](./img/geoserver-img-20.png)
+
+     <br>
 
 2. The Edit Layer page defines the data and publishing parameters for the layer.
 
-    [![](./img/geoserver-img-14.png)](./img/geoserver-img-14.png)
+     <br>
+     
+     ![Edit Layer Page](./img/geoserver-img-21.png)
+
+     <br>
 
 3. Three key sections on the Data tab must be completed before saving:
 
-    - **Basic Resource Info** – defines how the layer is presented
+     - **Basic Resource Info** – defines how the layer is presented
+     - **Coordinate Reference System** – determines how spatial data is interpreted
+     - **Bounding Boxes** – establishes the dataset's geographic extent
 
-    - **Coordinate Reference System** – determines how spatial data is interpreted
-
-    - **Bounding Boxes** – establishes the dataset's geographic extent
+     <br>
 
 4. In the Basic Resource Info section, enter the following:
 
-    | Field | Value|
-    |-----------|------------|
-    | Name  | `Countries`|
-    | Title | `Countries`|
-    | Abstract | `Sovereign states`|
+     | Field     | Value             |
+     |-----------|-------------------|
+     | Name      | `Coastline`       |
+     | Title     | `Coastline`       |
 
-    > **Note** While GeoServer allows flexible naming, many external protocols require simple, standard layer names.
+     <br>
 
-    ![](./img/geoserver-img-15.png)
+     > **Note** While GeoServer allows flexible naming, many external protocols require simple, standard layer names.
 
-5. Verify that the *Coordinate Reference System (CRS)* information is accurate:
+     <br>
 
-    | Field | Value|
-    |----------------|----------|
-    |Native SRS| EPSG:4326|
-    |Declaired SRS | EPSG:4326|
-    | SRS Handling | Force declared|
+     ![Basic Resource Info Section](./img/geoserver-img-22.png)
 
-    ![](./img/geoserver-img-16.png)
+     <br>
+
+5. Verify that the Coordinate Reference System (CRS) information is accurate:
+
+     | Field            | Value             |       
+     |------------------|-------------------|
+     | Native SRS       | EPSG:4326         |
+     | Declaired SRS    | EPSG:4326         |
+     | SRS Handling     | Force declared    |
+
+     <br>
+
+     ![Coordinate Reference System Section](./img/geoserver-img-23.png)
+
+     <br>
 
 6. In the Bounding Boxes section, click **Compute from data**, then **Compute from native bounds** to auto-fill the bounding box fields.
 
-    ![](./img/geoserver-img-17.png)
+     <br>
+
+     ![Bounding Boxes Section](./img/geoserver-img-24.png)
+
+     <br>
 
 7. Click Apply to save your progress without closing the page.
 
-    > **Hint** This is useful to confirm that all required fields are correctly filled; GeoServer will show a warning if anything is missing.
+     > **Hint** This is useful to confirm that all required fields are correctly filled; GeoServer will show a warning if anything is missing.
+
+     <br>
 
 8. Scroll to the top and go to the Publishing tab.
 
-9. Under WMS Settings, set the Default Style to `polygon`.
+9. Under WMS Settings, set the Default Style to `line`.
 
-    ![](./img/geoserver-img-18.png)
+     <br>
 
-10. Click Save to finalize the layer configuration.
+     ![WMS Settings](./img/geoserver-img-25.png)
+
+     <br>
+
+10. Click **Save** to finalize the layer configuration and publish the layer.
+
+     <br>
+
+     ![Published Layer](./img/geoserver-img-26.png)
+
+<br>
 
 ## Previewing the layer
 
