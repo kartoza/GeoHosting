@@ -15,69 +15,92 @@ context_id: nDU6LLGiXPTLADXY
 
 > **Note** For installation instructions, refer to GeoServer Installation Guide.
 
+## Using the Kartoza GeoSpatialHosting Dashboard
+
+After your service has finished setting up, you will be redirected to the Hosted Services page of the GeoSpatial Hosting Dashboard. Here, you can view all your purchased services.
+
+![GeoSpatialHosting Dashboard](./img/geoserver-img-4.png)
+
+<br>
+
+To access your login credentials:
+
+1. Click the Get Credentials button under your Hosted Service.
+
+2. Your credentials will be copied to your clipboard.
+
+     > **Hint** Paste and save your credentials in a secure location.
+
+3. Click the application name you selected for your GeoServer instance to open it.
+
+![Hosted Services](./img/geoserver-img-5.png)
+
 ## Getting Started
 
-## Using the web administration interface
+### Using the web administration interface
 
-GeoServer includes a browser-based web administration interface that allows users to configure all aspects of the server—from adding and publishing data to adjusting service settings.
-
-<br>
-
-This interface is accessed through a web browser at:
-
-    ```
-    http://<host>:<port>/geoserver
-    ```
-
-For a default installation, the address is typically:
-
-    ```
-    http://localhost:8080/geoserver
-    ```
+GeoServer includes a browser-based web administration interface that allows users to configure all aspects of the server — from adding and publishing data to adjusting service settings.
 
 <br>
 
-> **Note:** The default URL may differ based on your specific local installation.
+You can access the interface in two ways:
+
+1. **Via direct URL**
+
+     Open your browser and navigate to:
+
+     ```
+     http://<application_name>.sta.do.kartoza.com/geoserver
+     ```
+
+2. **Via the GeoSpatial Hosting Dashboard**
+
+     Click the application name you selected for your GeoServer instance.
 
 <br>
 
-When opened, the application displays the Welcome page containing links to the various web services used to access your spatial data. These links can be copied and pasted into Desktop GIS software, mobile apps, or web mapping applications to utilize the services provided.
+Once opened, the interface displays the Welcome page, which includes links to GeoServer’s various web services. These service URLs can be copied and pasted into desktop GIS software (e.g. QGIS), mobile apps, and web mapping applications. This allows your spatial data to be served and consumed in multiple environments.
 
-![Welcome Page](./img/geoserver-img-39.png)
+![Welcome Page](./img/geoserver-img-6.png)
 
 <br>
 
-> **Note:** For more information, see the [Welcome](https://docs.geoserver.org/latest/en/user/webadmin/welcome.html#welcome) section in the GeoServer documentation.
+> **Note:** For more details, refer to the Welcome section of the official GeoServer documentation.
 
-## Logging In
+### Logging In
 
-To change server settings or configure data in GeoServer, the user must first be authenticated.
+To modify server settings or configure spatial data in GeoServer, you must first log in using the administrator credentials.
 
 <br>
 
 To log in:
 
-1. Navigate to the upper-right corner of the web interface.
-2. Enter the default administrator credentials, which are:
+1. Navigate to the top-right corner of the web interface.
 
-    - **User name:** `admin`
-    - **Password:** `geoserver`
+2. Click the Login button.
 
-    <br>
+3. Enter the credentials you generated earlier from the GeoSpatialHosting Dashboard:
 
-    ![Login](./img/geoserver-img-40.png)
+     - **Username:** `admin`
+     - **Password:** `GeoServer_Admin_Password`
+
+     <br>
+
+     ![Login](./img/geoserver-img-7.png)
+
+     <br>
+
+     > **Hint** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](http://127.0.0.1:8000/products/geoserver/guide/#using-the-kartoza-geospatialhosting-dashboard)
+
+     > **Note:** You can change login details later under the [Security](https://docs.geoserver.org/latest/en/user/security/index.html#security) section of the GeoServer documentation.
 
 <br>
 
-> **Note:** These settings can be modified in the [Security](https://docs.geoserver.org/latest/en/user/security/index.html#security) section. 
+Once logged in, the Welcome screen expands to show administrative functions — these are primarily accessible through the navigation menu on the left-hand side.
 
-<br>
+![Additional options when logged in](./img/geoserver-img-8.png)
 
-Once logged in, the Welcome screen updates to display administrative functions, which are primarily accessed through the menus on the left side of the interface.
-
-![Additional options when logged in](./img/geoserver-img-41.png)
-
-## Layer Preview
+### Layer Preview
 
 The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview) page provides a quick way to view the output of published layers.
 
@@ -85,7 +108,7 @@ The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/laye
 
     <br>
 
-    ![Preview List](./img/geoserver-img-42.png)
+    ![Layer Preview List](./img/geoserver-img-9.png)
    
     <br>
 
@@ -97,7 +120,7 @@ The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/laye
 
     <br>
 
-    ![Unsorted (left) and sorted (right) columns](./img/geoserver-img-43.png)
+    ![Unsorted (left) and sorted (right) columns](./img/geoserver-img-10.png)
 
     <br>
 
@@ -105,7 +128,7 @@ The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/laye
 
     <br>
 
-    ![Search results for the query “countries” on the Workspace page](./img/geoserver-img-44.png)
+    ![Search results for the query “countries” on the Workspace page](./img/geoserver-img-11.png)
 
     <br>
 
@@ -119,7 +142,7 @@ The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/laye
 
 <br>
 
-# Publishing a GeoPackage
+## Publishing a GeoPackage
 
 This tutorial guides you through the steps to publish a GeoPackage using GeoServer.
 
