@@ -19,6 +19,9 @@ GeoServer is a Java-based server that enables users to view, edit, and share geo
 
 <div style="text-align: center;">
   <img src="./img/geoserver-img-1.png" alt="GeoServer Logo" width="300">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+  </div>
 </div>
 
 ---
@@ -62,6 +65,10 @@ Additionally, GeoServer integrates smoothly with traditional GIS architectures s
 
 <div style="text-align: center;">
   <img src="./img/geoserver-img-3.png" alt="OpenLayers & Leaflet Logo" width="450">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://openlayers.org//" target="_blank">OpenLayers</a>
+    , <a href="https://leafletjs.com/" target="_blank">Leaflet</a>
+  </div>
 </div>
 
 ---

@@ -13,29 +13,57 @@ context_id: nDU6LLGiXPTLADXY
 
 # GeoServer Guide
 
-> **Note** For installation instructions, refer to GeoServer Installation Guide.
+> **Note:** For installation instructions, refer to [GeoServer Installation Guide](https://docs.geoserver.org/latest/en/user/installation/index.html#installation).
 
 ## Using the Kartoza GeoSpatialHosting Dashboard
 
 After your service has finished setting up, you will be redirected to the Hosted Services page of the GeoSpatial Hosting Dashboard. Here, you can view all your purchased services.
 
-![GeoSpatialHosting Dashboard](./img/geoserver-img-4.png)
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/geoserver-img-4.png" alt="GeoSpatialHosting Dashboard" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://geohosting.sta.do.kartoza.com/" target="_blank">Kartoza GeoSpatialHosting</a>
+  </div>
+</div>
 
 <br>
 
 **To access your login credentials:**
 
-1. Click the Get Credentials button under your Hosted Service.
+1. Click the Get Credentials button under your hosted service.
 
 2. Your credentials will be copied to your clipboard.
 
-     > **Hint** Paste and save your credentials in a secure location.
+     > **Hint:** Paste and save your credentials in a secure location.
 
 3. Click the application name you selected for your GeoServer instance to open it.
 
-     <br>
+      <br>
 
-     ![Hosted Services](./img/geoserver-img-5.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-5.png" alt="Hosted Services" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geohosting.sta.do.kartoza.com/" target="_blank">Kartoza GeoSpatialHosting</a>
+       </div>
+     </div>
+     
+<br>
+
+**To delete a hosted service:**
+
+1. Click the 3 dots in the corner of the hosted service pane.
+
+2. From the dropdown menu, select **Delete**.
+
+<br>
+
+> **IMPORTANT** 
+> 
+> Deleting a hosted service is **permanent**. All associated data will be irreversibly removed with **no option for recovery**.
+
+---
 
 ## Getting Started
 
@@ -63,13 +91,18 @@ You can access the interface in two ways:
 
 Once opened, the interface displays the Welcome page, which includes links to GeoServer’s various web services. These service URLs can be copied and pasted into desktop GIS software (e.g. QGIS), mobile apps, and web mapping applications. This allows your spatial data to be served and consumed in multiple environments.
 
-![Welcome Page](./img/geoserver-img-6.png)
+<div style="text-align: center;">
+  <img src="../img/geoserver-img-6.png" alt="Welcome Page" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+  </div>
+</div>
 
 <br>
 
-> **Note:** For more details, refer to the Welcome section of the official GeoServer documentation.
+> **Note:** For more details, refer to the [Welcome](https://docs.geoserver.org/latest/en/user/webadmin/welcome.html#welcome) section of the official GeoServer documentation.
 
-<br>
+---
 
 ### Logging In
 
@@ -90,11 +123,16 @@ To modify server settings or configure spatial data in GeoServer, you must first
 
      <br>
 
-     ![Login](./img/geoserver-img-7.png)
-
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-7.png" alt="Login" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
+     
      <br>
 
-     > **Hint** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](http://127.0.0.1:8000/products/geoserver/guide/#using-the-kartoza-geospatialhosting-dashboard)
+     > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](http://127.0.0.1:8000/products/geoserver/guide/#using-the-kartoza-geospatialhosting-dashboard)
 
      > **Note:** You can change login details later under the [Security](https://docs.geoserver.org/latest/en/user/security/index.html#security) section of the GeoServer documentation.
 
@@ -102,19 +140,33 @@ To modify server settings or configure spatial data in GeoServer, you must first
 
 Once logged in, the Welcome screen expands to show administrative functions — these are primarily accessible through the navigation menu on the left-hand side.
 
-![Additional options when logged in](./img/geoserver-img-8.png)
+<div style="text-align: center;">
+  <img src="../img/geoserver-img-8.png" alt="Additional options when logged in" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+  </div>
+</div>
 
 <br>
 
+> **Note:** For additional information, visit the [Logging In](https://docs.geoserver.org/latest/en/user/gettingstarted/web-admin-quickstart/index.html#logging-in) section of the GeoServer documentation.
+
+---
+
 ### Layer Preview
 
-The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview) page provides a quick way to view the output of published layers.
+The Layer Preview page provides a quick way to view the output of published layers.
 
 1. Click the **Layer Preview** link in the menu to access this page.
 
      <br>
 
-     ![Layer Preview List](./img/geoserver-img-9.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-9.png" alt="Layer Preview List" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
    
      <br>
 
@@ -126,7 +178,12 @@ The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/laye
 
      <br>
 
-     ![Unsorted (left) and sorted (right) columns](./img/geoserver-img-10.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-10.png" alt="Unsorted (left) and sorted (right) columns" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -134,25 +191,30 @@ The [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/laye
 
      <br>
 
-     ![Search results for the query “countries” on the Workspace page](./img/geoserver-img-11.png)
-
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-11.png" alt="Search results" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
+     
      <br>
 
-> **Hint** For an exact match, enclose your search term in quotes or double quotes. For instance, `ads` would match `roads`, but `"ads"` would only match the exact term.
+> **Hint:** For an exact match, enclose your search term in quotes or double quotes. For instance, `ads` would match `roads`, but `"ads"` would only match the exact term.
 
 <br>
 
-> **Note** Sorting and searching functions are available on all data configuration pages..
+> **Note:** Sorting and searching functions are available on all data configuration pages..
 
-> **Note** For additional details, see the full [Layer Preview documentation](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview).
+> **Note:** For additional details, see the full [Layer Preview documentation](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview).
 
-<br>
+---
 
 ## Publishing a Layer
 
 This tutorial guides you through the steps to publish a layer using GeoServer.
 
-> **Note** This tutorial assumes GeoServer is running at `http://<application_name>.sta.do.kartoza.com/geoserver`.
+> **Note:** This tutorial assumes GeoServer is running at `http://<application_name>.sta.do.kartoza.com/geoserver`.
 
 <br>
 
@@ -179,9 +241,11 @@ Before publishing data in GeoServer, we need to gather and prepare a few shapefi
 
      <br>
 
-     > **Hint** Keep your folder structure tidy — it’ll help later when uploading or referencing your data in GeoServer.
+     > **Hint:** Keep your folder structure tidy — it’ll help later when uploading or referencing your data in GeoServer.
 
-<br>
+     <br>
+
+---
 
 ### Adding data to your File Browser
 
@@ -206,11 +270,16 @@ In order for the data to be accessible in the Web Administration Interface, it f
 
      <br>
 
-     ![File Browser Login](./img/geoserver-img-12.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-12.png" alt="File Browser Login" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
-      > **Hint** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](http://127.0.0.1:8000/products/geoserver/guide/#using-the-kartoza-geospatialhosting-dashboard)
+      > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/geoserver/guide/#using-the-kartoza-geospatialhosting-dashboard)
 
       <br>
 
@@ -220,7 +289,12 @@ In order for the data to be accessible in the Web Administration Interface, it f
 
      <br>
 
-     ![File Browser Upload](./img/geoserver-img-13.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-13.png" alt="File Browser Upload" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -228,7 +302,7 @@ In order for the data to be accessible in the Web Administration Interface, it f
 
 The data will now be accessible in the Web Administration Interface. 
 
-<br>
+---
 
 ### Creating a New Workspace
 
@@ -252,7 +326,12 @@ The next step is to create a workspace for your layers. A workspace is essential
 
      <br>
 
-     ![Workspace](./img/geoserver-img-14.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-14.png" alt="Workspace" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -267,9 +346,9 @@ The next step is to create a workspace for your layers. A workspace is essential
 
      <br>
      
-     > **Note** The workspace name should describe your project. It must be 10 characters or fewer and cannot contain spaces.
+     > **Note:** The workspace name should describe your project. It must be 10 characters or fewer and cannot contain spaces.
 
-     > **Note** The Namespace URI can be any URL-like string tied to your project. It typically includes a trailing identifier that reflects the workspace. This URI does not need to resolve to a real web address.
+     > **Note:** The Namespace URI can be any URL-like string tied to your project. It typically includes a trailing identifier that reflects the workspace. This URI does not need to resolve to a real web address.
 
      <br>
 
@@ -277,7 +356,12 @@ The next step is to create a workspace for your layers. A workspace is essential
 
      <br>
 
-     ![Save](./img/geoserver-img-15.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-15.png" alt="Save" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -285,9 +369,18 @@ The next step is to create a workspace for your layers. A workspace is essential
 
      <br>
 
-     ![Update Workspace list](./img/geoserver-img-16.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-16.png" alt="Update Workspace list" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
 <br>
+
+> **Note:** For more information, see the full [Workspaces documentation](https://docs.geoserver.org/latest/en/user/data/webadmin/workspaces.html#data-webadmin-workspaces).
+
+---
 
 ### Creating a Store
 
@@ -299,13 +392,18 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
      <br>
 
-     ![Store](./img/geoserver-img-17.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-17.png" alt="Store" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
 2. To add the layer, click the **Add new Store** button. This will take you to a list of data sources supported by GeoServer.
 
-     > **Note** Keep in mind that this list is extensible, so yours might look slightly different.
+     > **Note:** Keep in mind that this list is extensible, so yours might look slightly different.
 
      <br>
 
@@ -313,7 +411,12 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
      <br>
 
-     ![Vector Data Sources](./img/geoserver-img-18.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-18.png" alt="Vector Data Sources" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -335,13 +438,22 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
      <br>
 
-     ![New Vector Data Source](./img/geoserver-img-19.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-19.png" alt="New Vector Data Source" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
 6. Press **Save**. You will be redirected to the **New Layer** page.
 
 <br>
+
+> **Note:** For more information, see the full [Stores documentation](https://docs.geoserver.org/latest/en/user/data/webadmin/stores.html#data-webadmin-stores).
+
+---
 
 ### Creating a Layer
 
