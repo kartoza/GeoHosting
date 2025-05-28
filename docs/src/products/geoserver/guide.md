@@ -59,7 +59,7 @@ After your service has finished setting up, you will be redirected to the Hosted
 
 <br>
 
-> **IMPORTANT** 
+> **⚠️ IMPORTANT** 
 > 
 > Deleting a hosted service is **permanent**. All associated data will be irreversibly removed with **no option for recovery**.
 
@@ -83,6 +83,8 @@ You can access the interface in two ways:
      http://<application_name>.sta.do.kartoza.com/geoserver
      ```
 
+     <br>
+
 2. **Via the GeoSpatial Hosting Dashboard**
 
      Click the application name you selected for your GeoServer instance.
@@ -90,6 +92,8 @@ You can access the interface in two ways:
 <br>
 
 Once opened, the interface displays the Welcome page, which includes links to GeoServer’s various web services. These service URLs can be copied and pasted into desktop GIS software (e.g. QGIS), mobile apps, and web mapping applications. This allows your spatial data to be served and consumed in multiple environments.
+
+<br>
 
 <div style="text-align: center;">
   <img src="../img/geoserver-img-6.png" alt="Welcome Page" width="auto">
@@ -132,13 +136,15 @@ To modify server settings or configure spatial data in GeoServer, you must first
      
      <br>
 
-     > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](http://127.0.0.1:8000/products/geoserver/guide/#using-the-kartoza-geospatialhosting-dashboard)
+     > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/geoserver/guide/#using-the-kartoza-geospatialhosting-dashboard)
 
      > **Note:** You can change login details later under the [Security](https://docs.geoserver.org/latest/en/user/security/index.html#security) section of the GeoServer documentation.
 
 <br>
 
 Once logged in, the Welcome screen expands to show administrative functions — these are primarily accessible through the navigation menu on the left-hand side.
+
+<br>
 
 <div style="text-align: center;">
   <img src="../img/geoserver-img-8.png" alt="Additional options when logged in" width="auto">
@@ -206,7 +212,7 @@ The Layer Preview page provides a quick way to view the output of published laye
 
 > **Note:** Sorting and searching functions are available on all data configuration pages..
 
-> **Note:** For additional details, see the full [Layer Preview documentation](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview).
+> **Note:** For additional details, see the full [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview) documentation.
 
 ---
 
@@ -230,8 +236,9 @@ Before publishing data in GeoServer, we need to gather and prepare a few shapefi
 
      - [Coastlines](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_coastline.zip)
      - [Countries](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip)
-     - [Boundary lines](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip)
-     - [Populated places](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_populated_places_simple.zip)
+     
+     <!-- - [Boundary lines](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip)
+      - [Populated places](https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_populated_places_simple.zip)-->
 
      <br>
 
@@ -285,6 +292,8 @@ In order for the data to be accessible in the Web Administration Interface, it f
 
 3. Double-click the `geoserver_user_data` folder to enter it.
 
+      <br>
+
 4. Click the **Upload** button at the top-right of the screen. When prompted, select Folder.
 
      <br>
@@ -322,6 +331,8 @@ The next step is to create a workspace for your layers. A workspace is essential
 
 2. Log in to GeoServer using your credentials.
 
+      <br>
+
 3. In the left-hand menu, go to **Data → Workspaces**.
 
      <br>
@@ -336,6 +347,8 @@ The next step is to create a workspace for your layers. A workspace is essential
      <br>
 
 4. Click the **Add new workspace** button to open the **New Workspace** page.
+
+      <br>
 
 5. Complete the form with the following details:
 
@@ -378,7 +391,7 @@ The next step is to create a workspace for your layers. A workspace is essential
 
 <br>
 
-> **Note:** For more information, see the full [Workspaces documentation](https://docs.geoserver.org/latest/en/user/data/webadmin/workspaces.html#data-webadmin-workspaces).
+> **Note:** For more information, see the full [Workspaces](https://docs.geoserver.org/latest/en/user/data/webadmin/workspaces.html#data-webadmin-workspaces) documentation.
 
 ---
 
@@ -451,7 +464,7 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
 <br>
 
-> **Note:** For more information, see the full [Stores documentation](https://docs.geoserver.org/latest/en/user/data/webadmin/stores.html#data-webadmin-stores).
+> **Note:** For more information, see the full [Stores](https://docs.geoserver.org/latest/en/user/data/webadmin/stores.html#data-webadmin-stores) documentation.
 
 ---
 
@@ -465,7 +478,12 @@ Now that we've connected to the store, we can proceed to publish a layer.
 
      <br>
      
-     ![New Layer Page](./img/geoserver-img-20.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-20.png" alt="New Layer Page" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -473,7 +491,12 @@ Now that we've connected to the store, we can proceed to publish a layer.
 
      <br>
      
-     ![Edit Layer Page](./img/geoserver-img-21.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-21.png" alt="Edit Layer Page" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -494,11 +517,16 @@ Now that we've connected to the store, we can proceed to publish a layer.
 
      <br>
 
-     > **Note** While GeoServer allows flexible naming, many external protocols require simple, standard layer names.
+     > **Note:** While GeoServer allows flexible naming, many external protocols require simple, standard layer names.
 
      <br>
 
-     ![Basic Resource Info Section](./img/geoserver-img-22.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-22.png" alt="Basic Resource Info Section" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -512,7 +540,12 @@ Now that we've connected to the store, we can proceed to publish a layer.
 
      <br>
 
-     ![Coordinate Reference System Section](./img/geoserver-img-23.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-23.png" alt="Coordinate Reference System Section" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -520,23 +553,35 @@ Now that we've connected to the store, we can proceed to publish a layer.
 
      <br>
 
-     ![Bounding Boxes Section](./img/geoserver-img-24.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-24.png" alt="Bounding Boxes Section" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
 7. Click Apply to save your progress without closing the page.
 
-     > **Hint** This is useful to confirm that all required fields are correctly filled; GeoServer will show a warning if anything is missing.
+     > **Hint:** This is useful to confirm that all required fields are correctly filled; GeoServer will show a warning if anything is missing.
 
      <br>
 
 8. Scroll to the top and go to the Publishing tab.
 
+      <br>
+
 9. Under WMS Settings, set the Default Style to `line`.
 
      <br>
 
-     ![WMS Settings](./img/geoserver-img-25.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-25.png" alt="WMS Settings" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
      <br>
 
@@ -544,9 +589,18 @@ Now that we've connected to the store, we can proceed to publish a layer.
 
      <br>
 
-     ![Published Layer](./img/geoserver-img-26.png)
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-26.png" alt="Published Layer" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
 <br>
+
+> **Note:** For more information, see the full [Layers](https://docs.geoserver.org/latest/en/user/data/webadmin/layers.html#data-webadmin-layers) documentation.
+
+---
 
 ### Previewing the layer
 
@@ -558,25 +612,43 @@ To confirm that the `tutorial:Coastline` layer has been published successfully, 
 
       <br>
 
-      ![Layer Preview](./img/geoserver-img-27.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-27.png" alt="Layer Preview" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
       
-      > **Note** To filter results and make it easier to find, type `tutorial` in the search field.
+      > **Note:** To filter results and make it easier to find, type `tutorial` in the search field.
 
       <br>
 
 2. Click the **OpenLayers** link in the Common Formats column.
 
+      <br>
+
 3. An OpenLayers map will open in a new tab, displaying the shapefile data with the default line style.
+
+      <br>
 
 4. You can interact with the preview map by zooming, panning, and clicking on features to view their attribute data.
 
       <br>
 
-      ![OpenLayers Map](./img/geoserver-img-28.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-28.png" alt="OpenLayers Map" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
 <br>
+
+> **Note:** For more information, see the full [Layer Preview](https://docs.geoserver.org/latest/en/user/data/webadmin/layerpreview.html#layerpreview) documentation.
+
+---
 
 ### Try it Yourself
 
@@ -588,7 +660,7 @@ You've already added it to your File Browser and created the `tutorial` workspac
 2. Publish the `Countries` layer.
 3. Preview your published layer
 
-<br>
+---
 
 ## Publishing an Image
 
@@ -622,7 +694,7 @@ Begin by gathering the data we'll publish. For this tutorial, we’ll use the [N
 
       <br>
 
-      > **Note** These files together represent a world file (`.tfw`) and its associated image (`.tif`).
+      > **Note:** These files together represent a world file (`.tfw`) and its associated image (`.tif`).
 
       <br>
 
@@ -638,9 +710,9 @@ Begin by gathering the data we'll publish. For this tutorial, we’ll use the [N
 
       <br>
 
-      > **Hint** Not sure how to add files to your File Browser? See the section: [Adding data to your File Browser](http://127.0.0.1:8000/products/geoserver/guide/#adding-data-to-your-file-browser)
+      > **Hint:** Not sure how to add files to your File Browser? See the section: [Adding data to your File Browser](https://kartoza.github.io/GeoHosting/products/geoserver/guide/#adding-data-to-your-file-browser)
 
-<br>
+---
 
 ### Creating a New Workspace
 
@@ -660,15 +732,24 @@ The next step is to create a workspace for your layers. A workspace is essential
 
 2. Log in to GeoServer using your credentials.
 
+      <br>
+
 3. In the left-hand menu, go to **Data → Workspaces**.
 
       <br>
 
-      ![Workspaces](./img/geoserver-img-29.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-29.png" alt="Workspaces" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br> 
 
 4. Click the Add new workspace button to open the New Workspace page.
+
+      <br>
 
 5. Complete the form with the following details:
 
@@ -679,7 +760,7 @@ The next step is to create a workspace for your layers. A workspace is essential
 
       <br>
      
-      > **Note** The Namespace URI can be any URL-like string tied to your project. It typically includes a trailing identifier that reflects the workspace. This URI does not need to resolve to a real web address.
+      > **Note:** The Namespace URI can be any URL-like string tied to your project. It typically includes a trailing identifier that reflects the workspace. This URI does not need to resolve to a real web address.
 
       <br>
 
@@ -687,7 +768,12 @@ The next step is to create a workspace for your layers. A workspace is essential
 
       <br>
 
-      ![New Workspaces Page](./img/geoserver-img-30.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-30.png" alt="New Workspaces Page" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -695,9 +781,18 @@ The next step is to create a workspace for your layers. A workspace is essential
 
       <br>
 
-      ![New Workspaces List](./img/geoserver-img-31.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-31.png" alt="New Workspaces List" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
 <br>
+
+> **Note:** For more information, see the full [Workspaces](https://docs.geoserver.org/latest/en/user/data/webadmin/workspaces.html#data-webadmin-workspaces) documentation.
+
+---
 
 ### Creating a Store
 
@@ -709,7 +804,12 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
       <br>
 
-      ![Stores Page](./img/geoserver-img-32.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-32.png" alt="Stores Page" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -723,7 +823,12 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
       <br>
 
-      ![Raster Data Sources](./img/geoserver-img-33.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-33.png" alt="Raster Data Sources" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -741,11 +846,16 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
       <br>
 
-      ![Basic Store Info Section](./img/geoserver-img-34.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-34.png" alt="Basic Store Info Section" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
-7. Under **URL**, specify the location of your image:
+5. Under **URL**, specify the location of your image:
 
       ```
       file:///files/geoserver_user_data/NaturalEarth_Raster/SR_50M/SR_50M.tif
@@ -753,13 +863,22 @@ Once the workspace is set up, the next step is to add a new store. A store tells
 
       <br>
 
-      ![Connection Parameters](./img/geoserver-img-35.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-35.png" alt="Connection Parameters" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
-8. Press **Save**. You will be redirected to the **New Layer** page to begin publishing your image as a layer.
+6. Press **Save**. You will be redirected to the **New Layer** page to begin publishing your image as a layer.
 
 <br>
+
+> **Note:** For more information, see the full [Stores](https://docs.geoserver.org/latest/en/user/data/webadmin/stores.html#data-webadmin-stores) documentation.
+
+---
 
 ###  Creating a Layer
 
@@ -771,7 +890,12 @@ With the image store created, the next step is to publish it as a layer.
 
       <br>
 
-      ![New Layer Page](./img/geoserver-img-36.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-36.png" alt="New Layer Page" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -779,7 +903,12 @@ With the image store created, the next step is to publish it as a layer.
 
       <br>
 
-      ![Edit Layer Page](./img/geoserver-img-37.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-37.png" alt="Edit Layer Page" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -805,7 +934,12 @@ With the image store created, the next step is to publish it as a layer.
 
       <br>
 
-      ![Basic Resource Info section](./img/geoserver-img-38.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-38.png" alt="Basic Resource Info section" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -819,7 +953,12 @@ With the image store created, the next step is to publish it as a layer.
 
       <br>
 
-      ![Coordinate Reference System Section](./img/geoserver-img-39.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-39.png" alt="Coordinate Reference System Section" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -827,7 +966,12 @@ With the image store created, the next step is to publish it as a layer.
 
       <br>
 
-      ![ounding Boxes Section](./img/geoserver-img-40.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-40.png" alt="Bounding Boxes Section" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br> 
 
@@ -839,11 +983,18 @@ With the image store created, the next step is to publish it as a layer.
 
 8. Scroll to the top and go to the Publishing tab.
 
+      <br>
+
 9. Under WMS Settings, set the Default Style to `raster`.
 
       <br>
 
-      ![WMS Settings](./img/geoserver-img-41.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-41.png" alt="WMS Settings" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -851,9 +1002,18 @@ With the image store created, the next step is to publish it as a layer.
 
       <br>
 
-      ![Layers Page](./img/geoserver-img-42.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-42.png" alt="Layers Page" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
 <br>
+
+> **Note:** For more information, see the full [Layers](https://docs.geoserver.org/latest/en/user/data/webadmin/layers.html#data-webadmin-layers) documentation.
+
+---
 
 ## Publishing a Layer Group
 
@@ -869,11 +1029,11 @@ Before we can publish a layer group, we need to ensure the required data is avai
 
 Complete the following previous tutorials to prepare the necessary layers:
 
-1. [Publishing a Layer](http://127.0.0.1:8000/products/geoserver/guide/#publishing-a-layer) — defines the `tutorial:Coastline` layer.
+1. [Publishing a Layer](https://kartoza.github.io/GeoHosting/products/geoserver/guide/#publishing-a-layer) — defines the `tutorial:Coastline` layer.
 
-2. [Publishing an Image](http://127.0.0.1:8000/products/geoserver/guide/#publishing-an-image) — defines the `tutorial_image:shaded` layer.
+2. [Publishing an Image](https://kartoza.github.io/GeoHosting/products/geoserver/guide/#publishing-an-image) — defines the `tutorial_image:shaded` layer.
 
-<br>
+---
 
 ### Creating a layer group
 
@@ -885,7 +1045,12 @@ Now that we have the necessary layers published, we can group them together into
 
       <br>
 
-      ![Layer Groups](./img/geoserver-img-43.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-43.png" alt="Layer Groups" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
    
@@ -899,7 +1064,12 @@ Now that we have the necessary layers published, we can group them together into
 
       <br>
 
-      ![Layer Group editor](./img/geoserver-img-44.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-44.png" alt="Layer Group editor" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -923,7 +1093,12 @@ Now that we have the necessary layers published, we can group them together into
 
       <br>
    
-      ![Basic Resource Info section](./img/geoserver-img-45.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-45.png" alt="Basic Resource Info section" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -931,19 +1106,33 @@ Now that we have the necessary layers published, we can group them together into
 
       <br>
    
-      ![Layers list](./img/geoserver-img-46.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-46.png" alt="Layers list" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
 7. Click Add Layer, and select the `tutorial_image:shaded` layer first. The raster should be drawn first, as other content will be shown over top of it.
 
+      <br>
+
 8. Click Add Layer again, and select the `tutorial:Coastline` layer. This polygon layer will be rendered on top of the shaded relief.
+
+      <br>
 
 9. In the layer list, find the `tutorial:Coastline` entry, and click on its *Style* field. Make sure its set to `line`. This ensures only the outlines are drawn, allowing the shaded relief underneath to remain visible.
 
       <br>
 
-      ![Layer group layers in drawing order](./img/geoserver-img-47.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-47.png" alt="Layer group layers in drawing order" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -951,7 +1140,12 @@ Now that we have the necessary layers published, we can group them together into
 
       <br>
 
-      ![Coordinate Reference Systems](./img/geoserver-img-48.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-48.png" alt="Coordinate Reference Systems" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -959,15 +1153,25 @@ Now that we have the necessary layers published, we can group them together into
 
       <br>
 
-      ![New Layer Group](./img/geoserver-img-49.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-49.png" alt="New Layer Group" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
 <br>
+
+> **Note:** For more information, see the full [Layer Groups](https://docs.geoserver.org/latest/en/user/data/webadmin/layergroups.html#data-webadmin-layergroups) documentation.
+
+---
+
 
 ## Publishing a style
 
 This tutorial walks through the steps of defining a style and associating it with a layer for use.
 
-> **Note** This tutorial assumes GeoServer is accessible at `http://<application_name>.sta.do.kartoza.com/geoserver`.
+> **Note:** This tutorial assumes GeoServer is accessible at `http://<application_name>.sta.do.kartoza.com/geoserver`.
 
 <br>
 
@@ -979,9 +1183,9 @@ Before we can create a style, we need to ensure the required data is available.
 
 Complete the following previous section to prepare the necessary layer:
 
-1. [Publishing a Layer: Try it Yourself](http://127.0.0.1:8000/products/geoserver/guide/#try-it-yourself) — defines the `tutorial:Countries` layer.
+- [Publishing a Layer: Try it Yourself](https://kartoza.github.io/GeoHosting/products/geoserver/guide/#try-it-yourself) — defines the `tutorial:Countries` layer.
 
-<br>
+---
 
 ### Creating a style
 
@@ -989,21 +1193,28 @@ Complete the following previous section to prepare the necessary layer:
 
       <br>
 
-      ![Styles](./img/geoserver-img-50.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-50.png" alt="Styles" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
 2. This page lists existing styles, along with their associated workspaces.
 
-      > **Note** Styles can be *global*, which means they can be defined once and applied to layers across different workspaces.
+      > **Note:** Styles can be *global*, which means they can be defined once and applied to layers across different workspaces.
 
       <br>
 
 3. At the top of the Styles list, click the Add a new style link.
 
+      <br>
+
 4. Under Style Data, complete the form with the following details:
 
-      | Name       | Value          |
+      | Field      | Value          |
       |------------|----------------|
       | Name       | `background`   |
       | Workspace  | `tutorial`     |
@@ -1011,7 +1222,12 @@ Complete the following previous section to prepare the necessary layer:
 
       <br>
 
-      ![Style Data](./img/geoserver-img-51.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-51.png" alt="Style Data" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -1019,7 +1235,12 @@ Complete the following previous section to prepare the necessary layer:
 
       <br>
 
-      ![Style Content](./img/geoserver-img-52.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-52.png" alt="Style Content" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -1027,21 +1248,37 @@ Complete the following previous section to prepare the necessary layer:
 
       <br>
 
-      ![Generate](./img/geoserver-img-53.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-53.png" alt="Generate" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
 7. Press Apply to save and define this style. Once saved, additional interactive editing options will become available.
 
+      <br>
+
 8. Scroll to the top and go to the Publishing tab.
 
+      <br>
+
 9. Use the search field to filter by `tutorial` and locate the `tutorial:countries` layer.
+
+      <br>
 
 10. Check the **Default** checkbox next to `tutorial:countries` to set the `tutorial:background` style as the default for this layer.
 
       <br>
 
-      ![Style Publish](./img/geoserver-img-54.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-54.png" alt="Default Style" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
@@ -1049,11 +1286,16 @@ Complete the following previous section to prepare the necessary layer:
 
       <br>
 
-      ![Layer Preview](./img/geoserver-img-45.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-55.png" alt="Layer Preview" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
 
-10. Edit your style by inserting a `fill-opacity` value of `0.25` to make the fill semi-transparent.
+12. Edit your style by inserting a `fill-opacity` value of `0.25` to make the fill semi-transparent.
 
       ```xml
       <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -1088,12 +1330,23 @@ Complete the following previous section to prepare the necessary layer:
 
       <br>
 
-11. Press **Apply** to update the style and observe the visual change in the layer preview.
+13. Press **Apply** to update the style and observe the visual change in the layer preview.
 
       <br>
 
-      ![Layer Preview](./img/geoserver-img-46.png)
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-56.png" alt="Changed Layer Preview" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+       </div>
+     </div>
 
       <br>
+
+You have now succesfully defined a style and associating it with a layer.
+
+> **Note:** For more information, see the full [Styles](https://docs.geoserver.org/latest/en/user/styling/webadmin/index.html#styling-webadmin) documentation.
+
+---
 
 For more information you can visit [Geoserver Official Docs](https://docs.geoserver.org/latest/en/user/)
