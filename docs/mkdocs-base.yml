@@ -66,6 +66,7 @@ nav:
       #    - Guide: products/bims/guide.md
       - GeoServer:
           - products/geoserver/index.md
+        #   - Introduction: products/geoserver/introduction.md
           - Guide: products/geoserver/guide.md
       #- GeoSight:
       #    - products/geosight/index.md
