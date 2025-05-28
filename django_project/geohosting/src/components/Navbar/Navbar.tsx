@@ -17,13 +17,15 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { HamburgerIcon, LockIcon } from '@chakra-ui/icons';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import LoginForm from '../LoginForm/LoginForm';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { fetchProducts } from "../../redux/reducers/productsSlice";
+import { FaUser } from 'react-icons/fa'
 
 interface NavbarContentProps {
+  isDrawer: boolean;
   onOpen: () => void;
 }
 
@@ -35,13 +37,42 @@ const STYLES = {
  * @param onOpen
  * @constructor
  */
-const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen }) => {
+const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
   const navigate = useNavigate();
   const { token } = useSelector((state: RootState) => state.auth);
   const { products } = useSelector(
     (state: RootState) => state.products
   );
   return <>
+    <ChakraLink
+      as={RouterLink}
+      to="https://kartoza.com"
+      fontSize="md"
+      _hover={STYLES.linkHovered}
+      target='_blank'
+    >
+      Kartoza
+    </ChakraLink>
+    <ChakraLink
+      as={RouterLink}
+      to="https://kartoza.com/about"
+      fontSize="md"
+      _hover={STYLES.linkHovered}
+      target='_blank'
+      whiteSpace='nowrap'
+    >
+      About us
+    </ChakraLink>
+
+    {
+      isDrawer ? <Box
+        width='100%'
+        height='1px'
+        borderBottom='1px solid'
+        borderColor="gray.200"
+      /> : <Box flexGrow={1}/>
+    }
+
     {
       products.map((product) => (
         <ChakraLink
@@ -55,6 +86,16 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen }) => {
         </ChakraLink>
       ))
     }
+
+    {
+      isDrawer ? <Box
+        width='100%'
+        height='1px'
+        borderBottom='1px solid'
+        borderColor="gray.200"
+      /> : null
+    }
+
     {
       token ?
         <ChakraLink
@@ -64,7 +105,18 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen }) => {
           style={{ display: 'flex', alignItems: 'center' }}
           _hover={STYLES.linkHovered}
         >
-          <LockIcon boxSize={4} marginRight={1}/>
+          <Box
+            boxSize={6}
+            marginRight={2}
+            border={isDrawer ? '1px solid #1A202C' : '1px solid white'}
+            borderRadius={50}
+            textAlign='center'
+            display='flex'
+            alignItems='center'
+            justifyContent="center"
+          >
+            <FaUser/>
+          </Box>
           Dashboard
         </ChakraLink> :
         <ChakraLink
@@ -76,6 +128,13 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen }) => {
         >
           Login
         </ChakraLink>
+    }
+
+    {
+      isDrawer ? <Box
+        width='100%'
+        height='1px'
+      /> : null
     }
   </>
 }
@@ -100,10 +159,19 @@ const Navbar: React.FC = () => {
   return (
     <Box top={0}
          width="100%" as="nav"
-         padding="10px 20px" bg="gray.500" zIndex={1000} textColor={"white"}>
-      <Container maxW='container.xl' textAlign="center" bg="transparent">
+         padding="10px 20px"
+         bg="gray.500"
+         zIndex={1000}
+         textColor={"white"}
+    >
+      <Container
+        maxW='container.xl'
+        textAlign="center"
+        bg="transparent"
+        paddingX={{ base: 0, lg: 4 }}
+      >
         <Flex justify="space-between" align="center">
-          <HStack spacing="24px">
+          <HStack spacing="24px" marginRight='24px'>
             <ChakraLink
               as={RouterLink}
               to="/"
@@ -123,37 +191,21 @@ const Navbar: React.FC = () => {
                 mr={2}
               />
             </ChakraLink>
-            <ChakraLink
-              as={RouterLink}
-              to="https://kartoza.com"
-              fontSize="md"
-              _hover={STYLES.linkHovered}
-              target='_blank'
-            >
-              Kartoza
-            </ChakraLink>
-            <ChakraLink
-              as={RouterLink}
-              to="https://kartoza.com/about"
-              fontSize="md"
-              _hover={STYLES.linkHovered}
-              target='_blank'
-            >
-              About us
-            </ChakraLink>
           </HStack>
 
           <HStack
-            spacing="24px" display={{ base: 'none', md: 'flex' }}
+            spacing="24px"
+            display={{ base: 'none', lg: 'flex' }}
             marginLeft="auto"
+            flexGrow={1}
           >
-            <NavbarContent onOpen={onOpen}/>
+            <NavbarContent onOpen={onOpen} isDrawer={false}/>
           </HStack>
 
           <IconButton
             aria-label="Open menu"
             icon={<HamburgerIcon/>}
-            display={{ base: 'flex', md: 'none' }}
+            display={{ base: 'flex', lg: 'none' }}
             backgroundColor={'gray.500'}
             _hover={{ backgroundColor: 'gray.500' }}
             onClick={onDrawerOpen}
@@ -166,11 +218,11 @@ const Navbar: React.FC = () => {
           <DrawerOverlay/>
           <DrawerContent>
             <DrawerCloseButton/>
-            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerHeader></DrawerHeader>
 
             <DrawerBody>
               <VStack spacing="24px" align="start">
-                <NavbarContent onOpen={onOpen}/>
+                <NavbarContent onOpen={onOpen} isDrawer={true}/>
               </VStack>
             </DrawerBody>
           </DrawerContent>

@@ -20,6 +20,12 @@ class ProductMetadataInline(admin.TabularInline):
     extra = 1
 
 
+@admin.action(description="Sync media")
+def sync_media(modeladmin, request, queryset):
+    for package in queryset:
+        package.sync_media()
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     change_list_template = 'admin/product_change_list.html'
@@ -29,6 +35,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', 'upstream_id')
     list_editable = ('vault_url', 'available')
     inlines = [ProductClusterInline, ProductMediaInline, ProductMetadataInline]
+    actions = [sync_media]
 
     def clusters(self, obj: Product):
         """Return clusters."""

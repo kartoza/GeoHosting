@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState, Suspense, lazy } from 'react';
+import React, { lazy, Suspense, useRef, useState } from 'react';
 import {
   Box,
   ChakraProvider,
   Container,
   Flex,
-  Heading,
   Img,
   Text,
   Wrap,
@@ -26,7 +25,14 @@ const Footer = lazy(() => import('../../components/Footer/Footer'));
 const HomePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const { products, loading, error, detailLoading, detailError, productDetail } = useSelector(
+  const {
+    products,
+    loading,
+    error,
+    detailLoading,
+    detailError,
+    productDetail
+  } = useSelector(
     (state: RootState) => state.products
   );
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -42,11 +48,18 @@ const HomePage: React.FC = () => {
       <Flex direction="column" minHeight="100vh">
         <Box flex="1">
           <Suspense fallback={<LoadingSpinner/>}>
-            <Navbar />
+            <Navbar/>
           </Suspense>
-          <Background />
-          <Container maxW="container.xl" textAlign="center" mt="80px" mb="80px" bg="transparent">
-            <Flex justify="center" align="center" flexDirection={{ base: 'column', md: 'row' }}>
+          <Background/>
+          <Container
+            maxW="container.xl"
+            textAlign="center"
+            bg="transparent"
+            marginY={{ base: "20px", md: "80px" }}
+            overflowX={{ base: "hidden", md: "auto" }}
+          >
+            <Flex justify="center" align="center"
+                  flexDirection={{ base: 'column', md: 'row' }}>
               <Img
                 src={'/static/images/logos/geohosting-full.svg'}
                 width={{ base: '620px', md: '620px', xl: '700px' }}
@@ -60,15 +73,15 @@ const HomePage: React.FC = () => {
                 fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '3xl' }}
                 marginTop="20px"
                 fontWeight="bold"
-                paddingLeft={50}
-                paddingRight={50}
+                paddingX={{ base: 2, md: 50 }}
               >
-                Professional GeoSpatial hosting for open-source GIS web applications.
+                Professional GeoSpatial hosting for open-source GIS web
+                applications.
               </Text>
             </Container>
-            <Wrap spacing="30px" marginTop="50px" justify="center">
-              <Suspense fallback={<LoadingSpinner />}>
-                {loading && <LoadingSpinner />}
+            <Wrap spacing="30px" marginY="50px" justify="center" overflowX='visible'>
+              <Suspense fallback={<LoadingSpinner/>}>
+                {loading && <LoadingSpinner/>}
                 {error && <Text color="red.500">{error}</Text>}
                 {!loading &&
                   products.map((product) => (
@@ -88,7 +101,7 @@ const HomePage: React.FC = () => {
           </Container>
         </Box>
         <Suspense fallback={<LoadingSpinner/>}>
-          <Footer />
+          <Footer/>
         </Suspense>
       </Flex>
     </ChakraProvider>
