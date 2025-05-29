@@ -1,3 +1,5 @@
+import os
+
 import requests_mock
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -80,6 +82,9 @@ class InstanceCredential(APITestCase):
             'instance-credential',
             kwargs={'name': self.instance.name}
         )
+        os.environ['VAULT_BASE_URL'] = 'https://vault.do.kartoza.com'
+        os.environ['VAULT_ROLE_ID'] = 'VAULT_ROLE_ID'
+        os.environ['VAULT_SECRET_ID'] = 'VAULT_SECRET_ID'
 
     def test_user_fetch_credential(self):
         """Test user fetch credential."""
@@ -93,7 +98,7 @@ class InstanceCredential(APITestCase):
         """Test user fetch credential."""
         with requests_mock.Mocker() as requests_mocker:
             requests_mocker.post(
-                'https://vault.do.kartoza.com//v1/auth/kartoza-apps/login',
+                'https://vault.do.kartoza.com/v1/auth/kartoza-apps/login',
                 status_code=200,
                 json={
                     'auth': {
@@ -122,7 +127,7 @@ class InstanceCredential(APITestCase):
         """Test user fetch credential."""
         with requests_mock.Mocker() as requests_mocker:
             requests_mocker.post(
-                'https://vault.do.kartoza.com//v1/auth/kartoza-apps/login',
+                'https://vault.do.kartoza.com/v1/auth/kartoza-apps/login',
                 status_code=200,
                 json={
                     'auth': {
@@ -153,7 +158,7 @@ class InstanceCredential(APITestCase):
         """Test user fetch credential."""
         with requests_mock.Mocker() as requests_mocker:
             requests_mocker.post(
-                'https://vault.do.kartoza.com//v1/auth/kartoza-apps/login',
+                'https://vault.do.kartoza.com/v1/auth/kartoza-apps/login',
                 status_code=200,
                 json={
                     'auth': {
