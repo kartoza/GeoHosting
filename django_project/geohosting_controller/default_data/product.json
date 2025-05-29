@@ -10,7 +10,7 @@
   "geonode": {
     "is_add_on": false,
     "url_as_addon": "",
-    "vault_path": "geohosting/geonode/geonode-creds-",
+    "vault_path": "/geohosting/geonode/geonode-creds-",
     "username_credential": "admin",
     "password_key_on_vault": "ADMIN_PASSWORD",
     "add_on": [
@@ -20,7 +20,7 @@
   "geoserver": {
     "is_add_on": false,
     "url_as_addon": "/geoserver",
-    "vault_path": "geohosting/geoserver/geoserver-creds-",
+    "vault_path": "/geohosting/geoserver/geoserver-creds-",
     "username_credential": "admin",
     "password_key_on_vault": "GEOSERVER_ADMIN_PASSWORD",
     "add_on": [
@@ -30,7 +30,7 @@
   "g3w": {
     "is_add_on": false,
     "url_as_addon": "",
-    "vault_path": "geohosting/g3wsuite/g3wsuite-creds-",
+    "vault_path": "/geohosting/g3wsuite/g3wsuite-creds-",
     "username_credential": "admin",
     "password_key_on_vault": "G3WSUITE_ADMIN_PASS",
     "add_on": []

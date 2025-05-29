@@ -39,13 +39,13 @@ export const InstanceCredential = forwardRef(
         const { username, password } = response.data;
         navigator.clipboard.writeText(password).then(() => {
           toast.success(
-            `Username is ${username}.`
+            'Please ensure that you change your password within the application for security purposes.'
           );
           toast.success(
             'Your credentials have been successfully copied to the clipboard.'
           );
           toast.success(
-            'Please ensure that you change your password within the application for security purposes.'
+            `Username is ${username}.`
           );
         })
           .catch(() => {
