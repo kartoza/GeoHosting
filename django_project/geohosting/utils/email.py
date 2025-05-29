@@ -38,7 +38,7 @@ class InstanceEmail:
             return
         pref = Preferences.load()
         name = f'{instance.owner.first_name} {instance.owner.last_name}'
-        if not instance.price.product.vault_url:
+        if not instance.vault_url():
             html_content = render_to_string(
                 template_name='emails/GeoHosting_Product is Error.html',
                 context={

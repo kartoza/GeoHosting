@@ -142,6 +142,7 @@ class InstanceCredential(APITestCase):
                     'data': {
                         'data': {
                             'PASSWORD': 'password',
+                            'PG_PASSWORD': 'pg_password',
                         }
                     }
                 }
@@ -167,11 +168,12 @@ class InstanceCredential(APITestCase):
                 }
             )
             requests_mocker.get(
-                'http://example.com/vault/vault/product-2-test-instance',
+                'http://example.com/vault/vault/product-1-test-instance',
                 status_code=200,
                 json={
                     'data': {
                         'data': {
+                            'PASSWORD': 'password',
                             'PG_PASSWORD': 'pg_password',
                         }
                     }

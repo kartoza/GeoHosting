@@ -177,9 +177,12 @@ class Instance(models.Model):
         except Exception as e:
             LogTracker.error(self, f'Cancel subscription : {e}')
 
-    def vault_url(self, product: Product):
+    @property
+    def vault_url(self):
         """Return vault url."""
-        return self.cluster.vault_url + product.vault_path
+        if self.cluster.vault_url and self.price.product.vault_path:
+            return self.cluster.vault_url + self.price.product.vault_path
+        return None
 
     def credential(self, product: Product = None):
         """Return credentials."""
@@ -190,7 +193,7 @@ class Instance(models.Model):
         }
         try:
             vault_credentials = get_credentials(
-                self.vault_url(product), self.name
+                self.vault_url, self.name
             )
             credentials['password'] = vault_credentials[
                 product.password_key_on_vault
