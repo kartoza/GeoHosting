@@ -12,7 +12,6 @@ from django.utils import timezone
 
 from core.models.preferences import Preferences
 from core.settings.base import FRONTEND_URL
-from geohosting.utils.vault import get_credentials
 from geohosting_event.models.email import EmailEvent, EmailCategory
 from geohosting_event.models.log import LogTracker
 
@@ -38,7 +37,7 @@ class InstanceEmail:
             return
         pref = Preferences.load()
         name = f'{instance.owner.first_name} {instance.owner.last_name}'
-        if not instance.vault_url():
+        if not instance.vault_url:
             html_content = render_to_string(
                 template_name='emails/GeoHosting_Product is Error.html',
                 context={
@@ -47,10 +46,7 @@ class InstanceEmail:
             )
         else:
             try:
-                get_credentials(
-                    instance.price.product.vault_url,
-                    instance.name
-                )
+                instance.credential()
                 instance_url = (
                     f"{FRONTEND_URL}#/dashboard?q={instance.name}"
                 )
