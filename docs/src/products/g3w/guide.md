@@ -13,57 +13,208 @@ context_id: nDU6LLGiXPTLADXY
 
 # G3W Guide
 
-The tutorial is based on predefined data and `QGIS 3.34.x LTR` project downloadable from [this link](https://drive.google.com/file/d/1WK_V1wYpvSfIAY3GCBL_hbW2TX6F7AZ8/view).
+## Using the Kartoza GeoSpatialHosting Dashboard
 
-The .zip file contains the G3W-SUITE directory with three sub directories:
+After your service has finished setting up, you will be redirected to the Hosted Services page of the GeoSpatial Hosting Dashboard. Here, you can view all your purchased services.
 
-* **projects:** containing a QGIS project (`public-buildings-management-demo-39.qgs`) already optimized for the tutorial
+<br>
 
-* **project_data/spatialite:** containing a SpatiaLite DB with basic data (`build_management_demo.sqlite`)
+<div style="text-align: center;">
+  <img src="../img/g3w-img-4.png" alt="GeoSpatialHosting Dashboard" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://geohosting.sta.do.kartoza.com/" target="_blank">Kartoza GeoSpatialHosting</a>
+  </div>
+</div>
 
-* **plots:** containing a a series of plots created with the DataPlotly plugin and saved in xml format.
+<br>
 
-  [![Guide](./img/g3w-guide-img-1.png)](./img/g3w-guide-img-1.png)
+**To access your login credentials:**
 
-  [![Guide](./img/g3w-guide-img-2.png)](./img/g3w-guide-img-2.png)
+1. Click the Get Credentials button under your hosted service.
 
-Inside the `build_management_demo.sqlite` SpatiaLite DB there are the following layers:
+2. Your credentials will be copied to your clipboard.
 
-* **buildings (polygon layer):** reference layer for editing aspects
+     > **Hint:** Paste and save your credentials in a secure location.
 
-* **maintenance_works (alphanumeric table):** with the maintenance interventions associated with the individual buildings
+3. Click the application name you selected for your GeoServer instance to open it.
 
-* **buildings_rating (alphanumeric table):** with the annual assessments relating to individual buildings
+      <br>
 
-* **roads (linear layer):** layer to define the address associated to any buildings
+     <div style="text-align: center;">
+       <img src="../img/g3w-img-5.png" alt="Hosted Services" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geohosting.sta.do.kartoza.com/" target="_blank">Kartoza GeoSpatialHosting</a>
+       </div>
+     </div>
+     
+<br>
 
-* **work_areas (polygon layer):** with the perimeter of work areas to be used to define any geo-constraints
+**To delete a hosted service:**
 
-* **type_subtype (alphanumeric table):** a decoding table of the type and subtype values associated with the individual buildings
+1. Click the 3 dots in the corner of the hosted service pane.
 
-> Note: a copy of this data are present on the server, you can not change your local data copy
+2. From the dropdown menu, select **Delete**.
 
-The project (based on QGIS LTR 3.34.x) foresees:
+<br>
 
-* a dressing categorized by the buildings layer based on the categorical field type
+> **⚠️ IMPORTANT** 
+> 
+> Deleting a hosted service is **permanent**. All associated data will be irreversibly removed with **no option for recovery**.
 
-* **the presence of a 1:** n relation between the buildings layer and the alphanumeric maintenance_works and buildings_rating tables
+---
 
-* pre-developed query forms for the buildings layer and the maintenance_works table
+## Tutorial
 
-* **predefined editing widgets for the fields of the two main layers:** buildings , maintenance_works and buildings_rating tables
+### Overview
 
-* two standard print layout and an two atlas print layout based on buildgs layer features
+This tutorial is centered around a QGIS project designed to manage a layer representing a collection of buildings within a specific geographic area.
 
-  [![G3W](./img/g3w-guide-img-3.png)](./img/g3w-guide-img-3.png)
+Beyond **spatial data**, the project also handles a wide range of **attribute information**, including maintenance records, using a 1:n relational structure to allow each building to be associated with multiple maintenance entries.
 
-## Modify the QGIS project title
+<br>
 
-The publication system provides for the use of the title of the project as the unique identifier of the WebGis service.
+Throughout the tutorial, you will gain **practical skills** in:
 
-So, before publishing the project, it will be NECESSARY to change the title associated with the basic project (`Project -> Properties ... - Session: General`)
+1. **Customizing** the graphic and functional elements of the base QGIS project.
+2. **Publishing** the project as a WebGIS service using G3W-SUITE.
+3. **Creating** custom search tools for efficient data exploration.
+4. **Integrating** interactive charts using the DataPlotly plugin.
+5. **Enabling** online editing, including:
 
-[![Title](./img/g3w-guide-img-4.png)](./img/g3w-guide-img-4.png)
+     - Custom form layouts
+     - Specialized widgets for improved user interaction
+
+<br>
+
+> **Note:** This tutorial aims to demonstrate how a real-world GIS project can be fully managed through G3W-SUITE and QGIS.
+
+---
+
+### Data
+
+#### Data Download
+
+This tutorial is based on a predefined dataset and a QGIS 3.34.x LTR project from the official [G3W-SUITE](https://g3w-suite.readthedocs.io/en/latest/index.html) documentation website, which you can download using the link below:
+
+- [Tutorial Data Download](https://drive.google.com/file/d/1WK_V1wYpvSfIAY3GCBL_hbW2TX6F7AZ8/view?usp=sharing)
+
+<br>
+
+> **Note:** The download link can also be found under the [Download Demo Data](https://g3w-suite.readthedocs.io/en/latest/demo.html#download-demo-data) section of the G3W-SUITE Documentation
+
+---
+
+#### Data Structure
+
+The downloaded `.zip` file includes a G3W-SUITE directory containing the following **three subdirectories**:
+
+<br>
+
+📁 **`projects/`**
+
+   - Contains the QGIS project file: `public-buildings-management-demo-39.qgs`
+   - The project is fully optimized for this tutorial.
+
+   <br>
+
+📁 **`plots/`**
+
+   - Contains plot definitions created using the DataPlotly plugin, saved in `.xml` format.
+
+   <br>
+
+📁 **`project_data/spatialite/`**
+
+   - Contains the SpatiaLite database: `build_management_demo.sqlite`
+   - This database stores the core data used in the project.
+
+   <br>
+
+Inside the **`build_management_demo.sqlite`** file, you’ll find the following layers:
+
+<br>
+
+   | Layer Name          | Type    | Description                                                      |
+   | ------------------- | ------- | ---------------------------------------------------------------- |
+   | `buildings`         | Polygon | Main reference layer for editing building features               |
+   | `maintenance_works` | Table   | Records of maintenance activities linked to individual buildings |
+   | `buildings_rating`  | Table   | Annual ratings or assessments of buildings                       |
+   | `roads`             | Line    | Road network used to assign addresses to buildings               |
+   | `work_areas`        | Polygon | Work zone boundaries used to define geo-constraints              |
+   | `type_subtype`      | Table   | Lookup table for building type and subtype values                |
+
+<br>
+
+> **Note:** A master copy of this dataset is hosted on the server. You cannot modify your local copy and expect those changes to reflect on the server.
+
+<br>
+
+The QGIS project (based on QGIS 3.34.x LTR) is pre-configured with the following **features**:
+
+1. **Categorized symbology** for the:
+
+     - `buildings` layer based on the `type` field.
+
+     <br>
+
+2. **1:n relationships defined between:**
+
+     - `buildings` ↔ `maintenance_works`
+     - `buildings` ↔ `buildings_rating`
+
+     <br>
+
+3. **Pre-built query forms for:**
+
+     - `buildings` layer
+     - `maintenance_works` table
+
+     <br>
+
+4. **Predefined editing widgets for:**
+
+     - `buildings`, `maintenance_works`, and `buildings_rating` attributes
+
+     <br>
+
+5. **Four print layouts:**
+
+     - Two standard layout templates
+     - Two atlas layout templates using features from the buildings layer
+
+---
+
+#### Data Preperation
+
+Before publishing your QGIS project to the WebGIS platform, you **must update the project title**, as it will serve as the unique identifier for the published WebGIS service.
+
+> **Note:** The publication system uses the project title as the WebGIS service ID. If not updated, your service may be misidentified or conflict with others.
+
+<br>
+
+**Steps to Update the Project Title:**
+
+1. Open your QGIS project.
+
+2. Go to the **Project** menu.
+
+3. Select **Properties...**
+
+4. Under the **General tab**, locate the **Project Title** field.
+
+5. Enter a unique and descriptive title for your project.
+
+6. Click **OK** to apply the changes.
+
+     <br>
+
+     **Make sure the title:**
+
+       - Reflects the content or purpose of your project.
+       - Does not contain special characters or excessive spacing.
+       - Is short but specific enough to identify the service in the WebGIS environment.
+
+---
 
 ## Access the online service
 
