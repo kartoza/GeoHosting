@@ -26,16 +26,23 @@ def sync_media(modeladmin, request, queryset):
         package.sync_media()
 
 
+@admin.action(description="Sync metadata")
+def sync_metadata(modeladmin, request, queryset):
+    from geohosting_controller.default_data.helper import sync_product_metadata
+    sync_product_metadata()
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     change_list_template = 'admin/product_change_list.html'
     list_display = (
-        'name', 'available', 'clusters', 'vault_url'
+        'name', 'available', 'is_add_on', 'clusters', 'vault_path'
     )
     search_fields = ('name', 'upstream_id')
-    list_editable = ('vault_url', 'available')
+    filter_horizontal = ('add_on',)
+    list_editable = ('vault_path', 'available', 'is_add_on')
     inlines = [ProductClusterInline, ProductMediaInline, ProductMetadataInline]
-    actions = [sync_media]
+    actions = [sync_media, sync_metadata]
 
     def clusters(self, obj: Product):
         """Return clusters."""

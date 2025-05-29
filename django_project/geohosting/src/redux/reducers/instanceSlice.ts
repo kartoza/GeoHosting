@@ -13,6 +13,12 @@ import { Subscription } from "./subscriptionSlice";
 let _lastAbortController: AbortController | null = null;
 const ABORTED = 'Aborted';
 
+export interface InstanceApplication {
+  name: string;
+  upstream_id: string;
+  url: string;
+}
+
 export interface Instance {
   id: number,
   url: string,
@@ -24,7 +30,8 @@ export interface Instance {
   product: Product,
   package: Package,
   created_at: string,
-  subscription?: Subscription
+  subscription?: Subscription;
+  applications?: InstanceApplication[];
 }
 
 interface InstancePaginationResult extends PaginationResult {

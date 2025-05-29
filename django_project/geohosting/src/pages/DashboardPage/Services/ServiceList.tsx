@@ -13,23 +13,20 @@ import {
   MenuItem,
   MenuList,
   Select,
-  Spinner,
   Text,
   useBreakpointValue
 } from '@chakra-ui/react';
 import { FaGear } from "react-icons/fa6";
-import axios from "axios";
-import { toast } from "react-toastify";
 import { PaginationPage } from "../PaginationPage";
 import {
   fetchUserInstances,
   Instance
 } from "../../../redux/reducers/instanceSlice";
 import { FaLink } from "react-icons/fa";
-import { headerWithToken } from "../../../utils/helpers";
 import { MdDelete, MdMoreVert } from "react-icons/md";
 import InstanceDeletion from "../../../components/Instance/Deletion";
 import { useNavigate } from "react-router-dom";
+import InstanceCredential from "../../../components/Instance/Credential";
 
 const spin = keyframes`
   from {
@@ -109,40 +106,6 @@ export const RenderInstanceStatus = ({ instance }) => {
 const Card: React.FC<CardProps> = ({ instance }) => {
   const navigate = useNavigate();
   const columns = useBreakpointValue({ base: 1, md: 2 });
-  const [fetchingCredentials, setFetchingCredentials] = useState<boolean>(false);
-
-  /** Fetch credential **/
-  const fetchCredentials = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (fetchingCredentials) {
-      return
-    }
-    setFetchingCredentials(true)
-    try {
-      const response = await axios.get(
-        `/api/instances/${instance.name}/credential/`,
-        {
-          headers: headerWithToken()
-        }
-      );
-      navigator.clipboard.writeText(JSON.stringify(response.data, null, 4))
-        .then(() => {
-          toast.success(
-            'Please ensure that you change your password within the application for security purposes.'
-          );
-          toast.success(
-            'Your credentials have been successfully copied to the clipboard.'
-          );
-        })
-        .catch(() => {
-          toast.error('Failed to get credentials, please retry.');
-        });
-    } catch (err) {
-      toast.error('Failed to get credentials, please retry.');
-    }
-    setFetchingCredentials(false)
-  }
 
   return <Box
     key={instance.id}
@@ -271,15 +234,10 @@ const Card: React.FC<CardProps> = ({ instance }) => {
     {
       ['Online', 'Offline'].includes(instance.status) &&
       <Box
-        width='100%' color='yellow.500' mt={4} justifyContent='center'
-        cursor='pointer' display='flex' alignItems='center'
-        onClick={fetchCredentials}
-        _hover={{ opacity: 0.8 }}
+        width='100%' mt={4} justifyContent='center'
+        display='flex' alignItems='center'
       >
-        Get credentials
-        <>
-          {fetchingCredentials && <Spinner width={4} height={4} ml={1}/>}
-        </>
+        <InstanceCredential instance={instance}/>
       </Box>
     }
     {
