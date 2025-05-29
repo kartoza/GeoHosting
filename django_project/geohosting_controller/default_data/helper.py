@@ -81,10 +81,9 @@ def get_product_clusters() -> dict:
     )
 
 
-def sync_product_metadata():
-    """Sync product metadata."""
-    from geohosting.models.product import Product
-    data = json.loads(
+def get_product_metadata() -> dict:
+    """Return product_clusters."""
+    return json.loads(
         open(
             absolute_path(
                 'geohosting_controller', 'default_data',
@@ -92,6 +91,12 @@ def sync_product_metadata():
             )
         ).read()
     )
+
+
+def sync_product_metadata():
+    """Sync product metadata."""
+    from geohosting.models.product import Product
+    data = get_product_metadata()
     if Product.objects.count() == 0:
         return
 

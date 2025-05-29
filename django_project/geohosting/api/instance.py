@@ -1,4 +1,4 @@
-from django.http import HttpResponseBadRequest, Http404
+from django.http import HttpResponseBadRequest, Http404, HttpResponseForbidden
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -60,11 +60,15 @@ class InstanceViewSet(
     def credential(self, request, name=None):
         try:
             instance = self.get_object()
+            if instance.owner != request.user:
+                raise HttpResponseForbidden
             product = request.GET.get('product', None)
             product_obj = None
             if product:
                 product_obj = Product.objects.get(upstream_id=product)
             return Response(instance.credential(product_obj))
+        except KeyError as e:
+            return HttpResponseBadRequest(e)
         except Product.DoesNotExist:
             return Http404('No such product.')
 

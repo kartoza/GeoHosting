@@ -5,7 +5,8 @@ from django.contrib.auth import get_user_model
 from django.test.testcases import TestCase
 
 from geohosting_controller.default_data import (
-    get_jenkin_activity_types, get_regions, get_clusters, get_product_clusters
+    get_jenkin_activity_types, get_regions, get_clusters, get_product_clusters,
+    get_product_metadata
 )
 
 User = get_user_model()
@@ -39,7 +40,8 @@ class DefaultDataTest(TestCase):
             self.assertIsNotNone(row['code'])
             self.assertIsNotNone(row['region'])
             self.assertIsNotNone(row['domain'])
-            self.assertTrue(len(row.keys()) == 3)
+            self.assertIsNotNone(row['vault_url'])
+            self.assertTrue(len(row.keys()) == 4)
 
     def test_get_product_clusters(self):
         """Test get_product_clusters."""
@@ -49,3 +51,15 @@ class DefaultDataTest(TestCase):
             self.assertIsNotNone(config['region'])
             self.assertIsNotNone(config['environment'])
             self.assertTrue(len(config.keys()) == 3)
+
+    def test_get_product_metadata(self):
+        """Test get_product_metadata."""
+        all_config = get_product_metadata()
+        for key, config in all_config.items():
+            self.assertIsNotNone(config['is_add_on'])
+            self.assertIsNotNone(config['url_as_addon'])
+            self.assertIsNotNone(config['vault_path'])
+            self.assertIsNotNone(config['username_credential'])
+            self.assertIsNotNone(config['password_key_on_vault'])
+            self.assertIsNotNone(config['add_on'])
+            self.assertTrue(isinstance(config['add_on'], list))

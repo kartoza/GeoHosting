@@ -202,7 +202,7 @@ class Instance(models.Model):
             LogTracker.error(
                 self, f'{self.name} - {product.name} : {error}'
             )
-            raise Exception(error)
+            raise KeyError(error)
         except Exception as e:
             LogTracker.error(self, f'Get credential : {e}')
             raise e

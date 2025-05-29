@@ -4,7 +4,8 @@
     "url_as_addon": "/files",
     "vault_path": "",
     "username_credential": "admin",
-    "password_key_on_vault": "FB_PASSWORD"
+    "password_key_on_vault": "FB_PASSWORD",
+    "add_on": []
   },
   "geonode": {
     "is_add_on": false,
@@ -31,6 +32,7 @@
     "url_as_addon": "",
     "vault_path": "geohosting/g3wsuite/g3wsuite-creds-",
     "username_credential": "admin",
-    "password_key_on_vault": "G3WSUITE_ADMIN_PASS"
+    "password_key_on_vault": "G3WSUITE_ADMIN_PASS",
+    "add_on": []
   }
 }
