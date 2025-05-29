@@ -69,7 +69,7 @@ export const SubscriptionDetail = memo(
           blockScrollOnMount={true}
           preserveScrollBarGap={true}>
           <ModalOverlay/>
-          <ModalContent bg={'gray.200'}>
+          <ModalContent>
             <ModalCloseButton/>
             <ModalBody my={4}>
               {

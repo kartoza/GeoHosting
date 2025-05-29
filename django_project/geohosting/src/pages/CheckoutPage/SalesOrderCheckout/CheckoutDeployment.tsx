@@ -61,7 +61,7 @@ const CheckoutDeployment: React.FC<Props> = ({ salesOrderDetail }) => {
                 as='a'
                 ml={1}
                 mr={1}
-                href={`/#/dashboard?q=${salesOrderDetail.instance?.name}`}
+                href={`/#/dashboard/instances/${salesOrderDetail.instance?.name}`}
                 color='blue.500'
                 target='_blank'>
                 here

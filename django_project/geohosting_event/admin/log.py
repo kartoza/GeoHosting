@@ -29,7 +29,7 @@ class LogTrackerObjectAdmin(admin.ModelAdmin):
         """Return logs."""
         content_type = ContentType.objects.get_for_model(instance)
         return mark_safe(
-            '<a href="/admin/geohosting/logtracker/?'
+            '<a href="/admin/geohosting_event/logtracker/?'
             f'object_id__exact={instance.id}&'
             f'content_type__id__exact={content_type.id}" '
             'target="_blank">logs</a>'
