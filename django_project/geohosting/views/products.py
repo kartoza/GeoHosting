@@ -10,6 +10,7 @@ from geohosting.models.package import Package, PackageGroup
 from geohosting.models.product import (
     Product, ProductMetadata
 )
+from geohosting.models.cluster import Cluster
 from geohosting.tasks.products import (
     fetch_products_from_erpnext_task
 )
@@ -37,8 +38,9 @@ def parse_description(html_content: str) -> dict:
 
 def fetch_products_from_erpnext():
     """Fetch products from ERPNEXT API."""
-    generate_regions()
-    generate_cluster()
+    if not Cluster.objects.count():
+        generate_regions()
+        generate_cluster()
 
     doctype = 'Item'
     print('Fetching all products from ERPNEXT API...')
