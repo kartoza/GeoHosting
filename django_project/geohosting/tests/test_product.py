@@ -17,11 +17,12 @@ class ProductViewSetTest(APITestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.admin_user = User.objects.create_superuser('admin',
-                                                        'admin@test.com',
-                                                        'password')
-        self.regular_user = User.objects.create_user('user', 'user@test.com',
-                                                     'password')
+        self.admin_user = User.objects.create_superuser(
+            'admin', 'admin@test.com', 'password'
+        )
+        self.regular_user = User.objects.create_user(
+            'user', 'user@test.com', 'password'
+        )
 
         # Generate token for admin user
         self.admin_token = Token.objects.create(user=self.admin_user)

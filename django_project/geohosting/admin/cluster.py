@@ -7,4 +7,5 @@ from geohosting.models import Cluster
 class ClusterAdmin(admin.ModelAdmin):
     """Cluster admin."""
 
-    list_display = ('code', 'region', 'domain')
+    list_display = ('code', 'region', 'domain', 'vault_url')
+    list_editable = ('vault_url',)

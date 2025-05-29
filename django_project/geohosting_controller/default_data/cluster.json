@@ -2,6 +2,7 @@
   {
     "code": "ktz-sta-ks-gn-01",
     "region": "global",
-    "domain": "sta.do.kartoza.com"
+    "domain": "sta.do.kartoza.com",
+    "vault_url": "https://vault.do.kartoza.com/v1/apps/data/sta"
   }
 ]

@@ -26,6 +26,10 @@ class Cluster(models.Model):
         blank=True,
         help_text='Domain url of the cluster'
     )
+    vault_url = models.URLField(
+        null=True, blank=True,
+        help_text='URL of the vault url for getting credential'
+    )
 
     def __str__(self):
         """Return region name."""

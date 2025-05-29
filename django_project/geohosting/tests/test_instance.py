@@ -21,9 +21,11 @@ class InstanceViewSetTests(APITestCase):
         self.region = Region.objects.create(name='Test Region')
 
         # Create test Cluster object with 'code' and 'region'
-        self.cluster = Cluster.objects.create(code='Cluster Code',
-                                              region=self.region,
-                                              domain='example.com')
+        self.cluster = Cluster.objects.create(
+            code='Cluster Code',
+            region=self.region,
+            domain='example.com'
+        )
 
         # Create a test Product object
         self.product = Product.objects.create(

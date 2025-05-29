@@ -42,9 +42,37 @@ class Product(models.Model):
         default=False
     )
 
-    # All related deployment settings
-    vault_url = models.URLField(
-        null=True, blank=True
+    # Product as add on
+    is_add_on = models.BooleanField(
+        default=False,
+        help_text="This product cannot be standalone and is not saleable."
+    )
+    url_as_addon = models.CharField(
+        max_length=256,
+        null=True, blank=True,
+        help_text=(
+            'URL of the product as add-on, '
+            'example: geoserver on the geonode is "/geoserver".'
+        )
+    )
+    # Credentials
+    vault_path = models.CharField(
+        max_length=256,
+        null=True, blank=True,
+        help_text=(
+            'The path of the vault from the vault_url of the cluster.'
+        )
+    )
+    username_credential = models.CharField(
+        max_length=256,
+        blank=True, null=True
+    )
+    password_key_on_vault = models.CharField(
+        max_length=256,
+        blank=True, null=True
+    )
+    add_on = models.ManyToManyField(
+        "geohosting.Product", blank=True, null=True
     )
 
     class Meta:
@@ -110,6 +138,9 @@ class Product(models.Model):
             )
         except (KeyError, Cluster.DoesNotExist):
             pass
+
+    def update_the_credential_metadata(self):
+        """Update the credential metadata."""
 
     def get_product_cluster(self, region):
         """Return product cluster."""

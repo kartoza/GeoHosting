@@ -20,6 +20,7 @@ import { RenderInstanceStatus } from "./ServiceList";
 import { FaLink } from "react-icons/fa";
 import { DeleteInstance } from "./Delete";
 import SubscriptionDetail from "../../../components/Subscription/Detail";
+import InstanceCredential from "../../../components/Instance/Credential";
 
 /** Service Detail Page in pagination */
 const ServiceDetail: React.FC = () => {
@@ -218,7 +219,7 @@ const ServiceDetail: React.FC = () => {
           </Tr>
           {
             instance.package.feature_list?.spec && instance.package.feature_list.spec.map(
-              (feature: string, idx: number) => <Tr key={idx}>
+              (feature: string, idx: number) => feature && <Tr key={idx}>
                 <Td px={4}>{feature}</Td>
               </Tr>
             )
@@ -227,6 +228,56 @@ const ServiceDetail: React.FC = () => {
         </Table>
       </Box>
     </Flex>
+
+    <Flex
+      wrap="wrap"
+      justify="flex-start" gap={6}
+      width={{ base: "100%", xl: "75%", "2xl": "50%" }}
+      mb={6}
+    >
+      <Box
+        flex="1"
+        borderWidth="1px"
+        borderRadius="lg"
+        position="relative"
+        bg="white"
+        boxShadow="lg"
+      >
+        <Table>
+          <tbody>
+          <Tr>
+            <Td className='table-title'>Applications</Td>
+          </Tr>
+          {
+            instance.applications?.map(application => {
+              return <Tr>
+                <Td>
+                  <Link href={application.url} target='_blank'>
+                    <Flex
+                      wrap="wrap" gap={1}
+                      direction={{ base: 'column', md: 'row' }}
+                      alignItems='center'
+                      color='teal'
+                    >
+                      <FaLink/> {application.name}
+                    </Flex>
+                  </Link>
+                </Td>
+                <Td>
+                  <InstanceCredential
+                    instance={instance}
+                    product={application.upstream_id}
+                  />
+                </Td>
+              </Tr>
+            })
+          }
+          </tbody>
+        </Table>
+      </Box>
+    </Flex>
+
+
     <Flex
       wrap="wrap"
       justify="flex-start" gap={6}

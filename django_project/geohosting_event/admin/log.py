@@ -5,6 +5,11 @@ from django.utils.safestring import mark_safe
 from geohosting_event.models import LogTracker
 
 
+def delete_all(modeladmin, request, queryset):
+    """Delete all log entries in queryset."""
+    LogTracker.objects.all().delete()
+
+
 @admin.register(LogTracker)
 class LogTrackerAdmin(admin.ModelAdmin):
     """LogTracker admin."""
@@ -16,6 +21,7 @@ class LogTrackerAdmin(admin.ModelAdmin):
     readonly_fields = (
         'content_type', 'object_id', 'type', 'note', 'created_at'
     )
+    actions = (delete_all,)
 
     def has_add_permission(*args, **kwargs):
         """Can't add log tracker."""
@@ -29,7 +35,7 @@ class LogTrackerObjectAdmin(admin.ModelAdmin):
         """Return logs."""
         content_type = ContentType.objects.get_for_model(instance)
         return mark_safe(
-            '<a href="/admin/geohosting/logtracker/?'
+            '<a href="/admin/geohosting_event/logtracker/?'
             f'object_id__exact={instance.id}&'
             f'content_type__id__exact={content_type.id}" '
             'target="_blank">logs</a>'

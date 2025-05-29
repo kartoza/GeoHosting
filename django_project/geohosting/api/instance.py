@@ -1,4 +1,4 @@
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, Http404, HttpResponseForbidden
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -9,9 +9,11 @@ from geohosting.forms.activity.delete_instance import (
     DeletingInstanceForm
 )
 from geohosting.models import (
-    Instance, InstanceStatus
+    Instance, InstanceStatus, Product
 )
-from geohosting.serializer.instance import InstanceSerializer
+from geohosting.serializer.instance import (
+    InstanceSerializer, InstanceDetailSerializer
+)
 
 
 class InstanceViewSet(
@@ -28,10 +30,13 @@ class InstanceViewSet(
     permission_classes = [IsAuthenticated]
     default_query_filter = ['name__icontains']
     lookup_field = 'name'
+    ignored_fields = ['page', 'page_size', 'q', 'product']
 
     def get_serializer_class(self):
         """Get serializer class."""
-        return super().get_serializer_class()
+        if self.action == 'retrieve':
+            return InstanceDetailSerializer
+        return InstanceSerializer
 
     def get_queryset(self):
         """Return instances for the authenticated user."""
@@ -53,12 +58,19 @@ class InstanceViewSet(
 
     @action(detail=True, methods=["get"])
     def credential(self, request, name=None):
-        instance = self.get_object()
-        credentials = {
-            key: value for key,
-            value in instance.credentials.items() if 'DATABASE' not in key
-        }
-        return Response(credentials)
+        try:
+            instance = self.get_object()
+            if instance.owner != request.user:
+                raise HttpResponseForbidden
+            product = request.GET.get('product', None)
+            product_obj = None
+            if product:
+                product_obj = Product.objects.get(upstream_id=product)
+            return Response(instance.credential(product_obj))
+        except KeyError as e:
+            return HttpResponseBadRequest(e)
+        except Product.DoesNotExist:
+            return Http404('No such product.')
 
     def destroy(self, request, *args, **kwargs):
         """Destroy an instance."""

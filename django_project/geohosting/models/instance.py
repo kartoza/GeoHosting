@@ -12,7 +12,7 @@ from django.db import models
 from geohosting.models.cluster import Cluster
 from geohosting.models.company import Company
 from geohosting.models.package import Package
-from geohosting.models.product import ProductCluster
+from geohosting.models.product import Product, ProductCluster
 from geohosting.models.subscription import Subscription
 from geohosting.utils.vault import get_credentials
 from geohosting_event.models.log import LogTracker
@@ -178,22 +178,36 @@ class Instance(models.Model):
             LogTracker.error(self, f'Cancel subscription : {e}')
 
     @property
-    def credentials(self):
+    def vault_url(self):
+        """Return vault url."""
+        if self.cluster.vault_url and self.price.product.vault_path:
+            return self.cluster.vault_url + self.price.product.vault_path
+        return None
+
+    def credential(self, product: Product = None):
         """Return credentials."""
+        if not product:
+            product = self.price.product
         credentials = {
-            'USERNAME': 'admin'
+            'username': product.username_credential
         }
         try:
-            credentials.update(
-                get_credentials(
-                    self.price.product.vault_url,
-                    self.name
-                )
+            vault_credentials = get_credentials(
+                self.vault_url, self.name
             )
+            credentials['password'] = vault_credentials[
+                product.password_key_on_vault
+            ]
             LogTracker.success(self, 'Get credential')
             return credentials
+        except KeyError:
+            error = 'No credential provided'
+            LogTracker.error(
+                self, f'{self.name} - {product.name} : {error}'
+            )
+            raise KeyError(error)
         except Exception as e:
-            LogTracker.error(self, 'Get credential : {e}')
+            LogTracker.error(self, f'Get credential : {e}')
             raise e
 
     def checking_server(self):

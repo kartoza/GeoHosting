@@ -40,3 +40,30 @@ class InstanceSerializer(serializers.ModelSerializer):
             return None
 
         return SubscriptionSerializer(obj.subscription).data
+
+
+class InstanceDetailSerializer(InstanceSerializer):
+    """Instance detail serializer."""
+
+    applications = serializers.SerializerMethodField()
+
+    def get_applications(self, obj: Instance):
+        """Return applications."""
+        applications = []
+        instance_product = obj.price.product
+        applications.append(
+            {
+                'name': instance_product.name,
+                'url': obj.url
+            }
+        )
+        # Add-on
+        for product in instance_product.add_on.all():
+            applications.append(
+                {
+                    'name': product.name,
+                    'upstream_id': product.upstream_id,
+                    'url': obj.url + product.url_as_addon
+                }
+            )
+        return applications

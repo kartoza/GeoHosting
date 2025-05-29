@@ -1,0 +1,38 @@
+{
+  "filebrowser": {
+    "is_add_on": true,
+    "url_as_addon": "/files",
+    "vault_path": "",
+    "username_credential": "admin",
+    "password_key_on_vault": "FB_PASSWORD",
+    "add_on": []
+  },
+  "geonode": {
+    "is_add_on": false,
+    "url_as_addon": "",
+    "vault_path": "/geohosting/geonode/geonode-creds-",
+    "username_credential": "admin",
+    "password_key_on_vault": "ADMIN_PASSWORD",
+    "add_on": [
+      "geoserver"
+    ]
+  },
+  "geoserver": {
+    "is_add_on": false,
+    "url_as_addon": "/geoserver",
+    "vault_path": "/geohosting/geoserver/geoserver-creds-",
+    "username_credential": "admin",
+    "password_key_on_vault": "GEOSERVER_ADMIN_PASSWORD",
+    "add_on": [
+      "filebrowser"
+    ]
+  },
+  "g3w": {
+    "is_add_on": false,
+    "url_as_addon": "",
+    "vault_path": "/geohosting/g3wsuite/g3wsuite-creds-",
+    "username_credential": "admin",
+    "password_key_on_vault": "G3WSUITE_ADMIN_PASS",
+    "add_on": []
+  }
+}
