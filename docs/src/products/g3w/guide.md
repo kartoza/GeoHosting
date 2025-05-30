@@ -36,7 +36,7 @@ After your service has finished setting up, you will be redirected to the Hosted
 
      > **Hint:** Paste and save your credentials in a secure location.
 
-3. Click the application name you selected for your GeoServer instance to open it.
+3. Click the application name you selected for your G3W instance to open it.
 
      <br>
 
@@ -67,7 +67,9 @@ After your service has finished setting up, you will be redirected to the Hosted
 
 ### Accessing the Online Service
 
-G3W-SUITE includes a **front-end geographic portal** that provides public access to thematic groups and allows exploration of WebGIS services and related information.
+G3W-SUITE includes a **front-end geographic portal** that allows public access to thematic WebGIS groups and services, making spatial data easy to explore and interact with.
+
+<br>
 
 You can access the portal in two ways:
 
@@ -96,7 +98,7 @@ You can access the portal in two ways:
 
 ---
 
-#### Portal Overview
+### Portal Overview
 
 The **home page** serves as the main entry point to the platform. It includes a customizable welcome message and intuitive navigation menus that provide access to various functionalities.
 
@@ -104,7 +106,7 @@ The **home page** serves as the main entry point to the platform. It includes a 
 
 1. **Top-Right Menu:**
      
-     Located at the top-right corner of the portal, this menu includes the following options:
+     This menu includes:
 
      - Change language
      - Return to Home Page
@@ -114,58 +116,91 @@ The **home page** serves as the main entry point to the platform. It includes a 
 
 2. **Right-Side Panel Menu**
 
-     This menu appears on the right-hand side and includes:
+     This panel contains quick-access links:
 
-     - Maps
-     - Info
+     - Maps – explore available WebGIS services
+     - Info – view service-related information
 
 ---
 
 #### General Portal Configuration
 
-Most of the information displayed on the home page can be edited via the **Administration Panel**:
+You can configure general information displayed on the portal through the **Administration Panel**:
 
 1. Click the gear icon in the upper-right corner.
 
 2. Navigate to: **Configurations → Edit General Data**
 
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-7.png" alt="Administration Panel" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
+
+> **Note:** Administrative sections and restricted services require login using valid administrator credentials.
+
 ---
 
 #### Info Section
 
-The **Info** panel can display a brief introduction and important contact details, such as company or municipal information.
+The **Info** section can display a short description and key contact details relevant to your organization or project.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-8.png" alt="Info Panel" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
 
 ---
 
 #### Maps Section
 
-G3W-SUITE allows you to structure WebGIS services using **hierarchical containers**:
+G3W-SUITE organizes WebGIS services in a **hierarchical containers**:
 
-- Cartographic Macrogroups
-- Cartographic Groups
+- Cartographic Macrogroups – top-level thematic categories
+- Cartographic Groups – subcategories containing specific services
 
 <br>
 
 **Browsing Maps:**
 
-1. Access the Maps section.
+1. Click on **Maps** from the panel.
 
-2. If Macrogroups exist, they will be displayed.
+2. Available Macrogroups (if any) will be displayed.
 
-3. Selecting a Macrogroup will reveal the associated Groups.
+3. Selecting a Macrogroup shows its associated Groups.
 
-4. Each Group lists individual WebGIS services.
+4. Groups list the individual WebGIS services..
 
-> **Note:** Only publicly accessible services will be shown by default.
+> **Note:** Only public services are shown by default unless you log in.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-9.png" alt="Maps Section" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
 
 ---
 
 #### Viewing Restricted Services
 
-If you have login credentials, authenticate via the **Login** option. Once logged in, you will also see:
+Once logged in via the **Login** option, additional services will be visible, including:
 
 - Restricted Macrogroups
-- Groups and WebGIS services you have permission to access
+- Restricted Groups and WebGIS services based on your access permissions
+
+<br>
+
+> **Note:** For more details, refer to the [G3W-FRONTEND](https://g3w-suite.readthedocs.io/en/latest/g3wsuite_access_portal.html#g3w-frontend-the-front-end-portal) section of the official G3W documentation.
 
 ---
 
@@ -177,19 +212,19 @@ To access the **Administration Panel** it is necessary to log in using the admin
 
 **To log in:**
 
-1. Navigate to the top-right corner of the web interface.
+1. Navigate to the top-right corner of the portal.
 
-2. Click the Login button.
+2. Click the **Login** button.
 
 3. Enter the credentials you generated earlier from the GeoSpatialHosting Dashboard:
 
      - **Username:** `admin`
-     - **Password:** `GeoServer_Admin_Password`
+     - **Password:** `G3W_Admin_Password`
 
      <br>
 
      <div style="text-align: center;">
-       <img src="../img/g3w-img-7.png" alt="Login" width=auto>
+       <img src="../img/g3w-img-10.png" alt="Login" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -197,13 +232,74 @@ To access the **Administration Panel** it is necessary to log in using the admin
      
      <br>
 
-     > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
+> **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
 
-     > **Note:** You can change login details later under the [Security](https://docs.geoserver.org/latest/en/user/security/index.html#security) section of the GeoServer documentation.
+---
+
+### Administration panel
+
+The **Administration Panel** is the control center for managing all key aspects of your G3W-SUITE instance. Through this interface, you can:
+
+- Customize the access portal
+- Create and manage users and user groups
+- Define Cartographic MacroGroups and Groups, along with access and management policies
+- Publish QGIS projects as WebGIS services
+- Maintain and enhance WebGIS services (e.g., search tools, custom functions)
+
+---
+
+#### Interface Overview
+
+Upon logging into the Administration Panel, you’ll see the following elements:
 
 <br>
 
-Once logged in, you access the Admin session and from here, via the “Backend” button to the Administration panel
+1. **Top Bar**
+
+     - **Frontend:** Return to the main public-facing portal
+     - **Username:** Access your profile or log out
+     - **Language:** Select your preferred interface language
+     - **Gear icon:**
+
+       - Edit General Data: Customize portal information
+       - Django Administration (admin-only): Access Django backend settings (available only to admin01)
+       - Files: Open the integrated File Manager tool
+
+       <br>
+
+2. **Left-Side Navigation Menu**
+
+     Provides access to all administration functions:
+
+     - **Dashboard:** Quick access to the Admin homepage
+     - **Cartographic Groups:** Create and manage WebGIS groups
+     - **Macro Cartographic Groups:** Create and manage high-level thematic containers
+     - **Users:** Manage individual users and user groups
+     - **List of Active Modules:** Enable or configure optional functional modules
+
+     <br>
+
+3. **Central Dashboard Area**
+
+     The center of the screen contains two main sections:
+
+     - **Dashboard:** Displays an overview and quick links to Cartographic Groups
+     - **Module List:** Manage and configure available G3W-SUITE modules
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-11.png" alt="Administration panel" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
+
+<br>
+
+> **Note:** For more details, refer to the [G3W-ADMIN](https://g3w-suite.readthedocs.io/en/latest/g3wsuite_administration.html#g3w-admin-the-administration-panel) section of the official G3W documentation.
+
+---
 
 ## Tutorial
 
@@ -226,11 +322,11 @@ Throughout the tutorial, you will gain **practical skills** in:
      - Custom form layouts
      - Specialized widgets for improved user interaction
 
-<br>
+     <br>
 
-<div style="text-align: center;">
-  <img src="./img/g3w-img-8.png" alt="Gained Practical Skills" width="350">
-</div>
+     <div style="text-align: center;">
+       <img src="../img/g3w-img-12.png" alt="Gained Practical Skills" width="175">
+     </div>
 
 <br>
 
@@ -333,7 +429,7 @@ The QGIS project (based on QGIS 3.34.x LTR) is pre-configured with the following
 <br>
 
 <div style="text-align: center;">
-  <img src="./img/g3w-img-9.png" alt="Tutorial QGIS Project" width="auto">
+  <img src="../img/g3w-img-13.png" alt="Tutorial QGIS Project" width="auto">
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
     Image credit: <a href="https://qgis.org/" target="_blank">QGIS</a>
   </div>
@@ -349,7 +445,7 @@ Before publishing your QGIS project to the WebGIS platform, you **must update th
 
 <br>
 
-**Steps to Update the Project Title:**
+**Steps to update the project title:**
 
 1. Open your QGIS project.
 
@@ -374,7 +470,7 @@ Before publishing your QGIS project to the WebGIS platform, you **must update th
 <br>
 
 <div style="text-align: center;">
-  <img src="./img/g3w-img-10.png" alt="Updating Project Title" width="auto">
+  <img src="../img/g3w-img-14.png" alt="Updating Project Title" width="auto">
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
     Image credit: <a href="https://qgis.org/" target="_blank">QGIS</a>
   </div>
@@ -382,238 +478,336 @@ Before publishing your QGIS project to the WebGIS platform, you **must update th
 
 <br>
 
-> **Note:** For more details, refer to the [QGIS: project settings](https://g3w-suite.readthedocs.io/en/latest/projectsettings.html#qgis-project-settings) section of the official GeoServer documentation.
+> **Note:** For more details, refer to the [QGIS: project settings](https://g3w-suite.readthedocs.io/en/latest/projectsettings.html#qgis-project-settings) section of the official G3W documentation.
 
 ---
 
-## Publish the QGIS project as a WebGis service
+### Publishing a QGIS Project
 
-After authentication it will be possible to access the `Administration session` and view the Dashboard.
+Now that we have updated the project title we are ready to start the process of publishing it as a WebGIS Service.
 
-In the Dashboard there will be the menu for access to the Cartographic Groups pertaining to your user and the menus relating to additional modules not active in this demo.
+<br>
 
-Click on the `Show` item in the ligth blue Groups box to acces at the list of available Cartographic Groups.
+1. Open a web browser and navigate to:
 
-[![WebGis](./img/g3w-guide-img-4.png)](./img/g3w-guide-img-4.png)
+     ```
+     http://<application_name>.sta.do.kartoza.com/g3W
+     ```
 
-Access the list of webgis in the Cartographic Group `Demo Group` clicking on the project number shown.
+     <br>
 
-[![Groups](./img/g3w-guide-img-5.png)](./img/g3w-guide-img-5.png)
+2. Log in to G3W-SUITE using your **administrator credentials**.
 
-Now click on the button ![Button](./img/g3w-guide-img-7.png) to publish your QGIS project.
+     - **Username:** `admin`
+     - **Password:** `G3W_Admin_Password`
 
-Fill out the form defining the various aspects to be associated with the WebGis service being published:
+     <br>
 
-## QGIS project
+     > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
+      
+     <br>
 
-* **QGIS file:** load the QGIS cartographic project to be published (.qgz or .qgs file)
+3. Once authenticated, you’ll be redirected to the **Administration Panel**
 
-## ACL Users
+     <br>
 
-### Management of access permissions
+4. In the left-side navigation menu, select **Dashboard**.
 
-* **Viewers users:** define the individual users (`Viewers`) who have the credentials to view the WebGis service. By choosing the anonymous user (`AnonymusUser`) the group will be freely accessible.
+     Here you have access to:
 
-* **Viewer user groups:** you define the user groups (`Viewer`) which have the credentials to view the content of the service.
+     - **Cartographic Groups** assigned to your user
+     - **Additional module menus**
+      
+     <br>
 
-## Default base layer
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-15.png" alt="Dashboard" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+     </div>
 
-* In this session you define which base layer should be active at startup.
+     <br>
 
-* The choice is limited to the list of base layers activated for the cartographic group in which you work.
+5. In the Dashboard, locate the **Groups** box (light blue).
 
-* It is also possible not to define any active base layer at startup.
+     <br>
 
-## Description data
+6. Click on the **Show** button to view the list of available **Cartographic Groups**.
 
-* **Public title:** Title to be associated with the project and displayed on the client header. If left blank, the title associated with the QGIS project will be used or, in the absence of this, the name of the project file
+     <br>
+     
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-16.png" alt="Groups Box" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+     </div>
 
-* **Description:** Description of the project, it will appear at the public portal level.
+     <br>
 
-* **Thumbnail (Logo):** logo to associate with the project. This image will be viewable in the list of projects within the cartographic group
+7. Locate the `Demo Group` from the list.
 
-* **URL alias:** a human readable URL for the map
+     <br>
 
-> Note: contents marked with * are mandatory.
+8. Click on the **project number** to access the WebGIS list associated with this Cartographic Group.
 
-## Options and actions
+     <br>
+     
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-17.png" alt="Open the Target Group" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+     </div>
 
-Choose your preferred options regarding the following options:
+     <br>
 
-* **User QGIS project map start extent as webgis init extent:** check this control if you want set initial extent from QGSI project initial extent, `Project properties -> QGIS Server -> WMS capabilities` (Advertised extent)
+9. Click the **Add QGIS Project** button
 
-* **Tab's TOC active as default:** set tab’s TOC (Layers, Base layers, Legend) open by default on startup of webgis service
+     <br>
 
-* **Legend position rendering:** this option allows to set legend rendering position:
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-18.png" alt="Add a New QGIS Project" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+     </div>
 
-* **In a separate TAB:** default value, the legend is rendered into a separate tab
+     <br>
 
-* **Into TOC layers:** the legend is rendered inside layers toc
+10. Fill in the project form fields:
 
-* **Automatic zoom to query result features:** if in the results of a search there are only features of a layer, the webgis automatic zoom on their extension
+     | **Section**            | **Field**           | **Description**                                              |
+     |------------------------|---------------------| -------------------------------------------------------------|
+     | **QGIS Project**       | QGIS file           | Upload the `.qgz` or `.qgs` file representing your QGIS project.                                |
+     | **ACL Users**          | Viewer users        | Select individual users allowed to view the WebGIS. Use `AnonymousUser` to allow public access. |
+     |                        | Viewer user groups  | Assign user groups that can view the WebGIS content.                                |
+     | **Default Base Layer** | Base layer          | Choose a default base layer to display at startup (optional, limited to those defined for the group).|
+     | **Description Data**   | Public title        | Title shown in the WebGIS interface. Falls back to project title or filename if left blank.              |
+     |                        | Description         | A short description of the project shown in the portal.                                 |
+     |                        | Thumbnail (Logo)    | Image/logo used to represent the project in the list view.                                   |
+     |                        | URL alias           | Human-readable URL path for accessing the WebGIS.                                 |
+     
+     > **Note:** Fields marked with an asterisk (*) are mandatory.
+     
+     <br>
 
-  [![Management](./img/g3w-guide-img-8.png)](./img/g3w-guide-img-8.png)
-  [![Management](./img/g3w-guide-img-9.png)](./img/g3w-guide-img-9.png)
-  
-  After filling in the various form, click on the `Save button` at the bottom to confirm your choices.
+11. In the **Options and Actions** section you can enable/disable the following features:
 
-**If the publication was successful, the QGIS project will appear in the list of projects in the Cartographic Group.**
+     | **Option**                                  | **Description**                                                   |
+     |---------------------------------------------|-------------------------------------------------------------------|
+     | **Use QGIS project map start extent**       | Uses the project’s initial extent from: `Project Properties → QGIS Server → WMS Capabilities → Advertised extent`.                       |
+     | **Tab’s TOC active as default**             | Opens the table of contents (Layers, Base layers, Legend tabs) by default when the WebGIS starts.                                       |
+     | **Legend position rendering**               | - *In a separate TAB* (default): Legend appears in its own tab. <br> - *Into TOC layers*: Legend is integrated inside the layer TOC.  |
+     | **Automatic zoom to query result features** | If search results include only one layer’s features, the map automatically zooms to that feature’s extent.                         |
 
-![](./img/g3w-guide-img-10.png) Clicking on the **`View map`** icon will access the WebGis service in consultation.
+     <br>
 
-![](./img/g3w-guide-img-11.png)
+12. After completing the form, click **Save**
 
-# Update the published WebGis service
+     <br>
+     
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-19.png" alt="Save button" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+     </div>
 
-If you want to modify some graphic-functional aspects of your WebGis service, modify your QGIS project and update the WebGis service by clicking on the **`Modify`** icon ✏️.
+     <br>
 
-Reupload the QGIS project with your changes, click on the **Save button** and see the resuts on the cartographic client.
+Upon successful publication, the QGIS project will appear in the list of WebGIS services in the Cartographic Group. You can **Click the View Map Icon** to launch and explore the live WebGIS.
 
-# Activation of additional functions
+<br>
 
-Once your project has been published, you can access the list of widgets and additional functions to enrich your WebGis service.
+<div style="text-align: center;">
+  <img src="../img/geoserver-img-20.png" alt="Live WebGIS" width=auto>
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
 
-## Widget management
-Thougth the **`Layers list` icon** ![](./img/g3w-guide-img-12.png) it is possible to access the list of the geographical states that compose it and define some functional aspects that will be enabled at the cartographic client level.
+---
 
-![](./img/g3w-guide-img-13.png)
+### Updating the Published WebGIS Service
 
-The new session will show you the **list of the layer** present in the published QGIS project
+If you need to update the **graphic or functional elements** of an existing WebGIS service:
 
-![](./img/g3w-guide-img-14.png)
+1. **Modify** your original QGIS project by making the necessary changes in QGIS (e.g., layer styles, labels, visibility, project settings).
 
- * **Label:** layer alias applied at the QGIS project level
-   * The blue eye icon![](./img/g3w-guide-img-15.png) allows you to know the ID associated with the layer at the project level, this ID will be useful for creating parameterized URLs
- * **Name:** name of the layer (file or DB table)
- * **Type:** illustrates the type of data (WMS, PostGis, SpatiaLite, GDAL / OGR ...)
- * **WMS external:** to speed up loading, the WMS layers present in a QGIS project are managed directly by Django and not by QGIS-Server.
-     * In case of non-external WMS, the service is managed by Django and this eliminates cross-domain problems but the only managed GetFeatureInfo response type is GML.
-     * The external WMS option allows obtaining a response to the query (GetFeatureInfo) even if the response is not in GML but also in HTML or text/plain format.
-     * The option is available only if the WMS loaded on the QGIS project is associated with the same projection system as the project.
- * **WFS:** a check mark shows whether the layer is published as a WFS service or not
- * **Actions:** a series of icons dedicated to various functions
-   * ![](./img/g3w-guide-img-16.png) **Caching Layer:** allows you to activate and manage the cache of the single layer at the project level
-   * ![](./img/g3w-guide-img-17.png) **Editing layer:** shows if the online editing function is active on the layer and allows you to activate and define it
-   * ![](./img/g3w-guide-img-18.png) **Hide layer by user/groups:** hide specific layers from the TOC based on specific users or groups of users
-   * ![](./img/g3w-guide-img-19.png) **QPlotly widget:** add or manage plots created with DataPlotly QGIS plugin
-   * ![](./img/g3w-guide-img-20.png) **Geo-constraints by user/group:** create or manage editing and visualization geo-constraints based on poligonal layers
-   * ![](./img/g3w-guide-img-21.png) **Alphanumeric and QGIS expressions constraints by user/groups:** create or manage editing and visualization constraints based on SLQ language or QGIS expressions
-   * ![](./img/g3w-guide-img-22.png) **Hide columns by User/Groups:** create or manage constraints on one or more fields of a layer based on single or group user/s
-   * ![](./img/g3w-guide-img-23.png) **Widgets list:** shows how many widgets (eg searches) are associated with this layer and allows you to activate new ones
-   * ![](./img/g3w-guide-img-24.png) **Manage layer styles:** manage multi-style layer
- * **Download capabilities:** allows the download of the geographic and not geographic layers in various formats
-   * **Download as shp/geotiff:** for vector and raster layers
-   * **Download as GPK:** for geographic or not geographic layers
-   * **Download as xls:** for all types of layers, in .xls format
-   * **Download as csv:** for all types of layers, in .csv format
-   * **Download as gpx:** for geographic layers, in .gpx format
-   * **Download as PDF:** for all types of layers, in .pdf format (limited to the attributes associated with individual features)
- * **Visibility capabilities:** allows you to define some elements in a generic way, i.e. without distinction between users.
-   * **Hide attributes table:** make the attribute table unsearchable
-   * **Hide legend:** do not show the associated legend
-   * **Hide Layer TOC:** hide the layer in the TOC
+2. **Access** the Administration Panel and navigate to the Cartographic Group where your project is published.
 
-The number above each Action icon shows if and how many related objects are present.
+3. Click the **Modify** icon that appears next to the published project.
 
-**Try to activate the available options and test the result on the WebGis**
+3. **Reupload** the modified QGIS project file (.qgz or .qgs).
 
-## Search widget creation
+4. Click **Save**. 
 
-To create a search tool available at WebGis level, **choose the vector layer** on which to apply the tool and **click on the `Widget list icon` ![](./img/g3w-guide-img-23.png)** 
+Your changes will be applied to the WebGIS service. Return to the cartographic client and view the updated project live.
 
-**NB:** there may be a number of searches created by other users for the same layer.
+---
 
-You can activate them by **clicking on the `Linked` chekbox**.
+### Activating additional functions
 
-![](./img/g3w-guide-img-25.png)
+Once your project has been published, you can enhance your WebGIS service by enabling a variety of widgets and additional functions.
 
-The listed searches can be **modified, deleted or unlinked** using the appropriate icons.
+---
 
-To **create a new search**, click on the blue link **`New widget`**.
+#### Widget Overview
 
-In the related form we can define:
-* **Form Title**
-  * **`Type`:** "Search"
-  * **`Name`:** name that G3W-SUITE will use to internally register the search widget.
-* **General configuration of research and results**
-  * **`Search title`:** title that will become available in the **'Research'** panel of the WebGis interface
-* **Search fields settings**
-  * **`Field`:** field on which to carry out the research
-  * **`Widget`:** method of entering the value to be searched
-            `InputBox`: manual compilation
-            `SelectBox`: values ​​shown via drop-down menu
-            `AutoCompleteBox`: values ​​shown through auto-complete mode
-  * **`Alias`:** alias assigned to the field that will appear in the search form
-  * **`Description`:** description assigned to the field
-  * **`Comparison operator`:** comparison operator (**=, <,>,> <,> =, <=, LIKE, ILIKE**) through which the search query will be carried out. The LIKE and ILIKE operators will only be available for PostGis or SpatiaLite layers
-  * **`Dependency`:** this parameter (optional) allows, only in the case of SelectBox widgets, to list the list of values ​​of a field filtered according to the value defined for the previous fields. The tool allows, for example, to display, in the drop-down menu dedicated to the choice of cadastral particles, only the particles connected to the sheet chosen in the previous option. This function is only available for PostGis or SpatiaLite layers.
+1. Click the **Layers list** icon to access the list of geographic layers in your project. 
 
-Now it is possible to **define the dependence more or less strong** (strictly).
+     <br>
+     
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-21.png" alt="Layers List" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+     </div>
 
-In case of **strictly dependence**, the values of the dependent fields will be loaded **only after** the choice of the value of the field on which the dependency depends.
+     <br>
+     
+     The new section will display **all layers** included in the published QGIS project and allows you to configure various functional aspects that will be available in the WebGIS client.
 
-Otherwise it will be possible to define the values of the individual fields freely and **without a specific order**. The values available for the other fields will in any case depend on the choice made.
+     <br>
+     
+     <div style="text-align: center;">
+       <img src="../img/geoserver-img-21.png" alt="Layers List" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+     </div>
 
+     <br>
 
-The button ![](./img/g3w-guide-img-26.png) allows you to add additional fields for the construction of the search query currently manageable through **AND/OR operators**.
+2. The **Data** tab contains several fields, including:
 
+     | Field            | Description                                                   |
+     |------------------|---------------------------------------------------------------|
+     | **Label**        | Alias set in the QGIS project                                 |
+     | **ID**           | Unique identifier (eye icon) used for parameterized URLs      |
+     | **Name**         | Layer name (file or DB table)                                 |
+     | **Type**         | Data source type (WMS, PostGIS, GDAL, etc.)                   |
+     | **WMS External** | Option to handle GetFeatureInfo responses outside QGIS Server |
+     | **WFS**          | Indicates if the layer is available as WFS                    |
 
-The example below shows the compilation of the form for creating a search widget dedicated to a cadastral cartography layer.
+     > **Note:** WMS layers are handled directly by Django to speed up loading, bypassing QGIS Server.
+     
+     <br>
 
-![](./img/g3w-guide-img-27.png)
-![](./img/g3w-guide-img-28.png)
-![](./img/g3w-guide-img-29.png)
-![](./img/g3w-guide-img-30.png)
+3. Under the **Actions** field you wil find **Layer Action Icons** that provide access to several management tools:
 
-Once the form has been filled in, click on the **`OK button` to save** the settings.
+     | Icon         | Function                                                            |
+     |--------------|---------------------------------------------------------------------|
+     | Cache        | **Caching Layer**: Enable/manage cache at project level             |
+     | Edit         | **Editing Layer**: Toggle online editing                            |
+     | Hide Layer   | **Hide Layer by User/Group**                                        |
+     | Plotly       | **QPlotly Widget**: Add/manage DataPlotly plots                     |
+     | Geo          | **Geo Constraints**: Restrict access/editing based on polygons      |
+     | Alpha        | **Alphanumeric Constraints**: Constraints via SQL/QGIS expressions  |
+     | Columns      | **Hide Columns by User/Group**                                      |
+     | Widget       | **Widgets List**: Manage layer-specific widgets                     |
+     | Style        | **Manage Layer Styles**                                             |
 
-Once the settings are saved, the created widget will appear in the list of Widgets associated with the layer.
+     > **Hint:** Each action icon displays a number indicating how many related objects are configured.
+     
+     <br>
 
-**The widget will already be **`linked`** and therefore available in the WebGis interface on the left panel.**
+4. The **Download Capabilities** field allows for the download of vector and raster data in the following formats:
 
-![](./img/g3w-guide-img-31.png)
+     | Format      | Available For                  |
+     |-------------|--------------------------------|
+     | SHP/GeoTIFF | Vector and raster layers       |
+     | GPKG        | All layers                     |
+     | XLS         | All layers                     |
+     | CSV         | All layers                     |
+     | GPX         | Geographic layers              |
+     | PDF         | Attribute-level export for all |
 
-## Plots widget
+     <br>
 
-**Add plots created using QGIS [DataPlotly](https://github.com/ghtmtt/DataPlotly) (a great plugin developed by [Matteo Ghetta](https://github.com/ghtmtt)) in the cartographic client.**
+5. The **Visibility Capabilities** allows you to configure general visibility options (applies to all users):
 
-The module, based on the [Plotly library](https://plotly.com/), manages **plots saved as xml**.
+     | Option                    | Effect                   |
+     |---------------------------|--------------------------|
+     | **Hide Attributes Table** | Disables attribute table |
+     | **Hide Legend**           | Disables legend display  |
+     | **Hide Layer TOC**        | Removes layer from TOC   |
 
-The plots are connected to the layers defined on the QGIS project, in this way, as for the searches and the constraints, it is possible to activate the same plots on all WebGis services in which the reference layer is present.
+     <br>
 
-For this reason, there may be some plots created by other users for the same layer.
-You can activate them by **clicking on the `Linked` chekbox**.
+> **Hint:** Try enabling these features and test them directly in your WebGIS interface.
 
-![](./img/g3w-guide-img-32.png)
+---
 
-The title of the chart, defined at the plugin level, will be the unique identifier.
+#### Creating a Search Widget
 
-Try to create your plots in the QGIS project, save them as .xml and upload them to view the resluts on the webgis.
+To add a search tool to your WebGIS:
 
-![](./img/g3w-guide-img-33.png)
+1. Select the vector layer you want to target and click the **Widget List** icon.
 
-![](./img/g3w-guide-img-34.png)
+     > **Note:** There may already be existing searches created by other users. You can activate them by checking the Linked checkbox.
 
-The graphs are filterable based on the:
-* ![](./img/g3w-guide-img-35.png) features visible on the map
-* ![](./img/g3w-guide-img-36.png) filter based on the selected features
- 
-These **filters** are also **reflected on the plots associated to the related data** (in 1:N mode) based on the visible and/or selected parent features.
+     <br>
 
-The **filter based on the map content** can be activated globally on all plots (icon at the top of the panel dedicated to charts) or on only some specific plots (icon placed at the level of the individual plots).
+2. You can modify, delete, or unlink existing searches using the **action** icons.
 
-The plots will automatically update after pan and zoom operations on the map
+3. To create a new one, click the **New Widget** link.
 
-If activated, the **filter based on the selected features** is automatically activated on all related plots (associated with the same layer and with the 1:N relationed tables)
+4. In the **Widget Creation Form**, you're able to configure the following fields:
 
-Appropriate **messages** at the single plots level will indicate the activation of these filters.
+     | Field            | Description                                                          |
+     | ---------------- | -------------------------------------------------------------------- |
+     | **Form Title**   | Name shown in interface                                              |
+     | **Type**         | "Search"                                                             |
+     | **Name**         | Internal reference name                                              |
+     | **Search Title** | Display name in the WebGis interface                                 |
+     | **Field**        | Field to search on                                                   |
+     | **Widget**       | InputBox, SelectBox, AutoCompleteBox                                 |
+     | **Alias**        | Field display name                                                   |
+     | **Description**  | Additional info                                                      |
+     | **Operator**     | =, <, >, <=, LIKE, ILIKE, etc.                                       |
+     | **Dependency**   | Filter values based on previous fields (only for PostGIS/SpatiaLite) |
 
-If 1: N relations are associated with the interrogated layer and plots have been activated on the referencing tables, it will also be possible to consult these plots by querying the referenced layer and clicking on the **Show relation charts** icon present in the results form.
+     <br>
 
-![](./img/g3w-guide-img-37.png)
-![](./img/g3w-guide-img-38.png)
+5. You can use the **Add Field** button to include multiple conditions using `AND/OR` logic.
 
-**Show relation charts:** display of graphs related to 1: N related data. Only if 1: N relations are associated with the interrogated layer and graphics have been activated on the boy tables.
+6. **Example:** Creating a search widget for a cadastral layer.
+
+7. Once the form is completed, click **OK** to save.
+
+The new search widget will appear in the layer's widget list and be automatically activated in the WebGIS interface.
+
+---
+
+#### Creating a Plots Widget
+
+Enables you to add charts created using the **DataPlotly** QGIS plugin (developed by Matteo Ghetta) to your WebGIS service. Charts are saved as `.xml` files and are linked to specific layers. This allows consistent reuse of the same plots across different WebGIS services, as long as the related layer is present.
+
+> **Hint:** You can also activate plots created by other users by checking the Linked checkbox.
+
+Title: Defined in QGIS/DataPlotly and used as the unique identifier
+
+Try creating plots in your QGIS project, export them as .xml, and upload them to see them in your WebGIS.
+
+<br>
+
+Plots can be **filtered** by:
+
+1. Map Extent: Based on visible features
+
+2. Feature Selection: Based on selected features
+
+These filters also apply to related plots (1:N relationships), updating automatically as users pan or zoom on the map. If enabled, selection-based filtering is automatically applied to all related charts connected to the same layer. Clear messages will indicate which filters are active on each plot. If a layer has 1:N relationships with other tables and those tables have active plots, users can view these charts by querying the parent layer and clicking the Show relation charts icon.
+
+<br>
+
+Show Relation Charts: Displays plots from related 1:N tables if they exist and have active charts.
+
+---
 
 # Editing on line
 _**Forms and editing widgets are already defined on the project associated with the tutorial for the geometric layer of buildings and for the alphanumeric table related interventions_maintenance.**_
