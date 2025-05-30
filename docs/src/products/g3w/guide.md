@@ -38,7 +38,7 @@ After your service has finished setting up, you will be redirected to the Hosted
 
 3. Click the application name you selected for your GeoServer instance to open it.
 
-      <br>
+     <br>
 
      <div style="text-align: center;">
        <img src="../img/g3w-img-5.png" alt="Hosted Services" width=auto>
@@ -63,6 +63,148 @@ After your service has finished setting up, you will be redirected to the Hosted
 
 ---
 
+## Getting Started
+
+### Accessing the Online Service
+
+G3W-SUITE includes a **front-end geographic portal** that provides public access to thematic groups and allows exploration of WebGIS services and related information.
+
+You can access the portal in two ways:
+
+1. **Via direct URL**
+
+     Open your browser and navigate to:
+
+     ```
+     http://<application_name>.sta.do.kartoza.com/g3w
+     ```
+
+     <br>
+
+2. **Via the GeoSpatial Hosting Dashboard**
+
+     Click the application name you selected for your G3W instance.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-6.png" alt="Front-End Geographic Portal" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
+
+---
+
+#### Portal Overview
+
+The **home page** serves as the main entry point to the platform. It includes a customizable welcome message and intuitive navigation menus that provide access to various functionalities.
+
+<br>
+
+1. **Top-Right Menu:**
+     
+     Located at the top-right corner of the portal, this menu includes the following options:
+
+     - Change language
+     - Return to Home Page
+     - Login
+
+     <br>
+
+2. **Right-Side Panel Menu**
+
+     This menu appears on the right-hand side and includes:
+
+     - Maps
+     - Info
+
+---
+
+#### General Portal Configuration
+
+Most of the information displayed on the home page can be edited via the **Administration Panel**:
+
+1. Click the gear icon in the upper-right corner.
+
+2. Navigate to: **Configurations → Edit General Data**
+
+---
+
+#### Info Section
+
+The **Info** panel can display a brief introduction and important contact details, such as company or municipal information.
+
+---
+
+#### Maps Section
+
+G3W-SUITE allows you to structure WebGIS services using **hierarchical containers**:
+
+- Cartographic Macrogroups
+- Cartographic Groups
+
+<br>
+
+**Browsing Maps:**
+
+1. Access the Maps section.
+
+2. If Macrogroups exist, they will be displayed.
+
+3. Selecting a Macrogroup will reveal the associated Groups.
+
+4. Each Group lists individual WebGIS services.
+
+> **Note:** Only publicly accessible services will be shown by default.
+
+---
+
+#### Viewing Restricted Services
+
+If you have login credentials, authenticate via the **Login** option. Once logged in, you will also see:
+
+- Restricted Macrogroups
+- Groups and WebGIS services you have permission to access
+
+---
+
+### Logging In
+
+To access the **Administration Panel** it is necessary to log in using the administrator credentials.
+
+<br>
+
+**To log in:**
+
+1. Navigate to the top-right corner of the web interface.
+
+2. Click the Login button.
+
+3. Enter the credentials you generated earlier from the GeoSpatialHosting Dashboard:
+
+     - **Username:** `admin`
+     - **Password:** `GeoServer_Admin_Password`
+
+     <br>
+
+     <div style="text-align: center;">
+       <img src="../img/g3w-img-7.png" alt="Login" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+     </div>
+     
+     <br>
+
+     > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
+
+     > **Note:** You can change login details later under the [Security](https://docs.geoserver.org/latest/en/user/security/index.html#security) section of the GeoServer documentation.
+
+<br>
+
+Once logged in, you access the Admin session and from here, via the “Backend” button to the Administration panel
+
 ## Tutorial
 
 ### Overview
@@ -83,6 +225,12 @@ Throughout the tutorial, you will gain **practical skills** in:
 
      - Custom form layouts
      - Specialized widgets for improved user interaction
+
+<br>
+
+<div style="text-align: center;">
+  <img src="./img/g3w-img-8.png" alt="Gained Practical Skills" width="350">
+</div>
 
 <br>
 
@@ -182,6 +330,15 @@ The QGIS project (based on QGIS 3.34.x LTR) is pre-configured with the following
      - Two standard layout templates
      - Two atlas layout templates using features from the buildings layer
 
+<br>
+
+<div style="text-align: center;">
+  <img src="./img/g3w-img-9.png" alt="Tutorial QGIS Project" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://qgis.org/" target="_blank">QGIS</a>
+  </div>
+</div>
+
 ---
 
 #### Data Preperation
@@ -214,19 +371,20 @@ Before publishing your QGIS project to the WebGIS platform, you **must update th
        - Does not contain special characters or excessive spacing.
        - Is short but specific enough to identify the service in the WebGIS environment.
 
+<br>
+
+<div style="text-align: center;">
+  <img src="./img/g3w-img-10.png" alt="Updating Project Title" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://qgis.org/" target="_blank">QGIS</a>
+  </div>
+</div>
+
+<br>
+
+> **Note:** For more details, refer to the [QGIS: project settings](https://g3w-suite.readthedocs.io/en/latest/projectsettings.html#qgis-project-settings) section of the official GeoServer documentation.
+
 ---
-
-## Access the online service
-
-To publish the project, you can access the G3W-SUITE test application via the following URL: [URL](https://v39.g3wsuite.it)
-
-To access the Administration Panel it is necessary to log in using the following credentials:
-
-user: `demo`
-
-password: `G3wsuite123`
-
-In case of login fails, report the problem to info@gis3w.it
 
 ## Publish the QGIS project as a WebGis service
 
