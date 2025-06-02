@@ -104,28 +104,121 @@ The **home page** serves as the main entry point to the platform. It includes a 
 
 <br>
 
-1. **Top-Right Menu:**
-     
-     This menu includes:
+**Right-Side Panel Menu**
 
-     - Change language
-     - Return to Home Page
-     - Login
+ This panel contains quick-access links:
 
-     <br>
-
-2. **Right-Side Panel Menu**
-
-     This panel contains quick-access links:
-
-     - Maps – explore available WebGIS services
-     - Info – view service-related information
+ - About It - view service-related information
+ - Maps - explore available WebGIS services
+ - Login - access additional services
 
 ---
 
-#### General Portal Configuration
+1. **About It**
 
-You can configure general information displayed on the portal through the **Administration Panel**:
+      This section can display a short description and key contact details relevant to your organization or project.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-7.png" alt="About It Section" width="auto">
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      --- 
+
+2. **Maps**
+
+      G3W-SUITE organizes WebGIS services in a **hierarchical containers**:
+
+      - Cartographic Macrogroups – top-level thematic categories
+      - Cartographic Groups – subcategories containing specific services
+
+      <br>
+
+      **Browsing Maps:**
+
+      1. Click on **Maps** from the panel.
+
+      2. Available Macrogroups (if any) will be displayed under **Thematic Groups**.
+
+      3. Selecting a Macrogroup shows its associated **Groups**.
+
+      4. Groups list the individual **WebGIS services**.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-8.png" alt="Maps Section" width="auto">
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      ---
+
+3. **Login**
+
+      To access the Administration Panel it is necessary to log in using the administrator credentials.
+
+      <br>
+
+      **To log in:**
+
+      1. Click on **Login** from the panel.
+
+      2. Enter the credentials you generated earlier from the GeoSpatialHosting Dashboard:
+
+           - **Username:** `admin`
+           - **Password:** `*generate from dashboard*`
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-9.png" alt="Login" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+      **Once logged in**, additional services will be visible, including:
+
+      - Restricted Macrogroups
+      - Restricted Groups and WebGIS services based on your access permissions
+
+       <br>
+
+      > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
+      
+      <br>
+
+      ---
+
+4. **Admin**
+
+      Once logged in, the Login Section is replaced with the **Admin Section**. 
+
+      <br>
+
+      From here, you can:
+
+      - **Logout** of G3W-SUITE
+      - Access the **Administration Panel** through the **Backend** button.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-10.png" alt="Admin Section" width="auto">
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+         Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+<!--Here you can configure general information displayed on the portal through the **Administration Panel**:
 
 1. Click the gear icon in the upper-right corner.
 
@@ -133,106 +226,12 @@ You can configure general information displayed on the portal through the **Admi
 
 <br>
 
-<div style="text-align: center;">
-  <img src="../img/g3w-img-7.png" alt="Administration Panel" width="auto">
-  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
-    Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
-  </div>
-</div>
-
 > **Note:** Administrative sections and restricted services require login using valid administrator credentials.
-
----
-
-#### Info Section
-
-The **Info** section can display a short description and key contact details relevant to your organization or project.
-
-<br>
-
-<div style="text-align: center;">
-  <img src="../img/g3w-img-8.png" alt="Info Panel" width="auto">
-  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
-    Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
-  </div>
-</div>
-
----
-
-#### Maps Section
-
-G3W-SUITE organizes WebGIS services in a **hierarchical containers**:
-
-- Cartographic Macrogroups – top-level thematic categories
-- Cartographic Groups – subcategories containing specific services
-
-<br>
-
-**Browsing Maps:**
-
-1. Click on **Maps** from the panel.
-
-2. Available Macrogroups (if any) will be displayed.
-
-3. Selecting a Macrogroup shows its associated Groups.
-
-4. Groups list the individual WebGIS services..
-
-> **Note:** Only public services are shown by default unless you log in.
-
-<br>
-
-<div style="text-align: center;">
-  <img src="../img/g3w-img-9.png" alt="Maps Section" width="auto">
-  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
-    Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
-  </div>
-</div>
-
----
-
-#### Viewing Restricted Services
-
-Once logged in via the **Login** option, additional services will be visible, including:
-
-- Restricted Macrogroups
-- Restricted Groups and WebGIS services based on your access permissions
+-->
 
 <br>
 
 > **Note:** For more details, refer to the [G3W-FRONTEND](https://g3w-suite.readthedocs.io/en/latest/g3wsuite_access_portal.html#g3w-frontend-the-front-end-portal) section of the official G3W documentation.
-
----
-
-### Logging In
-
-To access the **Administration Panel** it is necessary to log in using the administrator credentials.
-
-<br>
-
-**To log in:**
-
-1. Navigate to the top-right corner of the portal.
-
-2. Click the **Login** button.
-
-3. Enter the credentials you generated earlier from the GeoSpatialHosting Dashboard:
-
-     - **Username:** `admin`
-     - **Password:** `G3W_Admin_Password`
-
-     <br>
-
-     <div style="text-align: center;">
-       <img src="../img/g3w-img-10.png" alt="Login" width=auto>
-       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
-       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
-       </div>
-     </div>
-     
-     <br>
-
-> **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
 
 ---
 
@@ -246,50 +245,84 @@ The **Administration Panel** is the control center for managing all key aspects 
 - Publish QGIS projects as WebGIS services
 - Maintain and enhance WebGIS services (e.g., search tools, custom functions)
 
----
+<br>
 
-#### Interface Overview
+You can access the Administration Panel in two ways:
 
-Upon logging into the Administration Panel, you’ll see the following elements:
+1. **Via the Administration button**
+
+      From any section in the portal interface, simply click the **Administration** button in the top-right corner.
+      
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-11.png" alt="Administration button" width="auto">
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+2. **Via the Admin Section**
+
+      Once logged in, navigate to the Admin Section and click the **Backend** button.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-12.png" alt="Backend button" width="auto">
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+> **Note:** Access to the Administration Panel requires logging in with administrator credentials. 
+
+> **Hint:** Need help logging in? Refer to the **Login** section under [Portal Overview](https://kartoza.github.io/GeoHosting/products/g3w/guide/#portal-overview). 
 
 <br>
 
+Upon logging into the Administration Panel, you’ll see the following elements:
+
 1. **Top Bar**
 
-     - **Frontend:** Return to the main public-facing portal
-     - **Username:** Access your profile or log out
-     - **Language:** Select your preferred interface language
-     - **Gear icon:**
+      - **Frontend:** Return to the main public-facing portal
+      - **Username:** Access your profile or log out
+      - **Language:** Select your preferred interface language
+      - **Gear icon:**
 
-       - Edit General Data: Customize portal information
-       - Django Administration (admin-only): Access Django backend settings (available only to admin01)
-       - Files: Open the integrated File Manager tool
+           - Edit General Data: Customize portal information
+           - Django Administration (admin-only): Access Django backend settings
+           - Files: Open the integrated File Manager tool
 
        <br>
 
 2. **Left-Side Navigation Menu**
 
-     Provides access to all administration functions:
+      Provides access to all administration functions:
 
-     - **Dashboard:** Quick access to the Admin homepage
-     - **Cartographic Groups:** Create and manage WebGIS groups
-     - **Macro Cartographic Groups:** Create and manage high-level thematic containers
-     - **Users:** Manage individual users and user groups
-     - **List of Active Modules:** Enable or configure optional functional modules
+      - **Dashboard:** Quick access to the Admin homepage
+      - **Cartographic Groups:** Create and manage WebGIS groups
+      - **Macro Cartographic Groups:** Create and manage high-level thematic containers
+      - **Users:** Manage individual users and user groups
+      - **List of Active Modules:** Enable or configure optional functional modules
 
      <br>
 
 3. **Central Dashboard Area**
 
-     The center of the screen contains two main sections:
+      The center of the screen contains two main sections:
 
-     - **Dashboard:** Displays an overview and quick links to Cartographic Groups
-     - **Module List:** Manage and configure available G3W-SUITE modules
+      - **Dashboard:** Displays an overview and quick links to Cartographic Groups
+      - **Module List:** Manage and configure available G3W-SUITE modules
 
 <br>
 
 <div style="text-align: center;">
-  <img src="../img/g3w-img-11.png" alt="Administration panel" width="auto">
+  <img src="../img/g3w-img-13.png" alt="Administration panel" width="auto">
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
     Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
   </div>
@@ -319,14 +352,14 @@ Throughout the tutorial, you will gain **practical skills** in:
 4. **Integrating** interactive charts using the DataPlotly plugin.
 5. **Enabling** online editing, including:
 
-     - Custom form layouts
-     - Specialized widgets for improved user interaction
+      - Custom form layouts
+      - Specialized widgets for improved user interaction
 
      <br>
 
-     <div style="text-align: center;">
-       <img src="../img/g3w-img-12.png" alt="Gained Practical Skills" width="175">
-     </div>
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-14.png" alt="Gained Practical Skills" width="175">
+      </div>
 
 <br>
 
@@ -334,9 +367,7 @@ Throughout the tutorial, you will gain **practical skills** in:
 
 ---
 
-### Data
-
-#### Data Download
+### Data Preperation
 
 This tutorial is based on a predefined dataset and a QGIS 3.34.x LTR project from the official [G3W-SUITE](https://g3w-suite.readthedocs.io/en/latest/index.html) documentation website, which you can download using the link below:
 
@@ -346,9 +377,9 @@ This tutorial is based on a predefined dataset and a QGIS 3.34.x LTR project fro
 
 > **Note:** The download link can also be found under the [Download Demo Data](https://g3w-suite.readthedocs.io/en/latest/demo.html#download-demo-data) section of the G3W-SUITE Documentation
 
----
+<br>
 
-#### Data Structure
+#### Overview
 
 The downloaded `.zip` file includes a G3W-SUITE directory containing the following **three subdirectories**:
 
@@ -356,36 +387,36 @@ The downloaded `.zip` file includes a G3W-SUITE directory containing the followi
 
 📁 **`projects/`**
 
-   - Contains the QGIS project file: `public-buildings-management-demo-39.qgs`
-   - The project is fully optimized for this tutorial.
+ - Contains the QGIS project file: `public-buildings-management-demo-39.qgs`
+ - The project is fully optimized for this tutorial.
 
-   <br>
+ <br>
 
 📁 **`plots/`**
 
-   - Contains plot definitions created using the DataPlotly plugin, saved in `.xml` format.
+ - Contains plot definitions created using the DataPlotly plugin, saved in `.xml` format.
 
-   <br>
+ <br>
 
 📁 **`project_data/spatialite/`**
 
-   - Contains the SpatiaLite database: `build_management_demo.sqlite`
-   - This database stores the core data used in the project.
+ - Contains the SpatiaLite database: `build_management_demo.sqlite`
+ - This database stores the core data used in the project.
 
-   <br>
+ <br>
 
 Inside the **`build_management_demo.sqlite`** file, you’ll find the following layers:
 
-<br>
+ <br>
 
-   | Layer Name          | Type    | Description                                                      |
-   | ------------------- | ------- | ---------------------------------------------------------------- |
-   | `buildings`         | Polygon | Main reference layer for editing building features               |
-   | `maintenance_works` | Table   | Records of maintenance activities linked to individual buildings |
-   | `buildings_rating`  | Table   | Annual ratings or assessments of buildings                       |
-   | `roads`             | Line    | Road network used to assign addresses to buildings               |
-   | `work_areas`        | Polygon | Work zone boundaries used to define geo-constraints              |
-   | `type_subtype`      | Table   | Lookup table for building type and subtype values                |
+ | Layer Name          | Type    | Description                                                      |
+ | ------------------- | ------- | ---------------------------------------------------------------- |
+ | `buildings`         | Polygon | Main reference layer for editing building features               |
+ | `maintenance_works` | Table   | Records of maintenance activities linked to individual buildings |
+ | `buildings_rating`  | Table   | Annual ratings or assessments of buildings                       |
+ | `roads`             | Line    | Road network used to assign addresses to buildings               |
+ | `work_areas`        | Polygon | Work zone boundaries used to define geo-constraints              |
+ | `type_subtype`      | Table   | Lookup table for building type and subtype values                |
 
 <br>
 
@@ -429,7 +460,7 @@ The QGIS project (based on QGIS 3.34.x LTR) is pre-configured with the following
 <br>
 
 <div style="text-align: center;">
-  <img src="../img/g3w-img-13.png" alt="Tutorial QGIS Project" width="auto">
+  <img src="../img/g3w-img-15.png" alt="Tutorial QGIS Project" width="auto">
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
     Image credit: <a href="https://qgis.org/" target="_blank">QGIS</a>
   </div>
@@ -437,7 +468,7 @@ The QGIS project (based on QGIS 3.34.x LTR) is pre-configured with the following
 
 ---
 
-#### Data Preperation
+#### Exercise
 
 Before publishing your QGIS project to the WebGIS platform, you **must update the project title**, as it will serve as the unique identifier for the published WebGIS service.
 
@@ -459,18 +490,18 @@ Before publishing your QGIS project to the WebGIS platform, you **must update th
 
 6. Click **OK** to apply the changes.
 
-     <br>
+      <br>
 
-     **Make sure the title:**
+      **Make sure the title:**
 
-       - Reflects the content or purpose of your project.
-       - Does not contain special characters or excessive spacing.
-       - Is short but specific enough to identify the service in the WebGIS environment.
+      - Reflects the content or purpose of your project.
+      - Does not contain special characters or excessive spacing.
+      - Is short but specific enough to identify the service in the WebGIS environment.
 
 <br>
 
 <div style="text-align: center;">
-  <img src="../img/g3w-img-14.png" alt="Updating Project Title" width="auto">
+  <img src="../img/g3w-img-16.png" alt="Updating Project Title" width="auto">
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
     Image credit: <a href="https://qgis.org/" target="_blank">QGIS</a>
   </div>
@@ -486,30 +517,38 @@ Before publishing your QGIS project to the WebGIS platform, you **must update th
 
 Now that we have updated the project title we are ready to start the process of publishing it as a WebGIS Service.
 
-<br>
+---
+
+#### Overview
+
+
+
+#### Exercise
 
 1. Open a web browser and navigate to:
 
-     ```
-     http://<application_name>.sta.do.kartoza.com/g3W
-     ```
+      ```
+      http://<application_name>.sta.do.kartoza.com/g3w
+      ```
 
-     <br>
+      <br>
 
 2. Log in to G3W-SUITE using your **administrator credentials**.
 
-     - **Username:** `admin`
-     - **Password:** `G3W_Admin_Password`
+      - **Username:** `admin`
+      - **Password:** `*generate from dashboard*`
 
-     <br>
+      <br>
 
-     > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
+      > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
       
-     <br>
+      <br>
 
-3. Once authenticated, you’ll be redirected to the **Administration Panel**
+3. Once authenticated, navigate to the **Administration Panel**
 
-     <br>
+      > **Hint:** Need help navigating to the Administration Panel? Refer to the [Administration Panel](https://kartoza.github.io/GeoHosting/products/g3w/guide/#administration-panel) section. 
+      
+      <br>
 
 4. In the left-side navigation menu, select **Dashboard**.
 
@@ -521,7 +560,7 @@ Now that we have updated the project title we are ready to start the process of 
      <br>
 
      <div style="text-align: center;">
-       <img src="../img/geoserver-img-15.png" alt="Dashboard" width=auto>
+       <img src="../img/geoserver-img-17.png" alt="Dashboard" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -538,7 +577,7 @@ Now that we have updated the project title we are ready to start the process of 
      <br>
      
      <div style="text-align: center;">
-       <img src="../img/geoserver-img-16.png" alt="Groups Box" width=auto>
+       <img src="../img/geoserver-img-18.png" alt="Groups Box" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -555,7 +594,7 @@ Now that we have updated the project title we are ready to start the process of 
      <br>
      
      <div style="text-align: center;">
-       <img src="../img/geoserver-img-17.png" alt="Open the Target Group" width=auto>
+       <img src="../img/geoserver-img-19.png" alt="Open the Target Group" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -568,7 +607,7 @@ Now that we have updated the project title we are ready to start the process of 
      <br>
 
      <div style="text-align: center;">
-       <img src="../img/geoserver-img-18.png" alt="Add a New QGIS Project" width=auto>
+       <img src="../img/geoserver-img-20.png" alt="Add a New QGIS Project" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
