@@ -18,7 +18,10 @@ context_id: nDU6LLGiXPTLADXY
 GeoServer is a Java-based server that enables users to view, edit, and share geospatial data. Built on open standards defined by the [Open Geospatial Consortium (OGC)](http://www.opengeospatial.org/), it offers powerful flexibility for map creation and data interoperability.
 
 <div style="text-align: center;">
-  <img src="./img/geoserver-img-36.png" alt="GeoServer Logo" width="300">
+  <img src="./img/geoserver-img-1.png" alt="GeoServer Logo" width="300">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://geoserver.org/" target="_blank">GeoServer</a>
+  </div>
 </div>
 
 ---
@@ -39,8 +42,10 @@ By using GeoServer, you empower others to embed your data in their websites and 
 
 GeoServer is [free software](/license), which significantly reduces the financial barrier to entry compared to proprietary GIS solutions. Being open-source, GeoServer allows the community to transparently and efficiently contribute bug fixes and feature enhancements. This openness helps prevent vendor lock-in, ultimately saving costs on long-term support and licensing contracts.
 
+<br>
+
 <div style="text-align: center;">
-  <img src="./img/geoserver-img-37.png" alt="Open Source vs Proprietary GIS" width="300">
+  <img src="./img/geoserver-img-2.png" alt="Open Source vs Proprietary GIS" width="300">
 </div>
 
 ---
@@ -59,7 +64,11 @@ GeoServer can also serve spatial data to popular mapping platforms, including:
 Additionally, GeoServer integrates smoothly with traditional GIS architectures such as [ESRI ArcGIS](http://www.esri.com/arcgis).
 
 <div style="text-align: center;">
-  <img src="./img/geoserver-img-38.png" alt="OpenLayers & Leaflet Logo" width="450">
+  <img src="./img/geoserver-img-3.png" alt="OpenLayers & Leaflet Logo" width="450">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://openlayers.org//" target="_blank">OpenLayers</a>
+    , <a href="https://leafletjs.com/" target="_blank">Leaflet</a>
+  </div>
 </div>
 
 ---
