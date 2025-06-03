@@ -308,18 +308,15 @@ Upon logging into the Administration Panel, you’ll see the following elements:
       - **Cartographic Groups:** Create and manage WebGIS groups
       - **Macro Cartographic Groups:** Create and manage high-level thematic containers
       - **Users:** Manage individual users and user groups
-      - **List of Active Modules:** Enable or configure optional functional modules
-
-     <br>
+      <br>
 
 3. **Central Dashboard Area**
 
-      The center of the screen contains two main sections:
-
+      The center of the screen displays:
+     
       - **Dashboard:** Displays an overview and quick links to Cartographic Groups
-      - **Module List:** Manage and configure available G3W-SUITE modules
-
-<br>
+      
+      <br>
 
 <div style="text-align: center;">
   <img src="../img/g3w-img-13.png" alt="Administration panel" width="auto">
@@ -515,15 +512,60 @@ Before publishing your QGIS project to the WebGIS platform, you **must update th
 
 ### Publishing a QGIS Project
 
-Now that we have updated the project title we are ready to start the process of publishing it as a WebGIS Service.
+Once you've updated the project title, you're ready to begin publishing it as a WebGIS service.
 
 ---
 
 #### Overview
 
+Publishing a QGIS project is done through the **Dashboard**, which provides access to:
 
+- Your assigned **Cartographic-** and **Macro Cartographic Groups**
+- **Additional module menus** for managing services and settings 
+
+<br>
+
+To publish a project, you’ll need to complete a series of **project form fields**, organized as follows:
+
+| **Section**            | **Field**           | **Description**                                              |
+|------------------------|---------------------| -------------------------------------------------------------|
+| **QGIS Project**       | QGIS prioject file  | Upload the `.qgz` or `.qgs` file representing your QGIS project.                                |
+| **ACL Users**          | Viewer users        | Select individual users allowed to view the WebGIS. Use `AnonymousUser` to allow public access. |
+|                        | Viewer user groups  | Assign user groups that can view the WebGIS content.                                |
+| **Default Base Layer** | Base layer          | Choose a default base layer to display at startup (optional, limited to those defined for the group).|
+| **Description Data**   | Public title        | Title shown in the WebGIS interface. Falls back to project title or filename if left blank.              |
+|                        | Description         | A short description of the project shown in the portal.                                 |
+|                        | Thumbnail (Logo)    | Image/logo used to represent the project in the list view.                                   |
+|                        | URL alias           | Human-readable URL path for accessing the WebGIS.                                 |
+     
+> **Note:** Fields marked with an asterisk (*) are required.
+
+<br>
+
+In the **Options and Actions** section, you can toggle several key features that influence how the WebGIS service behaves at runtime:
+
+| **Option**                            | **Description**                                                          |
+|---------------------------------------|------------------------------------------------------------------------|                                              
+| **Tab's TOC active as default**       | Open the TOC tab (Layers, Base Layers, etc.) by default when the client loads.          |
+| **Tab's TOC layer initial status**    | Set whether the layers in the TOC start as collapsed or expanded.        |
+| **Map themes list initial status**    | Set whether the map theme list starts as collapsed or expanded.          |
+| **Legend position rendering**         | Choose whether the legend appears in a separate tab or within the TOC    panel.          |
+| **WMS GetMap image format**           | Specify the preferred image format for WMS GetMap requests.              |
+| **Max feature to get for query**      | Set the maximum number of features returned from a query.                |
+| **Query control mode**                | Define whether queries allow single or multiple selections.              |
+| **Query by bbox control mode**        | Set bounding box queries to single or multiple mode.                     |
+| **Query by polygon control mode**     | Set polygon-based queries to single or multiple mode.                    |
+| **Geocoding providers**               | Configure which geocoding services are available for address-based searches.       |
+
+<br>
+
+Now that you're familiar with the publishing interface and its key components, let’s apply this knowledge.
+
+---
 
 #### Exercise
+
+**Creating a Macro Group**
 
 1. Open a web browser and navigate to:
 
@@ -551,43 +593,192 @@ Now that we have updated the project title we are ready to start the process of 
       <br>
 
 4. In the left-side navigation menu, select **Dashboard**.
+ 
+      <br>
 
-     Here you have access to:
-
-     - **Cartographic Groups** assigned to your user
-     - **Additional module menus**
-      
-     <br>
-
-     <div style="text-align: center;">
+      <div style="text-align: center;">
        <img src="../img/geoserver-img-17.png" alt="Dashboard" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
-     </div>
+      </div>
 
-     <br>
+      <br>
 
 5. In the Dashboard, locate the **Groups** box (light blue).
 
-     <br>
+      <br>
 
 6. Click on the **Show** button to view the list of available **Cartographic Groups**.
 
-     <br>
+      <br>
      
-     <div style="text-align: center;">
+      <div style="text-align: center;">
        <img src="../img/geoserver-img-18.png" alt="Groups Box" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
-     </div>
+      </div>
 
-     <br>
+      <br>
 
-7. Locate the `Demo Group` from the list.
+7. In the left-side navigation bar, under **Macro Cartographic Groups**, select **Add MACRO Group**
 
-     <br>
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-19.png" alt="Cartographic Groups" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+    
+      <br>
+
+8. On the Macro Group page, under **General Data**, fill in die following fields:
+
+      - **Identification name:** `Tutorial Group`
+      - **Title:** `Tutorial Group`
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-20.png" alt="Macro Group Form" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+9. In the **Logo Image** section, upload the `Tutorial_MacroGroup_Image` PNG from the tutorial data folder.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-21.png" alt="Logo Image Section" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+10. Click the **Save** button.
+
+      <br>
+
+---
+
+**Creating a Group**
+
+1. In the left-side navigation bar, under **Cartographic Groups**, select **Add Group**
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-22.png" alt="Cartographic Macro Groups" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+    
+      <br>
+
+2. On the Group page, under **General Data**, fill in die following fields:
+
+      - **Name:** `Project Group`
+      - **Title:** `Project Group`
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-23.png" alt="Group Form 1" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+3. Under **MACRO Groups**, select the `Tutorial Group`.
+
+      <br>
+
+4. Under the **GEO Data** section, select `EPSG 3857`.
+
+      > **Hint:** Unsure of your projects Coordinate reference System? In your QGIS project, go to **Project -> Properties -> General**
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-24.png" alt="Group Form 2" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+      
+      <br>
+
+5. Under the **Base Layers and Map default features** section, select **OSM (OpenStreetMap)** as your baselayer.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-25.png" alt="Group Form 3" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+      
+      <br>
+
+6. In the **Logo/Picture** section, upload the `Tutorial_MacroGroup_Image` PNG from the tutorial data folder.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-26.png" alt="Group Form 4" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+7. Click the **Save** button.
+
+      <br>
+
+---
+
+**Adding a QGIS Project**
+
+1. In the Cartographic Groups tab, under `Project Group`, click the **Add New Project** button. 
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-27.png" alt="Add Project" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+2. The **New QGIS Project** page opens.
+
+      <br>
+
+3. Under the **QGIS Project** section, upload your `.qgz` or `.qgs` file.
+
+      <br>
+
+4. Under **Descriptive Data**, enter the following field:
+
+      - **Public Title:** `Tutorial Project`
+      - **Thumbnail:** `*upload Tutorial_MacroGroup_Image*`
+
+      <br>
+
+---
 
 8. Click on the **project number** to access the WebGIS list associated with this Cartographic Group.
 
@@ -616,32 +807,12 @@ Now that we have updated the project title we are ready to start the process of 
      <br>
 
 10. Fill in the project form fields:
-
-     | **Section**            | **Field**           | **Description**                                              |
-     |------------------------|---------------------| -------------------------------------------------------------|
-     | **QGIS Project**       | QGIS file           | Upload the `.qgz` or `.qgs` file representing your QGIS project.                                |
-     | **ACL Users**          | Viewer users        | Select individual users allowed to view the WebGIS. Use `AnonymousUser` to allow public access. |
-     |                        | Viewer user groups  | Assign user groups that can view the WebGIS content.                                |
-     | **Default Base Layer** | Base layer          | Choose a default base layer to display at startup (optional, limited to those defined for the group).|
-     | **Description Data**   | Public title        | Title shown in the WebGIS interface. Falls back to project title or filename if left blank.              |
-     |                        | Description         | A short description of the project shown in the portal.                                 |
-     |                        | Thumbnail (Logo)    | Image/logo used to represent the project in the list view.                                   |
-     |                        | URL alias           | Human-readable URL path for accessing the WebGIS.                                 |
-     
-     > **Note:** Fields marked with an asterisk (*) are mandatory.
-     
-     <br>
+      
+      <br>
 
 11. In the **Options and Actions** section you can enable/disable the following features:
-
-     | **Option**                                  | **Description**                                                   |
-     |---------------------------------------------|-------------------------------------------------------------------|
-     | **Use QGIS project map start extent**       | Uses the project’s initial extent from: `Project Properties → QGIS Server → WMS Capabilities → Advertised extent`.                       |
-     | **Tab’s TOC active as default**             | Opens the table of contents (Layers, Base layers, Legend tabs) by default when the WebGIS starts.                                       |
-     | **Legend position rendering**               | - *In a separate TAB* (default): Legend appears in its own tab. <br> - *Into TOC layers*: Legend is integrated inside the layer TOC.  |
-     | **Automatic zoom to query result features** | If search results include only one layer’s features, the map automatically zooms to that feature’s extent.                         |
-
-     <br>
+      
+      <br>
 
 12. After completing the form, click **Save**
 
@@ -666,6 +837,8 @@ Upon successful publication, the QGIS project will appear in the list of WebGIS 
   Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
   </div>
 </div>
+
+> **Note:** For more details, refer to the [Publish the QGIS project as a WebGis service](https://g3w-suite.readthedocs.io/en/latest/demo.html#publish-the-qgis-project-as-a-webgis-service) section of the official G3W documentation.
 
 ---
 
