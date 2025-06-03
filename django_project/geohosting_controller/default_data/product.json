@@ -4,7 +4,7 @@
     "url_as_addon": "/files",
     "vault_path": "",
     "username_credential": "admin",
-    "password_key_on_vault": "FB_PASSWORD",
+    "password_key_on_vault": "FB_PASSWORD_UNHASHED",
     "add_on": []
   },
   "geonode": {

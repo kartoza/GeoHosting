@@ -32,6 +32,8 @@ const ServiceDetail: React.FC = () => {
   const isWaitingPayment = instance && instance?.subscription && instance?.subscription?.is_waiting_payment;
   const paymentModalRef = useRef(null);
 
+  const isReady = instance && ['Online', 'Offline'].includes(instance.status) && instance.url;
+
   const {
     data,
     loading,
@@ -185,7 +187,7 @@ const ServiceDetail: React.FC = () => {
           </Tr>
 
           {
-            ['Online', 'Offline'].includes(instance.status) && instance.url ?
+            isReady ?
               <Tr>
                 <Td className='table-title' colSpan={2}>
                   <Link href={instance.url} target='_blank'>
@@ -251,18 +253,21 @@ const ServiceDetail: React.FC = () => {
           {
             instance.applications?.map(application => {
               return <Tr>
-                <Td>
-                  <Link href={application.url} target='_blank'>
-                    <Flex
-                      wrap="wrap" gap={1}
-                      direction={{ base: 'column', md: 'row' }}
-                      alignItems='center'
-                      color='teal'
-                    >
-                      <FaLink/> {application.name}
-                    </Flex>
-                  </Link>
-                </Td>
+                {
+                  isReady ?
+                    <Td>
+                      <Link href={application.url} target='_blank'>
+                        <Flex
+                          wrap="wrap" gap={1}
+                          direction={{ base: 'column', md: 'row' }}
+                          alignItems='center'
+                          color='teal'
+                        >
+                          <FaLink/> {application.name}
+                        </Flex>
+                      </Link>
+                    </Td> : <td>{application.name}</td>
+                }
                 <Td>
                   <InstanceCredential
                     instance={instance}
