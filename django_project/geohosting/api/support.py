@@ -4,7 +4,9 @@ GeoHosting Controller.
 .. note:: Ticket.
 """
 
+from django.contrib.auth.models import User
 from rest_framework import mixins, viewsets
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import AllowAny
 
 from core.api import FilteredAPI
@@ -46,6 +48,20 @@ class TicketSetView(
                 list(queryset.values_list('erpnext_code', flat=True))
             )
         return queryset
+
+    def perform_create(self, serializer):
+        """Attach the current user to the ticket upon creation."""
+        if self.request.user.is_authenticated:
+            serializer.save(user=self.request.user)
+        else:
+            customer = serializer.validated_data['customer']
+            try:
+                User.objects.get(email=customer)
+                raise PermissionDenied(
+                    'You need to be logged in to create ticket with this email.'
+                )
+            except User.DoesNotExist:
+                serializer.save()
 
 
 class AttachmentSetView(

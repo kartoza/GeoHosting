@@ -1,6 +1,7 @@
 # models.py
 from datetime import datetime
 
+from django.contrib.auth.models import User
 from django.db import models
 
 from geohosting.models.erp_model import ErpModel
@@ -43,6 +44,9 @@ class Ticket(ErpModel):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True
+    )
 
     @property
     def doc_type(self):
@@ -52,14 +56,21 @@ class Ticket(ErpModel):
     @property
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
-        return {
+        payload = {
             "doctype": "Issue",
             "raised_by": self.customer,
             "owner": self.customer,
             "subject": self.subject,
             "description": self.details,
-            "status": 'Open'
+            "status": 'Open',
+            "issue_type": self.issue_type,
         }
+        if (
+                self.user and self.user.userprofile and self.user.userprofile.erpnext_code
+        ):
+            payload['customer'] = self.user.userprofile.erpnext_code
+
+        return payload
 
     @property
     def erp_payload_for_edit(self):

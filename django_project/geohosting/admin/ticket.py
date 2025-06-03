@@ -6,6 +6,7 @@ GeoHosting Controller.
 
 from django.contrib import admin
 
+from geohosting.admin.erp import push_to_erp
 from geohosting.models.support import Ticket
 
 
@@ -20,6 +21,7 @@ class TicketAdmin(admin.ModelAdmin):
     list_filter = ('status', 'created_at', 'updated_at')
     search_fields = ('customer', 'subject', 'details')
     readonly_fields = ('created_at', 'updated_at')
+    actions = [push_to_erp]
 
     def get_readonly_fields(self, request, obj=None):
         if obj:  # Editing an existing object
