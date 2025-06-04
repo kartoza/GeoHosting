@@ -13,6 +13,7 @@ from geohosting.models.support import Ticket
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
     """Ticket admin."""
+
     change_list_template = 'admin/erp_change_list.html'
 
     def changelist_view(self, request, extra_context=None):
