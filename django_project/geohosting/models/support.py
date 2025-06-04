@@ -7,7 +7,7 @@ from django.db import models
 from core.models.preferences import Preferences
 from geohosting.models.erp_model import ErpModel
 from geohosting.utils.erpnext import (
-    fetch_erpnext_data, put_to_erpnext
+    fetch_erpnext_data, upload_attachment_to_erp
 )
 
 status_erp = {
@@ -139,9 +139,8 @@ class Attachment(models.Model):
 
     def post_to_erpnext(self):
         """Post the attachment to erp."""
-        put_to_erpnext(
-            {},
-            self.ticket.doc_type,
-            self.ticket.erpnext_code,
-            file=self.file.file.read()
+        return upload_attachment_to_erp(
+            doctype=self.ticket.doc_type,
+            id=self.ticket.erpnext_code,
+            file=self.file.file
         )
