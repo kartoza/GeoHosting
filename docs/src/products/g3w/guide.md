@@ -217,18 +217,7 @@ The **home page** serves as the main entry point to the platform. It includes a 
          Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
       </div>
-
-<!--Here you can configure general information displayed on the portal through the **Administration Panel**:
-
-1. Click the gear icon in the upper-right corner.
-
-2. Navigate to: **Configurations → Edit General Data**
-
-<br>
-
-> **Note:** Administrative sections and restricted services require login using valid administrator credentials.
--->
-
+ 
 <br>
 
 > **Note:** For more details, refer to the [G3W-FRONTEND](https://g3w-suite.readthedocs.io/en/latest/g3wsuite_access_portal.html#g3w-frontend-the-front-end-portal) section of the official G3W documentation.
@@ -308,6 +297,7 @@ Upon logging into the Administration Panel, you’ll see the following elements:
       - **Cartographic Groups:** Create and manage WebGIS groups
       - **Macro Cartographic Groups:** Create and manage high-level thematic containers
       - **Users:** Manage individual users and user groups
+
       <br>
 
 3. **Central Dashboard Area**
@@ -366,19 +356,19 @@ Throughout the tutorial, you will gain **practical skills** in:
 
 ### Data Preperation
 
-This tutorial is based on a predefined dataset and a QGIS 3.34.x LTR project from the official [G3W-SUITE](https://g3w-suite.readthedocs.io/en/latest/index.html) documentation website, which you can download using the link below:
+This tutorial is based on a modified dataset and QGIS 3.34.x LTR project from the official [G3W-SUITE](https://g3w-suite.readthedocs.io/en/latest/index.html) documentation website. Download the **Tutorial Data** using the link below:
 
-- [Tutorial Data Download](https://drive.google.com/file/d/1WK_V1wYpvSfIAY3GCBL_hbW2TX6F7AZ8/view?usp=sharing)
+- [`Tutorial_Data.zip` Download](insert link)
 
 <br>
 
-> **Note:** The download link can also be found under the [Download Demo Data](https://g3w-suite.readthedocs.io/en/latest/demo.html#download-demo-data) section of the G3W-SUITE Documentation
+> **Note:** You can download the origianl data from the [Download Demo Data](https://g3w-suite.readthedocs.io/en/latest/demo.html#download-demo-data) section of the G3W-SUITE Documentation
 
 <br>
 
 #### Overview
 
-The downloaded `.zip` file includes a G3W-SUITE directory containing the following **three subdirectories**:
+The downloaded `.zip` file includes a `Tutorial_Data_G3WSUITE` folder, containing an image and the following **three subdirectories**:
 
 <br>
 
@@ -415,33 +405,29 @@ Inside the **`build_management_demo.sqlite`** file, you’ll find the following 
  | `work_areas`        | Polygon | Work zone boundaries used to define geo-constraints              |
  | `type_subtype`      | Table   | Lookup table for building type and subtype values                |
 
-<br>
-
-> **Note:** A master copy of this dataset is hosted on the server. You cannot modify your local copy and expect those changes to reflect on the server.
-
-<br>
-
+ <br>
+ 
 The QGIS project (based on QGIS 3.34.x LTR) is pre-configured with the following **features**:
 
 1. **Categorized symbology** for the:
 
-     - `buildings` layer based on the `type` field.
+       - `buildings` layer based on the `type` field.
 
-     <br>
+       <br>
 
 2. **1:n relationships defined between:**
 
-     - `buildings` ↔ `maintenance_works`
-     - `buildings` ↔ `buildings_rating`
+       - `buildings` ↔ `maintenance_works`
+       - `buildings` ↔ `buildings_rating`
 
-     <br>
+       <br>
 
 3. **Pre-built query forms for:**
 
-     - `buildings` layer
-     - `maintenance_works` table
+       - `buildings` layer
+       - `maintenance_works` table
 
-     <br>
+       <br>
 
 4. **Predefined editing widgets for:**
 
@@ -525,7 +511,15 @@ Publishing a QGIS project is done through the **Dashboard**, which provides acce
 
 <br>
 
-To publish a project, you’ll need to complete a series of **project form fields**, organized as follows:
+**To publish a project, you’ll need to:**
+
+1. Create a **Cartographic Macro Group**
+
+2. Create a **Cartographic Group**
+
+3. Complete a series of **project form fields**, organized as follows:
+
+<br>
 
 | **Section**            | **Field**           | **Description**                                              |
 |------------------------|---------------------| -------------------------------------------------------------|
@@ -538,11 +532,15 @@ To publish a project, you’ll need to complete a series of **project form field
 |                        | Thumbnail (Logo)    | Image/logo used to represent the project in the list view.                                   |
 |                        | URL alias           | Human-readable URL path for accessing the WebGIS.                                 |
      
+<br>
+
 > **Note:** Fields marked with an asterisk (*) are required.
 
 <br>
 
 In the **Options and Actions** section, you can toggle several key features that influence how the WebGIS service behaves at runtime:
+
+<br>
 
 | **Option**                            | **Description**                                                          |
 |---------------------------------------|------------------------------------------------------------------------|                                              
@@ -559,13 +557,17 @@ In the **Options and Actions** section, you can toggle several key features that
 
 <br>
 
-Now that you're familiar with the publishing interface and its key components, let’s apply this knowledge.
+Now that you're familiar with the workflow and the publishing interface key components, let’s apply this knowledge.
 
 ---
 
 #### Exercise
 
 **Creating a Macro Group**
+
+Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
+
+<br>
 
 1. Open a web browser and navigate to:
 
@@ -588,33 +590,35 @@ Now that you're familiar with the publishing interface and its key components, l
 
 3. Once authenticated, navigate to the **Administration Panel**
 
+      <br>
+
       > **Hint:** Need help navigating to the Administration Panel? Refer to the [Administration Panel](https://kartoza.github.io/GeoHosting/products/g3w/guide/#administration-panel) section. 
       
       <br>
 
-4. In the left-side navigation menu, select **Dashboard**.
+4. In the left-side navigation menu, click **Dashboard**.
  
-      <br>
+       <br>
 
-      <div style="text-align: center;">
-       <img src="../img/geoserver-img-17.png" alt="Dashboard" width=auto>
+       <div style="text-align: center;">
+       <img src="../img/g3w-img-17.png" alt="Dashboard" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
-      </div>
+       </div>
+
+       <br>
+
+5. Within the Dashboard, locate the light blue **Groups** box.
 
       <br>
 
-5. In the Dashboard, locate the **Groups** box (light blue).
-
-      <br>
-
-6. Click on the **Show** button to view the list of available **Cartographic Groups**.
+6. Click **Show** to display the list of existing **Cartographic Groups**.
 
       <br>
      
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-18.png" alt="Groups Box" width=auto>
+       <img src="../img/g3w-img-18.png" alt="Groups Box" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -622,10 +626,12 @@ Now that you're familiar with the publishing interface and its key components, l
 
       <br>
 
-7. In the left-side navigation bar, under **Macro Cartographic Groups**, select **Add MACRO Group**
+7. In the left navigation bar under **Macro Cartographic Groups**, click **Add MACRO Group**
+
+      <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-19.png" alt="Cartographic Groups" width=auto>
+       <img src="../img/g3w-img-19.png" alt="Cartographic Groups" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -633,7 +639,7 @@ Now that you're familiar with the publishing interface and its key components, l
     
       <br>
 
-8. On the Macro Group page, under **General Data**, fill in die following fields:
+8. On the Macro Group creation page, under the **General Data** section, complete the following fields:
 
       - **Identification name:** `Tutorial Group`
       - **Title:** `Tutorial Group`
@@ -641,7 +647,7 @@ Now that you're familiar with the publishing interface and its key components, l
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-20.png" alt="Macro Group Form" width=auto>
+       <img src="../img/g3w-img-20.png" alt="Macro Group Form" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -649,12 +655,12 @@ Now that you're familiar with the publishing interface and its key components, l
 
       <br>
 
-9. In the **Logo Image** section, upload the `Tutorial_MacroGroup_Image` PNG from the tutorial data folder.
+9. In the **Logo Image** section, upload the `tutorial_image` PNG located in the `Tutorial_Data_G3WSUITE` folder.
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-21.png" alt="Logo Image Section" width=auto>
+       <img src="../img/g3w-img-21.png" alt="Logo Image Section" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -662,7 +668,7 @@ Now that you're familiar with the publishing interface and its key components, l
 
       <br>
 
-10. Click the **Save** button.
+10. Once all fields are complete, click **Save** to finalize the creation of your Macro Group.
 
       <br>
 
@@ -670,10 +676,16 @@ Now that you're familiar with the publishing interface and its key components, l
 
 **Creating a Group**
 
-1. In the left-side navigation bar, under **Cartographic Groups**, select **Add Group**
+Follow the steps below to create a Cartographic Group within G3W-SUITE:
+
+<br>
+
+1. In the left-side navigation bar, under **Cartographic Groups**, click on **Add Group**
+
+      <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-22.png" alt="Cartographic Macro Groups" width=auto>
+       <img src="../img/g3w-img-22.png" alt="Cartographic Macro Groups" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -681,7 +693,7 @@ Now that you're familiar with the publishing interface and its key components, l
     
       <br>
 
-2. On the Group page, under **General Data**, fill in die following fields:
+2. On the Group Creation page, under the **General Data** section, fill out the following fields:
 
       - **Name:** `Project Group`
       - **Title:** `Project Group`
@@ -689,7 +701,7 @@ Now that you're familiar with the publishing interface and its key components, l
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-23.png" alt="Group Form 1" width=auto>
+       <img src="../img/g3w-img-23.png" alt="Group Form 1" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -697,18 +709,20 @@ Now that you're familiar with the publishing interface and its key components, l
 
       <br>
 
-3. Under **MACRO Groups**, select the `Tutorial Group`.
+3. In the **MACRO Groups** section, select the previously created group: `Tutorial Group`
 
       <br>
 
-4. Under the **GEO Data** section, select `EPSG 3857`.
+4. Under **GEO Data**, set the Coordinate Reference System (CRS) to `EPSG 3857`.
 
-      > **Hint:** Unsure of your projects Coordinate reference System? In your QGIS project, go to **Project -> Properties -> General**
+      <br>
+
+      > **Hint:** Not sure about your project's CRS? In QGIS, go to **Project → Properties → General** to confirm the EPSG code.
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-24.png" alt="Group Form 2" width=auto>
+       <img src="../img/g3w-img-24.png" alt="Group Form 2" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -716,12 +730,12 @@ Now that you're familiar with the publishing interface and its key components, l
       
       <br>
 
-5. Under the **Base Layers and Map default features** section, select **OSM (OpenStreetMap)** as your baselayer.
+5. In the **Base Layers and Map default features** section, select **OSM (OpenStreetMap)** as your baselayer.
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-25.png" alt="Group Form 3" width=auto>
+       <img src="../img/g3w-img-25.png" alt="Group Form 3" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -729,12 +743,12 @@ Now that you're familiar with the publishing interface and its key components, l
       
       <br>
 
-6. In the **Logo/Picture** section, upload the `Tutorial_MacroGroup_Image` PNG from the tutorial data folder.
+6. In the **Logo/Picture** section, upload the `tutorial_image` PNG located in the `Tutorial_Data_G3WSUITE` folder.
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-26.png" alt="Group Form 4" width=auto>
+       <img src="../img/g3w-img-26.png" alt="Group Form 4" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -742,7 +756,7 @@ Now that you're familiar with the publishing interface and its key components, l
 
       <br>
 
-7. Click the **Save** button.
+7. Once all details are complete, click the **Save** button to finalize your group setup.
 
       <br>
 
@@ -750,12 +764,12 @@ Now that you're familiar with the publishing interface and its key components, l
 
 **Adding a QGIS Project**
 
-1. In the Cartographic Groups tab, under `Project Group`, click the **Add New Project** button. 
+1. In the **Cartographic Groups** tab, under `Project Group`, click the **Add New Project** button. 
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-27.png" alt="Add Project" width=auto>
+       <img src="../img/g3w-img-27.png" alt="Add Project" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -767,76 +781,75 @@ Now that you're familiar with the publishing interface and its key components, l
 
       <br>
 
-3. Under the **QGIS Project** section, upload your `.qgz` or `.qgs` file.
+3. Under the **QGIS Project** section, upload your `.qgz` or `.qgs` file from: `Tutorial_Data_G3WSUITE → projects`
 
       <br>
 
-4. Under **Descriptive Data**, enter the following field:
-
-      - **Public Title:** `Tutorial Project`
-      - **Thumbnail:** `*upload Tutorial_MacroGroup_Image*`
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-28.png" alt="New QGIS Project 1" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
 
       <br>
 
----
+4. Under **Descriptive Data**, complete the following fields:
 
-8. Click on the **project number** to access the WebGIS list associated with this Cartographic Group.
+      - **Public Title:** `Tutorial_G3WSUITE`
+      - **Thumbnail:** `tutorial_image`
 
-     <br>
-     
-     <div style="text-align: center;">
-       <img src="../img/geoserver-img-19.png" alt="Open the Target Group" width=auto>
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-29.png" alt="New QGIS Project 2" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
-     </div>
-
-     <br>
-
-9. Click the **Add QGIS Project** button
-
-     <br>
-
-     <div style="text-align: center;">
-       <img src="../img/geoserver-img-20.png" alt="Add a New QGIS Project" width=auto>
-       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
-       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
-       </div>
-     </div>
-
-     <br>
-
-10. Fill in the project form fields:
+      </div>
       
       <br>
 
-11. In the **Options and Actions** section you can enable/disable the following features:
-      
+5. Under **Default Base Layer**, choose **OSM (OpenStreetMap)**.
+
       <br>
 
-12. After completing the form, click **Save**
-
-     <br>
-     
-     <div style="text-align: center;">
-       <img src="../img/geoserver-img-19.png" alt="Save button" width=auto>
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-30.png" alt="New QGIS Project 3" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
-     </div>
+      </div>
 
-     <br>
+      <br>
 
-Upon successful publication, the QGIS project will appear in the list of WebGIS services in the Cartographic Group. You can **Click the View Map Icon** to launch and explore the live WebGIS.
+6. In the **Options and Actions** section, leave all settings at their default values.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-31.png" alt="New QGIS Project 4" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+      
+      <br>
+
+7. Click the **Save** button.
+
+Once successfully published, the project will appear in the **WebGIS services list** under the Cartographic Group. You can click the **View Map** icon to launch and explore the live WebGIS.
 
 <br>
 
 <div style="text-align: center;">
-  <img src="../img/geoserver-img-20.png" alt="Live WebGIS" width=auto>
+  <img src="../img/g3w-img-32.png" alt="Live WebGIS" width=auto>
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
   Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
   </div>
 </div>
+
+<br>
 
 > **Note:** For more details, refer to the [Publish the QGIS project as a WebGis service](https://g3w-suite.readthedocs.io/en/latest/demo.html#publish-the-qgis-project-as-a-webgis-service) section of the official G3W documentation.
 
@@ -844,19 +857,76 @@ Upon successful publication, the QGIS project will appear in the list of WebGIS 
 
 ### Updating the Published WebGIS Service
 
-If you need to update the **graphic or functional elements** of an existing WebGIS service:
+You can update both the **graphic** and **functional elements** of an existing WebGIS service in G3W-SUITE.
 
-1. **Modify** your original QGIS project by making the necessary changes in QGIS (e.g., layer styles, labels, visibility, project settings).
+---
 
-2. **Access** the Administration Panel and navigate to the Cartographic Group where your project is published.
+#### Overview
 
-3. Click the **Modify** icon that appears next to the published project.
+To update a published WebGIS service:
 
-3. **Reupload** the modified QGIS project file (.qgz or .qgs).
+1. **Access the Project List** by navigating to the list of projects under the appropriate Cartographic Group.
 
-4. Click **Save**. 
+2. **Edit the WebGIS Service** by clicking the **Edit** icon next to the desired WebGIS service to upload a modified QGIS file and update configuration options.
 
-Your changes will be applied to the WebGIS service. Return to the cartographic client and view the updated project live.
+<br>
+
+From the WebGIS services list, you can manage a wide range of functionalities using **tools** associated with each project. This allows you to view, modify, and control individual project behavior. Below is a guide to the available **tools and their functionality**:
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-33.png" alt="Functional Tools" width=auto>
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
+ 
+---
+
+#### Excercise
+
+**Setting Up an Overview Map**
+
+You can define a **panoramic overview map** (mini-map) for your WebGIS group. This map appears in a corner of the main WebGIS interface and provides spatial context.
+
+<br>
+
+1. In the **Cartographic Groups** tab, under the `Project Group`, click the **Projects** button.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-34.png" alt="Project Group" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+2. Locate the `Tutorial_G3WSUITE` project and check the box in the **Overview** column.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-35.png" alt="Overview Column" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+3. Click the **Save** button. Your updates will now be applied. 
+
+<br>
+
+Return to the cartographic client and launch the WebGIS to verify the updated configuration, including the newly defined overview map. Use the **View Map** icon from the project list to open the WebGIS and check changes in real time.
+
+<br>
+
+> **Note:** For more details, refer to the [Update/Manage WebGis services](https://g3w-suite.readthedocs.io/en/latest/g3wsuite_administration.html#update-manage-webgis-services) section of the official G3W documentation.
 
 ---
 
@@ -866,7 +936,12 @@ Once your project has been published, you can enhance your WebGIS service by ena
 
 ---
 
-#### Widget Overview
+#### Overview
+
+
+---
+
+#### Exercise
 
 1. Click the **Layers list** icon to access the list of geographic layers in your project. 
 
