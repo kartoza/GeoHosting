@@ -55,6 +55,14 @@ class Preferences(SingletonModel):
         )
     )
 
+    # This is for ERP project for GeoHosting
+    erpnext_project_code = models.CharField(
+        max_length=100, blank=True, null=True,
+        help_text=(
+            'The project code of geohosting on ERP.'
+        )
+    )
+
     class Meta:  # noqa: D106
         verbose_name_plural = "preferences"
 

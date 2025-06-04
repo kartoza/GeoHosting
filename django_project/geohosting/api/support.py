@@ -10,10 +10,12 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import AllowAny
 
 from core.api import FilteredAPI
+from core.models.preferences import Preferences
 from geohosting.models.support import Ticket, Attachment
 from geohosting.serializer.support import (
     TicketSerializer, AttachmentSerializer
 )
+from geohosting_event.models.log import LogTracker
 
 
 class TicketSetView(
@@ -47,6 +49,18 @@ class TicketSetView(
 
     def perform_create(self, serializer):
         """Attach the current user to the ticket upon creation."""
+        pref = Preferences.load()
+        if not pref.erpnext_project_code:
+            LogTracker.error(
+                pref,
+                f'No ERPNext project code found, check on ERP '
+                f'if {pref.erpnext_project_code} is exist'
+            )
+            raise PermissionDenied(
+                'The support ticket system is currently down. '
+                'Please bear with us while we investigate the issue.'
+            )
+
         if self.request.user.is_authenticated:
             serializer.save(user=self.request.user)
         else:
@@ -54,7 +68,8 @@ class TicketSetView(
             try:
                 User.objects.get(email=customer)
                 raise PermissionDenied(
-                    'You need to be logged in to create ticket with this email.'
+                    'Please log in to create '
+                    'a support ticket with this email address.'
                 )
             except User.DoesNotExist:
                 serializer.save()

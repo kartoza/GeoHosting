@@ -4,6 +4,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
 
+from core.models.preferences import Preferences
 from geohosting.models.erp_model import ErpModel
 from geohosting.utils.erpnext import (
     fetch_erpnext_data, put_to_erpnext
@@ -56,6 +57,7 @@ class Ticket(ErpModel):
     @property
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
+        pref = Preferences.load()
         payload = {
             "doctype": "Issue",
             "raised_by": self.customer,
@@ -64,9 +66,11 @@ class Ticket(ErpModel):
             "description": self.details,
             "status": 'Open',
             "issue_type": self.issue_type,
+            "project": pref.erpnext_project_code
         }
         if (
-                self.user and self.user.userprofile and self.user.userprofile.erpnext_code
+                self.user and self.user.userprofile and
+                self.user.userprofile.erpnext_code
         ):
             payload['customer'] = self.user.userprofile.erpnext_code
 

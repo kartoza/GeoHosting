@@ -75,5 +75,5 @@ class ErpModel(models.Model):
                         key in field_names
                     }
                 )
-        except Exception as e:
+        except Exception:
             pass
