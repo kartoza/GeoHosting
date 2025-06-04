@@ -88,8 +88,9 @@ class Ticket(ErpModel):
     @classmethod
     def sync_data(cls):
         """Sync data from erpnext to django that has erpnext code."""
+        pref = Preferences.load()
         filters = [
-            ["project", "=", "GSH Support"],
+            ["project", "=", pref.erpnext_project_code],
         ]
         try:
             erp_tickets = fetch_erpnext_data(
