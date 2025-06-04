@@ -36,6 +36,10 @@ app.conf.beat_schedule = {
         'task': 'check_instances',
         'schedule': crontab(minute='*'),
     },
+    'sync_all_erp_data': {
+        'task': 'sync_all_erp_data',
+        'schedule': crontab(minute='*'),
+    },
     'sync_subscriptions': {
         'task': 'sync_subscriptions',
         'schedule': crontab(minute='*/5'),

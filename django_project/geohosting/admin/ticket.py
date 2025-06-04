@@ -14,6 +14,17 @@ from geohosting.models.support import Ticket
 class TicketAdmin(admin.ModelAdmin):
     """Ticket admin."""
 
+    change_list_template = 'admin/erp_change_list.html'
+
+    def changelist_view(self, request, extra_context=None):
+        """Changelist view."""
+        custom_context = {
+            "class_name": "Ticket"
+        }
+        extra_context = extra_context or {}
+        extra_context.update(custom_context)
+        return super().changelist_view(request, extra_context=extra_context)
+
     list_display = (
         'id', 'erpnext_code', 'customer', 'subject', 'status', 'created_at',
         'updated_at'
