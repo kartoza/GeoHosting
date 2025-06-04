@@ -81,10 +81,10 @@ class Ticket(ErpModel):
         }
 
     @staticmethod
-    def fetch_ticket_from_erp(user_email, ids=None):
+    def fetch_ticket_from_erp(user: User, ids=None):
         """Fetch ticket from erp."""
         filters = [
-            ["raised_by", "=", user_email]
+            ["customer", "=", user.userprofile.erpnext_code],
         ]
         if ids:
             filters.append(
@@ -108,8 +108,8 @@ class Ticket(ErpModel):
                 )
                 if erp_ticket.get('name'):
                     Ticket.objects.update_or_create(
-                        customer=user_email,
                         erpnext_code=erp_ticket.get('name'),
+                        user=user,
                         defaults={
                             'status': django_status,
                             'subject': erp_ticket.get('subject'),

@@ -31,20 +31,16 @@ class TicketSetView(
 
     def get_queryset(self):
         """Return querysets."""
-        user_email = None
         try:
-            user_email = self.request.user.email
-            # TODO:
-            #  Need to put this on a ticket level
-            query = Ticket.objects.filter(customer=user_email)
+            query = Ticket.objects.filter(user=self.request.user)
         except AttributeError:
             query = Ticket.objects.none()
         queryset = self.filter_query(self.request, query).order_by(
             '-updated_at'
         )
-        if user_email:
+        if self.request.user.is_authenticated:
             Ticket.fetch_ticket_from_erp(
-                user_email,
+                self.request.user,
                 list(queryset.values_list('erpnext_code', flat=True))
             )
         return queryset
