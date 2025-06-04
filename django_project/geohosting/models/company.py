@@ -46,12 +46,10 @@ class Company(ErpModel):
 
     def post_to_erpnext(self):
         """Post data to erp."""
-        erpnext_code = self.erpnext_code
         output = super().post_to_erpnext()
         self.companybillinginformation.post_to_erpnext()
-        if not erpnext_code:
-            for contact in self.companycontact_set.all():
-                contact.post_to_erpnext()
+        for contact in self.companycontact_set.all():
+            contact.post_to_erpnext()
 
         return output
 

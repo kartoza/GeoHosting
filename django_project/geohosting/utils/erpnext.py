@@ -8,18 +8,20 @@ from django.core.files.storage import default_storage
 
 from geohosting_event.models.erp import ErpRequestLog, RequestMethod
 
-headers = {
-    "Authorization": (
-        f"token {settings.ERPNEXT_API_KEY}:"
-        f"{settings.ERPNEXT_API_SECRET}"
-    ),
-}
+
+def headers():
+    return {
+        "Authorization": (
+            f"token {settings.ERPNEXT_API_KEY}:"
+            f"{settings.ERPNEXT_API_SECRET}"
+        )
+    }
 
 
 def test_connection():
     """Test erpnext connection."""
     url = f"{settings.ERPNEXT_BASE_URL}/api/resource/Item?limit=1"
-    return requests.get(url, headers=headers)
+    return requests.get(url, headers=headers())
 
 
 def fetch_erpnext_detail_data(doctype, filters=None):
@@ -38,7 +40,7 @@ def fetch_erpnext_detail_data(doctype, filters=None):
         params['filters'] = json.dumps(filters)
 
     try:
-        response = requests.get(url, headers=headers, params=params)
+        response = requests.get(url, headers=headers(), params=params)
 
         if response.status_code == 200:
             data = response.json()
@@ -100,7 +102,7 @@ def fetch_erpnext_data(
             params['limit_start'] = (page - 1) * page_length
             params['limit_page_length'] = page_length
 
-            response = requests.get(url, headers=headers, params=params)
+            response = requests.get(url, headers=headers(), params=params)
             print(
                 f'{url} params: {json.dumps(params)} : '
                 f'{response.status_code}'
@@ -156,15 +158,72 @@ def post_to_erpnext(data, doctype, file=None):
     try:
         if files:
             response = requests.post(
-                url, headers=headers,
+                url, headers=headers(),
                 data=data, files=files
             )
         else:
-            headers["Content-Type"] = "application/json"
+            _headers = headers()
+            _headers["Content-Type"] = "application/json"
             response = requests.post(
-                url, headers=headers,
+                url, headers=_headers,
                 data=json.dumps(data)
             )
+
+        response.raise_for_status()
+        response_data = response.json()
+        record_id = response_data.get("data", {}).get("name")
+
+        log.response_code = response.status_code
+        log.save()
+
+        return {"status": "success", "id": record_id}
+
+    except requests.exceptions.HTTPError as err:
+        log.response_code = err.response.status_code
+        log.response_text = str(err)
+        log.save()
+
+        if response.status_code == 409:
+            return {"status": "conflict", "message": "Data already exists."}
+        else:
+            return {"status": "error", "message": str(err)}
+
+
+def upload_attachment_to_erp(doctype, id, file):
+    """Post data to ERPNext and handle conflict if the data already exists.
+
+    Parameters:
+        data (dict): The data to post.
+        doctype (str): The document type to post the data to.
+        file (file, optional): The file to upload.
+
+    Returns:
+        result (dict): The result containing the status and message.
+    """
+    if not settings.ERPNEXT_BASE_URL:
+        return {
+            "status": "error",
+            "message": 'ERPNEXT_BASE_URL is not set.'
+        }
+
+    url = f"{settings.ERPNEXT_BASE_URL}/api/method/upload_file"
+
+    files = {'file': file}
+    data = {
+        "doctype": doctype,
+        "docname": id
+    }
+    log = ErpRequestLog.objects.create(
+        url=url,
+        method=RequestMethod.POST,
+        data=data,
+    )
+
+    try:
+        response = requests.post(
+            url, headers=headers(),
+            data=data, files=files
+        )
 
         response.raise_for_status()
         response_data = response.json()
@@ -217,13 +276,15 @@ def put_to_erpnext(data, doctype, id, file=None):
     try:
         if files:
             response = requests.put(
-                url, headers=headers,
+                url, headers=headers(),
                 data=data, files=files
             )
         else:
-            headers["Content-Type"] = "application/json"
+            _headers = headers()
+            _headers["Content-Type"] = "application/json"
             response = requests.put(
-                url, headers=headers,
+                url,
+                headers=_headers,
                 data=json.dumps(data)
             )
 
@@ -264,9 +325,10 @@ def add_erp_next_comment(user, doctype: str, id: str, comment: str):
         "comment_by": f"{user.first_name} {user.last_name}"
     }
     try:
-        headers["Content-Type"] = "application/json"
+        _headers = headers()
+        _headers["Content-Type"] = "application/json"
         response = requests.post(
-            url, headers=headers, data=json.dumps(data)
+            url, headers=_headers, data=json.dumps(data)
         )
 
         response.raise_for_status()
@@ -280,7 +342,7 @@ def add_erp_next_comment(user, doctype: str, id: str, comment: str):
 def download_erp_file(image_path, folder='product_images', filename=None):
     """Download file from erpnext."""
     url = f"{settings.ERPNEXT_BASE_URL}{image_path}"
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers())
 
     if response.status_code == 200:
         if not filename:

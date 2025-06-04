@@ -4,14 +4,18 @@ GeoHosting Controller.
 .. note:: Ticket.
 """
 
+from django.contrib.auth.models import User
 from rest_framework import mixins, viewsets
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import AllowAny
 
 from core.api import FilteredAPI
+from core.models.preferences import Preferences
 from geohosting.models.support import Ticket, Attachment
 from geohosting.serializer.support import (
     TicketSerializer, AttachmentSerializer
 )
+from geohosting_event.models.log import LogTracker
 
 
 class TicketSetView(
@@ -29,23 +33,46 @@ class TicketSetView(
 
     def get_queryset(self):
         """Return querysets."""
-        user_email = None
         try:
-            user_email = self.request.user.email
-            # TODO:
-            #  Need to put this on a ticket level
-            query = Ticket.objects.filter(customer=user_email)
+            query = Ticket.objects.filter(user=self.request.user)
         except AttributeError:
             query = Ticket.objects.none()
         queryset = self.filter_query(self.request, query).order_by(
             '-updated_at'
         )
-        if user_email:
+        if self.request.user.is_authenticated:
             Ticket.fetch_ticket_from_erp(
-                user_email,
+                self.request.user,
                 list(queryset.values_list('erpnext_code', flat=True))
             )
         return queryset
+
+    def perform_create(self, serializer):
+        """Attach the current user to the ticket upon creation."""
+        pref = Preferences.load()
+        if not pref.erpnext_project_code:
+            LogTracker.error(
+                pref,
+                f'No ERPNext project code found, check on ERP '
+                f'if {pref.erpnext_project_code} is exist'
+            )
+            raise PermissionDenied(
+                'The support ticket system is currently down. '
+                'Please bear with us while we investigate the issue.'
+            )
+
+        if self.request.user.is_authenticated:
+            serializer.save(user=self.request.user)
+        else:
+            customer = serializer.validated_data['customer']
+            try:
+                User.objects.get(email=customer)
+                raise PermissionDenied(
+                    'Please log in to create '
+                    'a support ticket with this email address.'
+                )
+            except User.DoesNotExist:
+                serializer.save()
 
 
 class AttachmentSetView(

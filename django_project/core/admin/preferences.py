@@ -33,7 +33,7 @@ class PreferencesAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('site_type', 'support_email')
+            'fields': ('site_type', 'support_email', 'erpnext_project_code')
         }),
         ('Rule', {
             'fields': ('grace_period_days', 'reminder_days_after_expiry')

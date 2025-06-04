@@ -75,6 +75,5 @@ class ErpModel(models.Model):
                         key in field_names
                     }
                 )
-        except Exception as e:
-            print(e)
+        except Exception:
             pass

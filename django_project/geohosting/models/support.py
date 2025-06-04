@@ -1,11 +1,13 @@
 # models.py
 from datetime import datetime
 
+from django.contrib.auth.models import User
 from django.db import models
 
+from core.models.preferences import Preferences
 from geohosting.models.erp_model import ErpModel
 from geohosting.utils.erpnext import (
-    fetch_erpnext_data, put_to_erpnext
+    fetch_erpnext_data, upload_attachment_to_erp
 )
 
 status_erp = {
@@ -43,6 +45,9 @@ class Ticket(ErpModel):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True
+    )
 
     @property
     def doc_type(self):
@@ -52,14 +57,24 @@ class Ticket(ErpModel):
     @property
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
-        return {
+        pref = Preferences.load()
+        payload = {
             "doctype": "Issue",
             "raised_by": self.customer,
             "owner": self.customer,
             "subject": self.subject,
             "description": self.details,
-            "status": 'Open'
+            "status": 'Open',
+            "issue_type": self.issue_type,
+            "project": pref.erpnext_project_code
         }
+        if (
+                self.user and self.user.userprofile and
+                self.user.userprofile.erpnext_code
+        ):
+            payload['customer'] = self.user.userprofile.erpnext_code
+
+        return payload
 
     @property
     def erp_payload_for_edit(self):
@@ -70,10 +85,10 @@ class Ticket(ErpModel):
         }
 
     @staticmethod
-    def fetch_ticket_from_erp(user_email, ids=None):
+    def fetch_ticket_from_erp(user: User, ids=None):
         """Fetch ticket from erp."""
         filters = [
-            ["raised_by", "=", user_email]
+            ["customer", "=", user.userprofile.erpnext_code],
         ]
         if ids:
             filters.append(
@@ -97,8 +112,8 @@ class Ticket(ErpModel):
                 )
                 if erp_ticket.get('name'):
                     Ticket.objects.update_or_create(
-                        customer=user_email,
                         erpnext_code=erp_ticket.get('name'),
+                        user=user,
                         defaults={
                             'status': django_status,
                             'subject': erp_ticket.get('subject'),
@@ -124,9 +139,8 @@ class Attachment(models.Model):
 
     def post_to_erpnext(self):
         """Post the attachment to erp."""
-        put_to_erpnext(
-            {},
-            self.ticket.doc_type,
-            self.ticket.erpnext_code,
-            file=self.file.file.read()
+        return upload_attachment_to_erp(
+            doctype=self.ticket.doc_type,
+            id=self.ticket.erpnext_code,
+            file=self.file.file
         )
