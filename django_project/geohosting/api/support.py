@@ -37,15 +37,9 @@ class TicketSetView(
             query = Ticket.objects.filter(user=self.request.user)
         except AttributeError:
             query = Ticket.objects.none()
-        queryset = self.filter_query(self.request, query).order_by(
+        return self.filter_query(self.request, query).order_by(
             '-updated_at'
         )
-        if self.request.user.is_authenticated:
-            Ticket.fetch_ticket_from_erp(
-                self.request.user,
-                list(queryset.values_list('erpnext_code', flat=True))
-            )
-        return queryset
 
     def perform_create(self, serializer):
         """Attach the current user to the ticket upon creation."""

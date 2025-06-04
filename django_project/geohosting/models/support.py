@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from core.models.preferences import Preferences
+from geohosting.models import UserProfile
 from geohosting.models.erp_model import ErpModel
 from geohosting.utils.erpnext import (
     fetch_erpnext_data, upload_attachment_to_erp
@@ -84,23 +85,18 @@ class Ticket(ErpModel):
             "description": self.details,
         }
 
-    @staticmethod
-    def fetch_ticket_from_erp(user: User, ids=None):
-        """Fetch ticket from erp."""
+    @classmethod
+    def sync_data(cls):
+        """Sync data from erpnext to django that has erpnext code."""
         filters = [
-            ["customer", "=", user.userprofile.erpnext_code],
+            ["project", "=", "GSH Support"],
         ]
-        if ids:
-            filters.append(
-                ["name", "in", ids]
-            )
-
         try:
             erp_tickets = fetch_erpnext_data(
                 doctype="Issue", filters=filters,
                 fields=[
                     "name", "subject", "description", "status", "owner",
-                    "modified"
+                    "modified", "customer", "raised_by"
                 ]
             )
             if not isinstance(erp_tickets, list):
@@ -110,11 +106,21 @@ class Ticket(ErpModel):
                 django_status = status_erp.get(
                     erp_ticket.get('status'), 'open'
                 )
+                customer = erp_ticket.get('customer')
+                user = None
+                if customer:
+                    try:
+                        user = UserProfile.objects.get(
+                            erpnext_code=customer
+                        ).user
+                    except UserProfile.DoesNotExist:
+                        pass
                 if erp_ticket.get('name'):
-                    Ticket.objects.update_or_create(
+                    ticket, _ = Ticket.objects.update_or_create(
                         erpnext_code=erp_ticket.get('name'),
-                        user=user,
                         defaults={
+                            'user': user,
+                            'customer': erp_ticket.get('raised_by'),
                             'status': django_status,
                             'subject': erp_ticket.get('subject'),
                             'details': erp_ticket.get('description'),
