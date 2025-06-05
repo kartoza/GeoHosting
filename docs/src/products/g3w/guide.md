@@ -453,11 +453,21 @@ The QGIS project (based on QGIS 3.34.x LTR) is pre-configured with the following
 
 #### Exercise
 
-Before publishing your QGIS project to the WebGIS platform, you **must update the project title**, as it will serve as the unique identifier for the published WebGIS service.
+Before you can publish your QGIS project to the WebGIS platform, there are **two essential steps** you **MUST** complete:
 
-> **Note:** The publication system uses the project title as the WebGIS service ID. If not updated, your service may be misidentified or conflict with others.
+1. **Update the Project Title**
 
-<br>
+       This title will be used as the WebGIS service ID. If not updated, your service may be misidentified or conflict with existing services.
+
+       <br>
+
+2. **Upload the SpatiaLite database to the File Manager**
+
+       This ensures that G3W-SUITE can access the data sources used in your QGIS project. Without it, layers may not display correctly.
+
+       <br>
+
+---
 
 **Steps to update the project title:**
 
@@ -496,9 +506,123 @@ Before publishing your QGIS project to the WebGIS platform, you **must update th
 
 ---
 
+**Uploading the SpatiaLite database to the File Manager**
+
+1. Open a web browser and navigate to:
+
+      ```
+      http://<application_name>.sta.do.kartoza.com/g3w
+      ```
+
+      <br>
+
+2. Log in to G3W-SUITE using your **administrator credentials**.
+
+      - **Username:** `admin`
+      - **Password:** `*generate from dashboard*`
+
+      <br>
+
+      > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
+      
+      <br>
+
+3. Once authenticated, navigate to the **Administration Panel**
+
+      <br>
+
+      > **Hint:** Need help navigating to the Administration Panel? Refer to the [Administration Panel](https://kartoza.github.io/GeoHosting/products/g3w/guide/#administration-panel) section. 
+      
+      <br>
+
+4. In the top-bar, click the **Gear** icon.
+
+      <br>
+
+5. Under **File Manager**, select **Files**.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-17.png" alt="Gear Icon" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+6. From the **Home** folder (or the left-hand panel), navigate to the `project_data` folder.
+
+      <br>
+
+7. In the top navigation bar, click the **New Folder** button.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-18.png" alt="New Folder button" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+8. Name your new folder `spatialite` and click **Create Folder**.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-19.png" alt="Create New Folder" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+      > **Note:** Make sure the file path matches the one specified in your QGIS project.
+
+      <br>
+
+9. Open your newly created folder, then in the top bar, click **Upload**.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-20.png" alt="Upload Button" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+10. Click inside the file drop area to open your system file explorer.
+
+      <br>
+
+11. Select the `building_management_demo.sqlite` file from the `project_data -> spatialite` folder and click **Upload**.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/g3w-img-21.png" alt="Upload File" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+You’ve successfully uploaded your SpatiaLite database to the File Manager and can now proceed with publishing your QGIS project.
+
+---
+
 ### Publishing a QGIS Project
 
-Once you've updated the project title, you're ready to begin publishing it as a WebGIS service.
+Once you have updated the project title (to define a unique WebGIS service ID), and uploaded your SpatiaLite database to the correct folder in the File Manager, you’re ready to publish your QGIS project as a WebGIS service in G3W-SUITE.
 
 ---
 
@@ -568,40 +692,13 @@ Now that you're familiar with the workflow and the publishing interface key comp
 Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
 
 <br>
-
-1. Open a web browser and navigate to:
-
-      ```
-      http://<application_name>.sta.do.kartoza.com/g3w
-      ```
-
-      <br>
-
-2. Log in to G3W-SUITE using your **administrator credentials**.
-
-      - **Username:** `admin`
-      - **Password:** `*generate from dashboard*`
-
-      <br>
-
-      > **Hint:** Need help finding your credentials? See the section: [Using the Kartoza GeoSpatialHosting Dashboard](https://kartoza.github.io/GeoHosting/products/g3w/guide/#using-the-kartoza-geospatialhosting-dashboard)
-      
-      <br>
-
-3. Once authenticated, navigate to the **Administration Panel**
-
-      <br>
-
-      > **Hint:** Need help navigating to the Administration Panel? Refer to the [Administration Panel](https://kartoza.github.io/GeoHosting/products/g3w/guide/#administration-panel) section. 
-      
-      <br>
-
-4. In the left-side navigation menu, click **Dashboard**.
+ 
+1. From the Administration Panel, in the left-side navigation menu, click **Dashboard**.
  
        <br>
 
        <div style="text-align: center;">
-       <img src="../img/g3w-img-17.png" alt="Dashboard" width=auto>
+       <img src="../img/g3w-img-22.png" alt="Dashboard" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -609,16 +706,16 @@ Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
 
        <br>
 
-5. Within the Dashboard, locate the light blue **Groups** box.
+2. Within the Dashboard, locate the light blue **Groups** box.
 
       <br>
 
-6. Click **Show** to display the list of existing **Cartographic Groups**.
+3. Click **Show** to display the list of existing **Cartographic Groups**.
 
       <br>
      
       <div style="text-align: center;">
-       <img src="../img/g3w-img-18.png" alt="Groups Box" width=auto>
+       <img src="../img/g3w-img-23.png" alt="Groups Box" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -626,12 +723,12 @@ Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
 
       <br>
 
-7. In the left navigation bar under **Macro Cartographic Groups**, click **Add MACRO Group**
+4. In the left navigation bar under **Macro Cartographic Groups**, click **Add MACRO Group**
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-19.png" alt="Cartographic Groups" width=auto>
+       <img src="../img/g3w-img-24.png" alt="Cartographic Groups" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -639,7 +736,7 @@ Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
     
       <br>
 
-8. On the Macro Group creation page, under the **General Data** section, complete the following fields:
+5. On the Macro Group creation page, under the **General Data** section, complete the following fields:
 
       - **Identification name:** `Tutorial Group`
       - **Title:** `Tutorial Group`
@@ -647,7 +744,7 @@ Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-20.png" alt="Macro Group Form" width=auto>
+       <img src="../img/g3w-img-25.png" alt="Macro Group Form" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -655,12 +752,12 @@ Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
 
       <br>
 
-9. In the **Logo Image** section, upload the `tutorial_image` PNG located in the `Tutorial_Data_G3WSUITE` folder.
+6. In the **Logo Image** section, upload the `tutorial_image` PNG located in the `Tutorial_Data_G3WSUITE` folder.
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-21.png" alt="Logo Image Section" width=auto>
+       <img src="../img/g3w-img-26.png" alt="Logo Image Section" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -668,7 +765,7 @@ Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
 
       <br>
 
-10. Once all fields are complete, click **Save** to finalize the creation of your Macro Group.
+7. Once all fields are complete, click **Save** to finalize the creation of your Macro Group.
 
       <br>
 
@@ -685,7 +782,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-22.png" alt="Cartographic Macro Groups" width=auto>
+       <img src="../img/g3w-img-27.png" alt="Cartographic Macro Groups" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -701,7 +798,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-23.png" alt="Group Form 1" width=auto>
+       <img src="../img/g3w-img-28.png" alt="Group Form 1" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -722,7 +819,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-24.png" alt="Group Form 2" width=auto>
+       <img src="../img/g3w-img-29.png" alt="Group Form 2" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -735,7 +832,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-25.png" alt="Group Form 3" width=auto>
+       <img src="../img/g3w-img-30.png" alt="Group Form 3" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -748,7 +845,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-26.png" alt="Group Form 4" width=auto>
+       <img src="../img/g3w-img-31.png" alt="Group Form 4" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -769,7 +866,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-27.png" alt="Add Project" width=auto>
+       <img src="../img/g3w-img-32.png" alt="Add Project" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -786,7 +883,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-28.png" alt="New QGIS Project 1" width=auto>
+       <img src="../img/g3w-img-33.png" alt="New QGIS Project 1" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -802,7 +899,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-29.png" alt="New QGIS Project 2" width=auto>
+       <img src="../img/g3w-img-34.png" alt="New QGIS Project 2" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -815,7 +912,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-30.png" alt="New QGIS Project 3" width=auto>
+       <img src="../img/g3w-img-35.png" alt="New QGIS Project 3" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -828,7 +925,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-31.png" alt="New QGIS Project 4" width=auto>
+       <img src="../img/g3w-img-36.png" alt="New QGIS Project 4" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -843,7 +940,7 @@ Once successfully published, the project will appear in the **WebGIS services li
 <br>
 
 <div style="text-align: center;">
-  <img src="../img/g3w-img-32.png" alt="Live WebGIS" width=auto>
+  <img src="../img/g3w-img-37.png" alt="Live WebGIS" width=auto>
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
   Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
   </div>
@@ -876,7 +973,7 @@ From the WebGIS services list, you can manage a wide range of functionalities us
 <br>
 
 <div style="text-align: center;">
-  <img src="../img/g3w-img-33.png" alt="Functional Tools" width=auto>
+  <img src="../img/g3w-img-38.png" alt="Functional Tools" width=auto>
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
   Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
   </div>
@@ -897,7 +994,7 @@ You can define a **panoramic overview map** (mini-map) for your WebGIS group. Th
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-34.png" alt="Project Group" width=auto>
+       <img src="../img/g3w-img-39.png" alt="Project Group" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -905,12 +1002,12 @@ You can define a **panoramic overview map** (mini-map) for your WebGIS group. Th
 
       <br>
 
-2. Locate the `Tutorial_G3WSUITE` project and check the box in the **Overview** column.
+2. Locate the `Tutorial_G3WSUITE` project and check the box in the **Panoramic** column.
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/g3w-img-35.png" alt="Overview Column" width=auto>
+       <img src="../img/g3w-img-40.png" alt="Panoramic Column" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -918,11 +1015,16 @@ You can define a **panoramic overview map** (mini-map) for your WebGIS group. Th
 
       <br>
 
-3. Click the **Save** button. Your updates will now be applied. 
+Your updates will now be applied. Return to the cartographic client and launch the WebGIS to verify the updated configuration, including the newly defined overview map. Use the **View Map** icon from the project list to open the WebGIS and check changes in real time.
 
 <br>
 
-Return to the cartographic client and launch the WebGIS to verify the updated configuration, including the newly defined overview map. Use the **View Map** icon from the project list to open the WebGIS and check changes in real time.
+<div style="text-align: center;">
+  <img src="../img/g3w-img-41.png" alt="Updated Overview Map" width=auto>
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
 
 <br>
 
@@ -938,139 +1040,181 @@ Once your project has been published, you can enhance your WebGIS service by ena
 
 #### Overview
 
+By clicking the **Layers** icon you can access the list of **geographic layers** that make up the project. From this interface, you can configure various **functional options** that will be enabled in the cartographic client.
 
----
+<br>
 
-#### Exercise
+The **Data** tab contains several columns, including:
 
-1. Click the **Layers list** icon to access the list of geographic layers in your project. 
+| Field            | Description                                                   |
+|------------------|---------------------------------------------------------------|
+| **Label**        | Alias set in the QGIS project                                 |
+| **ID**           | Unique identifier (eye icon) used for parameterized URLs      |
+| **Name**         | Layer name (file or DB table)                                 |
+| **Type**         | Data source type (WMS, PostGIS, GDAL, etc.)                   |
+| **WMS External** | Option to handle GetFeatureInfo responses outside QGIS Server |
+| **WFS**          | Indicates if the layer is available as WFS                    |
 
-     <br>
-     
-     <div style="text-align: center;">
-       <img src="../img/geoserver-img-21.png" alt="Layers List" width=auto>
-       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
-       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
-       </div>
-     </div>
+<br>
 
-     <br>
-     
-     The new section will display **all layers** included in the published QGIS project and allows you to configure various functional aspects that will be available in the WebGIS client.
+> **Note:** WMS layers are handled directly by Django to speed up loading, bypassing QGIS Server.
 
-     <br>
-     
-     <div style="text-align: center;">
-       <img src="../img/geoserver-img-21.png" alt="Layers List" width=auto>
-       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
-       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
-       </div>
-     </div>
+<br>
 
-     <br>
+Under the **Actions** column next to each layer, you’ll find a series of **icons** that allow you to manage its behavior and visibility:
 
-2. The **Data** tab contains several fields, including:
+<br>
 
-     | Field            | Description                                                   |
-     |------------------|---------------------------------------------------------------|
-     | **Label**        | Alias set in the QGIS project                                 |
-     | **ID**           | Unique identifier (eye icon) used for parameterized URLs      |
-     | **Name**         | Layer name (file or DB table)                                 |
-     | **Type**         | Data source type (WMS, PostGIS, GDAL, etc.)                   |
-     | **WMS External** | Option to handle GetFeatureInfo responses outside QGIS Server |
-     | **WFS**          | Indicates if the layer is available as WFS                    |
+<div style="text-align: center;">
+  <img src="../img/g3w-img-42.png" alt="Functional Options" width=auto>
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
 
-     > **Note:** WMS layers are handled directly by Django to speed up loading, bypassing QGIS Server.
-     
-     <br>
+<br>
 
-3. Under the **Actions** field you wil find **Layer Action Icons** that provide access to several management tools:
+> **Hint:** Each action icon displays a number indicating how many related objects are configured.
 
-     | Icon         | Function                                                            |
-     |--------------|---------------------------------------------------------------------|
-     | Cache        | **Caching Layer**: Enable/manage cache at project level             |
-     | Edit         | **Editing Layer**: Toggle online editing                            |
-     | Hide Layer   | **Hide Layer by User/Group**                                        |
-     | Plotly       | **QPlotly Widget**: Add/manage DataPlotly plots                     |
-     | Geo          | **Geo Constraints**: Restrict access/editing based on polygons      |
-     | Alpha        | **Alphanumeric Constraints**: Constraints via SQL/QGIS expressions  |
-     | Columns      | **Hide Columns by User/Group**                                      |
-     | Widget       | **Widgets List**: Manage layer-specific widgets                     |
-     | Style        | **Manage Layer Styles**                                             |
+<br>
 
-     > **Hint:** Each action icon displays a number indicating how many related objects are configured.
-     
-     <br>
+The **Download Capabilities** column allows for the download of vector and raster data in the following formats:
 
-4. The **Download Capabilities** field allows for the download of vector and raster data in the following formats:
+| Format      | Available For                  |
+|-------------|--------------------------------|
+| SHP/GeoTIFF | Vector and raster layers       |
+| GPKG        | All layers                     |
+| XLS         | All layers                     |
+| CSV         | All layers                     |
+| GPX         | Geographic layers              |
+| PDF         | Attribute-level export for all |
 
-     | Format      | Available For                  |
-     |-------------|--------------------------------|
-     | SHP/GeoTIFF | Vector and raster layers       |
-     | GPKG        | All layers                     |
-     | XLS         | All layers                     |
-     | CSV         | All layers                     |
-     | GPX         | Geographic layers              |
-     | PDF         | Attribute-level export for all |
+<br>
 
-     <br>
+The **Visibility Capabilities** column allows you to configure general visibility options (applies to all users):
 
-5. The **Visibility Capabilities** allows you to configure general visibility options (applies to all users):
+| Option                    | Effect                   |
+|---------------------------|--------------------------|
+| **Hide Attributes Table** | Disables attribute table |
+| **Hide Legend**           | Disables legend display  |
+| **Hide Layer TOC**        | Removes layer from TOC   |
 
-     | Option                    | Effect                   |
-     |---------------------------|--------------------------|
-     | **Hide Attributes Table** | Disables attribute table |
-     | **Hide Legend**           | Disables legend display  |
-     | **Hide Layer TOC**        | Removes layer from TOC   |
-
-     <br>
+<br>
 
 > **Hint:** Try enabling these features and test them directly in your WebGIS interface.
 
 ---
 
-#### Creating a Search Widget
+#### Exercise
 
-To add a search tool to your WebGIS:
+**Creating a Search Widget**
 
-1. Select the vector layer you want to target and click the **Widget List** icon.
+By default, search widgets can be configured on individual vector layers using the fields from the associated attribute table. Each search widget is saved by referencing the layer’s unique identifiers. 
 
-     > **Note:** There may already be existing searches created by other users. You can activate them by checking the Linked checkbox.
+This design enables reusability: once a search widget is created for a specific layer, it becomes available in any other project where that same layer is used.
 
-     <br>
+<br>
 
-2. You can modify, delete, or unlink existing searches using the **action** icons.
+1. From the Project List page, click the **Layers** icon next to the `Tutorial_G3WSUITE` project. 
 
-3. To create a new one, click the **New Widget** link.
+      <br>
+     
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-43.png" alt="Layers List" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
 
-4. In the **Widget Creation Form**, you're able to configure the following fields:
+      <br>
+     
+2. The new section will open displaying **all layers** included in the published QGIS project.
 
-     | Field            | Description                                                          |
-     | ---------------- | -------------------------------------------------------------------- |
-     | **Form Title**   | Name shown in interface                                              |
-     | **Type**         | "Search"                                                             |
-     | **Name**         | Internal reference name                                              |
-     | **Search Title** | Display name in the WebGis interface                                 |
-     | **Field**        | Field to search on                                                   |
-     | **Widget**       | InputBox, SelectBox, AutoCompleteBox                                 |
-     | **Alias**        | Field display name                                                   |
-     | **Description**  | Additional info                                                      |
-     | **Operator**     | =, <, >, <=, LIKE, ILIKE, etc.                                       |
-     | **Dependency**   | Filter values based on previous fields (only for PostGIS/SpatiaLite) |
+      <br>
+      
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-44.png" alt="Layers List" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
 
-     <br>
+      <br>
 
-5. You can use the **Add Field** button to include multiple conditions using `AND/OR` logic.
+3. Next to the `buildings` layer, click the **Widgets List** icon.
 
-6. **Example:** Creating a search widget for a cadastral layer.
+      <br>
 
-7. Once the form is completed, click **OK** to save.
+4. To create a new widget, click the **Add New Widget** button.
 
-The new search widget will appear in the layer's widget list and be automatically activated in the WebGIS interface.
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-45.png" alt="Add New Widget" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+5. In the **Widget Creation Form**, configure the following:
+
+      - **Type:** `Search`
+      - **Name:** `Search Widget`
+      - **Search Title:** `Tutorial Search Widget`
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-46.png" alt="Widget Creation Form" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+6. In the **Search Field Settings** section, set the following:
+
+      - **Field:** `type`
+      - **Widget:** `SelectBox`
+      - **Alias:** `Building Type`
+      - **Operator:** `= (equal)`
+
+      <br>
+
+      > **Hint:** Use the **Add** button to define multiple search conditions.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-47.png" alt="Search Field Settings" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+7. Once finished, click **OK** to save.
+
+      <br>
+
+The new search widget will now appear in the layer's widget list and will be automatically available in the WebGIS interface.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-48.png" alt="New Search Widget" width=auto>
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
 
 ---
 
-#### Creating a Plots Widget
+**Creating a Plots Widget**
 
 Enables you to add charts created using the **DataPlotly** QGIS plugin (developed by Matteo Ghetta) to your WebGIS service. Charts are saved as `.xml` files and are linked to specific layers. This allows consistent reuse of the same plots across different WebGIS services, as long as the related layer is present.
 
