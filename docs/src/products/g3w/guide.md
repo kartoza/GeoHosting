@@ -1216,105 +1216,312 @@ The new search widget will now appear in the layer's widget list and will be aut
 
 **Creating a Plots Widget**
 
-Enables you to add charts created using the **DataPlotly** QGIS plugin (developed by Matteo Ghetta) to your WebGIS service. Charts are saved as `.xml` files and are linked to specific layers. This allows consistent reuse of the same plots across different WebGIS services, as long as the related layer is present.
+The **QPlotly** widget enables users to view interactive plots, created using the **DataPlotly** QGIS plugin (developed by Matteo Ghetta), directly within the WebGIS cartographic client. 
 
-> **Hint:** You can also activate plots created by other users by checking the Linked checkbox.
+This module uses the **Plotly** library and supports plots saved as `.xml` files. Because each plot is linked to a specific layer in the QGIS project, it allows consistent reuse of the same plots across different WebGIS services, as long as the related layer is present.
 
-Title: Defined in QGIS/DataPlotly and used as the unique identifier
-
-Try creating plots in your QGIS project, export them as .xml, and upload them to see them in your WebGIS.
-
+> **Note:** The plot title, defined in the DataPlotly plugin, acts as the unique identifier.
+ 
 <br>
 
 Plots can be **filtered** by:
 
-1. Map Extent: Based on visible features
+1. **Map Extent:** Based on visible features
 
-2. Feature Selection: Based on selected features
-
-These filters also apply to related plots (1:N relationships), updating automatically as users pan or zoom on the map. If enabled, selection-based filtering is automatically applied to all related charts connected to the same layer. Clear messages will indicate which filters are active on each plot. If a layer has 1:N relationships with other tables and those tables have active plots, users can view these charts by querying the parent layer and clicking the Show relation charts icon.
+2. **Feature Selection:** Based on selected features
 
 <br>
 
-Show Relation Charts: Displays plots from related 1:N tables if they exist and have active charts.
+These filters also apply to **related plots** based on **1:N relationships**. As users pan or zoom on the map, all related plots automatically update to reflect the visible extent.
+
+If **selection-based filtering** is enabled, it is automatically applied to all linked plots associated with the same layer. Users will see clear messages on each chart indicating which filters are currently active.
+
+<br>
+
+When a layer has **1:N relationships** with other tables that contain active plots, users can access those plots by querying the parent layer and clicking the **Show Relation Charts** icon. This feature enhances data exploration by allowing users to interact with and analyze related datasets directly within the WebGIS client.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-49.png" alt="Show Relation Charts Icon" width=auto>
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
+
+<br>
+
+1. From the **QGIS Project Layers** list, next to the `buildings` layer, click the **Qplotly Widgets** icon.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-50.png" alt="QGIS Project Layers List" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+2. To create a new widget, click the **New Qplotly Widget** button.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-51.png" alt="New Qplotly Widget" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+3. In the **New Qplotly Widget** pop-up, click inside the upload box to open your file explorer.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-51.png" alt="New Qplotly Widget" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+4. Navigate to `Tutorial_Data_G3WSUITE -> plots` and select: `qplotly_type-distribution`.
+
+      <br>
+
+5. Click **Ok**.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-52.png" alt="New Qplotly Widget 2" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+The new chart widget will now appear in the layer's **Qplotly Widget List** and will be automatically available in the WebGIS interface.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-53.png" alt="New Search Widget 3" width=auto>
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
+
+<br>
+
+> **Note:** For more details, refer to the [Widgets management](https://g3w-suite.readthedocs.io/en/latest/g3wsuite_administration.html#widgets-management) section of the official G3W documentation.
 
 ---
 
-# Editing on line
-_**Forms and editing widgets are already defined on the project associated with the tutorial for the geometric layer of buildings and for the alphanumeric table related interventions_maintenance.**_
+### Editing Online
 
-* **`Buildings`**
-  * **id** (integer - primary key): autogenerate
-  * **name** (text NOT NULL): text edit
-  * **address** (text): Value relation (roads layer - code/name fileds)
-  * **zone** (text): text edit (with default values based on a QGIS expression to for association with the intersecting works area)
-  * **type** (text NOT NULL): unique values (Administrative, Commercial, Residential)
-  * **subtype** (text NOT NULL): value relation with multiple selections (based on type_subtype table for a drill-down cascading forms)
-  * **attachment** (integer): check box 1/0 (the visibility of the conditional form Documents is based on this field)
-  * **photo** (text): attachment
-  * **link** (text): text edit
-  * **form** (text): attachment
-  * **user** (text): text edit (automatically filled in with the G3W-SUITE  username creator of the feature)
-  * **year** (integer NOT NULL): unique values (2015,2016,2017,2018,2019,2020)
-  * **high** (integer NOT NULL): range (10-30 step 2)
-  * **volume** (integer): range (50-200 step 10)
-  * **surface** (integer): text edit
-  * **architectural_barriers** (text): Checkbox (Checked - Not checked)
-  * **date_barriers** (date): date (yyyy/MM/dd)
-  * **safety_exits** (text): checkbox (Checked - Not checked)
-  * **date_exits** (date): date (yyyy/MM/dd)
-  * **fire_system** (text): Checkbox (Checked - Not checked)
-  * **date_fire** (date): date (yyyy/MM/dd)
+Forms and editing widgets have already been configured in the tutorial project for both the `buildings` geometric layer and the related `interventions_maintenance` attribute table.
 
+---
 
-* **`Maintenance_works`**
-  * **id** (integer - primary key): autogenerate
-  * **id_buildings** (text - relation key): text edit
-  * **maintenance** (text NOT NULL): unique values
-  * **date** (date): date (yyyy/MM/dd)
-  * **form** (text): attachment
-  * **value** (integer): range (10-30 step 2)
-  * **outcome** (text): unique values (good, medium, bad)
-  * **responsible** (text): text edit
-  * **cost** (integer): range (1000-5000 step 1)
-  * **validation** (boolean): checkbox (0/1)
-   
-* **`Buildings rating`**
-  * **id** (integer - primary key): autogenerate
-  * **id_buildings** (text - relation key): text edit
-  * **date** (date): date (yyyy/MM/dd)
-  * **value** (integer): range (1000-4000 step 500)
-  * **year** (integer): range (2018-2022 step 1)
+#### Overview
 
-To activate the editing function on webgis, access the list of layers and identify the three layers shown above.
+Editing settings are defined partly in the **QGIS project** (e.g. form layout), and partly through the G3W-SUITE **Administration panel** (e.g. user permissions). The editing module supports direct edits on both geometric and attribute-only layers, as well as layers in 1:N or N:M (limited) relationships. 
 
-![](./img/g3w-guide-img-39.png)
+<br>
 
-Clicking on the icon **Editing layer** ![](./img/g3w-guide-img-40.png) (placed at the left of each rows) will open a modal window that will allow you to:
-* define the **`editing activation scale`** (only for geometric tables)
-* define the **`Viewer users`** (individuals or groups) **`enabled`** for online editing
+> **Hint:** In QGIS, the form layout and widgets for each layer’s attributes are configured under: `Layer Properties` → `Attributes Form`.
 
-With regard to the last aspect, it should be noted that **Viewers users** (individuals or groups) **available** in the drop-down menu **will be limited to those who have allowed access in consultation to the WebGis project**
+<br>
 
-![](./img/g3w-guide-img-41.png)
-![](./img/g3w-guide-img-42.png)
-![](./img/g3w-guide-img-43.png)
-![](./img/g3w-guide-img-44.png)
+G3W-SUITE supports **multi-user editing** through a **feature locking** system. 
 
-Once the editing function is activated, updating the service, the **`Tools menu` will appear on the left panel.**
+When a user activates editing in the WebGIS interface, all features visible in the current map view become **locked** to that user. Other users will be restricted from editing these features until the original user exits editing mode.
 
-**By activating the editing function it will be possible to edit the geometries and attributes of the Public Buildings layer and the related interventions.**
+<br>
 
-![](./img/g3w-guide-img-45.png)
-![](./img/g3w-guide-img-46.png)
-![](./img/g3w-guide-img-47.png)
+> **Note:** Multi-user editing should **only** be enabled on layers stored in a **GeoDatabase** — not on file-based layers (e.g. shapefiles).
 
-For **further information** on the web editing function, read the [**dedicated chapter on the manual**](https://g3w-suite.readthedocs.io/en/v3.9.x/g3wsuite_editing.html#online-editing-tools-at-cartographic-client-level)
+---
 
-# Personalize your demo
+#### Exercise
 
-**Do you want to test the online editing function more deeply?**
+**Activating Editing on a WebGIS Layer**
 
-Redefine attribute forms, aliases and editing widgets associated with the individual fields and reload the project to check the new settings.
+1. In the **QGIS Project Layers** list, locate the `buildings` layer and click the **Editing Layer** icon.
 
-**It is advisable to consult the** [paragraph dedicated](https://g3w-suite.readthedocs.io/en/v3.9.x/g3wsuite_editing.html#activation-and-configuration) **to the list and limitations of the individual editing widgets inheritable from the QGIS project.**
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-54.png" alt="QGIS Project Layers List" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+2. In the **Activation layer_editing** dialog, you can:
+
+      - Enable or disable editing capabilities
+      - Set the minimum scale for editing
+      - Define which user groups are permitted to edit this layer
+
+      <br>
+      
+3. Under **Check on uncheck to active/deactive editing layer capabilities**, check the corresponding checkbox.
+
+      <br>
+
+4. Fill in the following fields:
+
+      - **Scale:** `2500`
+      - **User Groups Editing Data Field:** `user`
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-55.png" alt="Activation layer_editing" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+5. Click **OK**
+
+      <br>
+
+Once editing is enabled, a new **Editing Layers** menu becomes available in the WebGIS side panel.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-56.png" alt="Editing Layers Menu" width=auto>
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
+
+---
+
+**Editing a WebGIS**
+
+Once activated, editing allows modifications to both geometry and attributes of the buildings layer and its related interventions.
+
+<br>
+
+1. In the **QGIS Project Layers** list, click **Show Map**.
+
+      <br>
+
+2. In the left-hand panel, click **Editing Layers**
+
+      <br>
+
+3. Click the **Edit Layer** icon next to the `Buildings` layer.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-57.png" alt="Edit Layer Icon" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+4. Zoom into an open area where no buildings exist.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-58.png" alt="Open Area" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+5. In the left-hand panel, click the **Add Feature** button.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-59.png" alt="Add Feature Button" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+6. Draw a continuous shape on the basemap. Once finished, the **Editing Attributes** panel will opens.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-60.png" alt="Editing Attributes Panel" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+7. Under the **General Info** tab, fill in:
+
+      - `Name`
+      - `Type`
+
+      <br>
+
+8. Under the **Technical Data** tab, fill in:
+
+      - `Year of Construction`
+      - `High`
+      
+      <br>
+
+9. At the bottom of the form, click **Insert/Edit** 
+
+      <br>
+
+10. In the left-hand panel, click the **Save** icon.
+
+      <br>
+
+      <div style="text-align: center;">
+       <img src="../img/geoserver-img-61.png" alt="Save Icon" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       </div>
+      </div>
+
+      <br>
+
+Your new `Buildings` feature is now saved to the WebGIS.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/g3w-img-62.png" alt="New Feature" width=auto>
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
+
+<br>
+
+> **Note:** For more details, refer to the [Editing on line](https://g3w-suite.readthedocs.io/en/latest/g3wsuite_editing.html#editing-on-line) section of the official G3W documentation.
+
+---
