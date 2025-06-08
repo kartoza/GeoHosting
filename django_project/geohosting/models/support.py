@@ -130,6 +130,7 @@ class Ticket(ErpModel):
                     ticket = Ticket.objects.filter(
                         erpnext_code=erp_ticket.get('name')
                     ).last()
+                    is_created = False
                     if not ticket:
                         ticket, _ = Ticket.objects.get_or_create(
                             erpnext_code=erp_ticket.get('name'),
@@ -142,8 +143,15 @@ class Ticket(ErpModel):
                                 'updated_at': updated_at
                             }
                         )
+                        is_created = _
 
                     ticket.status = django_status
+                    if is_created:
+                        created_at = datetime.strptime(
+                            erp_ticket.get('creation'),
+                            "%Y-%m-%d %H:%M:%S.%f"
+                        )
+                        ticket.created_at = created_at
                     ticket.updated_at = updated_at
                     ticket.save()
 
