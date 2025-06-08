@@ -87,7 +87,12 @@ class Ticket(ErpModel):
 
     @classmethod
     def sync_data(cls):
-        """Sync data from erpnext to django that has erpnext code."""
+        """Sync data from erpnext to django that has erpnext code.
+
+        Note:
+            Erp will reuse the used previous
+            erpnext_code if the ticket is deleted.
+        """
         pref = Preferences.load()
         filters = [
             ["project", "=", pref.erpnext_project_code],
@@ -117,20 +122,31 @@ class Ticket(ErpModel):
                     except UserProfile.DoesNotExist:
                         pass
                 if erp_ticket.get('name'):
-                    ticket, _ = Ticket.objects.update_or_create(
-                        erpnext_code=erp_ticket.get('name'),
-                        defaults={
-                            'user': user,
-                            'customer': erp_ticket.get('raised_by'),
-                            'status': django_status,
-                            'subject': erp_ticket.get('subject'),
-                            'details': erp_ticket.get('description'),
-                            'updated_at': datetime.strptime(
-                                erp_ticket.get('modified'),
-                                "%Y-%m-%d %H:%M:%S.%f"
-                            ),
-                        }
+                    updated_at = datetime.strptime(
+                        erp_ticket.get('modified'),
+                        "%Y-%m-%d %H:%M:%S.%f"
                     )
+
+                    ticket = Ticket.objects.filter(
+                        erpnext_code=erp_ticket.get('name')
+                    ).last()
+                    if not ticket:
+                        ticket, _ = Ticket.objects.get_or_create(
+                            erpnext_code=erp_ticket.get('name'),
+                            defaults={
+                                'user': user,
+                                'customer': erp_ticket.get('raised_by'),
+                                'status': django_status,
+                                'subject': erp_ticket.get('subject'),
+                                'details': erp_ticket.get('description'),
+                                'updated_at': updated_at
+                            }
+                        )
+
+                    ticket.status = django_status
+                    ticket.updated_at = updated_at
+                    ticket.save()
+
         except Exception as e:
             print(f"Error fetching or updating tickets from ERPNext: {e}")
 
