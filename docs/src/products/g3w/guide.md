@@ -358,23 +358,23 @@ Throughout the tutorial, you will gain **practical skills** in:
 
 This tutorial is based on a modified dataset and QGIS 3.34.x LTR project from the official [G3W-SUITE](https://g3w-suite.readthedocs.io/en/latest/index.html) documentation website. Download the **Tutorial Data** using the link below:
 
-- [`Tutorial_Data.zip` Download](insert link)
+- [`Tutorial_Data_G3WSUITE.zip` Download](https://github.com/kartoza/GeoHosting/tree/main/docs/src/products/tutorial_data/Tutorial_Data_G3WSUITE.zip)
 
 <br>
 
-> **Note:** You can download the origianl data from the [Download Demo Data](https://g3w-suite.readthedocs.io/en/latest/demo.html#download-demo-data) section of the G3W-SUITE Documentation
+> **Note:** You can download the original data from the [Download Demo Data](https://g3w-suite.readthedocs.io/en/latest/demo.html#download-demo-data) section of the G3W-SUITE Documentation
 
 <br>
 
 #### Overview
 
-The downloaded `.zip` file includes a `Tutorial_Data_G3WSUITE` folder, containing an image and the following **three subdirectories**:
+The `Tutorial_Data_G3WSUITE` folder contains images and the following **three subdirectories**:
 
 <br>
 
 📁 **`projects/`**
 
- - Contains the QGIS project file: `public-buildings-management-demo-39.qgs`
+ - Contains the QGIS project file: `g3w_tutorial.qgs`
  - The project is fully optimized for this tutorial.
 
  <br>
@@ -387,12 +387,12 @@ The downloaded `.zip` file includes a `Tutorial_Data_G3WSUITE` folder, containin
 
 📁 **`project_data/spatialite/`**
 
- - Contains the SpatiaLite database: `build_management_demo.sqlite`
+ - Contains the SpatiaLite database: `g3w_tutorial.sqlite`
  - This database stores the core data used in the project.
 
  <br>
 
-Inside the **`build_management_demo.sqlite`** file, you’ll find the following layers:
+Inside the **`g3w_tutorial.sqlite`** file, you’ll find the following layers:
 
  <br>
 
@@ -603,7 +603,7 @@ Before you can publish your QGIS project to the WebGIS platform, there are **two
 
       <br>
 
-11. Select the `building_management_demo.sqlite` file from the `project_data -> spatialite` folder and click **Upload**.
+11. Select the `g3w_tutorial.sqlite` file from the `project_data -> spatialite` folder and click **Upload**.
 
       <br>
 
@@ -738,8 +738,8 @@ Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
 
 5. On the Macro Group creation page, under the **General Data** section, complete the following fields:
 
-      - **Identification name:** `Tutorial Group`
-      - **Title:** `Tutorial Group`
+      - **Identification name:** `G3W Tutorial Macro Group`
+      - **Title:** `G3W Tutorial Macro Group`
 
       <br>
 
@@ -752,7 +752,7 @@ Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
 
       <br>
 
-6. In the **Logo Image** section, upload the `tutorial_image` PNG located in the `Tutorial_Data_G3WSUITE` folder.
+6. In the **Logo Image** section, upload the `image_macro_group` PNG located in the `Tutorial_Data_G3WSUITE` folder.
 
       <br>
 
@@ -760,6 +760,7 @@ Follow the steps below to create a Macro Cartographic Group in G3W-SUITE:
        <img src="../img/g3w-img-26.png" alt="Logo Image Section" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+       , <a href="https://www.vecteezy.com/free-photo/cartography" target="_blank">Vecteezy</a>
        </div>
       </div>
 
@@ -792,8 +793,8 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
 
 2. On the Group Creation page, under the **General Data** section, fill out the following fields:
 
-      - **Name:** `Project Group`
-      - **Title:** `Project Group`
+      - **Name:** `G3W Tutorial Group`
+      - **Title:** `G3W Tutorial Group`
 
       <br>
 
@@ -806,7 +807,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
 
       <br>
 
-3. In the **MACRO Groups** section, select the previously created group: `Tutorial Group`
+3. In the **MACRO Groups** section, select the previously created group: `G3W Tutorial Macro Group`
 
       <br>
 
@@ -840,7 +841,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
       
       <br>
 
-6. In the **Logo/Picture** section, upload the `tutorial_image` PNG located in the `Tutorial_Data_G3WSUITE` folder.
+6. In the **Logo/Picture** section, upload the `image_group` PNG located in the `Tutorial_Data_G3WSUITE` folder.
 
       <br>
 
@@ -893,8 +894,8 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
 
 4. Under **Descriptive Data**, complete the following fields:
 
-      - **Public Title:** `Tutorial_G3WSUITE`
-      - **Thumbnail:** `tutorial_image`
+      - **Public Title:** `G3W Tutorial Project`
+      - **Thumbnail:** `image_project`
 
       <br>
 
@@ -935,7 +936,7 @@ Follow the steps below to create a Cartographic Group within G3W-SUITE:
 
 7. Click the **Save** button.
 
-Once successfully published, the project will appear in the **WebGIS services list** under the Cartographic Group. You can click the **View Map** icon to launch and explore the live WebGIS.
+Once successfully published, the project will appear in the **WebGIS services list** under the `G3W Tutorial Group`. You can click the **View Map** icon to launch and explore the live WebGIS.
 
 <br>
 
@@ -989,7 +990,7 @@ You can define a **panoramic overview map** (mini-map) for your WebGIS group. Th
 
 <br>
 
-1. In the **Cartographic Groups** tab, under the `Project Group`, click the **Projects** button.
+1. In the **Cartographic Groups** tab, under the `G3W Tutorial Group`, click the **Projects** button.
 
       <br>
 
@@ -1015,7 +1016,7 @@ You can define a **panoramic overview map** (mini-map) for your WebGIS group. Th
 
       <br>
 
-Your updates will now be applied. Return to the cartographic client and launch the WebGIS to verify the updated configuration, including the newly defined overview map. Use the **View Map** icon from the project list to open the WebGIS and check changes in real time.
+Your updates will now be applied. Use the **View Map** icon from the project list to open the WebGIS to verify the updated configuration, including the newly defined **Overview Map**.
 
 <br>
 
@@ -1120,7 +1121,7 @@ This design enables reusability: once a search widget is created for a specific 
       <br>
      
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-43.png" alt="Layers List" width=auto>
+       <img src="../img/g3w-img-43.png" alt="Layers List" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1128,12 +1129,12 @@ This design enables reusability: once a search widget is created for a specific 
 
       <br>
      
-2. The new section will open displaying **all layers** included in the published QGIS project.
+2. The **QGIS Project Layers** section will open displaying **all layers** included in the published QGIS project.
 
       <br>
       
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-44.png" alt="Layers List" width=auto>
+       <img src="../img/g3w-img-44.png" alt="Layers List" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1150,7 +1151,7 @@ This design enables reusability: once a search widget is created for a specific 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-45.png" alt="Add New Widget" width=auto>
+       <img src="../img/g3w-img-45.png" alt="Add New Widget" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1167,7 +1168,7 @@ This design enables reusability: once a search widget is created for a specific 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-46.png" alt="Widget Creation Form" width=auto>
+       <img src="../img/g3w-img-46.png" alt="Widget Creation Form" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1189,7 +1190,7 @@ This design enables reusability: once a search widget is created for a specific 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-47.png" alt="Search Field Settings" width=auto>
+       <img src="../img/g3w-img-47.png" alt="Search Field Settings" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1241,22 +1242,13 @@ If **selection-based filtering** is enabled, it is automatically applied to all 
 When a layer has **1:N relationships** with other tables that contain active plots, users can access those plots by querying the parent layer and clicking the **Show Relation Charts** icon. This feature enhances data exploration by allowing users to interact with and analyze related datasets directly within the WebGIS client.
 
 <br>
-
-<div style="text-align: center;">
-  <img src="../img/g3w-img-49.png" alt="Show Relation Charts Icon" width=auto>
-  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
-  Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
-  </div>
-</div>
-
-<br>
-
+ 
 1. From the **QGIS Project Layers** list, next to the `buildings` layer, click the **Qplotly Widgets** icon.
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-50.png" alt="QGIS Project Layers List" width=auto>
+       <img src="../img/g3w-img-49.png" alt="QGIS Project Layers List" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1269,7 +1261,7 @@ When a layer has **1:N relationships** with other tables that contain active plo
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-51.png" alt="New Qplotly Widget" width=auto>
+       <img src="../img/g3w-img-50.png" alt="New Qplotly Widget" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1280,16 +1272,7 @@ When a layer has **1:N relationships** with other tables that contain active plo
 3. In the **New Qplotly Widget** pop-up, click inside the upload box to open your file explorer.
 
       <br>
-
-      <div style="text-align: center;">
-       <img src="../img/geoserver-img-51.png" alt="New Qplotly Widget" width=auto>
-       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
-       Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
-       </div>
-      </div>
-
-      <br>
-
+ 
 4. Navigate to `Tutorial_Data_G3WSUITE -> plots` and select: `qplotly_type-distribution`.
 
       <br>
@@ -1299,7 +1282,7 @@ When a layer has **1:N relationships** with other tables that contain active plo
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-52.png" alt="New Qplotly Widget 2" width=auto>
+       <img src="../img/g3w-img-51.png" alt="New Qplotly Widget 2" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1312,7 +1295,7 @@ The new chart widget will now appear in the layer's **Qplotly Widget List** and 
 <br>
 
 <div style="text-align: center;">
-  <img src="../img/g3w-img-53.png" alt="New Search Widget 3" width=auto>
+  <img src="../img/g3w-img-52.png" alt="New Search Widget 3" width=auto>
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
   Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
   </div>
@@ -1359,7 +1342,7 @@ When a user activates editing in the WebGIS interface, all features visible in t
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-54.png" alt="QGIS Project Layers List" width=auto>
+       <img src="../img/g3w-img-53.png" alt="QGIS Project Layers List" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1387,7 +1370,7 @@ When a user activates editing in the WebGIS interface, all features visible in t
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-55.png" alt="Activation layer_editing" width=auto>
+       <img src="../img/g3w-img-54.png" alt="Activation layer_editing" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1404,7 +1387,7 @@ Once editing is enabled, a new **Editing Layers** menu becomes available in the 
 <br>
 
 <div style="text-align: center;">
-  <img src="../img/g3w-img-56.png" alt="Editing Layers Menu" width=auto>
+  <img src="../img/g3w-img-55.png" alt="Editing Layers Menu" width=auto>
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
   Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
   </div>
@@ -1431,7 +1414,7 @@ Once activated, editing allows modifications to both geometry and attributes of 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-57.png" alt="Edit Layer Icon" width=auto>
+       <img src="../img/g3w-img-56.png" alt="Edit Layer Icon" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1444,7 +1427,7 @@ Once activated, editing allows modifications to both geometry and attributes of 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-58.png" alt="Open Area" width=auto>
+       <img src="../img/g3w-img-57.png" alt="Open Area" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1457,7 +1440,7 @@ Once activated, editing allows modifications to both geometry and attributes of 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-59.png" alt="Add Feature Button" width=auto>
+       <img src="../img/g3w-img-58.png" alt="Add Feature Button" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1470,7 +1453,7 @@ Once activated, editing allows modifications to both geometry and attributes of 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-60.png" alt="Editing Attributes Panel" width=auto>
+       <img src="../img/g3w-img-59.png" alt="Editing Attributes Panel" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1496,12 +1479,12 @@ Once activated, editing allows modifications to both geometry and attributes of 
 
       <br>
 
-10. In the left-hand panel, click the **Save** icon.
+10. In the left-hand panel, click the **Save** or **Checkmark** icon.
 
       <br>
 
       <div style="text-align: center;">
-       <img src="../img/geoserver-img-61.png" alt="Save Icon" width=auto>
+       <img src="../img/g3w-img-60.png" alt="Save Icon" width=auto>
        <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
        Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
        </div>
@@ -1514,7 +1497,7 @@ Your new `Buildings` feature is now saved to the WebGIS.
 <br>
 
 <div style="text-align: center;">
-  <img src="../img/g3w-img-62.png" alt="New Feature" width=auto>
+  <img src="../img/g3w-img-61.png" alt="New Feature" width=auto>
   <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
   Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
   </div>
