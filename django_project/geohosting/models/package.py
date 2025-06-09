@@ -106,7 +106,7 @@ class Package(models.Model):
 
     def __str__(self):
         """Return package name and price."""
-        return f"{self.name} - {self.price}"
+        return f"{self.name} - {self.price}  [{self.price_list}]"
 
     # ----------------------------------------------------
     # STRIPE
