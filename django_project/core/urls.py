@@ -31,6 +31,7 @@ urlpatterns = [
         'api/settings',
         DjangoSettingAPI.as_view(), name='django-settings-api'
     ),
+    re_path('', include('docs_crawler.urls')),
 ]
 
 if settings.DEBUG:

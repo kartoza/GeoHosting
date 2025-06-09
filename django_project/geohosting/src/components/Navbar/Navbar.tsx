@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { fetchProducts } from "../../redux/reducers/productsSlice";
 import { FaUser } from 'react-icons/fa'
+import Help from "../Help";
 
 interface NavbarContentProps {
   isDrawer: boolean;
@@ -129,6 +130,7 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
           Login
         </ChakraLink>
     }
+    <Help isDrawer={isDrawer}/>
 
     {
       isDrawer ? <Box
