@@ -1,0 +1,29 @@
+.DocsCrawler {
+  background-color: unset !important;
+}
+
+.DocsCrawler ol,
+.DocsCrawler ul {
+  margin-left: 1rem;
+}
+
+.DocsCrawler .DocsCrawler-Content .DocsCrawler-InnerContent .DocsCrawler-Block > .title {
+  display: flex;
+  align-items: center;
+
+  svg:hover {
+    opacity: 0.8 !important;
+  }
+}
+
+.DocsCrawler hr {
+  margin: 1.5em 0;
+}
+
+.DocsCrawler a {
+  color: #2094f3;
+}
+
+.DocsCrawler a:hover {
+  color: #526cfe;
+}

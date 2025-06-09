@@ -15,6 +15,7 @@ INSTALLED_APPS = INSTALLED_APPS + (
     'knox',
     'corsheaders',
     'webpack_loader',
+    'docs_crawler',
 )
 
 REST_FRAMEWORK = {

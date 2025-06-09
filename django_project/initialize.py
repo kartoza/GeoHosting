@@ -90,6 +90,9 @@ _load_initial_fixtures = ast.literal_eval(
 if _load_initial_fixtures:
     call_command('load_fixtures')
 
+# Load docs crawler fixtures
+call_command('loaddata', 'core/fixtures/1.docs_crawler.json')
+
 #########################################################
 # 5. Collecting static files
 #########################################################
