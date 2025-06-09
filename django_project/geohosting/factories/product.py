@@ -22,3 +22,4 @@ class ProductFactory(DjangoModelFactory):
     upstream_id = factory.Sequence(
         lambda n: f'id-{n}'
     )
+    available = True
