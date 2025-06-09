@@ -32,7 +32,9 @@ class CreateInstanceForm(forms.ModelForm):
         validators=[name_validator, app_name_validator]
     )
     package = forms.ModelChoiceField(
-        queryset=Package.objects.all()
+        queryset=Package.objects.filter(
+            product__available=True
+        ).filter(enabled=True).order_by('name')
     )
     region = forms.ModelChoiceField(
         queryset=Region.objects.all()
