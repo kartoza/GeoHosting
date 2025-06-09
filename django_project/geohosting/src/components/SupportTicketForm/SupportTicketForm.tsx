@@ -202,7 +202,7 @@ const SupportTicketForm: React.FC<SupportTicketFormProps> = (
             }
           )()
         } else {
-          const detail = result.payload?.detail
+          const detail = result.payload?.detail ? result.payload?.detail : result.payload ? result.payload[0] : null
           setErrors(detail ? detail : result.payload)
           toast.error(detail ? detail : 'Failed to create ticket.');
         }

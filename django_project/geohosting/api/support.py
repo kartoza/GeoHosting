@@ -6,7 +6,7 @@ GeoHosting Controller.
 
 from django.contrib.auth.models import User
 from rest_framework import mixins, viewsets
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.permissions import AllowAny
 
 from core.api import FilteredAPI
@@ -54,9 +54,18 @@ class TicketSetView(
                 'The support ticket system is currently down. '
                 'Please bear with us while we investigate the issue.'
             )
-
-        if self.request.user.is_authenticated:
-            serializer.save(user=self.request.user)
+        user = self.request.user
+        if user.is_authenticated:
+            if not user.userprofile.erpnext_code:
+                user.userprofile.post_to_erpnext()
+                user.refresh_from_db()
+                user.userprofile.refresh_from_db()
+            if not user.userprofile.erpnext_code:
+                raise ValidationError(
+                    'User does not have an ERPNext code, '
+                    'please contact support.'
+                )
+            serializer.save(user=user)
         else:
             customer = serializer.validated_data['customer']
             try:

@@ -55,6 +55,25 @@ class Ticket(ErpModel):
         """Doctype for this model."""
         return 'Issue'
 
+    def get_user_customer(self):
+        """Return erp_code of user."""
+        if self.user:
+            if self.user.userprofile.erpnext_code:
+                return self.user.userprofile.erpnext_code
+            else:
+                self.user.userprofile.post_to_erpnext()
+                self.user.refresh_from_db()
+                self.user.userprofile.refresh_from_db()
+                if not self.user.userprofile.erpnext_code:
+                    raise Exception(
+                        'User does not have an ERPNext code, '
+                        'please contact support.'
+                    )
+                else:
+                    return self.user.userprofile.erpnext_code
+        else:
+            return None
+
     @property
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
@@ -67,14 +86,9 @@ class Ticket(ErpModel):
             "description": self.details,
             "status": 'Open',
             "issue_type": self.issue_type,
-            "project": pref.erpnext_project_code
+            "project": pref.erpnext_project_code,
+            "customer": self.get_user_customer(),
         }
-        if (
-                self.user and self.user.userprofile and
-                self.user.userprofile.erpnext_code
-        ):
-            payload['customer'] = self.user.userprofile.erpnext_code
-
         return payload
 
     @property
