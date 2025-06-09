@@ -55,6 +55,25 @@ class Ticket(ErpModel):
         """Doctype for this model."""
         return 'Issue'
 
+    def get_user_customer(self):
+        """Return erp_code of user."""
+        if self.user:
+            if self.user.userprofile.erpnext_code:
+                return self.user.userprofile.erpnext_code
+            else:
+                self.user.userprofile.post_to_erpnext()
+                self.user.refresh_from_db()
+                self.user.userprofile.refresh_from_db()
+                if not self.user.userprofile.erpnext_code:
+                    raise Exception(
+                        'User does not have an ERPNext code, '
+                        'please contact support.'
+                    )
+                else:
+                    return self.user.userprofile.erpnext_code
+        else:
+            return None
+
     @property
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
@@ -67,14 +86,9 @@ class Ticket(ErpModel):
             "description": self.details,
             "status": 'Open',
             "issue_type": self.issue_type,
-            "project": pref.erpnext_project_code
+            "project": pref.erpnext_project_code,
+            "customer": self.get_user_customer(),
         }
-        if (
-                self.user and self.user.userprofile and
-                self.user.userprofile.erpnext_code
-        ):
-            payload['customer'] = self.user.userprofile.erpnext_code
-
         return payload
 
     @property
@@ -87,7 +101,12 @@ class Ticket(ErpModel):
 
     @classmethod
     def sync_data(cls):
-        """Sync data from erpnext to django that has erpnext code."""
+        """Sync data from erpnext to django that has erpnext code.
+
+        Note:
+            Erp will reuse the used previous
+            erpnext_code if the ticket is deleted.
+        """
         pref = Preferences.load()
         filters = [
             ["project", "=", pref.erpnext_project_code],
@@ -117,20 +136,39 @@ class Ticket(ErpModel):
                     except UserProfile.DoesNotExist:
                         pass
                 if erp_ticket.get('name'):
-                    ticket, _ = Ticket.objects.update_or_create(
-                        erpnext_code=erp_ticket.get('name'),
-                        defaults={
-                            'user': user,
-                            'customer': erp_ticket.get('raised_by'),
-                            'status': django_status,
-                            'subject': erp_ticket.get('subject'),
-                            'details': erp_ticket.get('description'),
-                            'updated_at': datetime.strptime(
-                                erp_ticket.get('modified'),
-                                "%Y-%m-%d %H:%M:%S.%f"
-                            ),
-                        }
+                    updated_at = datetime.strptime(
+                        erp_ticket.get('modified'),
+                        "%Y-%m-%d %H:%M:%S.%f"
                     )
+
+                    ticket = Ticket.objects.filter(
+                        erpnext_code=erp_ticket.get('name')
+                    ).last()
+                    is_created = False
+                    if not ticket:
+                        ticket, _ = Ticket.objects.get_or_create(
+                            erpnext_code=erp_ticket.get('name'),
+                            defaults={
+                                'user': user,
+                                'customer': erp_ticket.get('raised_by'),
+                                'status': django_status,
+                                'subject': erp_ticket.get('subject'),
+                                'details': erp_ticket.get('description'),
+                                'updated_at': updated_at
+                            }
+                        )
+                        is_created = _
+
+                    ticket.status = django_status
+                    if is_created:
+                        created_at = datetime.strptime(
+                            erp_ticket.get('creation'),
+                            "%Y-%m-%d %H:%M:%S.%f"
+                        )
+                        ticket.created_at = created_at
+                    ticket.updated_at = updated_at
+                    ticket.save()
+
         except Exception as e:
             print(f"Error fetching or updating tickets from ERPNext: {e}")
 

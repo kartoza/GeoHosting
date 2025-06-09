@@ -60,7 +60,7 @@ jobs:
           cp docker-compose.test.yml docker-compose.override.yml
           cp .template.env .env
           cd ../
-          make dev
+          make test
           make wait-db
           make dev-entrypoint
           make dev-runserver

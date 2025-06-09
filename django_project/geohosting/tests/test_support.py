@@ -1,3 +1,4 @@
+import mock
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
@@ -8,6 +9,12 @@ from rest_framework.test import APIClient, APITestCase
 from core.models.preferences import Preferences
 from geohosting.models.support import Ticket
 from geohosting.serializer.support import TicketSerializer
+
+
+def fake_post_to_erpnext(*args, **kwargs):
+    user = User.objects.get(username='testuser')
+    user.userprofile.erpnext_code = 'ERP Code'
+    user.userprofile.save()
 
 
 class TicketTests(TestCase):
@@ -24,7 +31,7 @@ class TicketTests(TestCase):
         # Authenticate the client
         self.client.force_authenticate(user=self.user)
 
-    def test_create_ticket_success(self):
+    def test_create_ticket_failed(self):
         # Define the payload for a successful ticket creation
         payload = {
             'subject': 'Test Ticket',
@@ -32,6 +39,25 @@ class TicketTests(TestCase):
             'status': 'open',
             'customer': 'testuser@test.com'
         }
+        response = self.client.post(
+            '/api/tickets/', payload, format='json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.json()[0],
+            'User does not have an ERPNext code, please contact support.'
+        )
+
+    @mock.patch('geohosting.models.user_profile.UserProfile.post_to_erpnext')
+    def test_create_ticket_success(self, mock_post_to_erpnext):
+        # Use a function as the mock
+        payload = {
+            'subject': 'Test Ticket',
+            'details': 'Details of the test ticket',
+            'status': 'open',
+            'customer': 'testuser@test.com'
+        }
+        mock_post_to_erpnext.side_effect = fake_post_to_erpnext
         response = self.client.post(
             '/api/tickets/', payload, format='json'
         )
@@ -52,35 +78,45 @@ class TicketTests(TestCase):
 class GetTicketsTestCase(APITestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser',
-                                             email='testuser@example.com',
-                                             password='testpassword')
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='testuser@example.com',
+            password='testpassword'
+        )
 
         # Create another user to ensure we only fetch tickets for the authenticated user
-        self.other_user = User.objects.create_user(username='otheruser',
-                                                   email='otheruser@example.com',
-                                                   password='otherpassword')
+        self.other_user = User.objects.create_user(
+            username='otheruser',
+            email='otheruser@example.com',
+            password='otherpassword'
+        )
 
         # Create tickets for the authenticated user
-        self.ticket1 = Ticket.objects.create(customer=self.user.email,
-                                             subject="Issue 1",
-                                             details="Details of issue 1",
-                                             status="open", issue_type="bug",
-                                             user=self.user)
-        self.ticket2 = Ticket.objects.create(customer=self.user.email,
-                                             subject="Issue 2",
-                                             details="Details of issue 2",
-                                             status="open",
-                                             issue_type="support",
-                                             user=self.user)
+        self.ticket1 = Ticket.objects.create(
+            customer=self.user.email,
+            subject="Issue 1",
+            details="Details of issue 1",
+            status="open", issue_type="bug",
+            user=self.user
+        )
+        self.ticket2 = Ticket.objects.create(
+            customer=self.user.email,
+            subject="Issue 2",
+            details="Details of issue 2",
+            status="open",
+            issue_type="support",
+            user=self.user
+        )
 
         # Create a ticket for another user
-        self.ticket3 = Ticket.objects.create(customer=self.other_user.email,
-                                             subject="Issue 3",
-                                             details="Details of issue 3",
-                                             status="open",
-                                             issue_type="feature",
-                                             user=self.other_user)
+        self.ticket3 = Ticket.objects.create(
+            customer=self.other_user.email,
+            subject="Issue 3",
+            details="Details of issue 3",
+            status="open",
+            issue_type="feature",
+            user=self.other_user
+        )
 
         # Initialize the client and authenticate the user
         self.client = APIClient()

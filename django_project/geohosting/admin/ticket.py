@@ -26,7 +26,8 @@ class TicketAdmin(admin.ModelAdmin):
         return super().changelist_view(request, extra_context=extra_context)
 
     list_display = (
-        'id', 'erpnext_code', 'customer', 'subject', 'status', 'created_at',
+        'id', 'erpnext_code', 'user',
+        'customer', 'subject', 'status', 'created_at',
         'updated_at'
     )
     list_filter = ('status', 'created_at', 'updated_at')
