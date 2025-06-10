@@ -11,296 +11,125 @@ license: This program is free software; you can redistribute it and/or modify it
 context_id: nDU6LLGiXPTLADXY
 ---
 
-# Introduction
+# G3W-SUITE 
 
-G3W-SUITE is a modular client-server application for the management and publication of interactive map projects. The framework was born from the need to have a software capable of publishing, in total autonomy and in a simple and fast way on a webgis client, cartographic projects realized with [QGIS](https://qgis.org/).
+## What is G3W?
 
-The current release (3.9) is compatible with `QGIS 3.34.x LTR` (Server and Desktop).
+**G3W-SUITE** is a modular client-server application designed for the management and publication of interactive map projects. It was created to offer a simple, fast, and autonomous solution for publishing cartographic projects developed with [QGIS](https://qgis.org/) on a WebGIS client.
 
-[![G3w](./img/g3w-img-1.png)](./img/g3w-img-1.png)
+<br>
 
-[![G3W](./img/g3w-img-2.png)](./img/g3w-img-2.png)
+<div style="text-align: center;">
+  <img src="./img/g3w-img-1.png" alt="G3W Logo" width="300">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://g3wsuite.it/en/g3w-suite-publish-qgis-projects/" target="_blank">G3W-SUITE</a>
+  </div>
+</div>
 
-## Version
+<br>
 
-At the moment it’s not used a classic versioning system for the suite, this branches are available.
+Built using the **Django** framework and written in **Python**, G3W-SUITE integrates the core components of QGIS to help users build and publish their own Geographic Information System (GIS) solutions in an intuitive way.
 
-| Branch | Python version | Django version | QGIS  | QGIS API | Status                  |
-|--------|---------------|---------------|------|----------|-------------------------|
-| dev    | 3.12          | 4.2           | 3.34 | Used     | Continuous development  |
-| v3.9   | 3.12          | 4.2           | 3.34 | Used     | Bug fixing              |
-| v3.8   | 3.10          | 3.2           | 3.34 | Used     | Bug fixing              |
-| v3.7   | 3.10          | 3.2           | 3.28 | Used     | No longer supported     |
-| v3.6   | 3.10          | 3.2           | 3.22 | Used     | No longer supported     |
-| v3.5   | 3.10          | 2.2           | 3.22 | Used     | No longer supported     |
-| v3.4   | 3.8           | 2.2           | 3.22 | Used     | No longer supported     |
-| v3.3   | 3.6           | 2.2           | 3.16 | Used     | No longer supported     |
-| v3.2   | 3.6           | 2.2           | 3.16 | Used     | No longer supported     |
-| v3.1   | 3.6           | 2.2           | 3.10 | Used     | No longer supported     |
-| v3.0   | 3.6           | 2.2           | 3.10 | Used     | No longer supported     |
+<br>
+
+<div style="text-align: center;">
+  <img src="./img/g3w-img-2.png" alt="QGIS and Django Logo" width="450 ">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://qgis.org/" target="_blank">QGIS</a>
+    , <a href="https://www.djangoproject.com/" target="_blank">Django</a>
+  </div>
+</div>
 
 ---
 
-# Raw installation
-
-The following instructions are for Ubuntu 24.04 LTS (Noble) with Python 3.12.3.
-This installation is useful for development but no for production deploy. 
-
-## Install required packages
-First step is install dev libraries packages for python module
-
-```bash
-sudo apt-get install -y \
-    libxml2-dev \
-    libxslt1-dev \
-    libgdal-dev \
-    python3-dev
-```
-
-If you are running a ubuntu Server version is necessary to install also a XServer for the Qt libraries. 
-Is possible install `XVFB` a virtual framebuffer X server for X Version 11 and run it.
-
-```bash
-sudo apt install -y xvfb
-
-sudo Xvfb :99 -screen 0 640x480x24 -nolisten tcp &
-export DISPLAY=:99
-```
-I suggest you to create a systemd service to run it on bootstrap.
-
-
-## Install QGIS Server
-
-```sh
-sudo curl -sS https://download.qgis.org/downloads/qgis-archive-keyring.gpg > /etc/apt/keyrings/qgis-archive-keyring.gpg && \
-sudo echo "deb [signed-by=/etc/apt/keyrings/qgis-archive-keyring.gpg] https://qgis.org/ubuntu-ltr noble main" | \
-sudo tee /etc/apt/sources.list.d/qgis.list && \
-sudo apt-get update && apt-get install -y python3-qgis qgis-server
-```
+## Core Technologies
 
-## Installation of node.js and Yarn
-G3W-ADMIN use javacript package manager [**Yarn**](https://yarnpkg.com/) and [**Node.js**](https://nodejs.org/it/)
+G3W-SUITE is entirely based on well-established Open Source software components, centered around QGIS:
 
-```bash
-sudo curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - && \
-sudo echo "deb https://dl.yarnpkg.com/debian/ stable main" | \
-sudo tee /etc/apt/sources.list.d/yarn.list && \
-sudo apt-get update && apt install -y yarn && apt-get clean
-```
-## Create virtualenv
+- **QGIS Desktop**: For managing cartographic data, editing, and designing high-quality map projects.
+- **QGIS Server**: For publishing QGIS projects as [Open Geospatial Consortium (OGC)](http://www.opengeospatial.org/) services.
 
-Install the follow python package
-[**Virtualenv**](https://virtualenv.pypa.io/en/stable/)
-[*Virtualenvwrapper*](https://bitbucket.org/virtualenvwrapper/virtualenvwrapper/src/master/)
+<br>
 
-The following instructions are for python 3.12
+> **Current Compatibility:** 
+> 
+> G3W-SUITE version 3.9 is compatible with QGIS 3.34 LTR (both Server and Desktop).
+> 
+> Only the latest LTR (Long-Term Release) version of QGIS is supported.
 
-Install python pip and virtualenvwrapper
+---
 
-```bash
-sudo apt-get install python3-pip && sudo pip3 install virtualenvwrapper --break-system-packages
-```
+## Modular Architecture of G3W-SUITE
 
-Create a directory where to create environments for your virtualenvs.
-```bash
-mkdir <path_to_virtualenvs_directory>
-```
+G3W-SUITE is composed of **three primary modules**:
 
-To activate virtuenvwrapper on system login, add follow lines to 'bashrc' config file of your user
-```bash
-nano ~/.bashrc
-....
-export WORKON_HOME=<path_to_virtualenvs_directory>
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-source /usr/local/bin/virtualenvwrapper.sh
-```
-Login again with your user to activate `Virtualenvwrapper`
+<br>
 
-```bash
-sudo su <my_ubuntu_username>
-```
+1. **G3W-ADMIN**
 
-## Virtualenv creation
-To create a virtualnenv is sufficient call mkvirtualenv follow by the identification name for virtualenv (to use QGIS API into a virtualenv only solution is to give access python system site-packages to it using *--system-site-packages* option)
-```bash
-mkvirtualenv --system-site-packages g3wsuite
-```
+     - Administration interface for project management
+     - Handles ACL (Access Control List)
+     - Includes an OGC proxy server 
+     - Provides a REST API server
 
-This last command just make active your new virtualenv environment, for the next times is possible use the follow command to activate the virtualenv environment:
+     <br>
 
-```bash
-workon g3wsuite
-```
+2. **G3W-CLIENT**
 
-### Use of native `venv` Python3
-For G3W-SUITE deploy clearly can be used the native Python3 `venv` module, `virtualenvwrapper` is a third part module that render the use and management of virtual environments very simple.
+     - A cartographic web client
+     - Enables viewing and interaction with published OGC services
 
-## Install G3W-SUITE
+     <br>
 
-### Clone code from github
-```bash
-git clone https://github.com/g3w-suite/g3w-admin.git
-```
+3. **Front-End Geographic Portal**
 
-### Set local_config.py file
-G3W-ADMIN is a Django application, and to work is necessary set a config.py file. To start copy local_settings.example.py and set the databse and other:
-```bash
-cd g3w-admin/g3w-admin/base/settings
-cp local_settings_example.py local_settings.py
-```
+     - Provides public access to thematic groups
+     - Allows exploration of WebGIS services and related information
 
-set database connection parameters (DATABASES), media root (MEDIA_ROOT) and session cookies name (SESSION_COOKIE_NAME):
+<br>
 
-```python
-...
+<div style="text-align: center;">
+  <img src="./img/g3w-img-3.png" alt="G3W Modules" width="350">
+</div>
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': '<db_name>',
-        'USER': '<db_user>',
-        'PASSWORD': '<db_user_password>',
-        'HOST': '<db_host>',
-        'PORT': '<db_port>',
-    }
-}
+---
 
-...
+## Key Features and Capabilities
 
-DATASOURCE_PATH = '<static_path_to_gis_data_source>'
+Through the G3W-SUITE web interface, users can:
 
-...
+- **Publish** QGIS projects directly to the WebGIS environment in a structured manner
+- **Organize** WebGIS services into multi-level thematic and functional containers
+- **Manage** users and groups with customizable functional roles
+- **Create** and manage various search methods
+- **Edit** spatial data online
+- **Extent** capabilities by activating specific functional modules to extend.
+- **Define** access permissions for both services and functional modules per user
 
-MEDIA_ROOT = '<path_to_media_root>'
+---
 
-...
+## Version Compatibility and Branch Status
 
-SESSION_COOKIE_NAME = '<unique_session_id>'
-```
+Currently, G3W-SUITE does not follow a traditional versioning system. However, the following branches are available, each aligned with specific versions of Python, Django, and QGIS:
 
-!!IMPORTANT!! Make sure that paths set for DATASOURCE_PATH and MEDIA_ROOT exist.
+<br>
 
-### With paver commands
+| **Branch** | **Python** | **Django** | **QGIS** | **QGIS API** | **Status**         |
+| ---------- | ---------- | ---------- | -------- | ------------ | ------------------ |
+| `dev`      | 3.12       | 4.2        | 3.34     | Used         | Active development |
+| `v3.9`     | 3.12       | 4.2        | 3.34     | Used         | Bug fixing         |
+| `v3.8`     | 3.10       | 3.2        | 3.34     | Used         | Bug fixing         |
+| `v3.7`     | 3.10       | 3.2        | 3.28     | Used         | End of support     |
+| `v3.6`     | 3.10       | 3.2        | 3.22     | Used         | End of support     |
+| `v3.5`     | 3.10       | 2.2        | 3.22     | Used         | End of support     |
+| `v3.4`     | 3.8        | 2.2        | 3.22     | Used         | End of support     |
+| `v3.3`     | 3.6        | 2.2        | 3.16     | Used         | End of support     |
+| `v3.2`     | 3.6        | 2.2        | 3.16     | Used         | End of support     |
+| `v3.1`     | 3.6        | 2.2        | 3.10     | Used         | End of support     |
+| `v3.0`     | 3.6        | 2.2        | 3.10     | Used         | End of support     |
 
-G3W-ADMIN has a series of [paver](http://pythonhosted.org/Paver/) CLI commands to administrate the suite.
-After prepared environment if sufficient invoke paver *install* task
+---
 
-#### Install paver
-```bash
-pip3 install paver 
-```
-#### Install G3W-SUITE
-```bash
-paver install
-```
+> **Note:** For more information, see the full [G3W-SUITE](https://g3w-suite.readthedocs.io/en/latest/) documentation.
 
-### Run G3W-SUITE
-
-#### By Django
-```shell
-cd g3w-admin/g3w-admin
-python3 manage.py runserver 0.0.0.0:8000
-```
-
-#### To run the application with paver (EXPERIMENTAL)
-
-```bash
-paver start
-```
-
-and for stop
-```bash
-paver stop
-```
-
-
-G3W-ADMIN is a django application so is possible run app by standard django manage.py commands
-
-```bash
-./manage.py runserver
-```
-
-## Deploy G3W-SUITE
-
-As other Django application, G3W-SUITE can be deployed by its wsgi capabilities.
-On the web if simple to find tutorial for deploy a Django application.
-
-The simpler way is to use [Apache2](https://httpd.apache.org/) as server WEB and its [mod_wsgi](https://en.wikipedia.org/wiki/Mod_wsgi) module.
-
-Alternative solutions are:
-
-
-* [Apache2](https://httpd.apache.org/) + [mod_proxy](https://httpd.apache.org/docs/2.4/mod/mod_proxy.html) + [Uwsgi](https://uwsgi-docs.readthedocs.io/en/latest/)
-* [Apache2](https://httpd.apache.org/) + [mod_proxy](https://httpd.apache.org/docs/2.4/mod/mod_proxy.html) + [Gunicorn](http://gunicorn.org/)
-* [Nginx](https://nginx.org/) + [Uwsgi](https://uwsgi-docs.readthedocs.io/en/latest/)
-* [Nginx](https://nginx.org/) + [Gunicorn](http://gunicorn.org/)
-
-
-## Manual installation steps
-
-The preferred installation is by using the `paver` script as mentioned above, but in case you need to customize the installation process, here are the build and setup steps:
-
-### Build static js code
-
-
-```bash
-# Install yarn (requires root):
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | \
-    tee /etc/apt/sources.list.d/yarn.list
-apt-get update && sudo apt install -y yarn
-# Back to unprivileged user, from the repository directory, run:
-yarn --ignore-engines --ignore-scripts --prod
-nodejs -e "try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'g3w-admin/core/static/bower_components', 'junction') } catch (e) { }"
-```
-
-Make sure build components are available in static and collected later
-```
-cd g3w-admin/core/static
-ln -s "../../../node_modules/@bower_components" bower_components
-```
-
-### Install requirements
-
-Possibly within a virtual env:
-
-```bash
-pip install -r requirements.txt
-pip install -r requirements_huey.txt
-```
-
-### Django setup
-
-```bash
-python manage.py collectstatic --noinput
-python manage.py migrate --noinput
-```
-
-Install some fixtures for EPSG and other suite options:
-
-```bash
-for FIXTURE in 'BaseLayer.json' 'G3WGeneralDataSuite.json' 'G3WMapControls.json' 'G3WSpatialRefSys.json'; do
-    python manage.py loaddata  core/fixtures/${FIXTURE}
-done
-```
-
-Sync menu tree items (re-run this command in case you installed optional modules and they are not visible in the admin menu tree):
-
-```bash
-python manage.py sitetree_resync_apps
-```
-
-## Continuous integration testing
-
-CI tests are automatically run on GitHub by custom actions.
-
-The Docker compose configuration used in the CI tests is available at [docker-compose.latest.yml](https://github.com/g3w-suite/g3w-admin/blob/dev/docker-compose.latest.yml).
-
-The testing image is built from the dependency image and it will run all install and build steps from the local repository.
-
-The dependency image is built from the [Dockerfile.deps](https://github.com/g3w-suite/g3w-admin/blob/dev/ci_scripts/Dockerfile.deps).
-
-G3W-SUITE supports the latest LTR QGIS version, so at now is the 3.22, therefore there are also dockerfiles and docker compose files for this version:
-
-* [docker-composer.322.yml](https://github.com/g3w-suite/g3w-admin/blob/dev/docker-compose.322.yml)
-* [Dockerfile.32..deps](https://github.com/g3w-suite/g3w-admin/blob/dev/ci_scripts/Dockerfile.322.deps)
+---
