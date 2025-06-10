@@ -3,6 +3,7 @@ theme:
   name: material
   language: en
   direction: ltr
+  logo: img/gsh_logo.svg
   include_search_page: false
   search_index_only: true
   features:
