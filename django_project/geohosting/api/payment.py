@@ -102,9 +102,11 @@ class PaymentStripeSessionAPI:
                     'quantity': 1,
                 },
             ],
+            payment_method_types=['card'],
             mode='subscription',
             return_url=callback_url,
-            billing_address_collection='required'
+            billing_address_collection='required',
+            allow_promotion_codes=True,
         )
         return checkout.id, checkout.client_secret
 

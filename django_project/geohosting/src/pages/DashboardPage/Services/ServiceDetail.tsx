@@ -266,7 +266,7 @@ const ServiceDetail: React.FC = () => {
                           <FaLink/> {application.name}
                         </Flex>
                       </Link>
-                    </Td> : <td>{application.name}</td>
+                    </Td> : <Td>{application.name}</Td>
                 }
                 <Td>
                   <InstanceCredential
