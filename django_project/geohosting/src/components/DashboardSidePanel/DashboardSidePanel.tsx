@@ -8,23 +8,37 @@ import {
   Flex,
   Heading,
   Image,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { CSSProperties, ReactNode } from "react";
+import Help from "../Help";
 
-const SidebarItem = ({ label, isSelected, onClick }) => {
+interface SidebarItemProps {
+  isSelected?: boolean;
+  onClick?: () => void;
+  style?: CSSProperties | undefined;
+  children: ReactNode;
+}
+
+const SidebarItem = ({
+  isSelected,
+  onClick,
+  style,
+  children,
+}: SidebarItemProps) => {
   return (
     <Box
       p={4}
       color="white"
-      _hover={{ bg: 'gray.600', cursor: 'pointer' }}
+      _hover={{ bg: "gray.600", cursor: "pointer" }}
       w="full"
-      backgroundColor={isSelected ? 'gray.600' : 'blue.500'}
-      onClick={onClick}
-      bg={isSelected ? 'gray.600' : 'transparent'}
-      borderRight={isSelected ? '8px solid #FFFFFF' : 'none'}
+      backgroundColor={isSelected ? "gray.600" : "blue.500"}
+      onClick={onClick ? onClick : () => {}}
+      bg={isSelected ? "gray.600" : "transparent"}
+      borderRight={isSelected ? "8px solid #FFFFFF" : "none"}
+      style={style}
     >
-      {label}
+      {children}
     </Box>
   );
 };
@@ -35,7 +49,7 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
 
   const handleLogout = () => {
     dispatch(logout()).then(() => {
-      navigate('/');
+      navigate("/");
     });
   };
 
@@ -43,7 +57,7 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
     <Box
       bg="blue.500"
       zIndex={99}
-      w={{ base: 'full', md: 60 }}
+      w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
       {...rest}
@@ -55,52 +69,67 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
           color="white"
           cursor="pointer"
           _hover={{ opacity: 0.5 }}
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
         >
           <Image
-            src='/static/images/logos/geohosting-all-white.svg'
-            alt='Kartoza Logo'
-            style={{ 'cursor': 'pointer' }}
-            width='100%'
+            src="/static/images/logos/geohosting-all-white.svg"
+            alt="Kartoza Logo"
+            style={{ cursor: "pointer" }}
+            width="100%"
           />
         </Heading>
         <CloseButton
-          display={{ base: 'flex', md: 'none' }}
+          display={{ base: "flex", md: "none" }}
           onClick={onClose}
           color="#3e3e3e"
         />
       </Flex>
       <VStack spacing={0} align="start">
         <SidebarItem
-          label="Hosted Services"
-          isSelected={selected === 'dashboard'}
-          onClick={() => navigate('/dashboard')}
-        />
+          isSelected={selected === "dashboard"}
+          onClick={() => navigate("/dashboard")}
+        >
+          Hosted Services
+        </SidebarItem>
         <SidebarItem
-          label="Agreements"
-          isSelected={selected === 'agreements'}
-          onClick={() => navigate('/dashboard/agreements')}
-        />
+          isSelected={selected === "agreements"}
+          onClick={() => navigate("/dashboard/agreements")}
+        >
+          Agreements
+        </SidebarItem>
         <SidebarItem
-          label="Orders"
-          isSelected={selected === 'orders'}
-          onClick={() => navigate('/dashboard/orders')}
-        />
+          isSelected={selected === "orders"}
+          onClick={() => navigate("/dashboard/orders")}
+        >
+          Orders
+        </SidebarItem>
         <SidebarItem
-          label="Support"
-          isSelected={selected === 'support'}
-          onClick={() => navigate('/dashboard/support')}
-        />
+          isSelected={selected === "support"}
+          onClick={() => navigate("/dashboard/support")}
+        >
+          Support
+        </SidebarItem>
         <SidebarItem
-          label="Profile"
-          isSelected={selected === 'profile'}
-          onClick={() => navigate('/dashboard/profile')}
-        />
-        <SidebarItem
-          label="Logout"
-          isSelected={false}
-          onClick={handleLogout}
-        />
+          isSelected={selected === "profile"}
+          onClick={() => navigate("/dashboard/profile")}
+        >
+          Profile
+        </SidebarItem>
+        <SidebarItem style={{ padding: 0 }}>
+          <Help
+            isDrawer={true}
+            backgroundColor={"transparent"}
+            style={{
+              padding: "1rem",
+              height: "auto",
+              width: "100%",
+              justifyContent: "flex-start",
+            }}
+          />
+        </SidebarItem>
+        <SidebarItem isSelected={false} onClick={handleLogout}>
+          Logout
+        </SidebarItem>
       </VStack>
     </Box>
   );
