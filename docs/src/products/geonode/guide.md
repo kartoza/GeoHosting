@@ -12,39 +12,185 @@ license: This program is free software; you can redistribute it and/or modify it
 context_id: nDU6LLGiXPTLADXY
 ---
 
-# GeoNode Quick Start Guide
+# GeoNode Guide
 
-GeoNode is a platform for managing and sharing geospatial data — including datasets, maps, documents, and dashboards — with built-in tools for collaboration and publishing.
+## Using the Kartoza GeoSpatialHosting Dashboard
+
+After your service has finished setting up, you will be redirected to the Hosted Services page of the GeoSpatial Hosting Dashboard. Here, you can view all your purchased services.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/geonode-img-3.png" alt="GeoSpatialHosting Dashboard" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://geohosting.sta.do.kartoza.com/" target="_blank">Kartoza GeoSpatialHosting</a>
+  </div>
+</div>
+
+<br>
+
+**To access your login credentials:**
+
+1. Click the Get Password button under your hosted service.
+
+2. Your credentials will be copied to your clipboard.
+
+     > **Hint:** Paste and save your credentials in a secure location.
+
+3. Click the application name you selected for your GeoNode instance to open it.
+
+     <br>
+
+     <div style="text-align: center;">
+       <img src="../img/geonode-img-4.png" alt="Hosted Services" width=auto>
+       <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+       Image credit: <a href="https://geohosting.sta.do.kartoza.com/" target="_blank">Kartoza GeoSpatialHosting</a>
+       </div>
+     </div>
+     
+<br>
+
+**To delete a hosted service:**
+
+1. Click the 3 dots in the corner of the hosted service pane.
+
+2. From the dropdown menu, select **Delete**.
+
+<br>
+
+> **⚠️ IMPORTANT** 
+> 
+> Deleting a hosted service is **permanent**. All associated data will be irreversibly removed with **no option for recovery**.
 
 ---
 
 ## Getting Started
 
-### Create an Account
+### Accessing the Homepage
 
-1. Visit the homepage and click **Register**.
-![Register Page](./img/geonode-guide-img-1.png)
-2. Fill in your username, email, and password.
-![Register Form](./img/geonode-guide-img-2.png)  
-3. Check your email and confirm your registration.
-![Success Notification](./img/geonode-guide-img-3.png)
+You can access the GeoNode Homepage in two ways:
+
+1. **Via direct URL**
+
+     Open your browser and navigate to:
+
+     ```
+     http://<geonode_application_name>.sta.do.kartoza.com/#/
+     ```
+
+     <br>
+
+2. **Via the GeoSpatial Hosting Dashboard**
+
+     Click the application name you selected for your GeoNode instance.
+
+<br>
+
+<div style="text-align: center;">
+  <img src="../img/geonode-img-5.png" alt="Homepage" width="auto">
+  <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+    Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+  </div>
+</div>
+
+<br>
 
 ---
 
-### Set Up Your Profile
+### Creating an Account
 
-1. Click your profile icon (top-right) → **Profile**.
-![Profile Dropdown](./img/geonode-guide-img-6.png)  
-![Profile Page](./img/geonode-guide-img-7.png)
-2. Click **Edit Profile** to add:
-   - Name
-   - Organization
-   - Contact info
-   - Profile picture
+1. On the GeoNode Homepage, click **Register** to start creating your account.
 
+     <br>
   
-![Edit Profile](./img/geonode-guide-img-9.png)  
-![Profile Updated](./img/geonode-guide-img-10.png)
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-6.png" alt="Register" width=auto>
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+     
+     <br>
+
+2. On the **Sign Up** form, enter your username, email, and password.
+
+     <br>
+
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-7.png" alt="Sign Up" width=auto>
+     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+
+     <br>
+
+3. Click the **Sign Up** button.
+
+     <br>
+
+You will be redirected to the **GeoNode Homepage** where you can begin using your account.
+
+---
+
+### Setting Up Your Profile
+
+1. In the top navigation menu, click the **Avatar icon → Profile** to access your user profile.
+
+     <br>
+
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-8.png" alt="Avatar Icon" width=auto>
+     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+
+     <br>
+
+2. On your profile page, click the **Edit Profile** button to update your personal details.
+
+     <br>
+
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-9.png" alt="Profile" width=auto>
+     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+
+     <br>
+
+3. On the **Edit Your Profile** page, you can add or update the following information:
+
+     - Name & Surname
+     - Organization Information
+     - Contact Information
+     - Profile Picture
+
+     <br>
+
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-10.png" alt="Edit Profile" width=auto>
+     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+
+     <br>
+
+4. After updating your details, click the **Update Profile** button at the bottom of the page to save your changes.
+
+     <br>
+
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-11.png" alt="Update Profile" width=auto>
+     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+
+     <br>
 
 ---
 
