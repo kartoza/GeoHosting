@@ -118,7 +118,7 @@ You can access the GeoNode Homepage in two ways:
 
      <div style="text-align: center;">
       <img src="../img/geonode-img-7.png" alt="Sign Up" width=auto>
-     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
       Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
       </div>
      </div>
@@ -141,7 +141,7 @@ You will be redirected to the **GeoNode Homepage** where you can begin using you
 
      <div style="text-align: center;">
       <img src="../img/geonode-img-8.png" alt="Avatar Icon" width=auto>
-     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
       Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
       </div>
      </div>
@@ -154,7 +154,7 @@ You will be redirected to the **GeoNode Homepage** where you can begin using you
 
      <div style="text-align: center;">
       <img src="../img/geonode-img-9.png" alt="Profile" width=auto>
-     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
       Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
       </div>
      </div>
@@ -172,7 +172,7 @@ You will be redirected to the **GeoNode Homepage** where you can begin using you
 
      <div style="text-align: center;">
       <img src="../img/geonode-img-10.png" alt="Edit Profile" width=auto>
-     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
       Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
       </div>
      </div>
@@ -185,7 +185,7 @@ You will be redirected to the **GeoNode Homepage** where you can begin using you
 
      <div style="text-align: center;">
       <img src="../img/geonode-img-11.png" alt="Update Profile" width=auto>
-     <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
       Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
       </div>
      </div>
@@ -194,24 +194,197 @@ You will be redirected to the **GeoNode Homepage** where you can begin using you
 
 ---
 
-## Uploading Data
+## Tutorial
 
-### Upload a Dataset
+### Overview
 
-1. Go to **All Resources** → **Add Resource** → **Upload Dataset**.
+**GeoNode** is a powerful platform for the management and publication of geospatial data. It integrates mature, stable open-source software projects under a user-friendly interface.
 
-![Add Dataset Resource](./img/geonode-guide-img-27.png)  
-![Upload Dataset Page](./img/geonode-guide-img-29.png)
+With GeoNode's **simplified architecture**, non-specialized users can easily share geospatial data and create interactive maps without advanced GIS skills.
 
-2. Select vector (e.g., `.shp`, `.kml`) or raster (e.g., `.tif`) files.
-3. Click **Upload**, then **View**.
+<br>
 
-![Upload Progress](./img/geonode-guide-img-30.png)  
-![View Uploaded Dataset](./img/geonode-guide-img-31.png)
+#### Geospatial Data Storage
+
+GeoNode supports uploading **vector** and **raster** datasets through a simple web form. Supported vector formats include Shapefiles, GeoJSON, CSV, KML, and KMZ, while raster data like satellite imagery is stored as GeoTIFFs in their original projections.
+
+<br>
+
+| Feature                     | Vector Data                                | Raster Data                      |
+| --------------------------- | ------------------------------------------ | -------------------------------- |
+| **Formats**                 | Shapefile, GeoJSON, CSV, KML, KMZ          | GeoTIFF                          |
+| **Storage**                 | Converted into geospatial database tables  | Stored as GeoTIFF files          |
+| **Examples**                | Roads, boundaries, facilities              | Satellite imagery, aerial photos |
+| **Projection Handling**     | Preserved and reprojected for map display  | Preserved in original projection |
+| **Use in Map Creation**     | Searchable, combinable with other layers   | Searchable, visual backdrop for analysis   |
+
+<br>
+
+GeoNode emphasizes the use of **standard metadata formats**, particularly ISO 19139:2007 / ISO 19115, ensuring proper cataloging and interoperability.
+
+Immediately after uploading, users can fill in the **resource metadata**, making the dataset instantly available via **CSW (OGC Catalogue Service) endpoints and APIs**.
+
+Users can also upload **metadata XML files** (ISO, FGDC, or Dublin Core formats) to auto-populate key metadata fields.
+
+Additionally, GeoNode offers a **web-based style editor** that lets users customize layer symbology and preview changes in real time.
+
+<br>
+
+#### Data Mixing and Map Creation
+
+Once datasets are uploaded, GeoNode allows users to:
+
+- **Search** for data by location or keyword.
+- **Mix datasets** and create interactive maps with ease.
+
+<br>
+
+All layers are **automatically re-projected to Web Mercator**, enabling seamless integration with popular basemaps like OpenStreetMap, Google Satellite, and Bing Maps.
+
+<br>
+
+Maps created in GeoNode can be:
+
+- **Embedded** in other websites.
+- **Exported** as PDFs for offline use or printing.
+
+<br>
+
+#### GeoNode as a Building Block
+
+GeoNode’s modular, Django-based design makes it highly extendable. Many open-source projects build on GeoNode by reusing its components.
+
+You can explore real-world implementations in the [GeoNode Projects Gallery](https://geonode.org/gallery/).
+
+The GeoNode development community is active, welcoming, and highly supportive of new contributors, providing guidance and ideas to help newcomers get started.
+
+<br>
+
+> **Note:** For more details, refer to the [GeoNode Basics](https://docs.geonode.org/en/master/start/index.html#geonode-basics) section of the official GeoNode documentation.
 
 ---
 
-### Upload a Document
+### Data Preperation
+
+#### Overview
+
+This tutorial uses an extract of the Berlin city center buildings map from the **BBBike OpenStreetMap extracts**. Download the **Tutorial Data** using the link below:
+
+- [`Tutorial_Data_GeoNode.zip` Download](https://github.com/kartoza/GeoHosting/tree/main/docs/src/products/tutorial_data/Tutorial_Data_GeoNode.zip)
+
+
+<br>
+
+> **Hint:** You can also download your own custom spatial data from the [BBBike Extract Service](https://extract.bbbike.org/).
+
+---
+
+### Uploading Datasets
+
+#### Overview
+
+In GeoNode, **datasets** are the core published resources that represent either **raster** or **vector** spatial data sources. Each dataset can also include metadata, user ratings, and comments. This makes them collaborative and easy to manage within the GeoNode environment.
+
+<br>
+
+You can upload datasets in two ways:
+
+1. **From the All Resources Page:**
+
+     Click **Add Resource** and select **Upload dataset** from the list.
+
+     <br>
+
+2. **From the Datasets Page:**
+
+     Click **New** and select **Upload dataset** from the dropdown.
+
+     <br>
+
+> **Note:** The default maximum upload size in GeoNode is 100 MB. Administrators can increase this limit in the admin panel.
+
+> **Note:** The maximum number of parallel uploads is 5. This setting can also be adjusted by an administrator.
+
+---
+
+#### Exercise
+
+Follow these steps to upload your dataset to GeoNode:
+
+1. On the GeoNode **Homepage**, click the **Datasets** tab.
+
+     <br>
+
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-12.png" alt="Datasets Tab" width=auto>
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+
+     <br>
+
+2. Click **New** and select **Upload dataset** from the dropdown.
+
+     <br>
+
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-13.png" alt="Upload Dataset Dropdon" width=auto>
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+
+     <br>     
+
+3. From the **Upload a Dataset** page, click **Select files...** to choose spatial data files from your computer. 
+
+     <br>
+
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-14.png" alt="Select Files" width=auto>
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+
+     <br>  
+
+4. From your file explorer, select the file: `Tutorial_Berlin-shp.zip`
+
+     <br>
+
+     <div style="text-align: center;">
+      <img src="../img/geonode-img-15.png" alt="Selected Files" width=auto>
+      <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+      Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+      </div>
+     </div>
+
+     <br> 
+
+5. Click **Upload** to begin the dataset upload process.
+
+     <br>
+
+A progress bar will display the upload status and notify you when the upload is complete. When the upload finishes, click the **View** button to open your dataset.
+
+<br>
+
+<div style="text-align: center;">
+ <img src="../img/geonode-img-16.png" alt="View Uploaded Datasets" width=auto>
+ <div style="font-size: 0.8em; color: gray; margin-top: 4px;">
+ Image credit: <a href="https://geonode.org/" target="_blank">GeoNode</a>
+ </div>
+</div>
+
+---
+
+### Uploading Documents
+
+#### Overview
+
+#### Exercise
 
 1. Go to **Documents** → **New** or **All Resources** → **Add Resource** → **Upload Document**.
 
