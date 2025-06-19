@@ -18,6 +18,8 @@ class ProductViewSet(
 ):
     queryset = Product.objects.filter(
         is_add_on=False
+    ).filter(
+        available=True
     ).order_by('-available', 'name')
     permission_classes = [IsAdminOrReadOnly]
 
