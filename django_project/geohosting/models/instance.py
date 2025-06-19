@@ -132,6 +132,26 @@ class Instance(models.Model):
             return
         self._change_status(InstanceStatus.STARTING_UP)
 
+    def update_sales_order(self):
+        """Update sales order."""
+        from geohosting.models.sales_order import SalesOrder, SalesOrderStatus
+        from geohosting.models.activity import Activity
+
+        # Update sales order instance
+        sales_order_ids = Activity.objects.filter(instance=self).values_list(
+            'sales_order_id'
+        )
+        SalesOrder.objects.filter(
+            order_status=SalesOrderStatus.WAITING_DEPLOYMENT.key,
+            instance__isnull=True, id__in=sales_order_ids
+        ).update(instance=self)
+
+        # Update sales order status
+        SalesOrder.objects.filter(
+            instance=self,
+            order_status=SalesOrderStatus.WAITING_DEPLOYMENT.key
+        ).update(order_status=SalesOrderStatus.DEPLOYED.key)
+
     def online(self):
         """Make instance online."""
         if self.is_lock:
@@ -146,6 +166,7 @@ class Instance(models.Model):
             self.send_credentials()
 
         self._change_status(InstanceStatus.ONLINE)
+        self.update_sales_order()
 
     def offline(self):
         """Make instance offline."""
@@ -159,6 +180,7 @@ class Instance(models.Model):
         if self.is_lock:
             return
         self._change_status(InstanceStatus.OFFLINE)
+        self.update_sales_order()
 
     def deleting(self):
         """Make instance deleting."""
