@@ -1,6 +1,9 @@
 from rest_framework import serializers
 
 from geohosting.models import SalesOrder, Instance
+from geohosting.serializer.agreement import (
+    SalesOrderAgreementSerializer
+)
 from geohosting.serializer.instance import InstanceSerializer
 from geohosting.serializer.product import (
     ProductPackageSerializer,
@@ -15,6 +18,7 @@ class SalesOrderSerializer(serializers.ModelSerializer):
     order_status = serializers.SerializerMethodField()
     invoice_url = serializers.SerializerMethodField()
     company_name = serializers.SerializerMethodField()
+    agreements = serializers.SerializerMethodField()
 
     def get_package(self, obj: SalesOrder):
         """Return package."""
@@ -35,6 +39,11 @@ class SalesOrderSerializer(serializers.ModelSerializer):
             return obj.company.name
         except Exception:
             return ''
+
+    def get_agreements(self, obj: SalesOrder):
+        return SalesOrderAgreementSerializer(
+            obj.salesorderagreement_set.all(), many=True
+        ).data
 
     class Meta:
         model = SalesOrder

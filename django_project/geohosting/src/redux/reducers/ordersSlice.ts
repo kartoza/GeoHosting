@@ -1,50 +1,46 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  PayloadAction
-} from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 import { Package, Product } from "./productsSlice";
 import { PaginationResult } from "../types/paginationTypes";
 import { ReduxState, ReduxStateInit } from "../types/reduxState";
 import { Instance } from "./instanceSlice";
 import { headerWithToken } from "../../utils/helpers";
-
+import { Agreement } from "./agreementSlice";
 
 let _lastAbortController: AbortController | null = null;
-const ABORTED = 'Aborted';
+const ABORTED = "Aborted";
 
 export interface SalesOrder {
-  id: string,
-  erpnext_code: string,
-  status: string,
-  date: string,
-  order_status: string,
-  payment_method: string,
-  invoice_url: string,
-  product: Product,
-  package: Package,
-  app_name: string,
-  company_name: string,
-  instance: Instance
+  id: string;
+  erpnext_code: string;
+  status: string;
+  date: string;
+  order_status: string;
+  payment_method: string;
+  invoice_url: string;
+  product: Product;
+  package: Package;
+  app_name: string;
+  company_name: string;
+  instance: Instance;
+  agreements: Agreement[];
 }
 
 interface SalesOrderPaginationResult extends PaginationResult {
-  results: SalesOrder[]
+  results: SalesOrder[];
 }
 
 interface ListState extends ReduxState {
-  data: SalesOrderPaginationResult | null
+  data: SalesOrderPaginationResult | null;
 }
 
 interface NonReturnState extends ReduxState {
-  data: null
+  data: null;
 }
 
 interface DetailState extends ReduxState {
-  data: SalesOrder | null
+  data: SalesOrder | null;
 }
-
 
 interface SalesOrderState {
   list: ListState;
@@ -61,7 +57,7 @@ const initialState: SalesOrderState = {
       count: 0,
       next: null,
       previous: null,
-      results: []
+      results: [],
     },
     loading: false,
     error: null,
@@ -69,12 +65,12 @@ const initialState: SalesOrderState = {
   create: ReduxStateInit,
   update: ReduxStateInit,
   detail: ReduxStateInit,
-  delete: ReduxStateInit
+  delete: ReduxStateInit,
 };
 
 // Async thunk to fetch sales order
 export const fetchSalesOrders = createAsyncThunk(
-  'salesOrder/fetchSalesOrders',
+  "salesOrder/fetchSalesOrders",
   async (url: string, thunkAPI) => {
     try {
       if (_lastAbortController) {
@@ -89,7 +85,6 @@ export const fetchSalesOrders = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
-
       // Handle cancel errors
       if (axios.isCancel(error)) {
         return thunkAPI.rejectWithValue(ABORTED);
@@ -98,23 +93,23 @@ export const fetchSalesOrders = createAsyncThunk(
       const errorData = error.response.data;
       return thunkAPI.rejectWithValue(errorData);
     }
-  }
+  },
 );
 
 export const fetchSalesOrderDetail = createAsyncThunk(
-  'salesOrder/fetchSalesOrderDetail',
+  "salesOrder/fetchSalesOrderDetail",
   async (id: string, thunkAPI) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const response = await axios.get(`/api/orders/${id}/`, {
-        headers: { Authorization: `Token ${token}` }
+        headers: { Authorization: `Token ${token}` },
       });
       return response.data;
     } catch (error: any) {
       const errorData = error.response.data;
       return thunkAPI.rejectWithValue(errorData);
     }
-  }
+  },
 );
 
 const handlePending = (state: SalesOrderState, action: PayloadAction<any>) => {
@@ -122,27 +117,30 @@ const handlePending = (state: SalesOrderState, action: PayloadAction<any>) => {
     case fetchSalesOrders.pending.type: {
       state.list.loading = true;
       state.list.error = null;
-      break
+      break;
     }
     case fetchSalesOrderDetail.pending.type: {
       state.detail.loading = true;
       state.detail.error = null;
-      break
+      break;
     }
   }
 };
 
-const handleFulfilled = (state: SalesOrderState, action: PayloadAction<any>) => {
+const handleFulfilled = (
+  state: SalesOrderState,
+  action: PayloadAction<any>,
+) => {
   switch (action.type) {
     case fetchSalesOrders.fulfilled.type: {
       state.list.loading = false;
       state.list.data = action.payload;
-      break
+      break;
     }
     case fetchSalesOrderDetail.fulfilled.type: {
       state.detail.loading = false;
       state.detail.data = action.payload;
-      break
+      break;
     }
   }
 };
@@ -151,11 +149,11 @@ const handleRejected = (state: SalesOrderState, action: PayloadAction<any>) => {
   switch (action.type) {
     case fetchSalesOrders.rejected.type: {
       if (action.payload === ABORTED) {
-        return
+        return;
       }
       state.list.loading = false;
       state.list.error = action.payload as string;
-      break
+      break;
     }
     case fetchSalesOrderDetail.rejected.type: {
       state.detail.loading = false;
@@ -164,14 +162,13 @@ const handleRejected = (state: SalesOrderState, action: PayloadAction<any>) => {
       } else {
         state.detail.error = action.payload as string;
       }
-      break
+      break;
     }
   }
 };
 
-
 const ordersSlice = createSlice({
-  name: 'salesOrders',
+  name: "salesOrders",
   initialState,
   reducers: {
     clearSalesOrderDetail: (state) => {
@@ -180,12 +177,9 @@ const ordersSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    const actions = [
-      fetchSalesOrders,
-      fetchSalesOrderDetail
-    ];
+    const actions = [fetchSalesOrders, fetchSalesOrderDetail];
 
-    actions.forEach(action => {
+    actions.forEach((action) => {
       builder.addCase(action.pending, handlePending);
       builder.addCase(action.fulfilled, handleFulfilled);
       builder.addCase(action.rejected, handleRejected);
