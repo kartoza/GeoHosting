@@ -1,7 +1,10 @@
+from datetime import timedelta
+
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,7 +14,7 @@ from core.api import FilteredAPI
 from geohosting.api.payment import (
     PaymentAPI, PaymentStripeSessionAPI, PaymentPaystackSessionAPI
 )
-from geohosting.models.sales_order import SalesOrder
+from geohosting.models.sales_order import SalesOrder, SalesOrderStatus
 from geohosting.serializer.sales_order import (
     SalesOrderSerializer, SalesOrderDetailSerializer
 )
@@ -39,7 +42,13 @@ class SalesOrderSetView(
 
     def get_queryset(self):
         """Return querysets."""
+        one_hour_ago = timezone.now() - timedelta(hours=1)
         query = SalesOrder.objects.filter(customer_id=self.request.user.id)
+        # Exclude sales order that is waiting payment and more than 1 hour
+        query = query.exclude(
+            order_status=SalesOrderStatus.WAITING_PAYMENT.key,
+            date__lt=one_hour_ago
+        )
         q = self.request.GET.get('q')
         if q:
             query = query.filter(

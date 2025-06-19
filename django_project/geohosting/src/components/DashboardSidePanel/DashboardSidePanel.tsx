@@ -92,12 +92,6 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
           Hosted Services
         </SidebarItem>
         <SidebarItem
-          isSelected={selected === "agreements"}
-          onClick={() => navigate("/dashboard/agreements")}
-        >
-          Agreements
-        </SidebarItem>
-        <SidebarItem
           isSelected={selected === "orders"}
           onClick={() => navigate("/dashboard/orders")}
         >

@@ -54,7 +54,8 @@ class InstanceDetailSerializer(InstanceSerializer):
         applications.append(
             {
                 'name': instance_product.name,
-                'url': obj.url
+                'url': obj.url,
+                'username': instance_product.username_credential
             }
         )
         # Add-on
@@ -63,7 +64,8 @@ class InstanceDetailSerializer(InstanceSerializer):
                 {
                     'name': product.name,
                     'upstream_id': product.upstream_id,
-                    'url': obj.url + product.url_as_addon
+                    'url': obj.url + product.url_as_addon,
+                    'username': product.username_credential
                 }
             )
         return applications
