@@ -1,4 +1,5 @@
 # Service Level Agreement (SLA)
+![GHSlogo](https://kartoza.com/files/GSH%20Logo.png)
 
 ## Kartoza Hosting and SaaS Services
 
