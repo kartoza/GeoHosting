@@ -68,6 +68,11 @@ class SalesOrderTests(APITestCase):
         SalesOrder.objects.create(
             customer=self.user,
             package=self.package,
+            order_status=SalesOrderStatus.WAITING_PAYMENT.key
+        )
+        SalesOrder.objects.create(
+            customer=self.user,
+            package=self.package,
             order_status=SalesOrderStatus.WAITING_PAYMENT.key,
             date=two_hour_ago,
         )
@@ -86,4 +91,4 @@ class SalesOrderTests(APITestCase):
         # TEST API
         response = self.client.get('/api/orders/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.json()['count'], 1)
+        self.assertEqual(response.json()['count'], 2)
