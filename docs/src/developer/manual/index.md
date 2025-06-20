@@ -6,131 +6,132 @@ date: 2023-08-03
 ---
 
 # Python Reference Manual
-...django_project\initialize
-...django_project\manage
-...django_project\core\api
-...django_project\core\asgi
-...django_project\core\celery
-...django_project\core\context_processors
-...django_project\core\factories
-...django_project\core\pagination
-...django_project\core\urls
-...django_project\core\wsgi
-...django_project\core\admin\preferences
-...django_project\core\models\preferences
-...django_project\core\models\singleton
-...django_project\core\settings\base
-...django_project\core\settings\contrib
-...django_project\core\settings\dev
-...django_project\core\settings\prod
-...django_project\core\settings\project
-...django_project\core\settings\test
-...django_project\core\settings\utils
-...django_project\geohosting\apps
-...django_project\geohosting\auth_backend
-...django_project\geohosting\permissions
-...django_project\geohosting\resend_email_backend
-...django_project\geohosting\urls
-...django_project\geohosting\validators
-...django_project\geohosting\admin\activity
-...django_project\geohosting\admin\agreement
-...django_project\geohosting\admin\attachment
-...django_project\geohosting\admin\cluster
-...django_project\geohosting\admin\company
-...django_project\geohosting\admin\country
-...django_project\geohosting\admin\erp
-...django_project\geohosting\admin\global_function
-...django_project\geohosting\admin\instance
-...django_project\geohosting\admin\package
-...django_project\geohosting\admin\product
-...django_project\geohosting\admin\region
-...django_project\geohosting\admin\sales_order
-...django_project\geohosting\admin\subscription
-...django_project\geohosting\admin\ticket
-...django_project\geohosting\admin\user
-...django_project\geohosting\api\activity
-...django_project\geohosting\api\agreement
-...django_project\geohosting\api\checkout
-...django_project\geohosting\api\company
-...django_project\geohosting\api\country
-...django_project\geohosting\api\erp
-...django_project\geohosting\api\instance
-...django_project\geohosting\api\payment
-...django_project\geohosting\api\product
-...django_project\geohosting\api\sales_order
-...django_project\geohosting\api\subscription
-...django_project\geohosting\api\subscription_changes
-...django_project\geohosting\api\support
-...django_project\geohosting\api\token
-...django_project\geohosting\api\user
-...django_project\geohosting\api\webhook
-...django_project\geohosting\factories\agreement
-...django_project\geohosting\factories\erp_company
-...django_project\geohosting\factories\package
-...django_project\geohosting\factories\product
-...django_project\geohosting\factories\sales_order
-...django_project\geohosting\forms\activity\create_instance
-...django_project\geohosting\forms\activity\delete_instance
-...django_project\geohosting\models\activity
-...django_project\geohosting\models\agreement
-...django_project\geohosting\models\billing_information
-...django_project\geohosting\models\cluster
-...django_project\geohosting\models\company
-...django_project\geohosting\models\country
-...django_project\geohosting\models\data_types
-...django_project\geohosting\models\erp_company
-...django_project\geohosting\models\erp_model
-...django_project\geohosting\models\fields
-...django_project\geohosting\models\instance
-...django_project\geohosting\models\package
-...django_project\geohosting\models\product
-...django_project\geohosting\models\region
-...django_project\geohosting\models\sales_order
-...django_project\geohosting\models\subscription
-...django_project\geohosting\models\support
-...django_project\geohosting\models\user_profile
-...django_project\geohosting\serializer\activity
-...django_project\geohosting\serializer\agreement
-...django_project\geohosting\serializer\billing_information
-...django_project\geohosting\serializer\company
-...django_project\geohosting\serializer\country
-...django_project\geohosting\serializer\email_auth_token
-...django_project\geohosting\serializer\instance
-...django_project\geohosting\serializer\product
-...django_project\geohosting\serializer\register
-...django_project\geohosting\serializer\sales_order
-...django_project\geohosting\serializer\subscription
-...django_project\geohosting\serializer\support
-...django_project\geohosting\serializer\user
-...django_project\geohosting\tasks\erp
-...django_project\geohosting\tasks\instances
-...django_project\geohosting\tasks\products
-...django_project\geohosting\tasks\subscription
-...django_project\geohosting\utils\email
-...django_project\geohosting\utils\erpnext
-...django_project\geohosting\utils\media
-...django_project\geohosting\utils\payment
-...django_project\geohosting\utils\paystack
-...django_project\geohosting\utils\stripe
-...django_project\geohosting\utils\subscription
-...django_project\geohosting\utils\vault
-...django_project\geohosting\views\auth
-...django_project\geohosting\views\home
-...django_project\geohosting\views\products
-...django_project\geohosting\views\reset_password
-...django_project\geohosting_controller\apps
-...django_project\geohosting_controller\connection
-...django_project\geohosting_controller\exceptions
-...django_project\geohosting_controller\tasks
-...django_project\geohosting_controller\variables
-...django_project\geohosting_controller\default_data\helper
-...django_project\geohosting_controller\management\commands\load_fixtures
-...django_project\geohosting_event\apps
-...django_project\geohosting_event\admin\email
-...django_project\geohosting_event\admin\erp
-...django_project\geohosting_event\admin\log
-...django_project\geohosting_event\admin\webhook
-...django_project\geohosting_event\models\email
-...django_project\geohosting_event\models\erp
-...django_project\geohosting_event\models\log
-...django_project\geohosting_event\models\webhook
+::: manage
+::: initialize
+::: geohosting_controller.tasks
+::: geohosting_controller.apps
+::: geohosting_controller.variables
+::: geohosting_controller.connection
+::: geohosting_controller.exceptions
+::: geohosting_controller.management.commands.load_fixtures
+::: geohosting_controller.default_data.helper
+::: geohosting_event.apps
+::: geohosting_event.admin.webhook
+::: geohosting_event.admin.log
+::: geohosting_event.admin.email
+::: geohosting_event.admin.erp
+::: geohosting_event.models.webhook
+::: geohosting_event.models.log
+::: geohosting_event.models.email
+::: geohosting_event.models.erp
+::: core.celery
+::: core.pagination
+::: core.factories
+::: core.api
+::: core.wsgi
+::: core.asgi
+::: core.context_processors
+::: core.urls
+::: core.admin.preferences
+::: core.models.preferences
+::: core.models.singleton
+::: core.settings.secret
+::: core.settings.base
+::: core.settings.dev
+::: core.settings.project
+::: core.settings.prod
+::: core.settings.contrib
+::: core.settings.utils
+::: core.settings.test
+::: geohosting.permissions
+::: geohosting.apps
+::: geohosting.validators
+::: geohosting.resend_email_backend
+::: geohosting.auth_backend
+::: geohosting.urls
+::: geohosting.admin.ticket
+::: geohosting.admin.region
+::: geohosting.admin.agreement
+::: geohosting.admin.user
+::: geohosting.admin.attachment
+::: geohosting.admin.activity
+::: geohosting.admin.sales_order
+::: geohosting.admin.country
+::: geohosting.admin.subscription
+::: geohosting.admin.company
+::: geohosting.admin.instance
+::: geohosting.admin.erp
+::: geohosting.admin.package
+::: geohosting.admin.cluster
+::: geohosting.admin.product
+::: geohosting.admin.global_function
+::: geohosting.forms.activity.create_instance
+::: geohosting.forms.activity.delete_instance
+::: geohosting.serializer.email_auth_token
+::: geohosting.serializer.support
+::: geohosting.serializer.billing_information
+::: geohosting.serializer.agreement
+::: geohosting.serializer.user
+::: geohosting.serializer.activity
+::: geohosting.serializer.sales_order
+::: geohosting.serializer.register
+::: geohosting.serializer.country
+::: geohosting.serializer.subscription
+::: geohosting.serializer.company
+::: geohosting.serializer.instance
+::: geohosting.serializer.product
+::: geohosting.api.token
+::: geohosting.api.support
+::: geohosting.api.checkout
+::: geohosting.api.webhook
+::: geohosting.api.payment
+::: geohosting.api.agreement
+::: geohosting.api.user
+::: geohosting.api.activity
+::: geohosting.api.sales_order
+::: geohosting.api.subscription_changes
+::: geohosting.api.country
+::: geohosting.api.subscription
+::: geohosting.api.company
+::: geohosting.api.instance
+::: geohosting.api.erp
+::: geohosting.api.product
+::: geohosting.models.data_types
+::: geohosting.models.region
+::: geohosting.models.support
+::: geohosting.models.billing_information
+::: geohosting.models.erp_company
+::: geohosting.models.agreement
+::: geohosting.models.activity
+::: geohosting.models.sales_order
+::: geohosting.models.user_profile
+::: geohosting.models.country
+::: geohosting.models.subscription
+::: geohosting.models.company
+::: geohosting.models.instance
+::: geohosting.models.fields
+::: geohosting.models.package
+::: geohosting.models.cluster
+::: geohosting.models.product
+::: geohosting.models.erp_model
+::: geohosting.factories.erp_company
+::: geohosting.factories.agreement
+::: geohosting.factories.sales_order
+::: geohosting.factories.package
+::: geohosting.factories.product
+::: geohosting.tasks.products
+::: geohosting.tasks.instances
+::: geohosting.tasks.subscription
+::: geohosting.tasks.erp
+::: geohosting.utils.payment
+::: geohosting.utils.stripe
+::: geohosting.utils.erpnext
+::: geohosting.utils.vault
+::: geohosting.utils.subscription
+::: geohosting.utils.email
+::: geohosting.utils.paystack
+::: geohosting.utils.media
+::: geohosting.views.home
+::: geohosting.views.reset_password
+::: geohosting.views.products
+::: geohosting.views.auth
