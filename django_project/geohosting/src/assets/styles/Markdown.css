@@ -126,3 +126,7 @@
 #Markdown.Read .Read {
   display: inline-block;
 }
+
+#Markdown input[type="checkbox"] {
+  width: auto;
+}

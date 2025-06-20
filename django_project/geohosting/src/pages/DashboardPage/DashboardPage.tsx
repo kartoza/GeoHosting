@@ -48,16 +48,6 @@ const DashboardPage = ({ title = "Dashboard" }) => {
             }
           />
           <Route
-            path="/agreements"
-            element={
-              <DashboardPageContent
-                title='Agreements'
-                element={<AgreementList/>}
-                toggleSidebar={toggleSidebar}
-              />
-            }
-          />
-          <Route
             path="/orders/:id"
             element={
               <DashboardPageContent
