@@ -1,4 +1,5 @@
 """Payment API."""
+import json
 
 import stripe
 from django.conf import settings
@@ -123,10 +124,26 @@ class PaymentPaystackSessionAPI:
 
         Return id of payment and string of challenge.
         """
-        plan = Plan.get(package.get_paystack_price_id(email))['data']
+        plan = Plan.get(package.get_paystack_price_id(email))
+        try:
+            plan = plan['data']
+        except KeyError as e:
+            LogTracker.error(package, f'Plan : {json.dumps(plan)}')
+            raise e
+
         transaction = Transaction.initialize(
             email=email,
             amount=float(package.price * 100),
             plan=plan['plan_code']
-        )['data']
+        )
+        try:
+            transaction = transaction['data']
+        except KeyError as e:
+            LogTracker.error(
+                package,
+                f'Transaction : {json.dumps(transaction)} : '
+                f'{float(package.price * 100)} : {email}'
+            )
+            raise e
+
         return transaction['reference'], transaction['access_code']

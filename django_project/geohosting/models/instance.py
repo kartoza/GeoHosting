@@ -122,7 +122,6 @@ class Instance(models.Model):
         if self.status == status:
             return
 
-        LogTracker.success(self, f'Server: {status}')
         self.status = status
         self.save()
 
