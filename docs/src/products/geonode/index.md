@@ -88,6 +88,8 @@ It is **free and open-source software**, licensed under the **GNU General Public
 
 You should have received a copy of the GNU General Public License with GeoNode. If not, visit: [https://www.gnu.org/licenses/gpl-3.0.html](https://www.gnu.org/licenses/gpl-3.0.html)
 
+<br>
+
 > **Note:** For full license details, refer to the [GNU General Public License](http://www.gnu.org/licenses).
 
 ---
