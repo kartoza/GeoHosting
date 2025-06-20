@@ -108,9 +108,7 @@ The SLA does not apply to:
 
 4.1 **Compliance with Data Laws**:
 
-- **South Africa**: The Hosting Provider complies with the Protection of
-  Personal Information Act (POPIA) and all related privacy laws.
-- **Portugal**: The Hosting Provider complies with the General Data Protection
+- The Hosting Provider complies with the General Data Protection
   Regulation (GDPR) and related EU directives.
 
 4.2 **Encryption Standards**:
