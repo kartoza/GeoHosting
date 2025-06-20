@@ -56,7 +56,15 @@ nav:
       - products/index.md 
       - GeoNode:
           - products/geonode/index.md
-          - Guide: products/geonode/guide.md
+          - GSH Dashboard: products/geonode/setup.md
+          - Getting Started: products/geonode/getting_started.md
+          - Tutorial Setup: products/geonode/tutorial_setup.md
+          - Datasets: products/geonode/tutorial_dataset.md
+          - Documents: products/geonode/tutorial_document.md
+          - Maps: products/geonode/tutorial_map.md
+          - Share: products/geonode/tutorial_share.md
+          - Search: products/geonode/tutorial_search.md
+          - Other Tools: products/geonode/other_tools.md
       - G3W:
           - products/g3w/index.md
           - Guide: products/g3w/guide.md
