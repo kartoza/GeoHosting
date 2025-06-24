@@ -10,7 +10,7 @@ license: This program is free software; you can redistribute it and/or modify it
 context_id: nDU6LLGiXPTLADXY
 ---
 
-# GeoSpatialHosting
+## GeoSpatialHosting
 
 ![Geohosting-full.sbg](./img/geohosting-full.svg)
 
@@ -51,7 +51,7 @@ for any loss of revenue, life, physical harm or any other adverse outcome that m
 occur as a result of the use of this platform. 
 </div>
 
-### Project Badges
+## Project Badges
 
 |  |  |  |
 | :---: | :---: | :---: |
@@ -64,16 +64,7 @@ occur as a result of the use of this platform.
 
 To find out more about the current release and what has been changed please visit the [releases](https://github.com/kartoza/Geohosting/releases/latest) page. 
 
-#### Project Chatroom
-
-We do not yet have a Chatroom set up for this project. Please use the GitHub issue tracker for discussions. To log a customer support query please make use of the [support portal](https://geospatialhosting.com), which can be accessed from the dashboard, when you log in. 
-
-<!-- #### Contributor License Agreement (CLA)
-
-Contributions to this project will be subject to
-our [Contributor License Agreement]() (Coming soon) -->
-
-#### License
+## License
 
 This project is open source, published under the [AGPL-3](https://github.com/kartoza/GeoHosting?tab=AGPL-3.0-1-ov-file#readme).
 You can read our license to find out what rights this license bestows to users and contributors.

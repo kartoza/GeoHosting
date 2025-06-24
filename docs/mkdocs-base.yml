@@ -1,15 +1,27 @@
+
+
 site_name: GeoSpatialHosting Documentation
 site_description: "Project technical and user documentation."
 site_author: "Kartoza"
 docs_dir: ./src
 site_dir: ./site
 repo_name: "GeoHosting Controller"
-repo_url: "https://github.com/kartoza/GeoHosting-Controller.git"
-edit_uri: "https://github.com/kartoza/GeoHosting-Controller/blob/main/docs/"
+repo_url: "https://github.com/kartoza/GeoHosting"
+edit_uri: "https://github.com/kartoza/GeoHosting/edit/main/docs/src/"
 
 copyright: Kartoza and Contributors
 
 markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.tasklist
+  - pymdownx.snippets
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.caret
   - attr_list # lets us resize images see https://github.com/mkdocs/mkdocs/issues/1678#issuecomment-455500757
   - pymdownx.highlight:
       anchor_linenums: true
@@ -22,19 +34,16 @@ markdown_extensions:
       base_path: .
   - admonition
   - tables
-  - pymdownx.details
-  - pymdownx.caret
-  - pymdownx.keys
-  - pymdownx.mark
-  - pymdownx.tilde
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+          format: !!python/name:mermaid2.fence_mermaid_custom
   - pymdownx.emoji:
       emoji_generator: !!python/name:materialx.emoji.to_svg
       emoji_index: !!python/name:materialx.emoji.twemoji
+  - pymdownx.snippets:
+      base_path: .
 
 nav:
   - Introduction: index.md
