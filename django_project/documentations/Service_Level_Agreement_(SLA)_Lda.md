@@ -1,11 +1,12 @@
 # Service Level Agreement (SLA)
+
 ![GHSlogo](https://kartoza.com/files/GSH%20Logo.png)
 
 ## Kartoza Hosting and SaaS Services
 
 This Service Level Agreement (“SLA”) is entered into by and between:
 
-1.    **Kartoza, LDA** (“Hosting Provider”), a company incorporated under the laws
+1. **Kartoza, LDA** (“Hosting Provider”), a company incorporated under the laws
    of Portugal, and
 
 2. **[Client Name]** (“Client”), whose details are specified in the associated
@@ -150,13 +151,15 @@ fees paid by the Client in the preceding 3 months.
 5.3 Liability for data breaches caused by malicious attacks is limited to
 reasonable efforts to mitigate the breach.
 
-5.4 Disputes shall be resolved via arbitration in Lisbon, Portugal with each party bearing its own legal costs.
+5.4 Disputes shall be resolved via arbitration in Lisbon, Portugal with each
+party bearing its own legal costs.
 
 ---
 
 ## 6. Governing Law and Jurisdiction
 
-6.1 This SLA shall be governed by Portuguese law for services rendered by Kartoza, LDA.
+6.1 This SLA shall be governed by Portuguese law for services rendered by
+Kartoza, LDA.
 
 6.2 Any disputes shall be subject to binding arbitration under the rules of the
 relevant jurisdiction.
@@ -165,13 +168,13 @@ relevant jurisdiction.
 
 ## 7. Acceptance
 
-Both parties agree to the terms of this SLA by signing below. 
+Both parties agree to the terms of this SLA by signing below.
 
-| Hosting Provider (Portugal)       | Client                 |
-|-----------------------------------|------------------------|
-| Kartoza, LDA                      | Name: [Client Name]    |
-| NIPC (Tax ID): 517404885          |                        |
-| Registered Office:                |                        |
-| Bloco 1, Caixa 11, Vale de Rodão, |                        |
-| Distrito: Portalegre,             | Signature: [Signature] |
-| Concelho: Marvão, Portugal        | Date: [Date]           |
+| Hosting Provider (Portugal)       | Client                                     |
+|-----------------------------------|--------------------------------------------|
+| Kartoza, LDA                      | [Client Name]                              |
+| NIPC (Tax ID): 517404885          | Representative name: [Representative Name] |
+| Registered Office:                |                                            |
+| Bloco 1, Caixa 11, Vale de Rodão, |                                            |
+| Distrito: Portalegre,             | Signature: [Signature]                     |
+| Concelho: Marvão, Portugal        | Date: [Date]                               |

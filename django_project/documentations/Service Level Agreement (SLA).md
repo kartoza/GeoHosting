@@ -1,4 +1,5 @@
 # Service Level Agreement (SLA)
+
 ![GHSlogo](https://kartoza.com/files/GSH%20Logo.png)
 
 ## Kartoza Hosting and SaaS Services
@@ -178,11 +179,11 @@ Both parties agree to the terms of this SLA by signing below. The Hosting
 Provider entity applicable to this SLA must be selected by marking the checkbox
 in the appropriate column.
 
-| Hosting Provider (South Africa)  | Hosting Provider (Portugal)       | Client                 |
-|----------------------------------|-----------------------------------|------------------------|
-| ☐ Kartoza (Pty) Ltd              | ☐ Kartoza, LDA                    | Name: [Client Name]    |
-| Company Number: 2014/109067/07   | NIPC (Tax ID): 517404885          |                        |
-| Registered Office:               | Registered Office:                |                        |
-| 1st Floor, Block B, North Park,  | Bloco 1, Caixa 11, Vale de Rodão, |                        |
-| Black River Park, 2 Fir Street,  | Distrito: Portalegre,             | Signature: [Signature] |
-| Observatory, Cape Town, 7925, SA | Concelho: Marvão, Portugal        | Date: [Date]           |
+| Hosting Provider (South Africa)  | Hosting Provider (Portugal)       | Client                                     |
+|----------------------------------|-----------------------------------|--------------------------------------------|
+| ☐ Kartoza (Pty) Ltd              | ☐ Kartoza, LDA                    | [Client Name]                              |
+| Company Number: 2014/109067/07   | NIPC (Tax ID): 517404885          | Representative name: [Representative Name] |
+| Registered Office:               | Registered Office:                |                                            |
+| 1st Floor, Block B, North Park,  | Bloco 1, Caixa 11, Vale de Rodão, |                                            |
+| Black River Park, 2 Fir Street,  | Distrito: Portalegre,             | Signature: [Signature]                     |
+| Observatory, Cape Town, 7925, SA | Concelho: Marvão, Portugal        | Date: [Date]                               |

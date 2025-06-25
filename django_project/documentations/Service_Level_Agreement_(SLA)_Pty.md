@@ -1,4 +1,5 @@
 # Service Level Agreement (SLA)
+
 ![GHSlogo](https://kartoza.com/files/GSH%20Logo.png)
 
 ## Kartoza Hosting and SaaS Services
@@ -150,13 +151,15 @@ fees paid by the Client in the preceding 3 months.
 5.3 Liability for data breaches caused by malicious attacks is limited to
 reasonable efforts to mitigate the breach.
 
-5.4 Disputes shall be resolved via arbitration in Cape Town, South Africa with each party bearing its own legal costs.
+5.4 Disputes shall be resolved via arbitration in Cape Town, South Africa with
+each party bearing its own legal costs.
 
 ---
 
 ## 6. Governing Law and Jurisdiction
 
-6.1 This SLA shall be governed by South African law for services rendered by Kartoza (Pty) Ltd.
+6.1 This SLA shall be governed by South African law for services rendered by
+Kartoza (Pty) Ltd.
 
 6.2 Any disputes shall be subject to binding arbitration under the rules of the
 relevant jurisdiction.
@@ -165,13 +168,13 @@ relevant jurisdiction.
 
 ## 7. Acceptance
 
-Both parties agree to the terms of this SLA by signing below. 
+Both parties agree to the terms of this SLA by signing below.
 
-| Hosting Provider (South Africa)  | Client                 |
-|----------------------------------|------------------------|
-| Kartoza (Pty) Ltd                | Name: [Client Name]    |
-| Company Number: 2014/109067/07   |                        |
-| Registered Office:               |                        |
-| 1st Floor, Block B, North Park,  |                        |
-| Black River Park, 2 Fir Street,  | Signature: [Signature] |
-| Observatory, Cape Town, 7925, SA | Date: [Date]           |
+| Hosting Provider (South Africa)  | Client                                     |
+|----------------------------------|--------------------------------------------|
+| Kartoza (Pty) Ltd                | [Client Name]                              |
+| Company Number: 2014/109067/07   | Representative name: [Representative Name] |
+| Registered Office:               |                                            |
+| 1st Floor, Block B, North Park,  |                                            |
+| Black River Park, 2 Fir Street,  | Signature: [Signature]                     |
+| Observatory, Cape Town, 7925, SA | Date: [Date]                               |

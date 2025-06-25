@@ -366,6 +366,17 @@ export const AgreementModal = forwardRef(
             });
             const results = response.data.results;
             results.map((result: Agreement) => {
+              if (companyName) {
+                result.template = result.template.replaceAll(
+                  "[Representative Name]",
+                  name,
+                );
+              } else {
+                result.template = result.template.replaceAll(
+                  "Representative name: [Representative Name]",
+                  "",
+                );
+              }
               result.template = result.template
                 .replaceAll("[Client Name]", companyName ? companyName : name)
                 .replaceAll("[Date]", new Date().toISOString().split("T")[0]);
