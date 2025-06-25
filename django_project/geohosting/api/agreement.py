@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from core.api import FilteredAPI
 from geohosting.models.agreement import AgreementDetail, SalesOrderAgreement
+from geohosting.models.erp_company import ErpCompany
 from geohosting.serializer.agreement import (
     AgreementDetailSerializer, SalesOrderAgreementSerializer
 )
@@ -24,11 +25,22 @@ class AgreementViewSet(
 
     def get_queryset(self):
         """Return instances for the authenticated user."""
+        company = None
+        try:
+            company = ErpCompany.objects.get(
+                payment_method__iexact=self.request.GET.get(
+                    'payment_method', None
+                )
+            )
+        except ErpCompany.DoesNotExist:
+            pass
         return AgreementDetail.objects.select_related(
             'agreement'
-        ).order_by('agreement', '-version').distinct(
-            'agreement'
-        )
+        ).filter(
+            erp_company=company
+        ).order_by(
+            'agreement', '-version'
+        ).distinct('agreement')
 
 
 class MyAgreementViewSet(

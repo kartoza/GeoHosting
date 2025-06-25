@@ -336,11 +336,12 @@ export const AgreementMarkdown = ({
 
 interface Props {
   companyName?: string | null;
+  paymentMethod: string | null;
   isDone: (agreements: Agreement[]) => void;
 }
 
 export const AgreementModal = forwardRef(
-  ({ companyName, isDone }: Props, ref) => {
+  ({ companyName, paymentMethod, isDone }: Props, ref) => {
     const dispatch: AppDispatch = useDispatch();
     const { user, loading, error } = useSelector(
       (state: RootState) => state.profile,
@@ -361,9 +362,12 @@ export const AgreementModal = forwardRef(
         setAgreements(null);
         (async () => {
           try {
-            const response = await axios.get("/api/template/agreements/", {
-              headers: headerWithToken(),
-            });
+            const response = await axios.get(
+              "/api/template/agreements/?payment_method=" + paymentMethod,
+              {
+                headers: headerWithToken(),
+              },
+            );
             const results = response.data.results;
             results.map((result: Agreement) => {
               if (companyName) {
