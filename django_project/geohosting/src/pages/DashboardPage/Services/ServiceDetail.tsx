@@ -263,10 +263,12 @@ const ServiceDetail: React.FC = () => {
                             </Flex>
                           </Link>
                         </Td>
-                        <Td>{application.username}</Td>
                       </>
                     ) : (
-                      <Td>{application.name}</Td>
+                      <>
+                        <Td>{application.username}</Td>
+                        <Td>{application.name}</Td>
+                      </>
                     )}
                     <Td>
                       <InstanceCredential
