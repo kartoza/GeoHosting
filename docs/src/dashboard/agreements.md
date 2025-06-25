@@ -15,4 +15,4 @@ context_id: nDU6LLGiXPTLADXY
 
 [![Agreements](./img/agreement-img-1.png)](./img/agreement-img-1.png)
 
-1. **Agreements:** Users can click on this `agreements` from the left navigation bar to access the agreements section.
+1. **Agreements:** Users can download `agreements` from `Orders` section. Click to download.
