@@ -33,19 +33,19 @@ After reaching the subscription page, users will see the following options:
 
 ![Base Package](./img/subscription-img-3.png)
 
-This is the entry level package of the platform. It includes the base monthly price of the package in our case which is `US$6,178.96/month`, which provides 50GB of storage, 2 cpus and 8gb of ram.
+This is the entry level package of the platform. It includes the base monthly price of the package in our case which is `US$60/month`, which provides 50GB of storage, 2 cpus and 4gb of ram.
 
 ### Advanced 
 
 ![Advanced Package](./img/subscription-img-4.png)
 
-This is the standard package of the platform. It includes the base monthly price of the package in our case which is `€6,453.62/month`, which provides 100GB of storage, 2 cpus and 16gb of ram.
+This is the standard package of the platform. It includes the base monthly price of the package in our case which is `US$110/month`, which provides 100GB of storage, 4 cpus and 8gb of ram.
 
 ### Gold
 
 ![Gold Package](./img/subscription-img-5.png)
 
-This is the standard package of the platform. It includes the base monthly price of the package in our case which is `US$7,628.24/month`, which provides 500GB of storage, 4 cpus and 32gb of ram.
+This is the standard package of the platform. It includes the base monthly price of the package in our case which is `US$225/month`, which provides 500GB of storage, 8 cpus and 16gb of ram.
 
 ## Subscribe to the platform
 
@@ -83,17 +83,13 @@ This is the agreement of the platform which users have to agree to before procee
 
 1. **Hosting Provider:** In our case there are 2 service providers. Users can select one of them by checking the corresponding `checkbox`. 
 
-2. **Representative Name:** Users can enter the name of the representative.
+2. **Signature:** To sign the agreement, users must double-click on the signature box and draw their signature.
 
-3. **Title:** Users can enter the title of the representative.
+3. **Clear:** Users can clear the signature box by clicking on the `Clear` button.
 
-4. **Signature:** To sign the agreement, users must double-click on the signature box and draw their signature.
+4. **Decline:** Users can decline the agreement by clicking on the `Decline` button.
 
-5. **Clear:** Users can clear the signature box by clicking on the `Clear` button.
-
-6. **Decline:** Users can decline the agreement by clicking on the `Decline` button.
-
-7. **Accept:** Users can accept the agreement by clicking on the `Accept` button. This will redirects the users to the payment page.
+5. **Accept:** Users can accept the agreement by clicking on the `Accept` button. This will redirects the users to the payment page.
 
 [![Payment Page](./img/subscription-img-11.png)](./img/subscription-img-11.png)
 
@@ -109,7 +105,7 @@ This is the agreement of the platform which users have to agree to before procee
 
 6. **Phone number:** Users can also provide their phone number, however, it is optional.
 
-7. **Subscribe:** Click here after filling in all the details. After clicking on this button, the payment will be processed and users will be redirected to the home page. After successfully purchasing the service, users will be notified via email.
+7. **Subscribe:** Click here after filling in all the details. After clicking on this button, the payment will be processed and users will be redirected to the hosted service page. After successfully purchasing the service, users will be notified via email.
 
 [![Email](./img/subscription-img-22.png)](./img/subscription-img-22.png)
 
