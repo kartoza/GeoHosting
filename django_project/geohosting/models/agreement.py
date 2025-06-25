@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
+from geohosting.models.erp_company import ErpCompany
 from geohosting.models.sales_order import SalesOrder
 
 
@@ -33,6 +34,11 @@ class AgreementDetail(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    erp_company = models.ForeignKey(
+        ErpCompany, on_delete=models.SET_NULL,
+        blank=True, null=True,
+    )
+
     template = models.TextField(
         blank=True, null=True
     )
@@ -49,7 +55,7 @@ class AgreementDetail(models.Model):
 
     class Meta:  # noqa
         ordering = ('agreement__name', '-version')
-        unique_together = ('agreement', 'version')
+        unique_together = ('agreement', 'erp_company', 'version')
 
     def __str__(self):
         """Return string representation."""

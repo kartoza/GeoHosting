@@ -109,6 +109,7 @@ def fetch_erpnext_data(
             )
 
             if response.status_code == 200:
+                current_try = 1
                 data = response.json()
                 if 'data' in data:
                     all_data.extend(data['data'])
