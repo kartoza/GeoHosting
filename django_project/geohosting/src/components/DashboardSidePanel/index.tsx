@@ -1,6 +1,6 @@
 import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/reducers/authSlice";
 import {
   Box,
@@ -34,7 +34,6 @@ const SidebarItem = ({
       w="full"
       onClick={onClick ? onClick : () => {}}
       bg={isSelected ? "blue.500" : "transparent"}
-      borderRight={isSelected ? "8px solid #FFFFFF" : "none"}
       style={style}
     >
       {children}
@@ -42,9 +41,12 @@ const SidebarItem = ({
   );
 };
 
-const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
+const DashboardSidePanel = ({ onClose, ...rest }) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathNames = location.pathname.split("/");
+  const selected = pathNames[pathNames.length - 1];
 
   const handleLogout = () => {
     dispatch(logout()).then(() => {
@@ -91,7 +93,7 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
       </Flex>
       <VStack spacing={0} align="start">
         <SidebarItem
-          isSelected={selected === "dashboard"}
+          isSelected={selected === "dashboard" || pathNames[2] === "instances"}
           onClick={() => navigate("/dashboard")}
         >
           Hosted Services

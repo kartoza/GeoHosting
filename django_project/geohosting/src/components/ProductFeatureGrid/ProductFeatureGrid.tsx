@@ -9,14 +9,8 @@ interface FeatureGridProps {
 
 const FeatureGrid: React.FC<FeatureGridProps> = ({ product }) => {
   return (
-    <Box
-      overflow="auto"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <SimpleGrid
-        columns={{ base: 1, md: 2 }}
+    <SimpleGrid
+        columns={{ base: 1, xl: 2 }}
         spacingX={10}
         spacingY={10}
         width="100%"
@@ -84,7 +78,6 @@ const FeatureGrid: React.FC<FeatureGridProps> = ({ product }) => {
           </Box>
         ))}
       </SimpleGrid>
-    </Box>
   );
 };
 

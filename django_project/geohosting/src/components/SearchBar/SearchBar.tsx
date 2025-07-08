@@ -131,11 +131,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     flex: 1,
     padding: '10px 10px 10px 20px',
     height: '100%',
-    border: '0px',
-    borderRadius: '4px',
-    outline: 'none',
-    transition: 'border-color 0.2s',
-    backgroundColor: "white"
+    transition: 'border-color 0.2s'
   },
   dateContainer: {
     position: 'relative',

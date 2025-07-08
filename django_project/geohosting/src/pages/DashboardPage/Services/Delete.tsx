@@ -9,14 +9,15 @@ interface Props {
 
 export const DeleteInstance: React.FC<Props> = ({ instanceInput }) => {
   const modalRef = useRef(null);
-  return <Button
-    colorScheme="red"
-    mt={6}
-    // @ts-ignore
-    onClick={() => modalRef?.current?.open()}
-  >
-    <InstanceDeletion
-      instance={instanceInput} ref={modalRef}/>
-    Delete
-  </Button>
-}
+  return (
+    <Button
+      colorScheme="red"
+      mt={6}
+      // @ts-ignore
+      onClick={() => modalRef?.current?.open()}
+    >
+      <InstanceDeletion instance={instanceInput} ref={modalRef} />
+      Delete
+    </Button>
+  );
+};
