@@ -1,14 +1,12 @@
-import React from 'react';
-import { Box, ChakraProvider, } from '@chakra-ui/react';
-import customTheme from '../../theme/theme';
-import DashboardSidePanel
-  from "../../components/DashboardSidePanel/DashboardSidePanel";
-import { Route, Routes, useLocation } from "react-router-dom";
-import OrdersList from './Orders/OrderList';
+import React from "react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
+import customTheme from "../../theme/theme";
+import DashboardSidePanel from "../../components/DashboardSidePanel";
+import { Route, Routes } from "react-router-dom";
+import OrdersList from "./Orders/OrderList";
 import OrderDetail from "./Orders/OrderDetail";
-import ProfilePage from './Profile/ProfilePage';
+import ProfilePage from "./Profile/ProfilePage";
 import ServiceList from "./Services/ServiceList";
-import AgreementList from "./Agreements/AgreementList";
 import DashboardPageContent from "./DashboardPageContent";
 import SupportList from "./Support/SupportList";
 import ServiceDetail from "./Services/ServiceDetail";
@@ -16,23 +14,21 @@ import ServiceDetail from "./Services/ServiceDetail";
 const DashboardPage = ({ title = "Dashboard" }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggleSidebar = () => setIsOpen(!isOpen);
-  const location = useLocation();
 
   return (
     <ChakraProvider theme={customTheme}>
-      <Box minH="100vh" bg="gray.200">
+      <Box minH="100vh">
         <DashboardSidePanel
-          selected={location.pathname.split('/').pop()}
           onClose={toggleSidebar}
-          display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
+          display={{ base: isOpen ? "block" : "none", md: "block" }}
         />
         <Routes>
           <Route
             path="/instances/:id"
             element={
               <DashboardPageContent
-                title='Hosted Service'
-                element={<ServiceDetail/>}
+                title="Hosted Service"
+                element={<ServiceDetail />}
                 toggleSidebar={toggleSidebar}
               />
             }
@@ -41,8 +37,8 @@ const DashboardPage = ({ title = "Dashboard" }) => {
             path="/"
             element={
               <DashboardPageContent
-                title='Hosted Services'
-                element={<ServiceList/>}
+                title="Hosted Services"
+                element={<ServiceList />}
                 toggleSidebar={toggleSidebar}
               />
             }
@@ -51,8 +47,8 @@ const DashboardPage = ({ title = "Dashboard" }) => {
             path="/orders/:id"
             element={
               <DashboardPageContent
-                title='Order'
-                element={<OrderDetail/>}
+                title="Order"
+                element={<OrderDetail />}
                 toggleSidebar={toggleSidebar}
               />
             }
@@ -61,8 +57,8 @@ const DashboardPage = ({ title = "Dashboard" }) => {
             path="/orders"
             element={
               <DashboardPageContent
-                title='Orders'
-                element={<OrdersList/>}
+                title="Orders"
+                element={<OrdersList />}
                 toggleSidebar={toggleSidebar}
               />
             }
@@ -71,8 +67,8 @@ const DashboardPage = ({ title = "Dashboard" }) => {
             path="/profile"
             element={
               <DashboardPageContent
-                title='Profile'
-                element={<ProfilePage/>}
+                title="Profile"
+                element={<ProfilePage />}
                 toggleSidebar={toggleSidebar}
               />
             }
@@ -81,8 +77,8 @@ const DashboardPage = ({ title = "Dashboard" }) => {
             path="/support"
             element={
               <DashboardPageContent
-                title='Support'
-                element={<SupportList/>}
+                title="Support"
+                element={<SupportList />}
                 toggleSidebar={toggleSidebar}
               />
             }

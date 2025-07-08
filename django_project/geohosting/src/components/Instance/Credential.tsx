@@ -12,12 +12,12 @@ interface Props {
 
 /** Instance credential */
 export const InstanceCredential = forwardRef(
-  ({ instance, product }: Props, ref
-  ) => {
-    const [fetchingCredential, setFetchingCredential] = useState<boolean>(false);
-    let url = `/api/instances/${instance.name}/credential/`
+  ({ instance, product }: Props, ref) => {
+    const [fetchingCredential, setFetchingCredential] =
+      useState<boolean>(false);
+    let url = `/api/instances/${instance.name}/credential/`;
     if (product) {
-      url += '?product=' + product
+      url += "?product=" + product;
     }
 
     /** Fetch credential **/
@@ -25,48 +25,41 @@ export const InstanceCredential = forwardRef(
       e.preventDefault();
       e.stopPropagation();
       if (fetchingCredential) {
-        return
+        return;
       }
-      setFetchingCredential(true)
+      setFetchingCredential(true);
 
       try {
-        const response = await axios.get(
-          url,
-          {
-            headers: headerWithToken()
-          }
-        );
+        const response = await axios.get(url, {
+          headers: headerWithToken(),
+        });
         const { username, password } = response.data;
-        navigator.clipboard.writeText(password).then(() => {
-          toast.success(
-            'Please ensure that you change your password within the application for security purposes.'
-          );
-          toast.success(
-            'Your credentials have been successfully copied to the clipboard.'
-          );
-          toast.success(
-            `Username is ${username}.`
-          );
-        })
+        navigator.clipboard
+          .writeText(password)
+          .then(() => {
+            toast.success(
+              "Please ensure that you change your password within the application for security purposes.",
+            );
+            toast.success(
+              "Your credentials have been successfully copied to the clipboard.",
+            );
+          })
           .catch(() => {
-            toast.error('Failed to get credentials, please retry.');
+            toast.error("Failed to get credentials, please retry.");
           });
       } catch (err) {
-        toast.error('Failed to get credentials, please retry.');
+        toast.error("Failed to get credentials, please retry.");
       }
-      setFetchingCredential(false)
-    }
+      setFetchingCredential(false);
+    };
 
-    return <Box
-      cursor='pointer' color='yellow.500'
-      onClick={fetchCredential} _hover={{ opacity: 0.8 }}
-    >
-      Get password
-      <>
-        {fetchingCredential && <Spinner width={4} height={4} ml={1}/>}
-      </>
-    </Box>
-  }
+    return (
+      <Box cursor="pointer" color="orange.500" onClick={fetchCredential}>
+        Get password
+        <>{fetchingCredential && <Spinner width={4} height={4} ml={1} />}</>
+      </Box>
+    );
+  },
 );
 
 export default InstanceCredential;

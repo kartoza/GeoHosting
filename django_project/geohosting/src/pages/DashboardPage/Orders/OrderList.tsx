@@ -81,7 +81,7 @@ const CardDownload = (agreement: Agreement) => {
 /** Card for order **/
 const Card: React.FC<CardProps> = ({ order }) => {
   return (
-    <Tr key={order.id} background={"white"} _hover={{ bg: "gray.100" }}>
+    <Tr key={order.id} _hover={{ bg: "gray.100" }}>
       <Td>
         <Link
           href={`/#${checkCheckoutUrl(order)}`}

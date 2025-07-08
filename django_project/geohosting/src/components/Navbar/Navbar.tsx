@@ -75,17 +75,26 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
         <Box flexGrow={1} />
       )}
 
-      {products.map((product) => (
-        <ChakraLink
-          key={product.name}
-          as="button"
-          onClick={() => navigate("/app/" + product.name)}
-          fontSize="md"
-          _hover={STYLES.linkHovered}
-        >
-          {product.name}
-        </ChakraLink>
-      ))}
+      <ChakraLink
+        as="button"
+        onClick={() => navigate("/")}
+        fontSize="md"
+        _hover={STYLES.linkHovered}
+      >
+        Our Products
+      </ChakraLink>
+
+      {/*{products.map((product) => (*/}
+      {/*  <ChakraLink*/}
+      {/*    key={product.name}*/}
+      {/*    as="button"*/}
+      {/*    onClick={() => navigate("/app/" + product.name)}*/}
+      {/*    fontSize="md"*/}
+      {/*    _hover={STYLES.linkHovered}*/}
+      {/*  >*/}
+      {/*    {product.name}*/}
+      {/*  </ChakraLink>*/}
+      {/*))}*/}
 
       {isDrawer ? (
         <Box
@@ -96,6 +105,7 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
         />
       ) : null}
 
+      <Help isDrawer={isDrawer} />
       {token ? (
         <ChakraLink
           as="button"
@@ -107,7 +117,7 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
           <Box
             boxSize={6}
             marginRight={2}
-            border={isDrawer ? "1px solid #1A202C" : "1px solid white"}
+            border={isDrawer ? "2.5px solid #1A202C" : "2.5px solid white"}
             borderRadius={50}
             textAlign="center"
             display="flex"
@@ -129,7 +139,6 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
           Login
         </ChakraLink>
       )}
-      <Help isDrawer={isDrawer} />
 
       {isDrawer ? <Box width="100%" height="1px" /> : null}
     </>

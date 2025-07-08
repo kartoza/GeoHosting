@@ -1,6 +1,6 @@
 import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/reducers/authSlice";
 import {
   Box,
@@ -30,12 +30,10 @@ const SidebarItem = ({
     <Box
       p={4}
       color="white"
-      _hover={{ bg: "gray.600", cursor: "pointer" }}
+      _hover={{ bg: "blue.500", cursor: "pointer" }}
       w="full"
-      backgroundColor={isSelected ? "gray.600" : "blue.500"}
       onClick={onClick ? onClick : () => {}}
-      bg={isSelected ? "gray.600" : "transparent"}
-      borderRight={isSelected ? "8px solid #FFFFFF" : "none"}
+      bg={isSelected ? "blue.500" : "transparent"}
       style={style}
     >
       {children}
@@ -43,9 +41,12 @@ const SidebarItem = ({
   );
 };
 
-const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
+const DashboardSidePanel = ({ onClose, ...rest }) => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathNames = location.pathname.split("/");
+  const selected = pathNames[pathNames.length - 1];
 
   const handleLogout = () => {
     dispatch(logout()).then(() => {
@@ -55,14 +56,20 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
 
   return (
     <Box
-      bg="blue.500"
+      bg="gray.500"
       zIndex={99}
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="3" justifyContent="space-between">
+      <Flex
+        alignItems="center"
+        mx="3"
+        justifyContent="space-between"
+        h="14"
+        marginBottom={"-1px"}
+      >
         <Heading
           fontSize="xl"
           fontWeight="bold"
@@ -72,7 +79,7 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
           onClick={() => navigate("/")}
         >
           <Image
-            src="/static/images/logos/geohosting-all-white.svg"
+            src="/static/images/logos/geohosting-full-white.svg"
             alt="Kartoza Logo"
             style={{ cursor: "pointer" }}
             width="100%"
@@ -81,12 +88,12 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
         <CloseButton
           display={{ base: "flex", md: "none" }}
           onClick={onClose}
-          color="#3e3e3e"
+          color={{ base: "white", md: "#3e3e3e" }}
         />
       </Flex>
       <VStack spacing={0} align="start">
         <SidebarItem
-          isSelected={selected === "dashboard"}
+          isSelected={selected === "dashboard" || pathNames[2] === "instances"}
           onClick={() => navigate("/dashboard")}
         >
           Hosted Services

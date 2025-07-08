@@ -10,7 +10,7 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { FaQuestionCircle } from "react-icons/fa";
+import { FaQuestionCircle, FaRegQuestionCircle } from "react-icons/fa";
 import { DocsCrawlerPage } from "django-docs-crawler-react";
 
 import "django-docs-crawler-react/dist/style.css";
@@ -37,17 +37,24 @@ const Help: FC<IHelp> = ({
     "",
   );
 
+  const QuestionCircle = () => {
+    if (isDrawerOpen) {
+      return <FaQuestionCircle fontSize={"1.5rem"} />;
+    } else {
+      return <FaRegQuestionCircle fontSize={"1.5rem"} />;
+    }
+  };
+
   return (
     <>
       {isDrawer ? (
         <Button
           aria-label="Open menu"
-          leftIcon={<FaQuestionCircle />}
+          leftIcon={<QuestionCircle />}
           onClick={onDrawerOpen}
           backgroundColor={backgroundColor}
           _hover={{ backgroundColor: backgroundColor, opacity: 0.8 }}
           minWidth={0}
-          marginLeft={isDrawer ? 0 : "-0.5rem"}
           style={style}
         >
           Help
@@ -55,12 +62,11 @@ const Help: FC<IHelp> = ({
       ) : (
         <IconButton
           aria-label="Open menu"
-          icon={<FaQuestionCircle />}
+          icon={<QuestionCircle />}
           onClick={onDrawerOpen}
           backgroundColor={backgroundColor}
           _hover={{ backgroundColor: backgroundColor, opacity: 0.8 }}
           minWidth={0}
-          marginLeft={"-0.5rem"}
         />
       )}
       <Drawer isOpen={isDrawerOpen} placement="right" onClose={onDrawerClose}>

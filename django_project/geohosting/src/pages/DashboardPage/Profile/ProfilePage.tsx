@@ -191,8 +191,6 @@ const ProfilePage: React.FC = () => {
                     (e) => setPersonalInfo(
                       { ...personalInfo, first_name: e.target.value })
                   }
-                  borderWidth="0px"
-                  borderColor="gray.400"
                   bg="white"
                   width={'100%'}
                 />
@@ -206,8 +204,6 @@ const ProfilePage: React.FC = () => {
                     ...personalInfo,
                     last_name: e.target.value
                   })}
-                  borderWidth="0px"
-                  borderColor="gray.400"
                   bg="white"
                   width={'100%'}
                 />
@@ -221,8 +217,6 @@ const ProfilePage: React.FC = () => {
                     ...personalInfo,
                     email: e.target.value
                   })}
-                  borderWidth="0px"
-                  borderColor="gray.400"
                   bg="white"
                   width={'100%'}
                 />
