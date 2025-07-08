@@ -153,27 +153,60 @@ const ServiceDetail: React.FC = () => {
       </Box>
     );
   }
-
+  const Notification = () => {
+    if (!["Deploying", "Starting Up", "Deleting"].includes(instance.status)) {
+      return null;
+    }
+    return (
+      <Box
+        backgroundColor="gray.200"
+        borderColor="gray.300"
+        textAlign="center"
+        borderWidth={1}
+        borderRadius={4}
+        color="orange.500"
+        px={8}
+        py={4}
+        mb={4}
+      >
+        {instance.status === "Deploying" && (
+          <Box>Hang in there, we're spinning things up for you!</Box>
+        )}
+        {instance.status === "Starting Up" && (
+          <Box>We’re setting things up for you. Almost there!</Box>
+        )}
+        {instance.status === "Deleting" && (
+          <Box>
+            Deleting your instance now. We’ll let you know once it’s fully
+            removed.
+          </Box>
+        )}
+      </Box>
+    );
+  };
   return (
     <Box width={{ base: "100%", xl: "75%", "2xl": "50%" }}>
-      <Box
-        fontSize="2xl"
-        fontWeight="bold"
-        px={4}
-        mb={2}
-        color={"#3e3e3e"}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Box>Instance information</Box>
+      <Notification />
+      <Box px={4} mb={2} display="flex" alignItems="end" gap={4}>
+        <Box fontSize="2xl" fontWeight="bold" color={"#3e3e3e"}>
+          Instance information
+        </Box>
+        <Flex mb="3px">
+          <RenderInstanceStatus instance={instance} />
+        </Flex>
       </Box>
       <Box height="2px" bg="blue.500" width="100%" mb={4} />
       <Box px={4}>
         <Flex align="flex-start" justifyContent="space-between">
           <Box>
             <Link href={instance.url} target="_blank">
-              <Flex wrap="wrap" gap={1} alignItems="center" color="teal" mb={4}>
+              <Flex
+                wrap="wrap"
+                gap={1}
+                alignItems="center"
+                color="blue.500"
+                mb={4}
+              >
                 <FaLink /> {instance.url}
               </Flex>
             </Link>
@@ -185,16 +218,6 @@ const ServiceDetail: React.FC = () => {
                   </Td>
                   <Td>
                     {instance.product.name} {packageName(instance.package)}
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td className="table-title" paddingLeft={0} paddingRight={8}>
-                    Status:
-                  </Td>
-                  <Td>
-                    <Flex align="center" gap={1}>
-                      <RenderInstanceStatus instance={instance} />
-                    </Flex>
                   </Td>
                 </Tr>
                 <Tr>
@@ -218,7 +241,7 @@ const ServiceDetail: React.FC = () => {
                             wrap="wrap"
                             gap={1}
                             direction={{ base: "column", md: "row" }}
-                            color="teal"
+                            color="blue.500"
                           >
                             <FaLink /> {application.name}
                           </Flex>
@@ -251,11 +274,6 @@ const ServiceDetail: React.FC = () => {
               boxSize="120px"
               borderRadius="full"
             />
-            {["Online", "Offline", "Starting Up"].includes(instance.status) && (
-              <Box mt="-20px">
-                <DeleteInstance instanceInput={instance} />
-              </Box>
-            )}
           </Box>
         </Flex>
       </Box>
@@ -315,6 +333,27 @@ const ServiceDetail: React.FC = () => {
             subscription_id={instance.subscription.id}
             ref={paymentModalRef}
           />
+        )}
+      </Box>
+      <Box
+        fontSize="2xl"
+        fontWeight="bold"
+        mt={8}
+        px={4}
+        mb={2}
+        color={"#3e3e3e"}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Box>Delete instance</Box>
+      </Box>
+      <Box height="2px" bg="blue.500" width="100%" mb={4} />
+      <Box px={4}>
+        {["Online", "Offline", "Starting Up"].includes(instance.status) && (
+          <Box mt="-20px">
+            <DeleteInstance instanceInput={instance} />
+          </Box>
         )}
       </Box>
     </Box>

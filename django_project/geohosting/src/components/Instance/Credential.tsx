@@ -54,12 +54,7 @@ export const InstanceCredential = forwardRef(
     };
 
     return (
-      <Box
-        cursor="pointer"
-        color="yellow.500"
-        onClick={fetchCredential}
-        _hover={{ opacity: 0.8 }}
-      >
+      <Box cursor="pointer" color="orange.500" onClick={fetchCredential}>
         Get password
         <>{fetchingCredential && <Spinner width={4} height={4} ml={1} />}</>
       </Box>

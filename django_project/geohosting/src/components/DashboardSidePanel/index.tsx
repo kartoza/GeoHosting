@@ -88,7 +88,7 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
         <CloseButton
           display={{ base: "flex", md: "none" }}
           onClick={onClose}
-          color="#3e3e3e"
+          color={{ base: "white", md: "#3e3e3e" }}
         />
       </Flex>
       <VStack spacing={0} align="start">
