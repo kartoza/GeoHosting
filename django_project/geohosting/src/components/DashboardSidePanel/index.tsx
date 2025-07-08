@@ -30,11 +30,10 @@ const SidebarItem = ({
     <Box
       p={4}
       color="white"
-      _hover={{ bg: "gray.600", cursor: "pointer" }}
+      _hover={{ bg: "blue.500", cursor: "pointer" }}
       w="full"
-      backgroundColor={isSelected ? "gray.600" : "blue.500"}
       onClick={onClick ? onClick : () => {}}
-      bg={isSelected ? "gray.600" : "transparent"}
+      bg={isSelected ? "blue.500" : "transparent"}
       borderRight={isSelected ? "8px solid #FFFFFF" : "none"}
       style={style}
     >
@@ -55,14 +54,20 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
 
   return (
     <Box
-      bg="blue.500"
+      bg="gray.500"
       zIndex={99}
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="3" justifyContent="space-between">
+      <Flex
+        alignItems="center"
+        mx="3"
+        justifyContent="space-between"
+        h="14"
+        marginBottom={"-1px"}
+      >
         <Heading
           fontSize="xl"
           fontWeight="bold"
@@ -72,7 +77,7 @@ const DashboardSidePanel = ({ selected, onClose, ...rest }) => {
           onClick={() => navigate("/")}
         >
           <Image
-            src="/static/images/logos/geohosting-all-white.svg"
+            src="/static/images/logos/geohosting-full-white.svg"
             alt="Kartoza Logo"
             style={{ cursor: "pointer" }}
             width="100%"

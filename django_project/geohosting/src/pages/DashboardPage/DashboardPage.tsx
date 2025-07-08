@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, ChakraProvider, } from '@chakra-ui/react';
 import customTheme from '../../theme/theme';
-import DashboardSidePanel
-  from "../../components/DashboardSidePanel/DashboardSidePanel";
+import Index
+  from "../../components/DashboardSidePanel";
 import { Route, Routes, useLocation } from "react-router-dom";
 import OrdersList from './Orders/OrderList';
 import OrderDetail from "./Orders/OrderDetail";
@@ -21,7 +21,7 @@ const DashboardPage = ({ title = "Dashboard" }) => {
   return (
     <ChakraProvider theme={customTheme}>
       <Box minH="100vh" bg="gray.200">
-        <DashboardSidePanel
+        <Index
           selected={location.pathname.split('/').pop()}
           onClose={toggleSidebar}
           display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
