@@ -9,7 +9,6 @@ class DevopsGithubClient:
     REPO_PATH = "repos/kartoza/kartoza-devops"
 
     def __init__(self):
-        """Initialize the GitHub client."""
         self.token = getattr(settings, 'KARTOZA_DEVOPS_REPO_TOKEN', None)
         if not self.token:
             raise ValueError('KARTOZA_DEVOPS_REPO_TOKEN is not set')

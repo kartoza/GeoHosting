@@ -22,7 +22,7 @@ def parse_k8s_size(size_str):
 
 
 def parse_k8s_cpu(cpu_str):
-    """Convert Kubernetes CPU string (like '500m' or '1') to float cores.    """
+    """Convert Kubernetes CPU string (like '500m' or '1') to float cores."""
     if not cpu_str:
         return 0.0
     cpu_str = cpu_str.strip()
