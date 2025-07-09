@@ -161,3 +161,7 @@ FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:8000/#')
 RESEND_API_KEY = os.environ.get(
     'RESEND_API_KEY', ''
 )
+
+KARTOZA_DEVOPS_REPO_TOKEN = os.environ.get(
+    'KARTOZA_DEVOPS_REPO_TOKEN', ''
+)
