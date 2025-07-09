@@ -26,8 +26,6 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import SignatureCanvas from "react-signature-canvas";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { getUserLocation, headerWithToken } from "../../../utils/helpers";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { fetchUserProfile } from "../../../redux/reducers/profileSlice";
@@ -139,7 +137,7 @@ const SignaturePad = ({ onChange }) => {
         }}
       />
       <Box
-        className="Button"
+        className="Button no-print"
         style={{ fontSize: "0.8rem", cursor: "pointer" }}
         onClick={clearSignature}
       >
@@ -239,7 +237,7 @@ export interface Agreement {
   name: string;
   template: string;
   signed?: boolean;
-  blob?: Blob;
+  html?: string;
 
   // We open this after able to change the pdf
   // file: string;
@@ -248,7 +246,7 @@ export interface Agreement {
 interface AgreementMarkdownProps {
   unassignAgreement: Agreement;
   onClose: () => void;
-  onAgree: (blob: Blob) => void;
+  onAgree: (html: string) => void;
 }
 
 export const AgreementMarkdown = ({
@@ -269,31 +267,34 @@ export const AgreementMarkdown = ({
     });
   }
 
-  /** Generate pdf blob **/
-  const generatePdfBlob = async (element) => {
-    const canvas = await html2canvas(element, { scale: 2 });
-    const imgData = canvas.toDataURL("image/jpeg");
-
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pageWidth = 210;
-    const pageHeight = 297;
-    const marginX = 6;
-    const imgWidth = pageWidth - 2 * marginX;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    let yPosition = 0;
-
-    while (yPosition < imgHeight) {
-      pdf.addImage(imgData, "JPEG", marginX, -yPosition, imgWidth, imgHeight);
-      yPosition += pageHeight;
-
-      if (yPosition < imgHeight) {
-        pdf.addPage();
-      }
+  /** Return html of markdown **/
+  const generateHtml = async () => {
+    const element = document.getElementById("Markdown");
+    if (!element) {
+      return;
     }
+    const clonedElement = element.cloneNode(true);
+    // @ts-ignore
+    const elementsToRemove = clonedElement.querySelectorAll(".no-print");
+    // @ts-ignore
+    elementsToRemove.forEach((el) => el.remove());
 
-    return pdf.output("blob");
+    const canvases = element.querySelectorAll("canvas");
+    // @ts-ignore
+    const clonedCanvases = clonedElement.querySelectorAll("canvas");
+
+    canvases.forEach((canvas, i) => {
+      const img = document.createElement("img");
+      img.src = canvas.toDataURL("image/png");
+      img.style.width = canvas.style.width;
+      img.style.height = canvas.style.height;
+      img.style.background = "#eeeeee";
+      clonedCanvases[i].replaceWith(img);
+    });
+    // @ts-ignore
+    return clonedElement.outerHTML;
   };
+
   return (
     <Box>
       <Box id="Markdown" padding={8} paddingTop={0}>
@@ -320,11 +321,9 @@ export const AgreementMarkdown = ({
             if (!element) {
               return;
             }
-            element.classList.add("Read");
-            const blob = await generatePdfBlob(element);
-            element.classList.remove("Read");
+            const html = await generateHtml();
             setGenerating(false);
-            onAgree(blob);
+            onAgree(html);
           }}
         >
           Accept
@@ -442,11 +441,11 @@ export const AgreementModal = forwardRef(
               <AgreementMarkdown
                 unassignAgreement={unassignAgreement}
                 onClose={onClose}
-                onAgree={(blob) => {
+                onAgree={(html) => {
                   setAgreements(
                     agreements.map((agreement) => {
                       if (agreement.id === unassignAgreement?.id) {
-                        unassignAgreement.blob = blob;
+                        unassignAgreement.html = html;
                         unassignAgreement.signed = true;
                       }
                       return agreement;
