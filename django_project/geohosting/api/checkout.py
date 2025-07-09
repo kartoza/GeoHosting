@@ -28,7 +28,7 @@ def create_agreement(html_content, agreement_id, order):
             <style>
                 @page {{
                     size: A4;
-                    margin: 4rem; 
+                    margin: 4rem;
                 }}
                 body {{
                     margin: 0;
