@@ -4,11 +4,17 @@ GeoHosting.
 
 .. note:: Package model.
 """
+import json
+
 from django.db import models
 from django.db.models import JSONField
 from django.utils import timezone
 
 from geohosting.models.product import Product
+from geohosting.utils.functions import (
+    parse_k8s_size, format_bytes, parse_k8s_cpu
+)
+from geohosting.utils.github import DevopsGithubClient
 from geohosting.utils.paystack import create_paystack_price
 from geohosting.utils.stripe import create_stripe_price
 
@@ -23,10 +29,60 @@ class PackageGroup(models.Model):
         null=True,
         help_text='This is the package code of the product on jenkins.'
     )
+    specification = models.JSONField(
+        blank=True,
+        null=True,
+        help_text='Specification of the package.'
+    )
+    conf_github_path = models.CharField(
+        max_length=256,
+        blank=True
+    )
 
     def __str__(self):
         """Return package group name."""
         return self.name
+
+    def sync_specification(self):
+        """Sync specification from github."""
+        if self.conf_github_path:
+            client = DevopsGithubClient()
+            content = client.get_content(
+                'argocd/templates/' + self.conf_github_path
+            )
+            content = json.loads(content)
+            specification = {}
+
+            # Check every app
+            for key, value in content.items():
+                if isinstance(value, dict):
+                    app_specification = {}
+                    # Add the cpu
+                    if 'cpu' in value:
+                        app_specification['cpu'] = parse_k8s_cpu(value['cpu'])
+                    # Add the memory
+                    if 'memory' in value:
+                        app_specification['memory'] = format_bytes(
+                            parse_k8s_size(
+                                value['memory']
+                            )
+                        )
+
+                    # Add the volume
+                    storage = 0
+                    for k, v in value.items():
+                        if 'volume' in k:
+                            storage += parse_k8s_size(v)
+                    if storage:
+                        app_specification['storage'] = format_bytes(storage)
+                    specification[key] = app_specification
+
+            self.specification = specification
+            self.save()
+            return
+
+        self.specification = None
+        self.save()
 
 
 class Package(models.Model):

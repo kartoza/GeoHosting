@@ -1,24 +1,44 @@
+import json
+
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from geohosting.models import PackageGroup, Package
 
 
-@admin.action(description="Create stripe price")
+def sync_specification(modeladmin, request, queryset):
+    for package in queryset:
+        package.sync_specification()
+
+
+@admin.register(PackageGroup)
+class PackageGroupAdmin(admin.ModelAdmin):
+    list_display = (
+        'name', 'package_code', 'conf_github_path', 'get_specification_display'
+    )
+    list_editable = ('package_code', 'conf_github_path')
+    actions = (sync_specification,)
+
+    def get_specification_display(self, obj):
+        """Return specification."""
+        specification = obj.specification
+        if specification:
+            return mark_safe(
+                f"<pre>{json.dumps(specification, indent=2)}</pre>"
+            )
+        return "-"
+
+    get_specification_display.short_description = "Specification"
+
+
 def create_stripe_price(modeladmin, request, queryset):
     for package in queryset:
         package.get_stripe_price_id()
 
 
-@admin.action(description="Create paystack price")
 def create_paystack_price(modeladmin, request, queryset):
     for package in queryset:
         package.get_paystack_price_id()
-
-
-@admin.register(PackageGroup)
-class PackageGroupAdmin(admin.ModelAdmin):
-    list_display = ('name', 'package_code')
-    list_editable = ('package_code',)
 
 
 @admin.register(Package)
@@ -34,27 +54,32 @@ class PackageAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
         (
-            None, {
+            None,
+            {
                 'fields': ('product', 'name', 'created_at', 'updated_at')
             }
         ),
         (
-            'ERP', {
+            'ERP',
+            {
                 'fields': ('erpnext_code', 'erpnext_item_code')
             }
         ),
         (
-            'Price', {
+            'Price',
+            {
                 'fields': ('currency', 'price', 'price_list', 'periodicity')
             }
         ),
         (
-            'Detail', {
+            'Detail',
+            {
                 'fields': ('feature_list', 'order', 'package_group'),
             }
         ),
         (
-            'Subscription', {
+            'Subscription',
+            {
                 'fields': ('stripe_id', 'paystack_id'),
             }
         )
