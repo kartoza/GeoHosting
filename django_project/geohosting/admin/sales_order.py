@@ -56,29 +56,33 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     )
     fieldsets = (
         (
-            None, {
-            'fields': (
-                'erpnext_code', 'package', 'customer', 'company',
-                'date', 'delivery_date'
-            )
-        }
+            None,
+            {
+                'fields': (
+                    'erpnext_code', 'package', 'customer', 'company',
+                    'date', 'delivery_date'
+                )
+            }
         ),
         (
-            'Status', {
-            'fields': ('order_status',)
-        }
+            'Status',
+            {
+                'fields': ('order_status',)
+            }
         ),
         (
-            'Instance', {
-            'fields': ('app_name', 'instance')
-        }
+            'Instance',
+            {
+                'fields': ('app_name', 'instance')
+            }
         ),
         (
-            'Subscription', {
-            'fields': (
-                'payment_method', 'payment_id', 'subscription', 'invoice'
-            )
-        }
+            'Subscription',
+            {
+                'fields': (
+                    'payment_method', 'payment_id', 'subscription', 'invoice'
+                )
+            }
         )
     )
     inlines = (SalesOrderAgreementInline,)

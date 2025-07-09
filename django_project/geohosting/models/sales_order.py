@@ -34,7 +34,6 @@ class _SalesOrderStatusObject:
     """SalesOrderStatus."""
 
     def __init__(self, key, billing_status, erp_status, percent_billed):
-        """Initiate SalesOrderStatusObject."""
         self.key = key
         self.billing_status = billing_status
         self.erp_status = erp_status

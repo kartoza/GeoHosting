@@ -25,7 +25,6 @@ class SubscriptionType:
             current_period_end: float,
             canceled: bool
     ):
-        """Initialize Payment Status."""
         self.id = id
         self.current_period_start = current_period_start
         self.current_period_end = current_period_end
@@ -36,7 +35,6 @@ class PaymentGateway:
     """Payment Gateway."""
 
     def __init__(self, payment_id):
-        """Initialize payment gateway."""
         self.payment_id = payment_id
 
     def payment_method(self) -> str:

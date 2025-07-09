@@ -29,7 +29,6 @@ class CardDetail:
             exp_year: int,
             brand: str
     ):
-        """Initialize Subscription Status."""
         self.last4 = last4
         self.exp_month = exp_month
         self.exp_year = exp_year
@@ -57,7 +56,6 @@ class AddressDetail:
             postal_code: float,
             state: float,
     ):
-        """Initialize AddressDetail Status."""
         self.city = city
         self.country = country
         self.line1 = line1
@@ -87,7 +85,6 @@ class BillingDetail:
     card: CardDetail = None
 
     def __init__(self, email: str, name: str):
-        """Initialize BillingDetail Status."""
         self.name = name
         self.email = email
 
@@ -143,7 +140,6 @@ class SubscriptionData:
             period: str,
             amount: int
     ):
-        """Initialize Subscription Status."""
         self.id = id
         self.customer_id = customer_id
         self.current_period_start = current_period_start
@@ -192,7 +188,6 @@ class SubscriptionGateway:
     """Subscription Gateway."""
 
     def __init__(self, subscription_id):
-        """Initialize subscription gateway."""
         self.subscription_id = subscription_id
 
     def payment_method(self) -> str:

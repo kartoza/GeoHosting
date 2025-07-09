@@ -58,7 +58,7 @@ def delete_instance(modeladmin, request, queryset):
         if success_ids:
             modeladmin.message_user(
                 request,
-                f"Successfully started deleting instance(s).",
+                "Successfully started deleting instance(s).",
                 messages.SUCCESS
             )
             id_param = ",".join(success_ids)
@@ -75,7 +75,8 @@ def delete_instance(modeladmin, request, queryset):
     if not queryset.count():
         modeladmin.message_user(
             request,
-            "Your selected instaces are empty or already in deleting process or deleted.",
+            "Your selected instaces are empty or "
+            "already in deleting process or deleted.",
             messages.WARNING
         )
         return None
@@ -105,22 +106,20 @@ class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     readonly_fields = ('created_at', 'modified_at')
     fieldsets = (
         (
-            None, {
-            'fields': (
-                'name', 'cluster', 'owner', 'company',
-                'created_at', 'modified_at'
-            )
-        }
+            None,
+            {
+                'fields': (
+                    'name', 'cluster', 'owner', 'company',
+                    'created_at', 'modified_at'
+                )
+            }
         ),
+        ('Status', {'fields': ('status',)}),
         (
-            'Status', {
-            'fields': ('status',)
-        }
-        ),
-        (
-            'Subscription', {
-            'fields': ('price', 'subscription')
-        }
+            'Subscription',
+            {
+                'fields': ('price', 'subscription')
+            }
         )
     )
 
