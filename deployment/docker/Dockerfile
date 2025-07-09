@@ -6,7 +6,9 @@ RUN apt-get update -y && \
     spatialite-bin libsqlite3-mod-spatialite \
     python3-dev python3-gdal python3-psycopg2 python3-ldap \
     python3-pip python3-pil python3-lxml python3-pylibmc \
-    uwsgi uwsgi-plugin-python3 git
+    uwsgi uwsgi-plugin-python3 git \
+    libpango-1.0-0 libpango1.0-dev libgdk-pixbuf2.0-0 libffi-dev libcairo2
+
 
 # Install pip packages
 ADD deployment/docker/requirements.txt /requirements.txt
