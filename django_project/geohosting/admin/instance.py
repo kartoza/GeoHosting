@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 from geohosting.admin.global_function import (
-    sync_subscriptions, cancel_subscription
+    NoUpdateAdmin, sync_subscriptions, cancel_subscription
 )
 from geohosting.models import Instance
 from geohosting_event.admin.log import LogTrackerObjectAdmin
@@ -21,7 +21,7 @@ def check_instance(modeladmin, request, queryset):
 
 
 @admin.register(Instance)
-class InstanceAdmin(LogTrackerObjectAdmin):
+class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     """Instance admin."""
 
     list_display = (
@@ -37,21 +37,21 @@ class InstanceAdmin(LogTrackerObjectAdmin):
     fieldsets = (
         (
             None, {
-                'fields': (
-                    'name', 'cluster', 'owner', 'company',
-                    'created_at', 'modified_at'
-                )
-            }
+            'fields': (
+                'name', 'cluster', 'owner', 'company',
+                'created_at', 'modified_at'
+            )
+        }
         ),
         (
             'Status', {
-                'fields': ('status',)
-            }
+            'fields': ('status',)
+        }
         ),
         (
             'Subscription', {
-                'fields': ('price', 'subscription')
-            }
+            'fields': ('price', 'subscription')
+        }
         )
     )
 
@@ -72,7 +72,7 @@ class InstanceAdmin(LogTrackerObjectAdmin):
     def webhooks(self, instance):
         """Return logs."""
         return mark_safe(
-            '<a href="/admin/geohosting/webhookevent/?'
+            '<a href="/admin/geohosting_event/webhookevent/?'
             f'activity__instance__exact={instance.id}"'
             'target="_blank">webhooks</a>'
         )

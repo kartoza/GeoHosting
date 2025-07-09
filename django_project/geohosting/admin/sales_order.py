@@ -1,27 +1,26 @@
-from django.contrib import admin, messages
+from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from geohosting.admin.global_function import sync_subscriptions
+from geohosting.admin.global_function import (
+    NoUpdateAdmin, sync_subscriptions, push_to_erp
+)
 from geohosting.models import SalesOrder
+from geohosting.models.agreement import SalesOrderAgreement
 from geohosting_event.admin.log import LogTrackerObjectAdmin
 
 
-@admin.action(description="Publish sales order")
-def publish_sales_order(modeladmin, request, queryset):
-    for sales_order in queryset:
-        result = sales_order.post_to_erpnext()
-        if result['status'] == 'success':
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                'Published')
+class SalesOrderAgreementInline(admin.TabularInline):
+    model = SalesOrderAgreement
+    extra = 1
+    readonly_fields = ('agreement_detail', 'name', 'created_at', 'file')
 
-        else:
-            messages.add_message(
-                request,
-                messages.ERROR,
-                result['message']
-            )
+    def has_add_permission(self, request, obj):
+        """Return add permission."""
+        return False
+
+    def has_delete_permission(self, request, obj):
+        """Return delete permission."""
+        return False
 
 
 def update_payment_status(modeladmin, request, queryset):
@@ -37,7 +36,7 @@ def auto_deploy(modeladmin, request, queryset):
 
 
 @admin.register(SalesOrder)
-class SalesOrderAdmin(LogTrackerObjectAdmin):
+class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     list_display = (
         'date', 'package', 'customer', 'order_status', 'payment_method',
         'erpnext_code', 'app_name', 'subscription',
@@ -46,7 +45,7 @@ class SalesOrderAdmin(LogTrackerObjectAdmin):
     list_filter = ('order_status', 'payment_method',)
     search_fields = ('erpnext_code', 'instance__name')
     actions = [
-        publish_sales_order, update_payment_status,
+        push_to_erp, update_payment_status,
         sync_subscriptions, auto_deploy
     ]
     readonly_fields = (
@@ -58,30 +57,31 @@ class SalesOrderAdmin(LogTrackerObjectAdmin):
     fieldsets = (
         (
             None, {
-                'fields': (
-                    'erpnext_code', 'package', 'customer', 'company',
-                    'date', 'delivery_date'
-                )
-            }
+            'fields': (
+                'erpnext_code', 'package', 'customer', 'company',
+                'date', 'delivery_date'
+            )
+        }
         ),
         (
             'Status', {
-                'fields': ('order_status',)
-            }
+            'fields': ('order_status',)
+        }
         ),
         (
             'Instance', {
-                'fields': ('app_name', 'instance')
-            }
+            'fields': ('app_name', 'instance')
+        }
         ),
         (
             'Subscription', {
-                'fields': (
-                    'payment_method', 'payment_id', 'subscription', 'invoice'
-                )
-            }
+            'fields': (
+                'payment_method', 'payment_id', 'subscription', 'invoice'
+            )
+        }
         )
     )
+    inlines = (SalesOrderAgreementInline,)
 
     def activities(self, obj: SalesOrder):
         """Return product."""

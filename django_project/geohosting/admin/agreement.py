@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from geohosting.models.agreement import (
-    Agreement, AgreementDetail, SalesOrderAgreement
+    Agreement, AgreementDetail
 )
 
 
@@ -16,9 +16,3 @@ class AgreementAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     inlines = [AgreementDetailInline]
-
-
-@admin.register(SalesOrderAgreement)
-class SalesOrderAgreementAdmin(admin.ModelAdmin):
-    list_display = ('name', 'sales_order', 'agreement_detail')
-    filter = ('sales_order',)
