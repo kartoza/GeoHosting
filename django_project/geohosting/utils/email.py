@@ -22,7 +22,6 @@ class InstanceEmail:
     from geohosting.models.instance import Instance
 
     def __init__(self, instance: Instance):
-        """Initialise an instance."""
         self.instance = instance
 
     def send_credentials(self):

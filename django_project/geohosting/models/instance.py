@@ -274,13 +274,14 @@ class Instance(models.Model):
     def cancel_subscription(self):
         """Cancel subscription."""
         if self.status != InstanceStatus.DELETED:
-            return
+            return False
 
         if not self.subscription:
-            return
+            return False
 
         self.subscription.cancel_subscription()
         self.subscription.sync_subscription()
+        return True
 
     def sync_subscription(self):
         """Sync subscription."""

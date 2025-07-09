@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from geohosting.admin.erp import push_to_erp
+from geohosting.admin.global_function import push_to_erp
 from geohosting.models.support import Attachment
 
 

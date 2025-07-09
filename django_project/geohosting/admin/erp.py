@@ -1,24 +1,6 @@
-from django.contrib import admin, messages
+from django.contrib import admin
 
 from geohosting.models.erp_company import ErpCompany
-
-
-@admin.action(description="Push to erpnext")
-def push_to_erp(modeladmin, request, queryset):
-    for obj in queryset:
-        result = obj.post_to_erpnext()
-        if result['status'] == 'success':
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                'Published'
-            )
-        else:
-            messages.add_message(
-                request,
-                messages.ERROR,
-                result['message']
-            )
 
 
 @admin.register(ErpCompany)
