@@ -1,6 +1,7 @@
 """All global function that can be reused in admin site."""
 
 from django.contrib import admin, messages
+from django.shortcuts import render
 
 
 class NoUpdateAdmin(admin.ModelAdmin):
@@ -47,5 +48,25 @@ def sync_subscriptions(modeladmin, request, queryset):
 
 def cancel_subscription(modeladmin, request, queryset):
     """Cancel subscription."""
-    for config in queryset:
-        config.cancel_subscription()
+    if 'apply' in request.POST:
+        # User confirmed the action
+        success_count = 0
+        for config in queryset:
+            if config.cancel_subscription():
+                success_count += 1
+
+        modeladmin.message_user(
+            request,
+            f"Successfully cancelled {success_count} subscription(s).",
+            messages.SUCCESS
+        )
+        return None  # Go back to changelist
+
+    # Show confirmation page
+    return render(
+        request,
+        'admin/cancel_subscription_confirmation.html', {
+            'queryset': queryset,
+            'action': 'cancel_subscription',
+        }
+    )

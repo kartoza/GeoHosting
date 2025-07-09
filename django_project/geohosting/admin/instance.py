@@ -1,10 +1,15 @@
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.utils.safestring import mark_safe
 
 from geohosting.admin.global_function import (
     NoUpdateAdmin, sync_subscriptions, cancel_subscription
 )
-from geohosting.models import Instance
+from geohosting.forms.activity.delete_instance import (
+    DeletingInstanceForm
+)
+from geohosting.models import Instance, InstanceStatus
 from geohosting_event.admin.log import LogTrackerObjectAdmin
 
 
@@ -20,6 +25,70 @@ def check_instance(modeladmin, request, queryset):
         config.checking_server()
 
 
+def delete_instance(modeladmin, request, queryset):
+    """Delete instance."""
+    queryset = queryset.exclude(
+        status__in=[
+            InstanceStatus.DELETING, InstanceStatus.DELETED,
+            InstanceStatus.DEPLOYING
+        ]
+    )
+
+    if 'apply' in request.POST:
+        # User confirmed the action
+        success_ids = []
+        error_messages = []
+        for instance in queryset:
+            form = DeletingInstanceForm({'application': instance.id})
+            form.user = request.user  # set user manually
+
+            if form.is_valid():
+                form.save()
+                success_ids.append(str(instance.id))
+            else:
+                for field_errors in form.errors.values():
+                    error_messages.extend(field_errors)
+
+        if error_messages:
+            modeladmin.message_user(
+                request,
+                ','.join(error_messages),
+                messages.WARNING
+            )
+        if success_ids:
+            modeladmin.message_user(
+                request,
+                f"Successfully started deleting instance(s).",
+                messages.SUCCESS
+            )
+            id_param = ",".join(success_ids)
+            return HttpResponseRedirect(
+                f"/admin/geohosting/instance/?id__in={id_param}")
+        else:
+            modeladmin.message_user(
+                request,
+                "No instances were deleted.",
+                messages.WARNING
+            )
+        return None
+
+    if not queryset.count():
+        modeladmin.message_user(
+            request,
+            "Your selected instaces are empty or already in deleting process or deleted.",
+            messages.WARNING
+        )
+        return None
+    # Show confirmation page
+    return render(
+        request,
+        'admin/delete_instance_confirmation.html', {
+            'queryset': queryset,
+            'action': 'delete_instance',
+        }
+    )
+
+
 @admin.register(Instance)
 class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     """Instance admin."""
@@ -31,7 +100,7 @@ class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     list_filter = ('status',)
     actions = (
         send_credentials, check_instance, sync_subscriptions,
-        cancel_subscription
+        cancel_subscription, delete_instance
     )
     readonly_fields = ('created_at', 'modified_at')
     fieldsets = (
