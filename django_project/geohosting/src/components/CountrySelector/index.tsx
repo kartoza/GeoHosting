@@ -31,6 +31,7 @@ const CountrySelector: React.FC<Props> = ({ disable, data, setData }) => {
   }
   return (
     <Select
+      backgroundColor={"white"}
       disabled={disable}
       placeholder="Select country"
       width={"100%"}

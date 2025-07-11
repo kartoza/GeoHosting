@@ -335,27 +335,29 @@ const ServiceDetail: React.FC = () => {
           />
         )}
       </Box>
-      <Box
-        fontSize="2xl"
-        fontWeight="bold"
-        mt={8}
-        px={4}
-        mb={2}
-        color={"#3e3e3e"}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Box>Delete instance</Box>
-      </Box>
-      <Box height="2px" bg="blue.500" width="100%" mb={4} />
-      <Box px={4}>
-        {["Online", "Offline", "Starting Up"].includes(instance.status) && (
-          <Box mt="-20px">
-            <DeleteInstance instanceInput={instance} />
+      {["Online", "Offline", "Starting Up"].includes(instance.status) && (
+        <>
+          <Box
+            fontSize="2xl"
+            fontWeight="bold"
+            mt={8}
+            px={4}
+            mb={2}
+            color={"#3e3e3e"}
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box>Delete instance</Box>
           </Box>
-        )}
-      </Box>
+          <Box height="2px" bg="blue.500" width="100%" mb={4} />
+          <Box px={4}>
+            <Box mt="-20px">
+              <DeleteInstance instanceInput={instance} />
+            </Box>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

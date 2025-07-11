@@ -16,6 +16,8 @@ User = get_user_model()
 
 class CompanyBillingInformationSerializer(BillingInformationSerializer):
     """Company UserBillingInformation serializer."""
+    
+    tax_number = serializers.CharField(required=True)
 
     class Meta:  # noqa: D106
         model = CompanyBillingInformation
