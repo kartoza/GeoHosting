@@ -33,11 +33,15 @@ def get_default_delivery_date():
 class _SalesOrderStatusObject:
     """SalesOrderStatus."""
 
-    def __init__(self, key, billing_status, erp_status, percent_billed):
+    def __init__(
+            self, key, billing_status, erp_status, percent_billed,
+            doc_status
+    ):
         self.key = key
         self.billing_status = billing_status
         self.erp_status = erp_status
         self.percent_billed = percent_billed
+        self.doc_status = doc_status
 
 
 class SalesOrderStatus:
@@ -47,25 +51,29 @@ class SalesOrderStatus:
         'Waiting Payment',
         'Not Billed',
         'To Bill',
+        0,
         0
     )
     WAITING_CONFIGURATION = _SalesOrderStatusObject(
         'Waiting Configuration',
         'Fully Billed',
         'On Hold',
-        100
+        100,
+        0
     )
     WAITING_DEPLOYMENT = _SalesOrderStatusObject(
         'Waiting Deployment',
         'Fully Billed',
         'To Deliver',
-        100
+        100,
+        1
     )
     DEPLOYED = _SalesOrderStatusObject(
         'Deployed',
         'Fully Billed',
         'Completed',
-        100
+        100,
+        1
     )
 
     @staticmethod
@@ -287,7 +295,9 @@ class SalesOrder(ErpModel):
             # Status waiting bill
             'status': order_status_obj.erp_status,
             # Percent billed
-            'per_billed': order_status_obj.percent_billed
+            'per_billed': order_status_obj.percent_billed,
+            # Docstatus
+            'docstatus': order_status_obj.doc_status
         }
 
     @property
