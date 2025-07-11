@@ -4,14 +4,26 @@ from django.utils.safestring import mark_safe
 from geohosting.admin.global_function import (
     NoUpdateAdmin, sync_subscriptions, push_to_erp
 )
-from geohosting.models import SalesOrder
+from geohosting.models import SalesOrder, SalesOrderInvoice
 from geohosting.models.agreement import SalesOrderAgreement
 from geohosting_event.admin.log import LogTrackerObjectAdmin
 
 
+class SalesOrderInvoiceInline(admin.TabularInline):
+    model = SalesOrderInvoice
+    readonly_fields = ('erpnext_code', 'invoice')
+
+    def has_add_permission(self, request, obj):
+        """Return add permission."""
+        return False
+
+    def has_delete_permission(self, request, obj):
+        """Return delete permission."""
+        return False
+
+
 class SalesOrderAgreementInline(admin.TabularInline):
     model = SalesOrderAgreement
-    extra = 1
     readonly_fields = ('agreement_detail', 'name', 'created_at', 'file')
 
     def has_add_permission(self, request, obj):
@@ -85,7 +97,7 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
             }
         )
     )
-    inlines = (SalesOrderAgreementInline,)
+    inlines = (SalesOrderInvoiceInline, SalesOrderAgreementInline)
 
     def activities(self, obj: SalesOrder):
         """Return product."""
