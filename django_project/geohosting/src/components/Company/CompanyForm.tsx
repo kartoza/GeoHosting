@@ -120,7 +120,7 @@ export const CompanyForm = forwardRef((props: Props, ref) => {
       ).then((result: any) => {
         if (thunkAPIRejected(result)) {
           setErrors(result.payload);
-          dispatch(fetchUserCompanies("/api/companies?page_size=1000"));
+          console.log("ERROR");
           toast.error("Failed to create company.");
         } else if (thunkAPIFulfilled(result)) {
           dispatch(fetchUserCompanies("/api/companies?page_size=1000"));

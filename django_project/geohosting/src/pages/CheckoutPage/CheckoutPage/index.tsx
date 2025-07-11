@@ -25,6 +25,8 @@ import { OrderSummary } from "../OrderSummary";
 import { getUserLocation } from "../../../utils/helpers";
 import { Agreement, AgreementModal } from "./Agreement";
 import { PaymentMethods } from "./types";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 interface CheckoutPageModalProps {
   product: Product;
@@ -54,6 +56,9 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
   const agreementModalRef = useRef(null);
   const [currentMethod, setCurrentMethod] = useState<string | null>(null);
   const [agreements, setAgreements] = useState<Agreement[]>([]);
+  const { user, loading, error } = useSelector(
+    (state: RootState) => state.profile,
+  );
 
   useEffect(() => {
     (async () => {
@@ -65,6 +70,19 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
       }
     })();
   }, []);
+
+  // Check if user has billing information
+  useEffect(() => {
+    console.log(user?.billing_information);
+    if (
+      !user?.billing_information?.address ||
+      !user?.billing_information?.city ||
+      !user?.billing_information?.country ||
+      !user?.billing_information?.postal_code
+    ) {
+      console.log("Need to fill profile");
+    }
+  }, [user]);
 
   // Checkout function
   async function agreement(method: string) {
