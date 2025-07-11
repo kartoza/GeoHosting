@@ -31,7 +31,7 @@ import { returnAsString } from "../../utils/helpers";
 import { BillingInformationForm } from "../../components/BillingInformation";
 import CompanyList from "../Company/CompanyList";
 
-interface Props {
+export interface Props {
   hide?: {
     avatar?: boolean;
     company?: boolean;
@@ -147,7 +147,7 @@ const ProfileForm: React.FC<Props> = ({ hide }) => {
   };
 
   return (
-    <Box p={0} mx="auto">
+    <Box p={0}>
       <Box
         fontSize="2xl"
         fontWeight="bold"
