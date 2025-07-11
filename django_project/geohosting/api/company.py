@@ -7,11 +7,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from core.api import FilteredAPI
-from geohosting.models.company import Company, CompanyContact
-from geohosting.models.country import Country
+from geohosting.models import CompanyBillingInformation, Company
+from geohosting.models.company import CompanyContact
 from geohosting.serializer.company import (
     CompanySerializer, CompanyDetailSerializer,
-    CompanyBillingInformationSerializer
+    CompanyBillingInformationSerializer,
+    CompanyBillingInformationCheckerSerializer
 )
 
 
@@ -57,50 +58,50 @@ class CompanyViewSet(
                         'payload is invalid json'
                     )
             user = request.user
-            serializer = CompanySerializer(company, data=data)
-            serializer.is_valid(raise_exception=True)
-            company = serializer.save()
 
-            # Save as contact
+            # billing data
+            billing_data = data['billing_information']
+            billing_data['company'] = company.pk
+
+            # Check company serializer
+            company_serializer = CompanySerializer(company, data=data)
+            company_serializer.is_valid(raise_exception=True)
+
+            # Validate billing data
+            billing_serializer_temporary = (
+                CompanyBillingInformationCheckerSerializer(
+                    CompanyBillingInformation(), data=billing_data
+                )
+            )
+            billing_serializer_temporary.is_valid(raise_exception=True)
+
+            # Save actual data
+            company = company_serializer.save()
             CompanyContact.objects.get_or_create(
                 user=user,
                 company=company,
             )
-
+            billing_data['company'] = company.pk
+            # Save avatar
             try:
                 company.avatar = request.FILES['avatar']
                 company.save()
             except KeyError:
                 pass
 
-            billing_data = data['billing_information']
-            country = billing_data.get('country', None)
-            country_obj = None
-            if country:
-                try:
-                    country_obj = Country.objects.get(
-                        name=country
-                    )
-                    billing_data['country'] = country_obj
-                except Country.DoesNotExist:
-                    return HttpResponseBadRequest(
-                        f'Country {country} does not exist'
-                    )
-
-            billing_data['company'] = company.pk
-
+            # Save billing information
             billing = company.companybillinginformation
             billing_serializer = CompanyBillingInformationSerializer(
                 billing, data=billing_data
             )
             billing_serializer.is_valid(raise_exception=True)
+
+            # Save billing information
             billing_serializer.save()
-            billing.country = country_obj
-            billing.save()
             threading.Thread(
                 target=company.post_to_erpnext
             ).start()
-            return Response(serializer.data)
+            return Response(company_serializer.data)
         except KeyError as e:
             return HttpResponseBadRequest(f'{e} is required')
 

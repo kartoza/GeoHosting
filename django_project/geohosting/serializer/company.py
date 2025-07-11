@@ -17,9 +17,21 @@ User = get_user_model()
 class CompanyBillingInformationSerializer(BillingInformationSerializer):
     """Company UserBillingInformation serializer."""
 
+    tax_number = serializers.CharField(required=True)
+
     class Meta:  # noqa: D106
         model = CompanyBillingInformation
         exclude = ('id',)
+
+
+class CompanyBillingInformationCheckerSerializer(
+    CompanyBillingInformationSerializer
+):
+    """Company UserBillingInformation serializer for checking."""
+
+    class Meta:  # noqa: D106
+        model = CompanyBillingInformation
+        exclude = ('id', 'company')
 
 
 class CompanySerializer(serializers.ModelSerializer):

@@ -4,19 +4,29 @@ import axios from "axios";
 
 interface Props {
   disable: boolean;
-  data: string;
-  setData: (data: string) => void;
+  data: number | null;
+  setData: (data: number) => void;
+}
+
+interface OptionProps {
+  value: number;
+  label: string;
 }
 
 const CountrySelector: React.FC<Props> = ({ disable, data, setData }) => {
-  const [list, setList] = useState<string[] | null>(null);
+  const [list, setList] = useState<OptionProps[] | null>(null);
   const [error, setError] = useState<string[] | null>(null);
 
   useEffect(() => {
     axios
       .get("/api/countries/?page_size=1000")
       .then((response) => {
-        setList(response.data.results.map((_row) => _row.name));
+        setList(
+          response.data.results.map((_row) => ({
+            label: _row.name,
+            value: _row.id,
+          })),
+        );
       })
       .catch(function (error) {
         setError(error);
@@ -31,15 +41,16 @@ const CountrySelector: React.FC<Props> = ({ disable, data, setData }) => {
   }
   return (
     <Select
+      backgroundColor={"white"}
       disabled={disable}
       placeholder="Select country"
       width={"100%"}
-      value={data}
-      onChange={(e) => setData(e.target.value)}
+      value={"" + data}
+      onChange={(e) => setData(parseInt(e.target.value))}
     >
-      {list.map((name) => (
-        <option key={name} value={name}>
-          {name}
+      {list.map((row) => (
+        <option key={row.value} value={row.value}>
+          {row.label}
         </option>
       ))}
     </Select>

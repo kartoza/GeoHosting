@@ -24,7 +24,7 @@ class ChangeUserProfileTests(TestCase):
         )
         self.url = reverse('user-profile')
         self.client = APIClient()
-        Country.objects.create(name='country', code='ct')
+        self.country = Country.objects.create(name='country', code='ct')
 
     def tearDown(self):
         """Clean up after each test."""
@@ -57,7 +57,7 @@ class ChangeUserProfileTests(TestCase):
             response.data['billing_information']['postal_code'], None
         )
         self.assertEqual(
-            response.data['billing_information']['country'], ''
+            response.data['billing_information']['country'], None
         )
         self.assertEqual(
             response.data['billing_information']['city'], None
@@ -83,7 +83,7 @@ class ChangeUserProfileTests(TestCase):
                     'name': 'name',
                     'address': 'address',
                     'postal_code': 'postal_code',
-                    'country': 'country',
+                    'country': self.country.id,
                     'city': 'city',
                     'region': 'region',
                     'tax_number': 'tax_number',
@@ -104,7 +104,7 @@ class ChangeUserProfileTests(TestCase):
             response.data['billing_information']['postal_code'], 'postal_code'
         )
         self.assertEqual(
-            response.data['billing_information']['country'], 'country'
+            response.data['billing_information']['country'], 3
         )
         self.assertEqual(
             response.data['billing_information']['city'], 'city'

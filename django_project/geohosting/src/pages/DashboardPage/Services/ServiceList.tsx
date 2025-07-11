@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -7,7 +7,7 @@ import {
   Image,
   keyframes,
   Link,
-  MenuItem,
+  Link as ChakraLink,
   Select,
   Text,
   useBreakpointValue,
@@ -19,9 +19,7 @@ import {
   Instance,
 } from "../../../redux/reducers/instanceSlice";
 import { FaLink } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
-import InstanceDeletion from "../../../components/Instance/Deletion";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import InstanceCredential from "../../../components/Instance/Credential";
 
 const spin = keyframes`
@@ -303,6 +301,23 @@ const ServiceList: React.FC = () => {
           </Select>
         }
         autoRefresh={5}
+        noDataText={
+          <Box>
+            Looks like you don’t have any active instances yet. You can get
+            started by buying one
+            <ChakraLink
+              as={RouterLink}
+              to="/"
+              fontSize="md"
+              target="_blank"
+              ml={1}
+              color={"blue.600"}
+            >
+              here
+            </ChakraLink>
+            .
+          </Box>
+        }
       />
     </>
   );

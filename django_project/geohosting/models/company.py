@@ -3,8 +3,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from geohosting.models.data_types import CUSTOMER_GROUP
 from geohosting.models.billing_information import BillingInformation
+from geohosting.models.data_types import CUSTOMER_GROUP
 from geohosting.models.erp_model import ErpModel
 
 
@@ -32,7 +32,8 @@ class Company(ErpModel):
             "customer_type": "Company",
             "customer_group": CUSTOMER_GROUP,
             "territory": "All Territories",
-            "tax_category": "VAT"
+            "tax_category": "VAT",
+            "tax_id": self.companybillinginformation.tax_number
         }
 
     @property
@@ -41,7 +42,8 @@ class Company(ErpModel):
         return {
             "doctype": self.doc_type,
             "customer_name": self.name,
-            "customer_group": CUSTOMER_GROUP
+            "customer_group": CUSTOMER_GROUP,
+            "tax_id": self.companybillinginformation.tax_number
         }
 
     def post_to_erpnext(self):
@@ -71,7 +73,7 @@ class CompanyBillingInformation(BillingInformation):
     @property
     def customer_name(self):
         """Return customer name."""
-        return self.company.name
+        return self.company.erpnext_code
 
 
 class CompanyContact(ErpModel):
