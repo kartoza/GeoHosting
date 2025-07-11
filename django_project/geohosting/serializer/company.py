@@ -28,7 +28,6 @@ class CompanyBillingInformationCheckerSerializer(
     CompanyBillingInformationSerializer
 ):
     """Company UserBillingInformation serializer for checking."""
-    
 
     class Meta:  # noqa: D106
         model = CompanyBillingInformation

@@ -4,8 +4,8 @@ import axios from "axios";
 
 interface Props {
   disable: boolean;
-  data: string;
-  setData: (data: string) => void;
+  data: number | null;
+  setData: (data: number) => void;
 }
 
 interface OptionProps {
@@ -45,8 +45,8 @@ const CountrySelector: React.FC<Props> = ({ disable, data, setData }) => {
       disabled={disable}
       placeholder="Select country"
       width={"100%"}
-      value={data}
-      onChange={(e) => setData(e.target.value)}
+      value={"" + data}
+      onChange={(e) => setData(parseInt(e.target.value))}
     >
       {list.map((row) => (
         <option key={row.value} value={row.value}>

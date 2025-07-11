@@ -61,7 +61,7 @@ const ProfileForm: React.FC<Props> = ({ hide }) => {
     name: "",
     address: "",
     postal_code: "",
-    country: "",
+    country: null,
     city: "",
     region: "",
     tax_number: "",
