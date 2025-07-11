@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 import stripe
 from django.conf import settings
@@ -252,9 +252,21 @@ class SalesOrder(ErpModel):
             )
 
     @property
+    def erp_company(self):
+        """Return erp company."""
+        from geohosting.models.erp_company import ErpCompany
+        try:
+            return ErpCompany.objects.get(
+                payment_method=self.payment_method
+            )
+        except ErpCompany.DoesNotExist:
+            pass
+        return None
+
+    @property
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
-        from geohosting.models.erp_company import ErpCompany, TaxesAndCharges
+        from geohosting.models.erp_company import TaxesAndCharges
         user_profile = UserProfile.objects.get(
             user=self.customer
         )
@@ -266,18 +278,14 @@ class SalesOrder(ErpModel):
         except Exception:
             pass
 
+        _company = self.erp_company
         company = None
         taxes_and_charges = None
-        try:
-            _company = ErpCompany.objects.get(
-                payment_method=self.payment_method
-            )
+        if _company:
             taxes_and_charges = _company.taxesandcharges_set.filter(
                 is_active=True
             ).first()
             company = _company.erpnext_code
-        except ErpCompany.DoesNotExist:
-            pass
 
         payload = {
             # status is not billed
@@ -357,10 +365,11 @@ class SalesOrder(ErpModel):
     def invoice_url(self):
         """Return invoice url when the status is not payment anymore."""
         if self.sales_order_status_obj != SalesOrderStatus.WAITING_PAYMENT:
-            # Return using invoice from the sales order invoice
-            invoice = self.salesorderinvoice_set.first()
-            if invoice:
-                return invoice.invoice_url
+            if self.erp_company and self.erp_company.invoice_from_sales_invoice:
+                # Return using invoice from the sales order invoice
+                invoice = self.salesorderinvoice_set.first()
+                if invoice:
+                    return invoice.invoice_url
 
             # Return using invoice from the sales order
             if self.invoice:
@@ -443,6 +452,7 @@ class SalesOrderInvoice(ErpModel):
 
     def post_to_erpnext(self):
         """Post data to erpnext."""
+        from geohosting.models.erp_model import ErpPaymentTermTemplate
         if not self.sales_order.erpnext_code:
             return
         if not self.erpnext_code:
@@ -459,6 +469,30 @@ class SalesOrderInvoice(ErpModel):
             )
             if result['status'] == 'success':
                 message = result['response_data']['message']
+                erp_company = self.sales_order.erp_company
+                if erp_company:
+
+                    # Add cost center
+                    cost_center = erp_company.costcenter_set.filter(
+                        is_active=True).first()
+                    if cost_center:
+                        message['cost_center'] = cost_center.erpnext_code
+
+                    # Add payment schedule
+                    term = ErpPaymentTermTemplate.objects.filter(
+                        is_active=True
+                    ).first()
+                    if term:
+                        data = get_erpnext_data(
+                            ErpPaymentTermTemplate.doc_type,
+                            term.erpnext_code
+                        )
+                        terms = data['data']['terms']
+                        for term in terms:
+                            term['due_date'] = datetime.now().strftime(
+                                '%Y-%m-%d')
+                        message['payment_schedule'] = terms
+
                 result = post_to_erpnext(
                     message, self.doc_type
                 )
