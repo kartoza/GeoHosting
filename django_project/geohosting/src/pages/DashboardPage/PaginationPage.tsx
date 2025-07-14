@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { debounce } from "debounce";
-import { Box, Flex, Spinner } from '@chakra-ui/react';
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { AppDispatch, RootState } from "../../redux/store";
 import TopNavigation from "../../components/DashboardPage/TopNavigation";
@@ -24,6 +24,9 @@ interface Props {
 
   // additional filters
   additionalFilters?: {};
+
+  // No data text
+  noDataText?: React.ReactElement;
 }
 
 let lastSearchTerm: string | null = null;
@@ -32,66 +35,68 @@ let isForce: boolean | null = null;
 let lastTimeout: string | null = null;
 
 interface RenderContentProps {
-  data: Instance[],
+  data: Instance[];
   renderCards: (data: any[]) => React.ReactElement;
-
 }
 
 /** Rendering contents **/
-const RenderContent: React.FC<RenderContentProps> = (
-  { data, renderCards }
-) => {
-  return renderCards(data)
-}
+const RenderContent: React.FC<RenderContentProps> = ({ data, renderCards }) => {
+  return renderCards(data);
+};
 
 /** Abstract for pagination page */
-export const PaginationPage: React.FC<Props> = (
-  {
-    searchPlaceholder, stateKey, action, url,
-    leftNavigation, rightNavigation, renderCards,
-    additionalFilters, autoRefresh = 0
-  }
-) => {
+export const PaginationPage: React.FC<Props> = ({
+  searchPlaceholder,
+  stateKey,
+  action,
+  url,
+  leftNavigation,
+  rightNavigation,
+  renderCards,
+  additionalFilters,
+  autoRefresh = 0,
+  noDataText,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const rowsPerPage = 10;
   const {
     data: listData,
     loading,
-    error
-  } = useSelector((state: RootState) => state[stateKey]['list']);
+    error,
+  } = useSelector((state: RootState) => state[stateKey]["list"]);
 
-  const {
-    loading: createLoading,
-    error: createError
-  } = useSelector((state: RootState) => state[stateKey]['create']);
-  const {
-    loading: editLoading,
-    error: editError
-  } = useSelector((state: RootState) => state[stateKey]['update']);
+  const { loading: createLoading, error: createError } = useSelector(
+    (state: RootState) => state[stateKey]["create"],
+  );
+  const { loading: editLoading, error: editError } = useSelector(
+    (state: RootState) => state[stateKey]["update"],
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
   const parameters = urlParameters();
-  const [searchTerm, setSearchTerm] = useState(parameters['q'] ? parameters['q'] : '');
+  const [searchTerm, setSearchTerm] = useState(
+    parameters["q"] ? parameters["q"] : "",
+  );
 
   /** Check app name */
   const debouncedSearchTerm = debounce((inputValue) => {
     if (lastSearchTerm === inputValue) {
-      request()
+      request();
     }
   }, 500);
 
-  const isLoading = isForce ? false : loading
+  const isLoading = isForce ? false : loading;
   const request = (force: boolean = false) => {
-    const exampleDomain = 'http://example.com/'
-    let usedUrl = url
-    if (!url.includes('http')) {
-      usedUrl = exampleDomain + url
+    const exampleDomain = "http://example.com/";
+    let usedUrl = url;
+    if (!url.includes("http")) {
+      usedUrl = exampleDomain + url;
     }
     let _url = new URL(usedUrl);
-    _url.searchParams.set('page_size', rowsPerPage.toString());
-    _url.searchParams.set('page', currentPage.toString());
+    _url.searchParams.set("page_size", rowsPerPage.toString());
+    _url.searchParams.set("page", currentPage.toString());
     if (searchTerm) {
-      _url.searchParams.set('q', searchTerm);
+      _url.searchParams.set("q", searchTerm);
     }
     if (additionalFilters) {
       for (const [key, value] of Object.entries(additionalFilters)) {
@@ -100,18 +105,18 @@ export const PaginationPage: React.FC<Props> = (
         }
       }
     }
-    const urlRequest = _url.toString().replace(exampleDomain, '')
+    const urlRequest = _url.toString().replace(exampleDomain, "");
     if (force || session !== urlRequest) {
       dispatch(action(urlRequest));
     }
-    session = urlRequest
-  }
+    session = urlRequest;
+  };
 
   /** When create and edit is done, do request */
   useEffect(() => {
     if (session && !createLoading && !editLoading) {
       if (!createError && !editError) {
-        request(true)
+        request(true);
       }
     }
   }, [createLoading, editLoading]);
@@ -125,24 +130,28 @@ export const PaginationPage: React.FC<Props> = (
       }
       // @ts-ignore
       lastTimeout = setTimeout(() => {
-        isForce = true
-        request(true)
+        isForce = true;
+        request(true);
       }, autoRefresh * 1000);
     } else {
-      isForce = false
+      isForce = false;
     }
   }, [loading]);
 
   /** When first dispatch created */
   useEffect(() => {
-    isForce = false
-    request()
+    isForce = false;
+    request();
   }, [dispatch]);
 
   /** When first dispatch created */
   useEffect(() => {
-    if (listData.total_page && currentPage >= 1 && currentPage <= listData.total_page) {
-      request()
+    if (
+      listData.total_page &&
+      currentPage >= 1 &&
+      currentPage <= listData.total_page
+    ) {
+      request();
     }
   }, [currentPage]);
 
@@ -156,14 +165,13 @@ export const PaginationPage: React.FC<Props> = (
   /** When first dispatch created */
   useEffect(() => {
     setCurrentPage(1);
-    request()
+    request();
   }, [additionalFilters]);
 
-  const data = listData?.results
+  const data = listData?.results;
   return (
     <Box>
-      <Box minHeight={{ base: 'auto', md: '80vh' }}>
-
+      <Box minHeight={{ base: "auto", md: "80vh" }}>
         {/* Top navigation of dashboard */}
         <TopNavigation
           initSearch={searchTerm}
@@ -174,20 +182,27 @@ export const PaginationPage: React.FC<Props> = (
         />
 
         <Box mt={4}>
-          {
-            error ? <Box color='red'>{error.toString()}</Box> :
-              isLoading ?
-                <Box
-                  display={'flex'} justifyContent={'center'} width={'100%'}
-                  height={'100%'} alignItems={'center'} paddingY={8}
-                >
-                  <Spinner size='xl'/>
-                </Box> :
-                <RenderContent data={data} renderCards={renderCards}/>
-          }
+          {error ? (
+            <Box color="red">{error.toString()}</Box>
+          ) : isLoading ? (
+            <Box
+              display={"flex"}
+              justifyContent={"center"}
+              width={"100%"}
+              height={"100%"}
+              alignItems={"center"}
+              paddingY={8}
+            >
+              <Spinner size="xl" />
+            </Box>
+          ) : data.length ? (
+            <RenderContent data={data} renderCards={renderCards} />
+          ) : !noDataText ? (
+            <Box>No data exist</Box>
+          ) : (
+            noDataText
+          )}
         </Box>
-
-
       </Box>
       {/* Pagination */}
       <Flex justifyContent="center" mt={4}>

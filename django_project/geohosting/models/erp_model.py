@@ -6,6 +6,8 @@ GeoHosting.
 """
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from geohosting.utils.erpnext import (
     fetch_erpnext_data, post_to_erpnext, put_to_erpnext
@@ -77,3 +79,19 @@ class ErpModel(models.Model):
                 )
         except Exception:
             pass
+
+
+class ErpPaymentTermTemplate(ErpModel):
+    """Payment term template model."""
+
+    doc_type = "Payment Terms Template"
+    id_field_in_erpnext = 'name'
+    is_active = models.BooleanField(default=False)
+
+
+@receiver(post_save, sender=ErpPaymentTermTemplate)
+def set_payment_term_active(sender, instance, created, **kwargs):
+    """Set payment term active when created with Website Sales code."""
+    if created and instance.erpnext_code == "Website Sales":
+        instance.is_active = True
+        instance.save()

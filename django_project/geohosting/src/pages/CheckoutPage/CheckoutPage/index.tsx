@@ -11,6 +11,7 @@ import {
   Link,
   Text,
   useBreakpointValue,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import customTheme from "../../../theme/theme";
@@ -25,6 +26,9 @@ import { OrderSummary } from "../OrderSummary";
 import { getUserLocation } from "../../../utils/helpers";
 import { Agreement, AgreementModal } from "./Agreement";
 import { PaymentMethods } from "./types";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { ProfileFormModal } from "../../../components/Profile/ProfileFormModal";
 
 interface CheckoutPageModalProps {
   product: Product;
@@ -45,6 +49,7 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
   companyName,
 }) => {
   /** For the payment component **/
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const columns = useBreakpointValue({ base: 1, md: 2 });
   const [paymentMethods, setPaymentMethods] = useState<Array<string> | null>(
     null,
@@ -54,6 +59,9 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
   const agreementModalRef = useRef(null);
   const [currentMethod, setCurrentMethod] = useState<string | null>(null);
   const [agreements, setAgreements] = useState<Agreement[]>([]);
+  const { user, loading, error } = useSelector(
+    (state: RootState) => state.profile,
+  );
 
   useEffect(() => {
     (async () => {
@@ -65,6 +73,24 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
       }
     })();
   }, []);
+
+  // Check if user has billing information
+  useEffect(() => {
+    if (!companyName) {
+      if (
+        !user?.billing_information?.address ||
+        !user?.billing_information?.city ||
+        !user?.billing_information?.country ||
+        !user?.billing_information?.postal_code
+      ) {
+        onOpen();
+      } else {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+  }, [user]);
 
   // Checkout function
   async function agreement(method: string) {
@@ -179,6 +205,13 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
           setAgreements(agreements);
           checkout();
         }}
+      />
+      <ProfileFormModal
+        isOpen={isOpen}
+        description={
+          "Please complete your billing information before proceeding with the payment."
+        }
+        hide={{ company: true, avatar: true }}
       />
     </>
   );

@@ -16,9 +16,6 @@ class ErpCompanyFactory(DjangoModelFactory):
     class Meta:  # noqa
         model = ErpCompany
 
-    erpnext_code = factory.Sequence(
-        lambda n: f'company-{n}'
-    )
     name = factory.Sequence(
         lambda n: f'company-{n}'
     )

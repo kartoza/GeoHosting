@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 import stripe
 from django.conf import settings
@@ -14,7 +14,8 @@ from geohosting.models.region import Region
 from geohosting.models.subscription import Subscription
 from geohosting.models.user_profile import UserProfile
 from geohosting.utils.erpnext import (
-    add_erp_next_comment, download_erp_file
+    add_erp_next_comment, download_erp_file, post_to_erpnext,
+    get_erpnext_data
 )
 from geohosting.utils.payment import (
     PaymentGateway, StripePaymentGateway, PaystackPaymentGateway
@@ -33,11 +34,15 @@ def get_default_delivery_date():
 class _SalesOrderStatusObject:
     """SalesOrderStatus."""
 
-    def __init__(self, key, billing_status, erp_status, percent_billed):
+    def __init__(
+            self, key, billing_status, erp_status, percent_billed,
+            doc_status
+    ):
         self.key = key
         self.billing_status = billing_status
         self.erp_status = erp_status
         self.percent_billed = percent_billed
+        self.doc_status = doc_status
 
 
 class SalesOrderStatus:
@@ -47,25 +52,29 @@ class SalesOrderStatus:
         'Waiting Payment',
         'Not Billed',
         'To Bill',
+        0,
         0
     )
     WAITING_CONFIGURATION = _SalesOrderStatusObject(
         'Waiting Configuration',
         'Fully Billed',
         'On Hold',
-        100
+        100,
+        0
     )
     WAITING_DEPLOYMENT = _SalesOrderStatusObject(
         'Waiting Deployment',
         'Fully Billed',
         'To Deliver',
-        100
+        100,
+        1
     )
     DEPLOYED = _SalesOrderStatusObject(
         'Deployed',
         'Fully Billed',
         'Completed',
-        100
+        100,
+        1
     )
 
     @staticmethod
@@ -193,6 +202,7 @@ class SalesOrder(ErpModel):
             return StripePaymentGateway(self.payment_id)
         if self.payment_method == PaymentMethod.PAYSTACK:
             return PaystackPaymentGateway(self.payment_id)
+        return None
 
     def __str__(self):
         return (
@@ -214,6 +224,21 @@ class SalesOrder(ErpModel):
         if order_status_obj == SalesOrderStatus.WAITING_CONFIGURATION:
             self.auto_deploy()
 
+    def post_to_erpnext(self):
+        """Post data to erpnext."""
+        result = super().post_to_erpnext()
+        order_status_obj = self.sales_order_status_obj
+        if order_status_obj.doc_status == 1:
+            invoice = self.salesorderinvoice_set.all().first()
+            if not invoice:
+                # Create sales invoice if sales order is not already invoiced
+                SalesOrderInvoice.objects.create(
+                    sales_order=self
+                )
+            else:
+                invoice.post_to_erpnext()
+        return result
+
     def add_comment(self, comment, is_error=False):
         """Add comment."""
         if is_error:
@@ -227,9 +252,21 @@ class SalesOrder(ErpModel):
             )
 
     @property
+    def erp_company(self):
+        """Return erp company."""
+        from geohosting.models.erp_company import ErpCompany
+        try:
+            return ErpCompany.objects.get(
+                payment_method=self.payment_method
+            )
+        except ErpCompany.DoesNotExist:
+            pass
+        return None
+
+    @property
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
-        from geohosting.models.erp_company import ErpCompany
+        from geohosting.models.erp_company import TaxesAndCharges
         user_profile = UserProfile.objects.get(
             user=self.customer
         )
@@ -241,15 +278,16 @@ class SalesOrder(ErpModel):
         except Exception:
             pass
 
+        _company = self.erp_company
         company = None
-        try:
-            company = ErpCompany.objects.get(
-                payment_method=self.payment_method
-            ).erpnext_code
-        except ErpCompany.DoesNotExist:
-            pass
+        taxes_and_charges = None
+        if _company:
+            taxes_and_charges = _company.taxesandcharges_set.filter(
+                is_active=True
+            ).first()
+            company = _company.erpnext_code
 
-        return {
+        payload = {
             # status is not billed
             'billing_status': order_status_obj.billing_status,
             # Status waiting bill
@@ -276,6 +314,15 @@ class SalesOrder(ErpModel):
             ],
             'company': company
         }
+        if taxes_and_charges:
+            payload['taxes_and_charges'] = taxes_and_charges.erpnext_code
+            payload['tax_category'] = taxes_and_charges.tax_category
+            data = get_erpnext_data(
+                TaxesAndCharges.doc_type,
+                taxes_and_charges.erpnext_code
+            )
+            payload['taxes'] = data['data']['taxes']
+        return payload
 
     @property
     def erp_payload_for_edit(self):
@@ -287,7 +334,9 @@ class SalesOrder(ErpModel):
             # Status waiting bill
             'status': order_status_obj.erp_status,
             # Percent billed
-            'per_billed': order_status_obj.percent_billed
+            'per_billed': order_status_obj.percent_billed,
+            # Docstatus
+            'docstatus': order_status_obj.doc_status
         }
 
     @property
@@ -316,6 +365,16 @@ class SalesOrder(ErpModel):
     def invoice_url(self):
         """Return invoice url when the status is not payment anymore."""
         if self.sales_order_status_obj != SalesOrderStatus.WAITING_PAYMENT:
+            if (
+                    self.erp_company and
+                    self.erp_company.invoice_from_sales_invoice
+            ):
+                # Return using invoice from the sales order invoice
+                invoice = self.salesorderinvoice_set.first()
+                if invoice:
+                    return invoice.invoice_url
+
+            # Return using invoice from the sales order
             if self.invoice:
                 return self.invoice.url
             else:
@@ -378,3 +437,90 @@ class SalesOrder(ErpModel):
         # Sync instance subscription
         if self.instance:
             self.instance.sync_subscription()
+
+
+class SalesOrderInvoice(ErpModel):
+    """Sales Order."""
+
+    doc_type = "Sales Invoice"
+    sales_order = models.ForeignKey(
+        SalesOrder,
+        on_delete=models.CASCADE
+    )
+    invoice = models.FileField(
+        upload_to='invoices/',
+        blank=True,
+        null=True,
+    )
+
+    def post_to_erpnext(self):
+        """Post data to erpnext."""
+        from geohosting.models.erp_model import ErpPaymentTermTemplate
+        if not self.sales_order.erpnext_code:
+            return
+        if not self.erpnext_code:
+            # Create template
+            result = post_to_erpnext(
+                {
+                    "source_name": self.sales_order.erpnext_code,
+                },
+                self.doc_type,
+                url_input=(
+                    'api/method/erpnext.selling.doctype.'
+                    'sales_order.sales_order.make_sales_invoice'
+                )
+            )
+            if result['status'] == 'success':
+                message = result['response_data']['message']
+                erp_company = self.sales_order.erp_company
+                if erp_company:
+
+                    # Add cost center
+                    cost_center = erp_company.costcenter_set.filter(
+                        is_active=True).first()
+                    if cost_center:
+                        message['cost_center'] = cost_center.erpnext_code
+
+                    # Add payment schedule
+                    term = ErpPaymentTermTemplate.objects.filter(
+                        is_active=True
+                    ).first()
+                    if term:
+                        data = get_erpnext_data(
+                            ErpPaymentTermTemplate.doc_type,
+                            term.erpnext_code
+                        )
+                        terms = data['data']['terms']
+                        for term in terms:
+                            term['due_date'] = datetime.now().strftime(
+                                '%Y-%m-%d')
+                        message['payment_schedule'] = terms
+
+                result = post_to_erpnext(
+                    message, self.doc_type
+                )
+                if result['status'] == 'success':
+                    self.erpnext_code = result[self.id_field_in_erpnext]
+                    self.save()
+
+    @property
+    def invoice_url(self):
+        """Return invoice url when the status is not payment anymore."""
+        if (
+                self.sales_order.sales_order_status_obj !=
+                SalesOrderStatus.WAITING_PAYMENT
+        ):
+            if self.invoice:
+                return self.invoice.url
+            else:
+                image_file = download_erp_file(
+                    '/api/method/frappe.utils.print_format.download_pdf'
+                    f'?doctype=Sales%20Invoice&name={self.erpnext_code}',
+                    folder='invoices',
+                    filename=f'{self.erpnext_code}.pdf'
+                )
+                if image_file:
+                    self.invoice = image_file
+                    self.save()
+                    return self.invoice.url
+        return None

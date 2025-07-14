@@ -11,7 +11,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from geohosting.models.country import Country
 from geohosting.serializer.user import (
     ChangePasswordSerializer,
     UserSerializer, UserBillingInformationSerializer
@@ -76,18 +75,6 @@ class UserProfileView(APIView):
             # Save billing information
             billing_data = data.get('billing_information', None)
             if billing_data:
-                country = billing_data.get('country', None)
-                country_obj = None
-                if country:
-                    try:
-                        country_obj = Country.objects.get(
-                            name=country
-                        )
-                        billing_data['country'] = country_obj
-                    except Country.DoesNotExist:
-                        return HttpResponseBadRequest(
-                            f'Country {country} does not exist'
-                        )
                 billing_data['user'] = user.pk
                 billing = user.userbillinginformation
                 billing_serializer = UserBillingInformationSerializer(
@@ -95,8 +82,6 @@ class UserProfileView(APIView):
                 )
                 billing_serializer.is_valid(raise_exception=True)
                 billing_serializer.save()
-                billing.country = country_obj
-                billing.save()
             else:
                 billing = user.userbillinginformation
                 billing.emptying()

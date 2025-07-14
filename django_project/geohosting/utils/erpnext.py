@@ -129,13 +129,14 @@ def fetch_erpnext_data(
         return f"Exception occurred: {str(e)}"
 
 
-def post_to_erpnext(data, doctype, file=None):
+def post_to_erpnext(data, doctype, file=None, url_input=None):
     """Post data to ERPNext and handle conflict if the data already exists.
 
     Parameters:
         data (dict): The data to post.
         doctype (str): The document type to post the data to.
         file (file, optional): The file to upload.
+        url_input (str, optional): Overridden url to post to.
 
     Returns:
         result (dict): The result containing the status and message.
@@ -145,8 +146,10 @@ def post_to_erpnext(data, doctype, file=None):
             "status": "error",
             "message": 'ERPNEXT_BASE_URL is not set.'
         }
-
-    url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}"
+    if not url_input:
+        url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}"
+    else:
+        url = f"{settings.ERPNEXT_BASE_URL}/{url_input}"
 
     files = {'file': file} if file else None
 
@@ -177,7 +180,10 @@ def post_to_erpnext(data, doctype, file=None):
         log.response_code = response.status_code
         log.save()
 
-        return {"status": "success", "id": record_id}
+        return {
+            "status": "success", "id": record_id,
+            "response_data": response_data
+        }
 
     except requests.exceptions.HTTPError as err:
         log.response_code = err.response.status_code
@@ -244,6 +250,53 @@ def upload_attachment_to_erp(doctype, id, file):
             return {"status": "conflict", "message": "Data already exists."}
         else:
             return {"status": "error", "message": str(err)}
+
+
+def get_erpnext_data(doctype, id):
+    """Get detail data to ERPNext.
+
+    Parameters:
+        doctype (str): The document type to post the data to.
+        id (str): Id of doc that needs to be put.
+
+    Returns:
+        result (dict): The result containing the status and message.
+    """
+    if not settings.ERPNEXT_BASE_URL:
+        return {
+            "status": "error",
+            "message": 'ERPNEXT_BASE_URL is not set.'
+        }
+
+    url = f"{settings.ERPNEXT_BASE_URL}/api/resource/{doctype}/{id}"
+
+    log = ErpRequestLog.objects.create(
+        url=url,
+        method=RequestMethod.GET
+    )
+
+    try:
+        _headers = headers()
+        _headers["Content-Type"] = "application/json"
+        response = requests.get(
+            url, headers=_headers
+        )
+
+        response.raise_for_status()
+        response_data = response.json()
+        data = response_data.get("data", {})
+
+        log.response_code = response.status_code
+        log.save()
+
+        return {"status": "success", "data": data}
+
+    except requests.exceptions.HTTPError as err:
+        log.response_code = err.response.status_code
+        log.response_text = str(err)
+        log.save()
+
+        return {"status": "error", "message": str(err)}
 
 
 def put_to_erpnext(data, doctype, id, file=None):

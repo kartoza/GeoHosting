@@ -24,7 +24,7 @@ export const BillingInformationForm: React.FC<Props> = ({
 }) => {
   return (
     <>
-      <FormControl isInvalid={errors.name && !data.name}>
+      <FormControl isInvalid={errors.name}>
         <FormLabel>Billing name</FormLabel>
         <Input
           disabled={disable}
@@ -36,10 +36,9 @@ export const BillingInformationForm: React.FC<Props> = ({
             })
           }
           width={"100%"}
+          isRequired
         />
-        {errors.name && !data.name && (
-          <FormErrorMessage>{errors.name}</FormErrorMessage>
-        )}
+        {errors.name && <FormErrorMessage>{errors.name}</FormErrorMessage>}
       </FormControl>
       <FormControl isInvalid={errors.address}>
         <FormLabel>Billing Address</FormLabel>
@@ -53,6 +52,7 @@ export const BillingInformationForm: React.FC<Props> = ({
             })
           }
           width={"100%"}
+          isRequired
         />
         {errors.address && (
           <FormErrorMessage>{errors.address}</FormErrorMessage>
@@ -70,6 +70,7 @@ export const BillingInformationForm: React.FC<Props> = ({
             })
           }
           width={"100%"}
+          isRequired
         />
         {errors.postal_code && (
           <FormErrorMessage>{errors.postal_code}</FormErrorMessage>
@@ -105,6 +106,7 @@ export const BillingInformationForm: React.FC<Props> = ({
             })
           }
           width={"100%"}
+          isRequired
         />
         {errors.city && <FormErrorMessage>{errors.city}</FormErrorMessage>}
       </FormControl>
@@ -121,7 +123,7 @@ export const BillingInformationForm: React.FC<Props> = ({
           }
         />
       </FormControl>
-      <FormControl>
+      <FormControl isInvalid={errors.tax_number}>
         <FormLabel>VAT/Tax number</FormLabel>
         <Input
           disabled={disable}
@@ -133,7 +135,11 @@ export const BillingInformationForm: React.FC<Props> = ({
             })
           }
           width={"100%"}
+          isRequired
         />
+        {errors.tax_number && (
+          <FormErrorMessage>{errors.tax_number}</FormErrorMessage>
+        )}
       </FormControl>
     </>
   );
