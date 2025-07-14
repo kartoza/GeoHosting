@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Box,
   IconButton,
   Link,
   Select,
@@ -26,11 +25,11 @@ import { toast } from "react-toastify";
 import { Agreement } from "../../../redux/reducers/agreementSlice";
 import { DownloadIcon } from "@chakra-ui/icons";
 
-interface CardProps {
+export interface OrderCardProps {
   order: SalesOrder;
 }
 
-const CardDownload = (agreement: Agreement) => {
+export const AgreementDownload = (agreement: Agreement) => {
   const [downloading, setDownloading] = useState(false);
   const downloadFile = async () => {
     setDownloading(true);
@@ -79,7 +78,7 @@ const CardDownload = (agreement: Agreement) => {
 };
 
 /** Card for order **/
-const Card: React.FC<CardProps> = ({ order }) => {
+const Card: React.FC<OrderCardProps> = ({ order }) => {
   return (
     <Tr key={order.id} _hover={{ bg: "gray.100" }}>
       <Td>
@@ -99,16 +98,29 @@ const Card: React.FC<CardProps> = ({ order }) => {
       <Td>{new Date(order.date).toLocaleDateString()}</Td>
       <Td>
         {order.invoice_url && (
-          <Box color="orange.500" width={"auto"}>
-            <a href={order.invoice_url} target="_blank">
-              <FaPrint style={{ display: "inline-block" }} />
-            </a>
-          </Box>
+          <Tooltip
+            label={order.erpnext_code + " invoice"}
+            placement="bottom-end"
+          >
+            <IconButton
+              size="xs"
+              as="a"
+              href={order.invoice_url}
+              download
+              aria-label={`Download ${order.erpnext_code} invoice`}
+              icon={<FaPrint />}
+              colorScheme="orange"
+              bg="orange.300 !important"
+              color="white"
+              variant="solid"
+              _hover={{ bg: "orange.400" }}
+            />
+          </Tooltip>
         )}
       </Td>
       <Td>
         {order.agreements.map((agreement) => (
-          <CardDownload {...agreement} />
+          <AgreementDownload {...agreement} />
         ))}
       </Td>
     </Tr>

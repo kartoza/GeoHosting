@@ -365,7 +365,10 @@ class SalesOrder(ErpModel):
     def invoice_url(self):
         """Return invoice url when the status is not payment anymore."""
         if self.sales_order_status_obj != SalesOrderStatus.WAITING_PAYMENT:
-            if self.erp_company and self.erp_company.invoice_from_sales_invoice:
+            if (
+                    self.erp_company and
+                    self.erp_company.invoice_from_sales_invoice
+            ):
                 # Return using invoice from the sales order invoice
                 invoice = self.salesorderinvoice_set.first()
                 if invoice:
