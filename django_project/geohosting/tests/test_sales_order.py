@@ -3,6 +3,7 @@ from unittest.mock import patch, call
 
 import requests_mock
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 from django.test import TestCase
 from rest_framework.test import APIClient
 
@@ -13,6 +14,7 @@ from geohosting.models import (
     SalesOrderStatus, PaymentMethod, ActivityType, Cluster,
     Region, ProductCluster, Instance, InstanceStatus
 )
+from geohosting.models.erp_company import ErpCompany, erp_company_post_save
 from geohosting_controller.variables import ActivityTypeTerm
 
 
@@ -23,6 +25,8 @@ class SalesOrderTests(TestCase):
 
     def setUp(self):
         """Setup test case."""
+        post_save.disconnect(erp_company_post_save, sender=ErpCompany)
+
         self.client = APIClient()
         self.user = User.objects.create_user(
             username='admin_user',
@@ -33,6 +37,9 @@ class SalesOrderTests(TestCase):
         self.client.force_authenticate(user=self.user)
         self.package = PackageFactory()
         ErpCompanyFactory(erpnext_code='Test Company')
+
+    def tearDown(self):
+        post_save.connect(erp_company_post_save, sender=ErpCompany)
 
     @patch('geohosting.models.sales_order.add_erp_next_comment')
     @patch(
