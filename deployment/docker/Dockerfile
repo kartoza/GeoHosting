@@ -1,5 +1,7 @@
 FROM python:3.12.0-slim-bookworm AS prod
 
+ARG CACHE_BUSTER=14.07.2025
+
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
     gcc gettext cron \
