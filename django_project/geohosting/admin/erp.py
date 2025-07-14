@@ -8,7 +8,7 @@ from geohosting.models.erp_model import ErpPaymentTermTemplate
 
 class TaxesAndChargesInline(admin.TabularInline):
     model = TaxesAndCharges
-    readonly_fields = ('erpnext_code',)
+    readonly_fields = ('erpnext_code', 'tax_category')
 
     def has_add_permission(self, request, obj):
         """Return add permission."""

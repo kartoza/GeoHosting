@@ -42,3 +42,5 @@ markdown_extensions:
 
 nav:
   - Introduction: index.md
+  - Administrations:
+      - Invoicing: administrations/invoicing/index.md
