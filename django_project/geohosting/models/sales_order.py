@@ -217,7 +217,7 @@ class SalesOrder(ErpModel):
         # Push to erp
         result = self.post_to_erpnext()
         if result['status'] != 'success':
-            raise Exception(result['message'])
+            return
 
         # Check if order status is waiting configuration
         order_status_obj = self.sales_order_status_obj

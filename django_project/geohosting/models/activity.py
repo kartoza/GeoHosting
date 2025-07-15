@@ -305,7 +305,10 @@ class Activity(models.Model):
 
     def update_sales_order(self):
         """Update sales order."""
-        if self.instance and self.sales_order:
+        if (
+                self.instance and self.sales_order
+                and not self.sales_order.instance
+        ):
             self.sales_order.instance = self.instance
             self.sales_order.save()
             self.sales_order.sync_subscription()

@@ -56,6 +56,16 @@ class InstanceViewSet(
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    def retrieve(self, request, *args, **kwargs):
+        """Retrieve a model instance."""
+        instance = self.get_object()
+
+        # Update sales order
+        for activity in instance.activity_set.all():
+            activity.update_sales_order()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
     @action(detail=True, methods=["get"])
     def credential(self, request, name=None):
         try:
