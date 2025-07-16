@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
 
 from geohosting.models.billing_information import BillingInformation
 from geohosting.models.data_types import CUSTOMER_GROUP
@@ -13,6 +14,9 @@ class Company(ErpModel):
 
     name = models.CharField(
         max_length=255, unique=True
+    )
+    email = models.EmailField(
+        _("email address"), blank=True
     )
     avatar = models.ImageField(
         upload_to='avatars/', blank=True, null=True
@@ -74,6 +78,11 @@ class CompanyBillingInformation(BillingInformation):
     def customer_name(self):
         """Return customer name."""
         return self.company.erpnext_code
+
+    @property
+    def email_address(self):
+        """Return email address."""
+        return self.company.email
 
 
 class CompanyContact(ErpModel):

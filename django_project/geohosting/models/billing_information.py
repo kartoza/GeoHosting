@@ -67,10 +67,16 @@ class BillingInformation(ErpModel):
         raise NotImplemented
 
     @property
+    def email_address(self):
+        """Return email address."""
+        raise NotImplemented
+
+    @property
     def erp_payload_for_create(self):
         """ERP Payload for create request."""
         return {
             "doctype": self.doc_type,
+            "email_id": self.email_address,
             "address_title": self.name,
             "address_type": "Billing",
             "address_line1": self.address,

@@ -65,6 +65,7 @@ export const CompanyForm = forwardRef((props: Props, ref) => {
   // Updated info values
   const [info, setInfo] = useState({
     name: "",
+    email: "",
   });
   const [billingInfo, setBillingInfo] = useState<BillingInformation>({
     name: "",
@@ -79,6 +80,7 @@ export const CompanyForm = forwardRef((props: Props, ref) => {
   const setDefault = () => {
     setInfo({
       name: returnAsString(""),
+      email: returnAsString(""),
     });
     setBillingInfo({
       name: returnAsString(""),
@@ -93,9 +95,10 @@ export const CompanyForm = forwardRef((props: Props, ref) => {
 
   useEffect(() => {
     if (data) {
-      const { name, billing_information } = data;
+      const { name, email, billing_information } = data;
       setInfo({
         name: returnAsString(name),
+        email: returnAsString(email),
       });
       setBillingInfo({
         name: returnAsString(billing_information.name),
@@ -180,6 +183,21 @@ export const CompanyForm = forwardRef((props: Props, ref) => {
                   (!info.name || errors.name[0].includes("exists")) && (
                     <FormErrorMessage>{errors.name}</FormErrorMessage>
                   )}
+              </FormControl>
+              <br />
+              <FormControl isInvalid={errors.email}>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  disabled={loading}
+                  value={info.email}
+                  onChange={(e) => setInfo({ ...info, email: e.target.value })}
+                  bg="white"
+                  width={"100%"}
+                  isRequired
+                />
+                {errors.email && (
+                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                )}
               </FormControl>
               <Text fontSize="lg" fontWeight="bold" mt={8}>
                 Billing Information

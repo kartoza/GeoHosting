@@ -39,7 +39,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
     class Meta:  # noqa: D106
         model = Company
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'email')
 
 
 class CompanyDetailSerializer(serializers.ModelSerializer):
@@ -60,5 +60,5 @@ class CompanyDetailSerializer(serializers.ModelSerializer):
     class Meta:  # noqa: D106
         model = Company
         fields = (
-            'id', 'name', 'billing_information'
+            'id', 'name', 'email', 'billing_information'
         )
