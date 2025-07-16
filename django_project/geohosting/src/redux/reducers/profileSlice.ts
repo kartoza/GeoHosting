@@ -18,6 +18,9 @@ export interface BillingInformation {
   city: string;
   region: string;
   tax_number: string;
+
+  // To check if already has code
+  erpnext_code?: string;
 }
 
 export interface User {

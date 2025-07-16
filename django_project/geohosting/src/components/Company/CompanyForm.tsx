@@ -16,6 +16,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
+  SimpleGrid,
   Text,
   useDisclosure
 } from "@chakra-ui/react";
@@ -36,9 +37,12 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 /** Company controller */
 
-interface Props {}
+interface Props {
+  description?: string;
+  onDone?: () => void;
+}
 
-export const CompanyForm = forwardRef((props: Props, ref) => {
+export const CompanyForm = forwardRef(({ description, onDone }: Props, ref) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data, loading } = useSelector(
@@ -123,11 +127,13 @@ export const CompanyForm = forwardRef((props: Props, ref) => {
       ).then((result: any) => {
         if (thunkAPIRejected(result)) {
           setErrors(result.payload);
-          console.log("ERROR");
           toast.error("Failed to create company.");
         } else if (thunkAPIFulfilled(result)) {
           dispatch(fetchUserCompanies("/api/companies?page_size=1000"));
           onClose();
+          if (onDone) {
+            onDone();
+          }
           toast.success("Your company has been successfully created.");
         }
       });
@@ -146,6 +152,9 @@ export const CompanyForm = forwardRef((props: Props, ref) => {
         } else if (thunkAPIFulfilled(result)) {
           dispatch(fetchUserCompanies("/api/companies?page_size=1000"));
           onClose();
+          if (onDone) {
+            onDone();
+          }
           toast.success("Your company has been successfully created.");
         }
       });
@@ -157,72 +166,114 @@ export const CompanyForm = forwardRef((props: Props, ref) => {
       onClose={onClose}
       blockScrollOnMount={true}
       preserveScrollBarGap={true}
+      size="4xl"
     >
       <ModalOverlay />
       <ModalContent bg={"white"}>
         <ModalCloseButton />
-        {loading ? (
-          <LoadingSpinner />
-        ) : (
-          <ModalBody m={4}>
-            <Box width={{ base: "100%" }}>
-              <FormControl
-                isInvalid={
-                  errors.name &&
-                  (!info.name || errors.name[0].includes("exists"))
-                }
-              >
-                <FormLabel>Company Name</FormLabel>
-                <Input
-                  isDisabled={loading || createLoading}
-                  value={info.name}
-                  onChange={(e) => setInfo({ ...info, name: e.target.value })}
-                  width={"100%"}
-                />
-                {errors.name &&
-                  (!info.name || errors.name[0].includes("exists")) && (
-                    <FormErrorMessage>{errors.name}</FormErrorMessage>
-                  )}
-              </FormControl>
-              <br />
-              <FormControl isInvalid={errors.email}>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  disabled={loading}
-                  value={info.email}
-                  onChange={(e) => setInfo({ ...info, email: e.target.value })}
-                  bg="white"
-                  width={"100%"}
-                  isRequired
-                />
-                {errors.email && (
-                  <FormErrorMessage>{errors.email}</FormErrorMessage>
-                )}
-              </FormControl>
-              <Text fontSize="lg" fontWeight="bold" mt={8}>
-                Billing Information
-              </Text>
-              <Box display="flex" flexDirection="column" gap={6} mt={8}>
-                <BillingInformationForm
-                  disable={loading || createLoading}
-                  data={billingInfo}
-                  setData={setBillingInfo}
-                  errors={errors}
-                />
-              </Box>
+        <ModalBody m={4}>
+          {description && (
+            <Box
+              backgroundColor="gray.200"
+              borderColor="gray.300"
+              textAlign="center"
+              borderWidth={1}
+              borderRadius={4}
+              color="orange.500"
+              px={8}
+              py={4}
+              mb={4}
+            >
+              {description}
             </Box>
+          )}
+          <Box
+            fontSize="2xl"
+            fontWeight="bold"
+            mb={2}
+            color={"#3e3e3e"}
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box>Company</Box>
             <Button
               isDisabled={loading || createLoading}
-              w={"100%"}
-              mt={8}
-              colorScheme="blue"
+              colorScheme="orange"
               alignSelf="flex-start"
               onClick={submit}
             >
               {!id ? "Create" : "Update"}
             </Button>
-          </ModalBody>
-        )}
+          </Box>
+          <Box height="2px" bg="blue.500" width="100%" mb={8} />
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <Box width={{ base: "100%" }}>
+                <FormControl
+                  isInvalid={
+                    errors.name &&
+                    (!info.name || errors.name[0].includes("exists"))
+                  }
+                >
+                  <FormLabel>Company Name</FormLabel>
+                  <Input
+                    isDisabled={loading || createLoading}
+                    value={info.name}
+                    onChange={(e) =>
+                      setInfo({
+                        ...info,
+                        name: e.target.value,
+                      })
+                    }
+                    width={"100%"}
+                  />
+                  {errors.name &&
+                    (!info.name || errors.name[0].includes("exists")) && (
+                      <FormErrorMessage>{errors.name}</FormErrorMessage>
+                    )}
+                </FormControl>
+                <br />
+                <FormControl isInvalid={errors.email}>
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    disabled={loading}
+                    value={info.email}
+                    onChange={(e) =>
+                      setInfo({
+                        ...info,
+                        email: e.target.value,
+                      })
+                    }
+                    bg="white"
+                    width={"100%"}
+                    isRequired
+                  />
+                  {errors.email && (
+                    <FormErrorMessage>{errors.email}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <Text fontSize="lg" fontWeight="bold" mt={8}>
+                  Billing Information
+                </Text>
+
+                {/* Billing information */}
+                <Box marginTop={5} marginBottom={4} width={{ base: "100%" }}>
+                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+                    <BillingInformationForm
+                      disable={loading || createLoading}
+                      data={billingInfo}
+                      setData={setBillingInfo}
+                      errors={errors}
+                    />
+                  </SimpleGrid>
+                </Box>
+              </Box>
+            </>
+          )}
+        </ModalBody>
       </ModalContent>
     </Modal>
   );

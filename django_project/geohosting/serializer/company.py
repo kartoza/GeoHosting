@@ -36,6 +36,8 @@ class CompanyBillingInformationCheckerSerializer(
 
 class CompanySerializer(serializers.ModelSerializer):
     """Company serializer."""
+    
+    email = serializers.EmailField(required=True)
 
     class Meta:  # noqa: D106
         model = Company

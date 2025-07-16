@@ -11,6 +11,7 @@ export function checkCheckoutUrl(
   if (salesOrder.app_name) {
     localStorage.setItem("appName", "");
     localStorage.setItem("companyName", "");
+    localStorage.setItem("companyId", "");
   }
   switch (salesOrder.order_status) {
     case "Waiting Payment":
