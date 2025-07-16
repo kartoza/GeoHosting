@@ -110,5 +110,3 @@ class CompanyViewSet(
 
     def update(self, request, *args, **kwargs):
         return self.post_data(request, self.get_object())
-    
-    
