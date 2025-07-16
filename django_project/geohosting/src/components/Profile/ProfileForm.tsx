@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Accordion,
-  AccordionButton,
-  AccordionIcon,
   AccordionItem,
   AccordionPanel,
   Avatar,
@@ -283,14 +281,9 @@ const ProfileForm: React.FC<Props> = ({ hide }) => {
 
           <Accordion allowToggle width={{ base: "100%" }} defaultIndex={[0]}>
             <AccordionItem>
-              <h2>
-                <AccordionButton ml={-4}>
-                  <Text fontSize="lg" fontWeight="bold">
-                    Billing Information
-                  </Text>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
+              <Text fontSize="lg" fontWeight="bold" mt={4}>
+                Billing Information
+              </Text>
               <AccordionPanel p={0}>
                 {/* Billing information */}
                 <Box marginTop={5} width={{ base: "100%" }}>

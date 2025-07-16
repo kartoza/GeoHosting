@@ -1,33 +1,32 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { PaginationResult } from "../types/paginationTypes";
 import { ReduxState, ReduxStateInit } from "../types/reduxState";
 import { headerWithToken } from "../../utils/helpers";
 import { BillingInformation } from "./profileSlice";
 
-
 export interface Company {
-  id: number,
+  id: number;
   name: string;
+  email: string;
   billing_information: BillingInformation;
 }
 
 interface CompanyPaginationResult extends PaginationResult {
-  results: Company[]
+  results: Company[];
 }
 
 interface ListState extends ReduxState {
-  data: CompanyPaginationResult | null
+  data: CompanyPaginationResult | null;
 }
 
 interface NonReturnState extends ReduxState {
-  data: null
+  data: null;
 }
 
 interface DetailState extends ReduxState {
-  data: Company | null
+  data: Company | null;
 }
-
 
 interface CompanyState {
   list: ListState;
@@ -44,7 +43,7 @@ const initialState: CompanyState = {
       count: 0,
       next: null,
       previous: null,
-      results: []
+      results: [],
     },
     loading: false,
     error: null,
@@ -57,88 +56,105 @@ const initialState: CompanyState = {
 
 // Async thunk to fetch user companies
 export const fetchUserCompanies = createAsyncThunk(
-  'company/fetchUserCompanies',
+  "company/fetchUserCompanies",
   async (url: string, { rejectWithValue }) => {
     try {
       const response = await axios.get(url, {
-        headers: headerWithToken()
+        headers: headerWithToken(),
       });
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data || 'An error occurred while fetching companies'
+        error.response?.data || "An error occurred while fetching companies",
       );
     }
-  }
+  },
 );
 
 export const createUserCompany = createAsyncThunk(
-  'company/createUserCompany',
-  async ({ companyData, files }: {
-    companyData: any,
-    files: Array<{ name: string, file: File | null }>
-  }, thunkAPI) => {
+  "company/createUserCompany",
+  async (
+    {
+      companyData,
+      files,
+    }: {
+      companyData: any;
+      files: Array<{ name: string; file: File | null }>;
+    },
+    thunkAPI,
+  ) => {
     const data = new FormData();
     data.append("payload", JSON.stringify(companyData));
-    files.map(file => {
+    files.map((file) => {
       if (file.file) {
         data.append(file.name, file.file);
       }
-    })
+    });
     try {
-      const response = await axios.post('/api/companies/', data, {
-        headers: headerWithToken()
+      const response = await axios.post("/api/companies/", data, {
+        headers: headerWithToken(),
       });
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data || 'An unknown error occurred');
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "An unknown error occurred",
+      );
     }
-  }
+  },
 );
 
 export const fetchUserCompany = createAsyncThunk(
-  'company/fetchUserCompany',
+  "company/fetchUserCompany",
   async (id: number, thunkAPI) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const response = await axios.get(`/api/companies/${id}/`, {
-        headers: { Authorization: `Token ${token}` }
+        headers: { Authorization: `Token ${token}` },
       });
       return response.data;
     } catch (error: any) {
       const errorData = error.response.data;
       return thunkAPI.rejectWithValue(errorData);
     }
-  }
+  },
 );
 
 export const updateUserCompany = createAsyncThunk(
-  'company/updateUserCompany',
-  async ({ id, companyData, files }: {
-    id: number,
-    companyData: any,
-    files: Array<{ name: string, file: File | null }>
-  }, thunkAPI) => {
+  "company/updateUserCompany",
+  async (
+    {
+      id,
+      companyData,
+      files,
+    }: {
+      id: number;
+      companyData: any;
+      files: Array<{ name: string; file: File | null }>;
+    },
+    thunkAPI,
+  ) => {
     const data = new FormData();
     data.append("payload", JSON.stringify(companyData));
-    files.map(file => {
+    files.map((file) => {
       if (file.file) {
         data.append(file.name, file.file);
       }
-    })
+    });
     try {
       const response = await axios.put(`/api/companies/${id}/`, data, {
-        headers: headerWithToken()
+        headers: headerWithToken(),
       });
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data || 'An unknown error occurred');
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "An unknown error occurred",
+      );
     }
-  }
+  },
 );
 
 const companySlice = createSlice({
-  name: 'company',
+  name: "company",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

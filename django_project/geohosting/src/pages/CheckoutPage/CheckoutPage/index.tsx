@@ -23,12 +23,16 @@ import { StripePaymentModal } from "./Stripe";
 import { PaystackPaymentModal } from "./Paystack";
 import CheckoutTracker from "../../../components/ProgressTracker/CheckoutTracker";
 import { OrderSummary } from "../OrderSummary";
-import { getUserLocation } from "../../../utils/helpers";
+import { getUserLocation, headerWithToken } from "../../../utils/helpers";
 import { Agreement, AgreementModal } from "./Agreement";
 import { PaymentMethods } from "./types";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { ProfileFormModal } from "../../../components/Profile/ProfileFormModal";
+import { Company } from "../../../redux/reducers/companySlice";
+import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import axios from "axios";
+import CompanyForm from "../../../components/Company/CompanyForm";
 
 interface CheckoutPageModalProps {
   product: Product;
@@ -36,6 +40,7 @@ interface CheckoutPageModalProps {
   stripeUrl: string;
   paystackUrl: string;
   appName: string;
+  companyId?: number | null;
   companyName?: string | null;
   activeStep?: number;
 }
@@ -46,10 +51,16 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
   stripeUrl,
   paystackUrl,
   appName,
+  companyId,
   companyName,
 }) => {
   /** For the payment component **/
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isProfileOpen,
+    onOpen: onProfileOpen,
+    onClose: onProfileClose,
+  } = useDisclosure();
+  const companyModalRef = useRef(null);
   const columns = useBreakpointValue({ base: 1, md: 2 });
   const [paymentMethods, setPaymentMethods] = useState<Array<string> | null>(
     null,
@@ -62,6 +73,7 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
   const { user, loading, error } = useSelector(
     (state: RootState) => state.profile,
   );
+  const [company, setCompany] = useState<Company | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -78,19 +90,53 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
   useEffect(() => {
     if (!companyName) {
       if (
+        !user?.billing_information?.erpnext_code ||
         !user?.billing_information?.address ||
         !user?.billing_information?.city ||
         !user?.billing_information?.country ||
         !user?.billing_information?.postal_code
       ) {
-        onOpen();
+        onProfileOpen();
       } else {
-        onClose();
+        onProfileClose();
       }
     } else {
-      onClose();
+      onProfileClose();
     }
   }, [user]);
+
+  function updateCompany() {
+    setCompany(null);
+    axios
+      .get(`/api/companies/${companyId}/`, {
+        headers: headerWithToken(),
+      })
+      .then((res) => {
+        setCompany(res.data);
+      });
+  }
+
+  // Check if company has billing information
+  useEffect(() => {
+    if (companyName) {
+      if (!company) {
+        updateCompany();
+        return;
+      }
+      if (
+        !company?.name ||
+        !company?.email ||
+        !company?.billing_information?.erpnext_code ||
+        !company?.billing_information?.address ||
+        !company?.billing_information?.city ||
+        !company?.billing_information?.country ||
+        !company?.billing_information?.postal_code
+      ) {
+        // @ts-ignore
+        companyModalRef?.current?.open(company.id);
+      }
+    }
+  }, [company]);
 
   // Checkout function
   async function agreement(method: string) {
@@ -121,6 +167,28 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
 
   return (
     <>
+      {companyName && !company && (
+        <Box
+          position={"fixed"}
+          top={"0"}
+          left={"0"}
+          width={"100%"}
+          height={"100%"}
+          zIndex={100}
+        >
+          <Box
+            position={"absolute"}
+            display={"flex"}
+            justifyContent={"center"}
+            width={"100%"}
+            height={"100%"}
+            alignItems={"center"}
+            backgroundColor={"rgba(0,0,0,0.5)"}
+          >
+            <LoadingSpinner />
+          </Box>
+        </Box>
+      )}
       <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
         <OrderSummary
           product={product}
@@ -207,11 +275,18 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
         }}
       />
       <ProfileFormModal
-        isOpen={isOpen}
+        isOpen={isProfileOpen}
         description={
           "Please complete your billing information before proceeding with the payment."
         }
         hide={{ company: true, avatar: true }}
+      />
+      <CompanyForm
+        ref={companyModalRef}
+        onDone={updateCompany}
+        description={
+          "Please complete your billing information before proceeding with the payment."
+        }
       />
     </>
   );
@@ -223,6 +298,7 @@ const MainCheckoutPage: React.FC<CheckoutPageModalProps> = ({
   stripeUrl,
   paystackUrl,
   appName,
+  companyId,
   companyName,
   activeStep = 0,
 }) => {
@@ -238,6 +314,7 @@ const MainCheckoutPage: React.FC<CheckoutPageModalProps> = ({
             </Box>
             <MainCheckoutPageComponent
               appName={appName}
+              companyId={companyId}
               companyName={companyName}
               product={product}
               pkg={pkg}

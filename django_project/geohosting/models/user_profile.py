@@ -20,6 +20,11 @@ class UserBillingInformation(BillingInformation):
         """Return customer name."""
         return self.user.userprofile.erpnext_code
 
+    @property
+    def email_address(self):
+        """Return email address."""
+        return self.user.email
+
 
 class UserProfile(ErpModel):
     """User profile model."""
