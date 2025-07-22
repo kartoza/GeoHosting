@@ -55,7 +55,8 @@ const CompanyList: React.FC = () => {
       ) : null}
       <Button
         disabled={loading}
-        colorScheme="blue"
+        colorScheme="orange"
+        minWidth={150}
         mt={6}
         onClick={() => {
           // @ts-ignore

@@ -22,6 +22,7 @@ export const BillingInformationForm: React.FC<Props> = ({
   setData,
   errors,
 }) => {
+  console.log(data);
   return (
     <>
       <FormControl isInvalid={errors.name}>

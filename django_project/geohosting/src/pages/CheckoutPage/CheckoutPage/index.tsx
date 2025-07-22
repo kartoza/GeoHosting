@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -33,6 +33,7 @@ import { Company } from "../../../redux/reducers/companySlice";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import axios from "axios";
 import CompanyForm from "../../../components/Company/CompanyForm";
+import Footer from "../../../components/Footer/Footer";
 
 interface CheckoutPageModalProps {
   product: Product;
@@ -279,7 +280,6 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
         description={
           "Please complete your billing information before proceeding with the payment."
         }
-        hide={{ company: true, avatar: true }}
       />
       <CompanyForm
         ref={companyModalRef}
@@ -323,9 +323,9 @@ const MainCheckoutPage: React.FC<CheckoutPageModalProps> = ({
             />
           </Container>
         </Box>
-        <Box width="100%" backgroundColor="blue.500" py="4" textAlign="center">
-          <Text color="white">Powered by Kartoza</Text>
-        </Box>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Footer />
+        </Suspense>
       </Flex>
     </ChakraProvider>
   );

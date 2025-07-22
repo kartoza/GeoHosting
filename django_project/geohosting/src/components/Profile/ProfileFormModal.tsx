@@ -3,12 +3,12 @@ import { Box, Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
 import ProfileForm, { Props } from "./ProfileForm";
 
 interface ModalProps extends Props {
-  description?: string;
   isOpen: boolean;
+  description?: string;
 }
 
 export const ProfileFormModal = forwardRef(
-  ({ isOpen, description, hide }: ModalProps, ref) => {
+  ({ isOpen, description }: ModalProps, ref) => {
     return (
       <Modal
         isOpen={isOpen}
@@ -34,7 +34,7 @@ export const ProfileFormModal = forwardRef(
               {description}
             </Box>
           )}
-          <ProfileForm hide={hide} />
+          <ProfileForm isModal={true} />
         </ModalContent>
       </Modal>
     );
