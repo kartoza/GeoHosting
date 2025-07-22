@@ -111,111 +111,107 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
   }, [companyName]);
 
   return (
-    <>
-      <GridItem>
-        <Box>
-          <Box fontSize={22} color={"black"} display="flex" alignItems="center">
-            Application name
-          </Box>
+    <GridItem gap={4} display={"flex"} flexDirection={"column"}>
+      <Box>
+        <Box fontSize={22} color={"black"} display="flex" alignItems="center">
+          Application name
         </Box>
-        <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
-          <Box display="flex" alignItems="center">
-            <InputGroup>
-              <Input
-                textAlign="right"
-                value={appName}
-                backgroundColor="white"
-                placeholder="Please provide a name for your application"
-                size="lg"
-                onChange={(evt) => handleChange(evt.target.value)}
-                isInvalid={!!error}
-              />
-              {checking ? (
-                <InputLeftElement height="100%">
-                  <Spinner />
-                </InputLeftElement>
-              ) : error ? (
-                <InputLeftElement height="100%">
-                  <Icon as={WarningIcon} color="red.500" />
-                </InputLeftElement>
-              ) : (
-                <InputLeftElement height="100%">
-                  <Icon as={CheckCircleIcon} color="green.500" />
-                </InputLeftElement>
-              )}
-            </InputGroup>
-            &nbsp;.{product.domain}
-          </Box>
-          <Box color="red" fontSize={14} minHeight={8}>
-            {error}
-          </Box>
-          <Box>
-            <Text
-              fontSize={13}
-              color={"gray"}
-              fontStyle={"italic"}
-              marginTop={"1rem"}
-            >
-              <i>
-                Name may only contain lowercase letters, numbers or dashes.
-                <br />
-                This will be used for subdomain and also application name. e.g:
-                appname.geonode.kartoza.com
-              </i>
-            </Text>
-          </Box>
-        </Box>
-        <Box mt={4}>
-          <Box fontSize={22} color={"black"} display="flex" alignItems="center">
-            Purchase application for
-          </Box>
-        </Box>
-        <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
-          <Checkbox
-            checked={purchaseFor === purchaseForTypes.INDIVIDUAL}
-            _checked={{
-              "& .chakra-checkbox__control": {
-                background: "#4F9AC0",
-                borderColor: "#4F9AC0",
-                color: "white",
-              },
-              "& .chakra-checkbox__control:hover": {
-                background: "#4F9AC0",
-                borderColor: "#4F9AC0",
-                color: "white",
-              },
-            }}
-            sx={{
-              "& .chakra-checkbox__label": {
-                fontSize: "13px !important",
-              },
-              "& .chakra-checkbox__control": {
-                background: "white",
-                borderColor: "#777777",
-              },
-            }}
-            onChange={() =>
-              setPurchaseFor(
-                purchaseFor === purchaseForTypes.INDIVIDUAL
-                  ? purchaseForTypes.COMPANY
-                  : purchaseForTypes.INDIVIDUAL,
-              )
-            }
-          >
-            Purchase in personal capacity
-          </Checkbox>
-          {purchaseFor === purchaseForTypes.COMPANY ? (
-            <CompanyListSelector
-              companyId={companyId}
-              setCompany={(company: Company) => {
-                setCompanyName(company.name);
-                setCompanyId(company.id);
-              }}
+      </Box>
+      <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
+        <Box display="flex" alignItems="center">
+          <InputGroup>
+            <Input
+              textAlign="right"
+              value={appName}
+              backgroundColor="white"
+              placeholder="Please provide a name for your application"
+              size="lg"
+              onChange={(evt) => handleChange(evt.target.value)}
+              isInvalid={!!error}
             />
-          ) : null}
+            {checking ? (
+              <InputLeftElement height="100%">
+                <Spinner />
+              </InputLeftElement>
+            ) : error ? (
+              <InputLeftElement height="100%">
+                <Icon as={WarningIcon} color="red.500" />
+              </InputLeftElement>
+            ) : (
+              <InputLeftElement height="100%">
+                <Icon as={CheckCircleIcon} color="green.500" />
+              </InputLeftElement>
+            )}
+          </InputGroup>
+          &nbsp;.{product.domain}
         </Box>
-      </GridItem>
-    </>
+        <Box color="red" fontSize={14} minHeight={8}>
+          {error}
+        </Box>
+        <Box>
+          <Text
+            fontSize={13}
+            color={"gray"}
+            fontStyle={"italic"}
+            marginTop={"1rem"}
+          >
+            <i>
+              Name may only contain lowercase letters, numbers or dashes.
+              <br />
+              This will be used for subdomain and also application name. e.g:
+              appname.geonode.kartoza.com
+            </i>
+          </Text>
+        </Box>
+      </Box>
+      <Box fontSize={22} color={"black"}>
+        Purchase application for
+      </Box>
+      <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
+        <Checkbox
+          checked={purchaseFor === purchaseForTypes.INDIVIDUAL}
+          _checked={{
+            "& .chakra-checkbox__control": {
+              background: "#4F9AC0",
+              borderColor: "#4F9AC0",
+              color: "white",
+            },
+            "& .chakra-checkbox__control:hover": {
+              background: "#4F9AC0",
+              borderColor: "#4F9AC0",
+              color: "white",
+            },
+          }}
+          sx={{
+            "& .chakra-checkbox__label": {
+              fontSize: "13px !important",
+            },
+            "& .chakra-checkbox__control": {
+              background: "white",
+              borderColor: "#777777",
+            },
+          }}
+          onChange={() =>
+            setPurchaseFor(
+              purchaseFor === purchaseForTypes.INDIVIDUAL
+                ? purchaseForTypes.COMPANY
+                : purchaseForTypes.INDIVIDUAL,
+            )
+          }
+        >
+          Purchase in personal capacity
+        </Checkbox>
+        {purchaseFor === purchaseForTypes.COMPANY ? (
+          <CompanyListSelector
+            companyId={companyId}
+            setCompany={(company: Company) => {
+              setCompanyName(company.name);
+              setCompanyId(company.id);
+            }}
+          />
+        ) : null}
+      </Box>
+    </GridItem>
   );
 };
 export default OrderConfiguration;

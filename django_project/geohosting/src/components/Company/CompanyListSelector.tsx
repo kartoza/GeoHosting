@@ -49,7 +49,19 @@ const CompanyListSelector: React.FC<OrderSummaryProps> = ({
   }, [data, newCompanyName]);
 
   if (loading) {
-    return <Box paddingTop={4}>Loading</Box>;
+    return (
+      <Box
+        backgroundColor={"white"}
+        paddingTop={4}
+        mt={4}
+        padding={4}
+        textAlign={"center"}
+        fontSize={"13px"}
+        color={"gray.500"}
+      >
+        Fetching companies...
+      </Box>
+    );
   }
   return (
     <Box p={4} background={"white"} mt={4}>

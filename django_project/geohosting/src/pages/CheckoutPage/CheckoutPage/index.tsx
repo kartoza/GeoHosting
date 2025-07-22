@@ -12,7 +12,6 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
 import customTheme from "../../../theme/theme";
 import Navbar from "../../../components/Navbar/Navbar";
@@ -197,58 +196,67 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
           appName={appName}
           companyName={companyName}
         />
-        <GridItem>
+        <GridItem gap={4} display={"flex"} flexDirection={"column"}>
           <Box>
             <Text fontSize={22} color={"black"}>
               Payment Method
             </Text>
           </Box>
-          <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
-            <VStack spacing={4} align="stretch">
-              <Box border="1px" borderColor="gray.300" borderRadius="md" p="4">
-                <Text mt={2}>
-                  By purchasing this subscription and clicking "Continue", you
-                  agree to the <Link href="#">terms of service</Link>,{" "}
-                  <Link href="#">auto-renewal terms</Link>, electronic document
-                  delivery, and acknowledge the{" "}
-                  <Link href="#">privacy policy</Link>.
-                </Text>
-                <Box>
-                  {paymentMethods?.includes(PaymentMethods.STRIPE) ? (
-                    <Button
-                      mt={4}
-                      leftIcon={<FaCcStripe />}
-                      mr={1}
-                      colorScheme="blue"
-                      size="lg"
-                      onClick={() => agreement(PaymentMethods.STRIPE)}
-                    >
-                      Pay with Stripe
-                    </Button>
-                  ) : null}
-                  {paymentMethods?.includes(PaymentMethods.PAYSTACK) ? (
-                    <Button
-                      mt={4}
-                      colorScheme="blue"
-                      size="lg"
-                      onClick={() => agreement(PaymentMethods.PAYSTACK)}
-                    >
-                      Pay with Paystack
-                    </Button>
-                  ) : null}
-                  {!paymentMethods ? (
-                    <Box paddingTop={5} fontStyle={"italic"} color={"gray"}>
-                      Loading payment methods
-                    </Box>
-                  ) : null}
-                </Box>
-                <Divider mt={4} />
-                <Text mt={2} fontSize="sm">
-                  Payments are processed in {pkg.currency}. Payment provider
-                  fees may apply.
-                </Text>
+          <Box
+            padding={8}
+            backgroundColor="gray.100"
+            borderRadius={10}
+            flexGrow={1}
+          >
+            <Box
+              border="1px"
+              borderColor="gray.300"
+              borderRadius="md"
+              p="4"
+              height="100%"
+            >
+              <Text mt={2}>
+                By purchasing this subscription and clicking "Continue", you
+                agree to the <Link href="#">terms of service</Link>,{" "}
+                <Link href="#">auto-renewal terms</Link>, electronic document
+                delivery, and acknowledge the{" "}
+                <Link href="#">privacy policy</Link>.
+              </Text>
+              <Box>
+                {paymentMethods?.includes(PaymentMethods.STRIPE) ? (
+                  <Button
+                    mt={4}
+                    leftIcon={<FaCcStripe />}
+                    mr={1}
+                    colorScheme="blue"
+                    size="lg"
+                    onClick={() => agreement(PaymentMethods.STRIPE)}
+                  >
+                    Pay with Stripe
+                  </Button>
+                ) : null}
+                {paymentMethods?.includes(PaymentMethods.PAYSTACK) ? (
+                  <Button
+                    mt={4}
+                    colorScheme="blue"
+                    size="lg"
+                    onClick={() => agreement(PaymentMethods.PAYSTACK)}
+                  >
+                    Pay with Paystack
+                  </Button>
+                ) : null}
+                {!paymentMethods ? (
+                  <Box paddingTop={5} fontStyle={"italic"} color={"gray"}>
+                    Loading payment methods
+                  </Box>
+                ) : null}
               </Box>
-            </VStack>
+              <Divider mt={4} />
+              <Text mt={2} fontSize="sm">
+                Payments are processed in {pkg.currency}. Payment provider fees
+                may apply.
+              </Text>
+            </Box>
           </Box>
         </GridItem>
       </Grid>
