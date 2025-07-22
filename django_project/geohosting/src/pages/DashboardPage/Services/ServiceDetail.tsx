@@ -190,7 +190,7 @@ const ServiceDetail: React.FC = () => {
       <Notification />
       <Box px={4} mb={2} display="flex" alignItems="end" gap={4}>
         <Box fontSize="2xl" fontWeight="bold" color={"#3e3e3e"}>
-          Instance information
+          Product Information
         </Box>
         <Flex mb="3px">
           <RenderInstanceStatus instance={instance} />
@@ -278,6 +278,8 @@ const ServiceDetail: React.FC = () => {
           </Box>
         </Flex>
       </Box>
+
+      {/* Features */}
       <Box
         fontSize="2xl"
         fontWeight="bold"
@@ -299,10 +301,12 @@ const ServiceDetail: React.FC = () => {
               feature && <Box mb={4}>{feature}</Box>,
           )}
       </Box>
+
+      {/* Payment detail */}
       <Box
         fontSize="2xl"
         fontWeight="bold"
-        mt={4}
+        mt={8}
         px={4}
         mb={2}
         color={"#3e3e3e"}
@@ -336,6 +340,7 @@ const ServiceDetail: React.FC = () => {
           />
         )}
       </Box>
+      {/* Orders */}
       <>
         <Box
           fontSize="2xl"

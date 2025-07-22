@@ -11,9 +11,8 @@ export const DeleteInstance: React.FC<Props> = ({ instanceInput }) => {
   const modalRef = useRef(null);
   return (
     <Button
-      colorScheme="whiteAlpha"
+      colorScheme="red"
       mt={6}
-      color={"red.500"}
       width="100%"
       // @ts-ignore
       onClick={() => modalRef?.current?.open()}

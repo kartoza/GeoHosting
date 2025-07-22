@@ -79,11 +79,24 @@ const Index: React.FC<Props> = ({
             ) : (
               <Box
                 display={"flex"}
+                flexDirection={"column"}
                 justifyContent={"center"}
                 width={"100%"}
+                height={"100%"}
                 alignItems={"center"}
+                p={24}
               >
-                <Spinner size="xl" />
+                <Spinner size="xl" color="orange.500" />
+                <Box
+                  color="orange.500"
+                  fontSize="lg"
+                  fontWeight="bold"
+                  mt={8}
+                  textAlign={"center"}
+                >
+                  Please wait while we verify your payment and prepare your
+                  product. <Box>This may take a moment.</Box>
+                </Box>
               </Box>
             )}
           </Container>
