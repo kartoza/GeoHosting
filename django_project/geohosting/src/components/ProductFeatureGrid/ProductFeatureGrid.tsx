@@ -51,7 +51,7 @@ const FeatureGrid: React.FC<FeatureGridProps> = ({ product }) => {
               bg="white"
               boxShadow="md"
               borderRadius="lg"
-              backgroundColor="gray.200"
+              backgroundColor="white"
               width="100%"
               height="100%"
             >
