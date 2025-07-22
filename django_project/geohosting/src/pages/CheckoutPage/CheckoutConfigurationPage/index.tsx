@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import {
   Box,
   Button,
@@ -6,7 +6,6 @@ import {
   Container,
   Flex,
   Grid,
-  Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import OrderSummary from "../../CheckoutPage/OrderSummary";
@@ -17,6 +16,8 @@ import customTheme from "../../../theme/theme";
 import Navbar from "../../../components/Navbar/Navbar";
 import Background from "../../../components/Background/Background";
 import CheckoutTracker from "../../../components/ProgressTracker/CheckoutTracker";
+import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import Footer from "../../../components/Footer/Footer";
 
 interface LocationState {
   productName: string;
@@ -69,7 +70,7 @@ const CheckoutConfiguration: React.FC = () => {
               <Box mt={4}>
                 <Button
                   w="100%"
-                  colorScheme="orange"
+                  colorScheme="blue"
                   isDisabled={!configurationOK}
                   onClick={() => {
                     navigate("/checkout");
@@ -90,9 +91,9 @@ const CheckoutConfiguration: React.FC = () => {
             </>
           </Container>
         </Box>
-        <Box width="100%" backgroundColor="blue.500" py="4" textAlign="center">
-          <Text color="white">Powered by Kartoza</Text>
-        </Box>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Footer />
+        </Suspense>
       </Flex>
     </ChakraProvider>
   );

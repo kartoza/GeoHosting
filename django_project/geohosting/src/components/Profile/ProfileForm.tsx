@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Accordion,
-  AccordionItem,
-  AccordionPanel,
   Avatar,
   Box,
   Button,
@@ -30,13 +27,10 @@ import { BillingInformationForm } from "../../components/BillingInformation";
 import CompanyList from "../Company/CompanyList";
 
 export interface Props {
-  hide?: {
-    avatar?: boolean;
-    company?: boolean;
-  };
+  isModal?: boolean;
 }
 
-const ProfileForm: React.FC<Props> = ({ hide }) => {
+const ProfileForm: React.FC<Props> = ({ isModal }) => {
   const dispatch: AppDispatch = useDispatch();
   const resetPasswordModalRef = useRef(null);
   const { user, loading, error } = useSelector(
@@ -156,9 +150,15 @@ const ProfileForm: React.FC<Props> = ({ hide }) => {
         justifyContent="space-between"
       >
         <Box>Profile</Box>
-        <Button colorScheme="orange" onClick={handleProfileUpdate}>
-          Update Profile
-        </Button>
+        {!isModal && (
+          <Button
+            colorScheme="blue"
+            onClick={handleProfileUpdate}
+            minWidth={150}
+          >
+            Update Profile
+          </Button>
+        )}
       </Box>
       <Box height="2px" bg="blue.500" width="100%" mb={8} />
 
@@ -167,7 +167,7 @@ const ProfileForm: React.FC<Props> = ({ hide }) => {
         align="flex-start"
         gap={4}
       >
-        {!hide?.avatar && (
+        {!isModal && (
           <VStack spacing={2} alignItems="center" padding="0 1rem">
             <Avatar size="2xl" src={avataSrc} />
             <Box pos="relative">
@@ -201,12 +201,16 @@ const ProfileForm: React.FC<Props> = ({ hide }) => {
         <VStack
           spacing={4}
           alignItems="flex-start"
-          width={{ base: "100%", lg: "60%" }}
+          width={isModal ? "100%" : { base: "100%", lg: "60%" }}
         >
-          <Text fontSize="lg" fontWeight="bold">
+          <Text
+            fontSize="lg"
+            fontWeight="bold"
+            display={isModal ? "none" : "block"}
+          >
             User Information
           </Text>
-          <Box width={{ base: "100%" }}>
+          <Box width={{ base: "100%" }} display={isModal ? "none" : "block"}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
               <FormControl isInvalid={errors.first_name}>
                 <FormLabel>Name</FormLabel>
@@ -268,8 +272,10 @@ const ProfileForm: React.FC<Props> = ({ hide }) => {
             </SimpleGrid>
           </Box>
           <Button
+            display={isModal ? "none" : "block"}
             disabled={loading}
-            colorScheme="blue"
+            colorScheme="orange"
+            minWidth={150}
             mt={6}
             onClick={() => {
               // @ts-ignore
@@ -279,28 +285,26 @@ const ProfileForm: React.FC<Props> = ({ hide }) => {
             Update Password
           </Button>
 
-          <Accordion allowToggle width={{ base: "100%" }} defaultIndex={[0]}>
-            <AccordionItem>
-              <Text fontSize="lg" fontWeight="bold" mt={4}>
-                Billing Information
-              </Text>
-              <AccordionPanel p={0}>
-                {/* Billing information */}
-                <Box marginTop={5} width={{ base: "100%" }}>
-                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-                    <BillingInformationForm
-                      disable={loading}
-                      data={billingInfo}
-                      setData={setBillingInfo}
-                      errors={errors}
-                    />
-                  </SimpleGrid>
-                </Box>
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
+          {/* Reset password modal */}
+          <ChangePasswordModal ref={resetPasswordModalRef} />
 
-          {!hide?.company && (
+          {/* Billing information */}
+          <Text fontSize="lg" fontWeight="bold" mt={isModal ? 0 : 8}>
+            Billing Information
+          </Text>
+          <Box width={{ base: "100%" }}>
+            {/* Billing information */}
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+              <BillingInformationForm
+                disable={loading}
+                data={billingInfo}
+                setData={setBillingInfo}
+                errors={errors}
+              />
+            </SimpleGrid>
+          </Box>
+
+          {!isModal && (
             <>
               <Text mt={8} fontSize="lg" fontWeight="bold">
                 Company List
@@ -309,8 +313,22 @@ const ProfileForm: React.FC<Props> = ({ hide }) => {
             </>
           )}
 
-          {/* Reset password modal */}
-          <ChangePasswordModal ref={resetPasswordModalRef} />
+          {isModal && (
+            <Box
+              display={"flex"}
+              justifyContent={"flex-end"}
+              marginTop={8}
+              width={"100%"}
+            >
+              <Button
+                colorScheme="blue"
+                onClick={handleProfileUpdate}
+                minWidth={150}
+              >
+                Update Profile
+              </Button>
+            </Box>
+          )}
         </VStack>
       </Flex>
     </Box>

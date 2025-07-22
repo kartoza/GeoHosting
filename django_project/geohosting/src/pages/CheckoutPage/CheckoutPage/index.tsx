@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -12,7 +12,6 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
 import customTheme from "../../../theme/theme";
 import Navbar from "../../../components/Navbar/Navbar";
@@ -33,6 +32,7 @@ import { Company } from "../../../redux/reducers/companySlice";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import axios from "axios";
 import CompanyForm from "../../../components/Company/CompanyForm";
+import Footer from "../../../components/Footer/Footer";
 
 interface CheckoutPageModalProps {
   product: Product;
@@ -196,58 +196,67 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
           appName={appName}
           companyName={companyName}
         />
-        <GridItem>
+        <GridItem gap={4} display={"flex"} flexDirection={"column"}>
           <Box>
             <Text fontSize={22} color={"black"}>
               Payment Method
             </Text>
           </Box>
-          <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
-            <VStack spacing={4} align="stretch">
-              <Box border="1px" borderColor="gray.300" borderRadius="md" p="4">
-                <Text mt={2}>
-                  By purchasing this subscription and clicking "Continue", you
-                  agree to the <Link href="#">terms of service</Link>,{" "}
-                  <Link href="#">auto-renewal terms</Link>, electronic document
-                  delivery, and acknowledge the{" "}
-                  <Link href="#">privacy policy</Link>.
-                </Text>
-                <Box>
-                  {paymentMethods?.includes(PaymentMethods.STRIPE) ? (
-                    <Button
-                      mt={4}
-                      leftIcon={<FaCcStripe />}
-                      mr={1}
-                      colorScheme="blue"
-                      size="lg"
-                      onClick={() => agreement(PaymentMethods.STRIPE)}
-                    >
-                      Pay with Stripe
-                    </Button>
-                  ) : null}
-                  {paymentMethods?.includes(PaymentMethods.PAYSTACK) ? (
-                    <Button
-                      mt={4}
-                      colorScheme="blue"
-                      size="lg"
-                      onClick={() => agreement(PaymentMethods.PAYSTACK)}
-                    >
-                      Pay with Paystack
-                    </Button>
-                  ) : null}
-                  {!paymentMethods ? (
-                    <Box paddingTop={5} fontStyle={"italic"} color={"gray"}>
-                      Loading payment methods
-                    </Box>
-                  ) : null}
-                </Box>
-                <Divider mt={4} />
-                <Text mt={2} fontSize="sm">
-                  Payments are processed in {pkg.currency}. Payment provider
-                  fees may apply.
-                </Text>
+          <Box
+            padding={8}
+            backgroundColor="gray.100"
+            borderRadius={10}
+            flexGrow={1}
+          >
+            <Box
+              border="1px"
+              borderColor="gray.300"
+              borderRadius="md"
+              p="4"
+              height="100%"
+            >
+              <Text mt={2}>
+                By purchasing this subscription and clicking "Continue", you
+                agree to the <Link href="#">terms of service</Link>,{" "}
+                <Link href="#">auto-renewal terms</Link>, electronic document
+                delivery, and acknowledge the{" "}
+                <Link href="#">privacy policy</Link>.
+              </Text>
+              <Box>
+                {paymentMethods?.includes(PaymentMethods.STRIPE) ? (
+                  <Button
+                    mt={4}
+                    leftIcon={<FaCcStripe />}
+                    mr={1}
+                    colorScheme="blue"
+                    size="lg"
+                    onClick={() => agreement(PaymentMethods.STRIPE)}
+                  >
+                    Pay with Stripe
+                  </Button>
+                ) : null}
+                {paymentMethods?.includes(PaymentMethods.PAYSTACK) ? (
+                  <Button
+                    mt={4}
+                    colorScheme="blue"
+                    size="lg"
+                    onClick={() => agreement(PaymentMethods.PAYSTACK)}
+                  >
+                    Pay with Paystack
+                  </Button>
+                ) : null}
+                {!paymentMethods ? (
+                  <Box paddingTop={5} fontStyle={"italic"} color={"gray"}>
+                    Loading payment methods
+                  </Box>
+                ) : null}
               </Box>
-            </VStack>
+              <Divider mt={4} />
+              <Text mt={2} fontSize="sm">
+                Payments are processed in {pkg.currency}. Payment provider fees
+                may apply.
+              </Text>
+            </Box>
           </Box>
         </GridItem>
       </Grid>
@@ -279,7 +288,6 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
         description={
           "Please complete your billing information before proceeding with the payment."
         }
-        hide={{ company: true, avatar: true }}
       />
       <CompanyForm
         ref={companyModalRef}
@@ -323,9 +331,9 @@ const MainCheckoutPage: React.FC<CheckoutPageModalProps> = ({
             />
           </Container>
         </Box>
-        <Box width="100%" backgroundColor="blue.500" py="4" textAlign="center">
-          <Text color="white">Powered by Kartoza</Text>
-        </Box>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Footer />
+        </Suspense>
       </Flex>
     </ChakraProvider>
   );

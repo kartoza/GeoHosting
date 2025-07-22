@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { Box, Button, Checkbox } from "@chakra-ui/react";
+import React, { useEffect, useRef, useState } from "react";
+import { Box, Checkbox } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { EditIcon } from "@chakra-ui/icons";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -21,6 +21,7 @@ const CompanyListSelector: React.FC<OrderSummaryProps> = ({
   const { data, loading } = useSelector(
     (state: RootState) => state.company["list"],
   );
+  const [newCompanyName, setNewCompanyName] = useState<string | null>(null);
 
   const request = () => {
     dispatch(fetchUserCompanies("/api/companies/?page_size=1000"));
@@ -34,33 +35,86 @@ const CompanyListSelector: React.FC<OrderSummaryProps> = ({
   /** When first dispatch created */
   useEffect(() => {
     if (data?.results && data?.results[0]) {
-      setCompany(data?.results[0]);
+      if (!newCompanyName) {
+        setCompany(data?.results[0]);
+      } else {
+        const company = data?.results.find(
+          (company) => company.name === newCompanyName,
+        );
+        if (company) {
+          setCompany(company);
+        }
+      }
     }
-  }, [data]);
+  }, [data, newCompanyName]);
 
   if (loading) {
-    return <Box paddingTop={4}>Loading</Box>;
+    return (
+      <Box
+        backgroundColor={"white"}
+        paddingTop={4}
+        mt={4}
+        padding={4}
+        textAlign={"center"}
+        fontSize={"13px"}
+        color={"gray.500"}
+      >
+        Fetching companies...
+      </Box>
+    );
   }
   return (
-    <Box paddingTop={4}>
-      <Box mb={4} fontSize="13px">
-        Select company
-      </Box>
+    <Box p={4} background={"white"} mt={4}>
       {!data?.results.length && (
-        <Box color="red" fontSize="13px">
-          Please create company
+        <Box fontSize="13px" textAlign="center" p={4}>
+          You don't have any companies yet. Please create one.
+          <Box
+            color="orange.500"
+            cursor="pointer"
+            mt={4}
+            _hover={{ opacity: 0.8 }}
+            onClick={() => {
+              if (!loading) {
+                // @ts-ignore
+                modalRef?.current?.open();
+              }
+            }}
+          >
+            + Create Company
+          </Box>
         </Box>
       )}
       {data?.results.length ? (
         <Box>
+          <Box
+            mb={4}
+            fontSize="13px"
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Box>Select Company</Box>
+            <Box
+              color="orange.500"
+              cursor="pointer"
+              _hover={{ opacity: 0.8 }}
+              onClick={() => {
+                if (!loading) {
+                  // @ts-ignore
+                  modalRef?.current?.open();
+                }
+              }}
+            >
+              + Create Company
+            </Box>
+          </Box>
           {data?.results.map((_company: Company) => (
             <Box
               display="flex"
               justifyContent="space-between"
               key={_company.id}
-              p={4}
+              py={4}
               fontSize="13px"
-              background={"white"}
               cursor="pointer"
               whiteSpace="nowrap"
             >
@@ -104,19 +158,7 @@ const CompanyListSelector: React.FC<OrderSummaryProps> = ({
           ))}
         </Box>
       ) : null}
-      <Button
-        disabled={loading}
-        colorScheme="blue"
-        mt={4}
-        fontSize="13px"
-        onClick={() => {
-          // @ts-ignore
-          modalRef?.current?.open();
-        }}
-      >
-        Create company
-      </Button>
-      <CompanyForm ref={modalRef} />
+      <CompanyForm ref={modalRef} onDone={setNewCompanyName} />
     </Box>
   );
 };

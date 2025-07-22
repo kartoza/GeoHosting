@@ -39,7 +39,7 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 interface Props {
   description?: string;
-  onDone?: () => void;
+  onDone?: (name: string) => void;
 }
 
 export const CompanyForm = forwardRef(({ description, onDone }: Props, ref) => {
@@ -132,7 +132,7 @@ export const CompanyForm = forwardRef(({ description, onDone }: Props, ref) => {
           dispatch(fetchUserCompanies("/api/companies?page_size=1000"));
           onClose();
           if (onDone) {
-            onDone();
+            onDone(info.name);
           }
           toast.success("Your company has been successfully created.");
         }
@@ -153,7 +153,7 @@ export const CompanyForm = forwardRef(({ description, onDone }: Props, ref) => {
           dispatch(fetchUserCompanies("/api/companies?page_size=1000"));
           onClose();
           if (onDone) {
-            onDone();
+            onDone(info.name);
           }
           toast.success("Your company has been successfully created.");
         }
@@ -197,14 +197,6 @@ export const CompanyForm = forwardRef(({ description, onDone }: Props, ref) => {
             justifyContent="space-between"
           >
             <Box>Company</Box>
-            <Button
-              isDisabled={loading || createLoading}
-              colorScheme="orange"
-              alignSelf="flex-start"
-              onClick={submit}
-            >
-              {!id ? "Create" : "Update"}
-            </Button>
           </Box>
           <Box height="2px" bg="blue.500" width="100%" mb={8} />
           {loading ? (
@@ -273,6 +265,25 @@ export const CompanyForm = forwardRef(({ description, onDone }: Props, ref) => {
               </Box>
             </>
           )}
+
+          <Box display={"flex"} justifyContent={"space-between"} marginTop={8}>
+            <Button
+              isDisabled={loading || createLoading}
+              colorScheme="orange"
+              onClick={onClose}
+              minWidth={150}
+            >
+              Cancel
+            </Button>
+            <Button
+              isDisabled={loading || createLoading}
+              colorScheme="blue"
+              onClick={submit}
+              minWidth={150}
+            >
+              {!id ? "Create" : "Update"}
+            </Button>
+          </Box>
         </ModalBody>
       </ModalContent>
     </Modal>
