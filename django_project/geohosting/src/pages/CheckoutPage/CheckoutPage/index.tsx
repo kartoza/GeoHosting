@@ -33,6 +33,7 @@ import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import axios from "axios";
 import CompanyForm from "../../../components/Company/CompanyForm";
 import Footer from "../../../components/Footer/Footer";
+import { useNavigate } from "react-router-dom";
 
 interface CheckoutPageModalProps {
   product: Product;
@@ -74,6 +75,8 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
     (state: RootState) => state.profile,
   );
   const [company, setCompany] = useState<Company | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -268,6 +271,31 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
           </Box>
         </GridItem>
       </Grid>
+
+      <Box mt={6}>
+        <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={6}>
+          <GridItem justifySelf="start">
+            <Button
+              colorScheme="yellow"
+              onClick={() => navigate(-1)}        // ← “go back” in history
+            >
+              Back
+            </Button>
+          </GridItem>
+          <GridItem justifySelf="end">
+            <Button
+              colorScheme="blue"
+              onClick={() => {
+                /* your “next” logic: e.g. submit or navigate */ 
+                navigate("/checkout/deployment"); 
+              }}
+            >
+              Next
+            </Button>
+          </GridItem>
+        </Grid>
+      </Box>
+
       <StripePaymentModal
         ref={stripePaymentModalRef}
         url={stripeUrl}
