@@ -14,6 +14,7 @@ import React, { CSSProperties, ReactNode } from "react";
 import Help from "../Help";
 
 interface SidebarItemProps {
+  icon?: ReactNode;
   isSelected?: boolean;
   onClick?: () => void;
   style?: CSSProperties | undefined;
@@ -21,13 +22,14 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({
+  icon,
   isSelected,
   onClick,
   style,
   children,
 }: SidebarItemProps) => {
   return (
-    <Box
+    <Flex
       p={4}
       color="white"
       _hover={{ bg: "blue.500", cursor: "pointer" }}
@@ -36,8 +38,13 @@ const SidebarItem = ({
       bg={isSelected ? "blue.500" : "transparent"}
       style={style}
     >
+      {icon && (
+      <Box mr={3} fontSize="lg" display="flex" alignItems="center">
+        {icon}
+      </Box>
+    )}
       {children}
-    </Box>
+      </Flex>
   );
 };
 
@@ -93,24 +100,52 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
       </Flex>
       <VStack spacing={0} align="start">
         <SidebarItem
+          icon={
+            <Image
+              src="/static/images/hosted_products.svg"
+              boxSize="6"
+              alt="Hosted Products"
+            />
+          }
           isSelected={selected === "dashboard" || pathNames[2] === "instances"}
           onClick={() => navigate("/dashboard")}
         >
-          Hosted Services
+          Hosted Products
         </SidebarItem>
         <SidebarItem
+          icon={
+            <Image
+              src="/static/images/agreements.svg"
+              boxSize="6"
+              alt="Orders"
+            />
+          }
           isSelected={selected === "orders"}
           onClick={() => navigate("/dashboard/orders")}
         >
           Orders
         </SidebarItem>
         <SidebarItem
+          icon={
+            <Image
+              src="/static/images/support.svg"
+              boxSize="6"
+              alt="Support"
+            />
+          }
           isSelected={selected === "support"}
           onClick={() => navigate("/dashboard/support")}
         >
           Support
         </SidebarItem>
         <SidebarItem
+          icon={
+            <Image
+              src="/static/images/profile.svg"
+              boxSize="6"
+              alt="Profile"
+            />
+          }
           isSelected={selected === "profile"}
           onClick={() => navigate("/dashboard/profile")}
         >
@@ -128,7 +163,15 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
             }}
           />
         </SidebarItem>
-        <SidebarItem isSelected={false} onClick={handleLogout}>
+        <SidebarItem
+          icon={
+            <Image
+              src="/static/images/logout.svg"
+              boxSize="6"
+              alt="Logout"
+            />
+          }
+          isSelected={false} onClick={handleLogout}>
           Logout
         </SidebarItem>
       </VStack>

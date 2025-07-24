@@ -302,7 +302,7 @@ const ServiceDetail: React.FC = () => {
           )}
       </Box>
 
-      {/* Payment detail */}
+      {/* Payment Detail */}
       <Box
         fontSize="2xl"
         fontWeight="bold"
@@ -314,7 +314,7 @@ const ServiceDetail: React.FC = () => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Box>Payment detail</Box>
+        <Box>Payment Detail</Box>
       </Box>
       <Box height="2px" bg="blue.500" width="100%" mb={4} />
       <Box px={4}>
@@ -330,7 +330,7 @@ const ServiceDetail: React.FC = () => {
               () => paymentModalRef?.current?.open()
             }
           >
-            Payment detail
+            Payment Detail
           </Button>
         </Box>
         {instance.subscription && (
@@ -353,7 +353,7 @@ const ServiceDetail: React.FC = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Box>Orders</Box>
+          <Box>Order Details</Box>
         </Box>
         <Box height="2px" bg="blue.500" width="100%" mb={4} />
         <Box px={4}>

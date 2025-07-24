@@ -6,6 +6,7 @@ import {
   Container,
   Flex,
   Grid,
+  GridItem,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import OrderSummary from "../../CheckoutPage/OrderSummary";
@@ -54,7 +55,9 @@ const CheckoutConfiguration: React.FC = () => {
             </Box>
             <>
               <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
-                <OrderSummary product={product} pkg={pkg} />
+                <GridItem>
+                  <OrderSummary product={product} pkg={pkg} />
+                </GridItem>
                 <OrderConfiguration
                   product={product}
                   appName={appName}
