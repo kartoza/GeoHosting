@@ -116,7 +116,13 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
       <Box fontSize={22} color={"black"}>
         Purchase Details
       </Box>
-      <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
+      <Box
+        h="90%"
+        padding={8}
+        backgroundColor="gray.100"
+        borderRadius={10}
+        flexDirection="column"
+      >
         <Checkbox
           checked={purchaseFor === purchaseForTypes.INDIVIDUAL}
           _checked={{
@@ -150,15 +156,31 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
         >
           Purchase in personal capacity
         </Checkbox>
-        {purchaseFor === purchaseForTypes.COMPANY ? (
-          <CompanyListSelector
-            companyId={companyId}
-            setCompany={(company: Company) => {
-              setCompanyName(company.name);
-              setCompanyId(company.id);
-            }}
-          />
-        ) : null}
+        {/* Scrollable list area */}
+        <Box
+          flex="1"
+          overflowY="auto"
+          pt={2}
+        >
+          {purchaseFor === purchaseForTypes.COMPANY ? (
+            <Box
+              bg="white"
+              mt={4}
+              p={4}
+              borderRadius="md"
+              maxH="250px"
+              overflowY="auto"  // inner box scroll
+            >
+              <CompanyListSelector
+                companyId={companyId}
+                setCompany={(c) => {
+                  setCompanyId(c.id)
+                  setCompanyName(c.name)
+                }}
+              />
+           </Box>
+          ) : null}
+        </Box>
       </Box>
     </GridItem>
     <GridItem colSpan={{ base: 1, md: 2 }}>

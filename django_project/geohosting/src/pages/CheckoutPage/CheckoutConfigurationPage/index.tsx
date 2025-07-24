@@ -54,7 +54,7 @@ const CheckoutConfiguration: React.FC = () => {
               <CheckoutTracker activeStep={0} />
             </Box>
             <>
-              <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
+              <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`} alignItems="stretch">
                 <GridItem>
                   <OrderSummary product={product} pkg={pkg} />
                 </GridItem>

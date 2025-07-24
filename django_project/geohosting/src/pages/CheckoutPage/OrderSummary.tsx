@@ -41,6 +41,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
         </Text>
       </Box>
       <Box
+        h="90%"
         padding={8}
         backgroundColor="gray.100"
         borderRadius={10}
