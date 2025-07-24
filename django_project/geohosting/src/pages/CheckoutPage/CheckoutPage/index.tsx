@@ -189,14 +189,22 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
           </Box>
         </Box>
       )}
-      <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`}>
-        <OrderSummary
-          product={product}
-          pkg={pkg}
-          appName={appName}
-          companyName={companyName}
-        />
-        <GridItem gap={4} display={"flex"} flexDirection={"column"}>
+      <Grid
+          gap={6}
+          templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+          alignItems="stretch"
+        >
+        <GridItem>
+          <Box display="flex" flexDirection="column" h="100%">
+            <OrderSummary
+              product={product}
+              pkg={pkg}
+              appName={appName}
+              companyName={companyName}
+            />
+          </Box>
+        </GridItem>
+        <GridItem gap={4} display={"flex"} flexDirection={"column"} h="100%">
           <Box>
             <Text fontSize={22} color={"black"}>
               Payment Method

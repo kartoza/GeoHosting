@@ -29,7 +29,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
   companyName,
 }) => {
   return (
-    <>
+    <GridItem display="flex" flexDirection="column">
       <Box>
         <Text fontSize={22} color={"black"}>
           Order Summary
@@ -46,6 +46,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
         backgroundColor="gray.100"
         borderRadius={10}
         flexGrow={1}
+        marginTop={4}
       >
         <Box
           border="1px"
@@ -105,7 +106,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
           ) : null}
         </Box>
       </Box>
-      </>
+      </GridItem>
   );
 };
 export default OrderSummary;
