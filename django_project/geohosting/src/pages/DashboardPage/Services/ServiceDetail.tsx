@@ -25,6 +25,17 @@ import { packageName } from "../../../utils/helpers";
 import { DeleteInstance } from "./Delete";
 import { ServiceOrders } from "./ServiceOrder";
 
+
+/** Convert an ISO-date string into “DD/MM/YYYY” */
+function formatDateDMY(iso: string): string {
+  const d = new Date(iso)
+  return d.toLocaleDateString("en-GB", {
+    day:   "2-digit",
+    month: "2-digit",
+    year:  "numeric",
+  })
+}
+
 /** Service Detail Page in pagination */
 const ServiceDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -91,7 +102,11 @@ const ServiceDetail: React.FC = () => {
       );
     } else if (instance.subscription?.current_period_end) {
       return (
-        <>Your next payment is {instance.subscription?.current_period_end}</>
+        <>Your next payment is{" "}
+            {instance.subscription?.current_period_end
+              ? formatDateDMY(instance.subscription.current_period_end)
+              : "–"}
+        </>
       );
     } else {
       return (
@@ -231,7 +246,11 @@ const ServiceDetail: React.FC = () => {
                   <Td className="table-title" paddingLeft={0} paddingRight={8}>
                     Creation date:
                   </Td>
-                  <Td>{instance.created_at.split("T")[0]}</Td>
+                  <Td>
+                    {instance.created_at
+                      ? formatDateDMY(instance.created_at)
+                      : "–"}
+                  </Td>
                 </Tr>
                 {instance.applications?.map((application) => {
                   return (
