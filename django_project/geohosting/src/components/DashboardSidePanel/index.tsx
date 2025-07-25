@@ -117,13 +117,13 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
             <Image
               src="/static/images/agreements.svg"
               boxSize="6"
-              alt="Orders"
+              alt="Agreements"
             />
           }
           isSelected={selected === "orders"}
           onClick={() => navigate("/dashboard/orders")}
         >
-          Orders
+          Agreements
         </SidebarItem>
         <SidebarItem
           icon={
