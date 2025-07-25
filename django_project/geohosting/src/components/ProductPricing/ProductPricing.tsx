@@ -54,7 +54,7 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
     <Box
       key={pkg.id}
       height={"auto"}
-      backgroundColor={"gray.200"}
+      backgroundColor={"white"}
       borderRadius={15}
       padding="30px"
       display={"flex"}

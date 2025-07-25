@@ -27,7 +27,7 @@ const DashboardPage = ({ title = "Dashboard" }) => {
             path="/instances/:id"
             element={
               <DashboardPageContent
-                title="Hosted Service"
+                title="Hosted Product"
                 element={<ServiceDetail />}
                 toggleSidebar={toggleSidebar}
               />
@@ -37,7 +37,7 @@ const DashboardPage = ({ title = "Dashboard" }) => {
             path="/"
             element={
               <DashboardPageContent
-                title="Hosted Services"
+                title="Hosted Products"
                 element={<ServiceList />}
                 toggleSidebar={toggleSidebar}
               />

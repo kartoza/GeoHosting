@@ -15,6 +15,7 @@ import {
   Link as ChakraLink,
   useDisclosure,
   VStack,
+  Text,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -52,16 +53,6 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
         target="_blank"
       >
         Kartoza
-      </ChakraLink>
-      <ChakraLink
-        as={RouterLink}
-        to="https://kartoza.com/about"
-        fontSize="md"
-        _hover={STYLES.linkHovered}
-        target="_blank"
-        whiteSpace="nowrap"
-      >
-        About us
       </ChakraLink>
 
       {isDrawer ? (
@@ -180,7 +171,8 @@ const Navbar: React.FC = () => {
               to="/"
               fontSize="md"
               _hover={STYLES.linkHovered}
-              display="flex"
+              alignItems="center"
+              display="inline-flex"
               style={{
                 fontWeight: 900,
                 fontSize: "1.125rem",
@@ -188,11 +180,16 @@ const Navbar: React.FC = () => {
               }}
             >
               <Image
-                src="/static/images/logos/geohosting-full-white.svg"
+                src="/static/images/logos/geohosting.svg"
                 alt="Kartoza Logo"
+                h={8}
+                w="auto"
                 style={{ cursor: "pointer" }}
                 mr={2}
               />
+              <Text>
+                Home
+              </Text>
             </ChakraLink>
           </HStack>
 

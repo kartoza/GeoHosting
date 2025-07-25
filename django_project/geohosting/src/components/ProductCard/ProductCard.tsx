@@ -43,7 +43,7 @@ const ProductCard: React.FC<CardProps> = (
       position="relative"
       height={350}
       onClick={onClick}
-      backgroundColor={selected ? "blue.100" : "gray.200"}
+      backgroundColor={selected ? "blue.100" : "white.200"}
       borderColor={hovering ? "rgba(87, 160, 198)" : "gray.200"}
       width={["350px", "350px", "320px", "320px"]}
       transition="background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease"
@@ -126,6 +126,9 @@ const ProductCard: React.FC<CardProps> = (
         zIndex={1}
         padding="0 4rem"
         opacity={opacity}
+        _active={{
+          bg: selected ? "blue.200" : "undefined",
+        }}
       >
         Learn More
       </Button>

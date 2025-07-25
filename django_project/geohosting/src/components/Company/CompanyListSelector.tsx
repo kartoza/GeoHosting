@@ -9,12 +9,14 @@ import CompanyForm from "./CompanyForm";
 export interface OrderSummaryProps {
   companyId: number | null;
   setCompany: (companyName: Company) => void;
+  hideCreate?: boolean;
 }
 
 /** Company controller */
 const CompanyListSelector: React.FC<OrderSummaryProps> = ({
   companyId,
   setCompany,
+  hideCreate = false,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const modalRef = useRef(null);
@@ -65,49 +67,13 @@ const CompanyListSelector: React.FC<OrderSummaryProps> = ({
   }
   return (
     <Box p={4} background={"white"} mt={4}>
-      {!data?.results.length && (
+      {!data?.results.length && !hideCreate && (
         <Box fontSize="13px" textAlign="center" p={4}>
           You don't have any companies yet. Please create one.
-          <Box
-            color="orange.500"
-            cursor="pointer"
-            mt={4}
-            _hover={{ opacity: 0.8 }}
-            onClick={() => {
-              if (!loading) {
-                // @ts-ignore
-                modalRef?.current?.open();
-              }
-            }}
-          >
-            + Create Company
-          </Box>
         </Box>
       )}
       {data?.results.length ? (
         <Box>
-          <Box
-            mb={4}
-            fontSize="13px"
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
-            <Box>Select Company</Box>
-            <Box
-              color="orange.500"
-              cursor="pointer"
-              _hover={{ opacity: 0.8 }}
-              onClick={() => {
-                if (!loading) {
-                  // @ts-ignore
-                  modalRef?.current?.open();
-                }
-              }}
-            >
-              + Create Company
-            </Box>
-          </Box>
           {data?.results.map((_company: Company) => (
             <Box
               display="flex"

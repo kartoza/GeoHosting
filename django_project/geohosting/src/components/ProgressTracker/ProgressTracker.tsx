@@ -30,7 +30,7 @@ function ProgressTracker({ steps, activeStep }) {
         <Step key={index}>
           <StepIndicator>
             <StepStatus
-              complete={<StepIcon color="green.500"/>}
+              complete={<StepIcon color="white"/>}
               incomplete={<StepNumber/>}
               // @ts-ignore
               active={<StepNumber/>}
