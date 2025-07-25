@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Box,
   Checkbox,
@@ -9,6 +9,8 @@ import {
   InputLeftElement,
   Spinner,
   Text,
+  Button,
+  VStack,
 } from "@chakra-ui/react";
 import { debounce } from "debounce";
 import axios from "axios";
@@ -17,6 +19,7 @@ import { Product } from "../../../redux/reducers/productsSlice";
 import { headerWithToken } from "../../../utils/helpers";
 import CompanyListSelector from "../../../components/Company/CompanyListSelector";
 import { Company } from "../../../redux/reducers/companySlice";
+import CompanyForm from "../../../components/Company/CompanyForm";
 
 export interface OrderSummaryProps {
   product: Product;
@@ -51,6 +54,8 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
   const [purchaseFor, setPurchaseFor] = useState<string>(
     purchaseForTypes.COMPANY,
   );
+
+  const companyFormRef = useRef<{ open: (id?: number) => void }>(null);
 
   /** Check app name */
   const debouncedChange = debounce((inputValue) => {
@@ -113,7 +118,7 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
   return (
     <>
     <GridItem>
-      <Box fontSize={22} color={"black"}>
+      <Box fontSize={22} color={"black"} paddingY={2}>
         Purchase Details
       </Box>
       <Box
@@ -156,19 +161,26 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
         >
           Purchase in personal capacity
         </Checkbox>
+        <Box
+          fontSize={16}
+          color={"black"}
+          mt={2}
+          mb={2}
+          display="flex"
+          alignItems="center"
+        >
+          Select Company
+        </Box>
         {/* Scrollable list area */}
         <Box
           flex="1"
-          overflowY="auto"
           pt={2}
         >
           {purchaseFor === purchaseForTypes.COMPANY ? (
             <Box
               bg="white"
-              mt={4}
-              p={4}
               borderRadius="md"
-              maxH="250px"
+              maxH="160px"
               overflowY="auto"  // inner box scroll
             >
               <CompanyListSelector
@@ -181,6 +193,35 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
            </Box>
           ) : null}
         </Box>
+        <Box>
+        {purchaseFor === purchaseForTypes.COMPANY && (
+          <Box
+            mt={4}
+            display="flex"
+            width="100%"
+            justifyContent="space-between"
+          >
+            <Button
+              colorScheme="yellow"
+              onClick={() => {
+                setCompanyId(null);
+                setCompanyName(null);
+              }}
+              isDisabled={!companyName}
+            >
+              Remove Company
+            </Button>
+            <Button
+              colorScheme="blue"
+              onClick={() => {
+                companyFormRef.current?.open();
+              }}
+            >
+              Create Company
+            </Button>
+            </Box>
+        )}
+      </Box>
       </Box>
     </GridItem>
     <GridItem colSpan={{ base: 1, md: 2 }}>
@@ -237,6 +278,13 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
           </Box>
         </Box>
       </GridItem>
+      <CompanyForm
+        ref={companyFormRef}
+        onDone={(newName: string) => {
+          // When they finish creating, auto-select it:
+          setCompanyName(newName);
+        }}
+      />
     </>
   );
 };
