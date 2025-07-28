@@ -10,7 +10,6 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import OrderSummary from "../../CheckoutPage/OrderSummary";
-import OrderConfiguration from "./OrderConfiguration";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Package } from "../../../redux/reducers/productsSlice";
 import customTheme from "../../../theme/theme";
@@ -19,6 +18,8 @@ import Background from "../../../components/Background/Background";
 import CheckoutTracker from "../../../components/ProgressTracker/CheckoutTracker";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import Footer from "../../../components/Footer/Footer";
+import PurchaseDetail from "./PurchaseDetail";
+import ApplicationName from "./ApplicationName";
 
 interface LocationState {
   productName: string;
@@ -41,7 +42,7 @@ const CheckoutConfiguration: React.FC = () => {
   const [appName, setAppName] = useState<string>("");
   const [companyName, setCompanyName] = useState<string | null>(null);
   const [companyId, setCompanyId] = useState<number | null>(null);
-  const [configurationOK, setConfigurationOK] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean[]>([false, false]);
 
   return (
     <ChakraProvider theme={customTheme}>
@@ -54,27 +55,35 @@ const CheckoutConfiguration: React.FC = () => {
               <CheckoutTracker activeStep={0} />
             </Box>
             <>
-              <Grid gap={6} templateColumns={`repeat(${columns}, 1fr)`} alignItems="stretch">
+              <Grid
+                gap={6}
+                templateColumns={`repeat(${columns}, 1fr)`}
+                alignItems="stretch"
+              >
                 <GridItem>
                   <OrderSummary product={product} pkg={pkg} />
                 </GridItem>
-                <OrderConfiguration
-                  product={product}
-                  appName={appName}
+                <PurchaseDetail
                   setAppName={setAppName}
-                  setConfigurationOK={setConfigurationOK}
                   companyId={companyId}
                   companyName={companyName}
-                  setCompanyName={setCompanyName}
                   setCompanyId={setCompanyId}
+                  setCompanyName={setCompanyName}
+                  isValid={(_) => setIsValid([_, isValid[1]])}
                 />
               </Grid>
+              <ApplicationName
+                product={product}
+                appName={appName}
+                setAppName={setAppName}
+                isValid={(_) => setIsValid([isValid[0], _])}
+              />
 
               <Box mt={4}>
                 <Button
                   w="100%"
                   colorScheme="blue"
-                  isDisabled={!configurationOK}
+                  isDisabled={!(isValid[0] && isValid[1])}
                   onClick={() => {
                     navigate("/checkout");
                     localStorage.setItem("appName", appName);
