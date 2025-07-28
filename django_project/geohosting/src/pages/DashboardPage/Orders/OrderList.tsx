@@ -159,7 +159,7 @@ const OrderList: React.FC = () => {
   return (
     <>
       <PaginationPage
-        url="/api/orders/"
+        url="/api/orders/?is_main_invoice=True"
         action={fetchSalesOrders}
         stateKey="orders"
         searchPlaceholder="Search by id or app name"

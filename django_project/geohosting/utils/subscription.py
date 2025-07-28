@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth import get_user_model
-from django.utils.timezone import make_aware
+from django.utils.timezone import make_aware, now
 
 from core.models.preferences import Preferences
 from geohosting.models.subscription import Subscription
@@ -138,7 +138,8 @@ class SubscriptionData:
             canceled: bool,
             currency: str,
             period: str,
-            amount: int
+            amount: int,
+            latest_invoice: str
     ):
         self.id = id
         self.customer_id = customer_id
@@ -148,6 +149,7 @@ class SubscriptionData:
         self.currency = currency
         self.period = period
         self.amount = amount / 100
+        self.latest_invoice = latest_invoice
 
         pref = Preferences.load()
         self.current_expiry_at = datetime.fromtimestamp(
@@ -229,6 +231,34 @@ class SubscriptionGateway:
                 'is_active': not subscription_data.canceled
             }
         )
+
+        # This is for null invoice_id in sales order
+        if subscription.is_active:
+            if subscription_data.latest_invoice:
+                subscription.salesorder_set.filter(
+                    invoice_id__isnull=True
+                ).update(
+                    invoice_id=subscription_data.latest_invoice
+                )
+
+                # This is for creating if no subscription created
+                orders = subscription.salesorder_set.filter(
+                    invoice_id__isnull=False
+                )
+                if not orders.filter(
+                        invoice_id=subscription_data.latest_invoice
+                ).first():
+                    # Create sales order
+                    template = orders.last()
+                    template.id = None
+                    template.erpnext_code = None
+                    template.invoice = None
+                    template.invoice_id = subscription_data.latest_invoice
+                    template.date = now()
+                    template.delivery_date = now()
+                    template.is_main_invoice = False
+                    template.save()
+
         subscription.customer_payment_id = subscription_data.customer_id
         subscription.current_period_start = current_period_start
         subscription.current_period_end = current_period_end
@@ -279,7 +309,8 @@ class StripeSubscriptionGateway(SubscriptionGateway):
             canceled=True if subscription['canceled_at'] else False,
             currency=subscription['plan']['currency'],
             period=subscription['plan']['interval'],
-            amount=subscription['plan']['amount']
+            amount=subscription['plan']['amount'],
+            latest_invoice=subscription['latest_invoice'],
         )
         if return_payment:
             try:
@@ -350,6 +381,7 @@ class PaystackSubscriptionGateway(SubscriptionGateway):
             amount=subscription['plan']['amount'],
             currency=subscription['plan']['currency'],
             period=subscription['plan']['interval'],
+            latest_invoice=subscription['most_recent_invoice']['invoice_code']
         )
         if return_payment:
             try:

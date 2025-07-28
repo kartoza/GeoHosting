@@ -50,9 +50,10 @@ def auto_deploy(modeladmin, request, queryset):
 @admin.register(SalesOrder)
 class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     list_display = (
-        'date', 'package', 'customer', 'order_status', 'payment_method',
-        'erpnext_code', 'app_name', 'subscription',
-        'instance', 'activities', 'logs'
+        'instance', '_subscription', 'invoice_id', 'customer', 'order_status',
+        'payment_method',
+        'erpnext_code', 'app_name', 'date', 'package',
+        'activities', 'logs'
     )
     list_filter = ('order_status', 'payment_method',)
     search_fields = ('erpnext_code', 'instance__name')
@@ -64,7 +65,8 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
         'erpnext_code', 'package', 'customer', 'company',
         'date', 'delivery_date', 'instance',
         'app_name',
-        'payment_method', 'payment_id', 'subscription', 'invoice'
+        'payment_method', 'payment_id', 'subscription', 'invoice',
+        'invoice_id'
     )
     fieldsets = (
         (
@@ -72,7 +74,8 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
             {
                 'fields': (
                     'erpnext_code', 'package', 'customer', 'company',
-                    'date', 'delivery_date'
+                    'date', 'delivery_date', 'invoice_id',
+                    'invoice'
                 )
             }
         ),
@@ -92,12 +95,22 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
             'Subscription',
             {
                 'fields': (
-                    'payment_method', 'payment_id', 'subscription', 'invoice'
+                    'payment_method', 'payment_id', 'subscription'
                 )
             }
         )
     )
     inlines = (SalesOrderInvoiceInline, SalesOrderAgreementInline)
+
+    def _subscription(self, obj: SalesOrder):
+        """Return subscription."""
+        if obj.subscription:
+            return mark_safe(
+                f'<a href="/admin/geohosting/subscription/'
+                f'{obj.subscription.id}/change/?'
+                f'target="_blank">{obj.subscription}</a>'
+            )
+        return None
 
     def activities(self, obj: SalesOrder):
         """Return product."""

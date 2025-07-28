@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from geohosting.admin.global_function import sync_subscriptions
+from geohosting.admin.global_function import (
+    sync_subscriptions, cancel_subscription
+)
 from geohosting.models import Subscription
 
 
@@ -14,7 +16,7 @@ class SubscriptionAdmin(admin.ModelAdmin):
         'is_active'
     )
     list_filter = ('payment_method', 'is_active')
-    actions = (sync_subscriptions,)
+    actions = (sync_subscriptions, cancel_subscription)
     readonly_fields = (
         'payment_method', 'subscription_id', 'customer',
         'current_period_start', 'current_period_end',
@@ -22,7 +24,8 @@ class SubscriptionAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         (
-            None, {
+            None,
+            {
                 'fields': (
                     'payment_method', 'subscription_id', 'customer',
                     'payment_id'
@@ -30,7 +33,8 @@ class SubscriptionAdmin(admin.ModelAdmin):
             }
         ),
         (
-            'Status', {
+            'Status',
+            {
                 'fields': (
                     'current_period_start', 'current_period_end', 'is_active'
                 )

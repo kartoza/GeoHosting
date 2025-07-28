@@ -98,11 +98,13 @@ class ControllerTest(TestCase):
 
     @patch('django.core.mail.EmailMessage.send')
     @patch('geohosting.models.sales_order.SalesOrder.post_to_erpnext')
+    @patch('geohosting.models.subscription.Subscription.sync_subscription')
     def test_create(
             self,
-            mock_post_to_erpnext, send_email
+            mock_sync_subscription, mock_post_to_erpnext, send_email
     ):
         """Test create."""
+        mock_sync_subscription.return_value = None
         mock_post_to_erpnext.return_value = {'status': 'success'}
         os.environ['ERPNEXT_BASE_URL'] = 'erp.com'
         with requests_mock.Mocker() as requests_mocker:

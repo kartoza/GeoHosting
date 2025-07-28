@@ -54,10 +54,14 @@ class Subscription(models.Model):
             return StripeSubscriptionGateway(self.subscription_id)
         if self.payment_method == PaymentMethod.PAYSTACK:
             return PaystackSubscriptionGateway(self.subscription_id)
+        raise NotImplementedError(
+            'No payment gateway found for this payment method.'
+        )
 
     def cancel_subscription(self):
         """Cancel subscription."""
         self.payment_gateway.cancel_subscription()
+        self.sync_subscription()
 
     def sync_subscription(self):
         """Sync subscription."""

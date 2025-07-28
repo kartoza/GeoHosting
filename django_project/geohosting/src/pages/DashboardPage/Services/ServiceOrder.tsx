@@ -30,7 +30,6 @@ let session: string | null = null;
 const Card: React.FC<OrderCardProps> = ({ order }) => {
   return (
     <Tr key={order.id} _hover={{ bg: "gray.100" }}>
-      <Td>{order.package.name}</Td>
       <Td>{formatDateDMY(order.date)}</Td>
       <Td>
         {order.invoice_url && (
@@ -67,7 +66,6 @@ const renderCards = (orders: SalesOrder[]) => {
     <Table variant="simple">
       <Thead>
         <Tr>
-          <Th>Package</Th>
           <Th>Date</Th>
           <Th>Invoice</Th>
           <Th>Agreements</Th>
