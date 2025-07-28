@@ -443,6 +443,10 @@ class SalesOrder(ErpModel):
                 self.save()
                 self.subscription.sync_subscription()
 
+        # Sync instance subscription
+        if self.instance:
+            self.instance.sync_subscription()
+
         if self.subscription:
             self.subscription.sync_subscription()
 
