@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Box,
   Checkbox,
@@ -9,6 +9,8 @@ import {
   InputLeftElement,
   Spinner,
   Text,
+  Button,
+  VStack,
 } from "@chakra-ui/react";
 import { debounce } from "debounce";
 import axios from "axios";
@@ -17,6 +19,7 @@ import { Product } from "../../../redux/reducers/productsSlice";
 import { headerWithToken } from "../../../utils/helpers";
 import CompanyListSelector from "../../../components/Company/CompanyListSelector";
 import { Company } from "../../../redux/reducers/companySlice";
+import CompanyForm from "../../../components/Company/CompanyForm";
 
 export interface OrderSummaryProps {
   product: Product;
@@ -51,6 +54,8 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
   const [purchaseFor, setPurchaseFor] = useState<string>(
     purchaseForTypes.COMPANY,
   );
+
+  const companyFormRef = useRef<{ open: (id?: number) => void }>(null);
 
   /** Check app name */
   const debouncedChange = debounce((inputValue) => {
@@ -111,63 +116,18 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
   }, [companyName]);
 
   return (
-    <GridItem gap={4} display={"flex"} flexDirection={"column"}>
-      <Box>
-        <Box fontSize={22} color={"black"} display="flex" alignItems="center">
-          Application name
-        </Box>
+    <>
+    <GridItem>
+      <Box fontSize={22} color={"black"} paddingY={2}>
+        Purchase Details
       </Box>
-      <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
-        <Box display="flex" alignItems="center">
-          <InputGroup>
-            <Input
-              textAlign="right"
-              value={appName}
-              backgroundColor="white"
-              placeholder="Please provide a name for your application"
-              size="lg"
-              onChange={(evt) => handleChange(evt.target.value)}
-              isInvalid={!!error}
-            />
-            {checking ? (
-              <InputLeftElement height="100%">
-                <Spinner />
-              </InputLeftElement>
-            ) : error ? (
-              <InputLeftElement height="100%">
-                <Icon as={WarningIcon} color="red.500" />
-              </InputLeftElement>
-            ) : (
-              <InputLeftElement height="100%">
-                <Icon as={CheckCircleIcon} color="green.500" />
-              </InputLeftElement>
-            )}
-          </InputGroup>
-          &nbsp;.{product.domain}
-        </Box>
-        <Box color="red" fontSize={14} minHeight={8}>
-          {error}
-        </Box>
-        <Box>
-          <Text
-            fontSize={13}
-            color={"gray"}
-            fontStyle={"italic"}
-            marginTop={"1rem"}
-          >
-            <i>
-              Name may only contain lowercase letters, numbers or dashes.
-              <br />
-              This will be used for subdomain and also application name. e.g:
-              appname.geonode.kartoza.com
-            </i>
-          </Text>
-        </Box>
-      </Box>
-      <Box fontSize={22} color={"black"}>
-        Purchase application for
-      </Box>
-      <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
+      <Box
+        h="90%"
+        padding={8}
+        backgroundColor="gray.100"
+        borderRadius={10}
+        flexDirection="column"
+      >
         <Checkbox
           checked={purchaseFor === purchaseForTypes.INDIVIDUAL}
           _checked={{
@@ -201,17 +161,131 @@ export const OrderConfiguration: React.FC<OrderSummaryProps> = ({
         >
           Purchase in personal capacity
         </Checkbox>
-        {purchaseFor === purchaseForTypes.COMPANY ? (
-          <CompanyListSelector
-            companyId={companyId}
-            setCompany={(company: Company) => {
-              setCompanyName(company.name);
-              setCompanyId(company.id);
-            }}
-          />
-        ) : null}
+        <Box
+          fontSize={16}
+          color={"black"}
+          mt={2}
+          mb={2}
+          display="flex"
+          alignItems="center"
+        >
+          Select Company
+        </Box>
+        {/* Scrollable list area */}
+        <Box
+          flex="1"
+          pt={2}
+        >
+          {purchaseFor === purchaseForTypes.COMPANY ? (
+            <Box
+              bg="white"
+              borderRadius="md"
+              maxH="160px"
+              overflowY="auto"  // inner box scroll
+            >
+              <CompanyListSelector
+                companyId={companyId}
+                setCompany={(c) => {
+                  setCompanyId(c.id)
+                  setCompanyName(c.name)
+                }}
+              />
+           </Box>
+          ) : null}
+        </Box>
+        <Box>
+        {purchaseFor === purchaseForTypes.COMPANY && (
+          <Box
+            mt={4}
+            display="flex"
+            width="100%"
+            justifyContent="space-between"
+          >
+            <Button
+              colorScheme="yellow"
+              onClick={() => {
+                setCompanyId(null);
+                setCompanyName(null);
+              }}
+              isDisabled={!companyName}
+            >
+              Remove Company
+            </Button>
+            <Button
+              colorScheme="blue"
+              onClick={() => {
+                companyFormRef.current?.open();
+              }}
+            >
+              Create Company
+            </Button>
+            </Box>
+        )}
+      </Box>
       </Box>
     </GridItem>
+    <GridItem colSpan={{ base: 1, md: 2 }}>
+      <Box>
+          <Box fontSize={22} color={"black"} display="flex" alignItems="center">
+            Application Name
+          </Box>
+        </Box>
+        <Box padding={8} backgroundColor="gray.100" borderRadius={10}>
+          <Box display="flex" alignItems="center">
+            <InputGroup>
+              <Input
+                textAlign="right"
+                value={appName}
+                backgroundColor="white"
+                placeholder="Please provide a name for your application"
+                size="lg"
+                onChange={(evt) => handleChange(evt.target.value)}
+                isInvalid={!!error}
+              />
+              {checking ? (
+                <InputLeftElement height="100%">
+                  <Spinner />
+                </InputLeftElement>
+              ) : error ? (
+                <InputLeftElement height="100%">
+                  <Icon as={WarningIcon} color="red.500" />
+                </InputLeftElement>
+              ) : (
+                <InputLeftElement height="100%">
+                  <Icon as={CheckCircleIcon} color="green.500" />
+                </InputLeftElement>
+              )}
+            </InputGroup>
+            &nbsp;.{product.domain}
+          </Box>
+          <Box color="red" fontSize={14} minHeight={8}>
+            {error}
+          </Box>
+          <Box>
+            <Text
+              fontSize={13}
+              color={"gray"}
+              fontStyle={"italic"}
+              marginTop={"1rem"}
+            >
+              <i>
+                Name may only contain lowercase letters, numbers or dashes.
+                <br />
+                This will be used for subdomain and also application name. e.g:
+                appname.geonode.kartoza.com
+              </i>
+            </Text>
+          </Box>
+        </Box>
+      </GridItem>
+      <CompanyForm
+        ref={companyFormRef}
+        onDone={(newName: string) => {
+          // When they finish creating, auto-select it:
+          setCompanyName(newName);
+        }}
+      />
+    </>
   );
 };
 export default OrderConfiguration;
