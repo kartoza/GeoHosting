@@ -90,6 +90,12 @@ def delete_instance(modeladmin, request, queryset):
     )
 
 
+def to_deleted(modeladmin, request, queryset):
+    """Instance to deleted.."""
+    for instance in queryset:
+        instance.deleted()
+
+
 @admin.register(Instance)
 class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     """Instance admin."""
@@ -101,7 +107,7 @@ class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     list_filter = ('status',)
     actions = (
         send_credentials, check_instance, sync_subscriptions,
-        cancel_subscription, delete_instance
+        cancel_subscription, delete_instance, to_deleted
     )
     readonly_fields = ('created_at', 'modified_at')
     fieldsets = (

@@ -109,3 +109,13 @@ export const urlParameters = (url?: string | null) => {
     return {};
   }
 };
+
+/** Convert an ISO-date string into “DD/MM/YYYY” */
+export function formatDateDMY(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}

@@ -21,20 +21,9 @@ import { RenderInstanceStatus } from "./ServiceList";
 import { FaLink } from "react-icons/fa";
 import SubscriptionDetail from "../../../components/Subscription/Detail";
 import InstanceCredential from "../../../components/Instance/Credential";
-import { packageName } from "../../../utils/helpers";
+import { formatDateDMY, packageName } from "../../../utils/helpers";
 import { DeleteInstance } from "./Delete";
 import { ServiceOrders } from "./ServiceOrder";
-
-
-/** Convert an ISO-date string into “DD/MM/YYYY” */
-function formatDateDMY(iso: string): string {
-  const d = new Date(iso)
-  return d.toLocaleDateString("en-GB", {
-    day:   "2-digit",
-    month: "2-digit",
-    year:  "numeric",
-  })
-}
 
 /** Service Detail Page in pagination */
 const ServiceDetail: React.FC = () => {
@@ -52,6 +41,8 @@ const ServiceDetail: React.FC = () => {
   const { data, loading, error } = useSelector(
     (state: RootState) => state.instance.detail,
   );
+
+  const specification = instance?.package?.package_group?.specification;
 
   const refresh = () => {
     setTimeout(() => {
@@ -102,10 +93,11 @@ const ServiceDetail: React.FC = () => {
       );
     } else if (instance.subscription?.current_period_end) {
       return (
-        <>Your next payment is{" "}
-            {instance.subscription?.current_period_end
-              ? formatDateDMY(instance.subscription.current_period_end)
-              : "–"}
+        <>
+          Your next payment is{" "}
+          {instance.subscription?.current_period_end
+            ? formatDateDMY(instance.subscription.current_period_end)
+            : "–"}
         </>
       );
     } else {
@@ -321,6 +313,44 @@ const ServiceDetail: React.FC = () => {
           )}
       </Box>
 
+      {/* Specifications */}
+      {specification && (
+        <>
+          <Box
+            fontSize="2xl"
+            fontWeight="bold"
+            mt={8}
+            px={4}
+            mb={2}
+            color={"#3e3e3e"}
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box>Specifications</Box>
+          </Box>
+          <Box height="2px" bg="blue.500" width="100%" mb={4} />
+          <Box px={4}>
+            {Object.entries(specification).map(([sectionKey, sectionValue]) => (
+              <Box mb={4} key={sectionKey}>
+                <Box mb={4}>
+                  <b>{sectionKey}</b>
+                </Box>
+                <Box>
+                  {Object.entries(sectionValue).map(([specKey, specValue]) => (
+                    <Box
+                      mb={4}
+                      ml={4}
+                      key={specKey}
+                    >{`${specValue} ${specKey}`}</Box>
+                  ))}
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        </>
+      )}
+
       {/* Payment Detail */}
       <Box
         fontSize="2xl"
@@ -394,7 +424,7 @@ const ServiceDetail: React.FC = () => {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Box>Delete instance</Box>
+            <Box>Delete product</Box>
           </Box>
           <Box height="2px" bg="blue.500" width="100%" mb={4} />
           <Box px={4}>

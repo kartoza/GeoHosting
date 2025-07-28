@@ -1,10 +1,10 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  PayloadAction
-} from '@reduxjs/toolkit';
-import axios from 'axios';
-import { getCurrencyBasedOnLocation } from '../../utils/helpers';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import { getCurrencyBasedOnLocation } from "../../utils/helpers";
+
+export interface PackageGroup {
+  specification: object;
+}
 
 export interface Product {
   id: number;
@@ -14,7 +14,7 @@ export interface Product {
   image?: string;
   images: ProductMedia[];
   packages: Package[];
-  product_meta: { key: string; value: string; }[];
+  product_meta: { key: string; value: string }[];
   domain: string;
 }
 
@@ -32,14 +32,15 @@ export interface Package {
   name: string;
   price: string;
   feature_list: {
-    spec: string[]
+    spec: string[];
   };
   order: number;
   created_at: string;
   updated_at: string;
   package_code: string;
   product: number;
-  currency: string
+  currency: string;
+  package_group: PackageGroup;
 }
 
 interface ProductsState {
@@ -62,21 +63,21 @@ const initialState: ProductsState = {
 
 // Async thunk to fetch products
 export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
+  "products/fetchProducts",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/api/products/');
+      const response = await axios.get("/api/products/");
       return response.data.results;
     } catch (error: any) {
       const errorData = error.response.data;
       return thunkAPI.rejectWithValue(errorData);
     }
-  }
+  },
 );
 
 // Async thunk to fetch product details
 export const fetchProductDetail = createAsyncThunk(
-  'products/fetchProductDetail',
+  "products/fetchProductDetail",
   async (productId: number, thunkAPI) => {
     try {
       const response = await axios.get(`/api/products/${productId}/`);
@@ -85,11 +86,11 @@ export const fetchProductDetail = createAsyncThunk(
       const errorData = error.response.data;
       return thunkAPI.rejectWithValue(errorData);
     }
-  }
+  },
 );
 
 export const fetchProductDetailByName = createAsyncThunk(
-  'products/fetchProductDetailByName',
+  "products/fetchProductDetailByName",
   async (productName: string, thunkAPI) => {
     try {
       const currency = await getCurrencyBasedOnLocation();
@@ -101,7 +102,7 @@ export const fetchProductDetailByName = createAsyncThunk(
       const errorData = error.response.data;
       return thunkAPI.rejectWithValue(errorData);
     }
-  }
+  },
 );
 
 const handlePending = (state: ProductsState, action: PayloadAction<any>) => {
@@ -134,9 +135,8 @@ const handleRejected = (state: ProductsState, action: PayloadAction<any>) => {
   }
 };
 
-
 const productsSlice = createSlice({
-  name: 'products',
+  name: "products",
   initialState,
   reducers: {
     clearProductDetail: (state) => {
@@ -148,10 +148,10 @@ const productsSlice = createSlice({
     const actions = [
       fetchProducts,
       fetchProductDetail,
-      fetchProductDetailByName
+      fetchProductDetailByName,
     ];
 
-    actions.forEach(action => {
+    actions.forEach((action) => {
       builder.addCase(action.pending, handlePending);
       builder.addCase(action.fulfilled, handleFulfilled);
       builder.addCase(action.rejected, handleRejected);

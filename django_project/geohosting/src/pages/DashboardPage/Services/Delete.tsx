@@ -18,7 +18,7 @@ export const DeleteInstance: React.FC<Props> = ({ instanceInput }) => {
       onClick={() => modalRef?.current?.open()}
     >
       <InstanceDeletion instance={instanceInput} ref={modalRef} />
-      Delete this instance
+      Delete this product
     </Button>
   );
 };

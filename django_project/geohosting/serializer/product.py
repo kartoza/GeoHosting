@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from geohosting.models import (
-    Product, ProductMedia, Package, ProductMetadata, Region, ProductCluster
+    Product, ProductMedia, PackageGroup,
+    Package, ProductMetadata, Region, ProductCluster
 )
 
 
@@ -11,7 +12,15 @@ class ProductMediaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PackageGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PackageGroup
+        fields = '__all__'
+
+
 class ProductPackageSerializer(serializers.ModelSerializer):
+    package_group = PackageGroupSerializer(read_only=True)
+
     class Meta:
         model = Package
         fields = '__all__'

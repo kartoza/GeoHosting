@@ -10,6 +10,7 @@ import {
 import { fetchTickets, Ticket } from "../../../redux/reducers/supportSlice";
 import { PaginationPage } from "../PaginationPage";
 import { SupportTicketFormModal } from "../../../components/SupportTicketForm/SupportTicketFormModal";
+import { formatDateDMY } from "../../../utils/helpers";
 
 const stripHtmlTags = (html: string) => {
   const doc = new DOMParser().parseFromString(html, "text/html");
@@ -91,7 +92,7 @@ const Card: React.FC<CardProps> = ({ ticket }) => {
         <Text>{stripHtmlTags(ticket.details)}</Text>
       </Box>
       <Text fontSize="sm" color="gray.500" mt={2}>
-        Last updated: {new Date(ticket.updated_at).toLocaleDateString()}
+        Last updated: {formatDateDMY(ticket.updated_at)}
       </Text>
     </Box>
   );
