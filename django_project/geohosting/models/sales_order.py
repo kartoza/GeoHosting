@@ -190,6 +190,14 @@ class SalesOrder(ErpModel):
             'Subscription of the instance.'
         )
     )
+    is_main_invoice = models.BooleanField(
+        default=True
+    )
+    invoice_id = models.CharField(
+        blank=True,
+        null=True,
+        help_text='Invoice id on the payment gateway.'
+    )
 
     class Meta:
         verbose_name = 'Sales order'
@@ -433,10 +441,10 @@ class SalesOrder(ErpModel):
             if subscription:
                 self.subscription = subscription
                 self.save()
+                self.subscription.sync_subscription()
 
-        # Sync instance subscription
-        if self.instance:
-            self.instance.sync_subscription()
+        if self.subscription:
+            self.subscription.sync_subscription()
 
 
 class SalesOrderInvoice(ErpModel):

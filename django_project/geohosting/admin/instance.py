@@ -101,8 +101,9 @@ class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     """Instance admin."""
 
     list_display = (
-        'name', 'product', 'cluster', 'price', 'owner', 'status',
-        'subscription', 'created_at', 'logs', 'webhooks', 'link'
+        'name', 'product', 'price', 'owner', 'status',
+        '_subscription', 'sales_orders', 'created_at', 'logs', 'webhooks',
+        'link', 'cluster'
     )
     list_filter = ('status',)
     actions = (
@@ -149,6 +150,22 @@ class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
             '<a href="/admin/geohosting_event/webhookevent/?'
             f'activity__instance__exact={instance.id}"'
             'target="_blank">webhooks</a>'
+        )
+
+    def _subscription(self, instance):
+        """Return subscription."""
+        return mark_safe(
+            f'<a href="/admin/geohosting/subscription/'
+            f'{instance.subscription.id}/change/?'
+            f'target="_blank">{instance.subscription}</a>'
+        )
+
+    def sales_orders(self, instance):
+        """Return logs."""
+        return mark_safe(
+            '<a href="/admin/geohosting/salesorder/?'
+            f'instance__exact={instance.id}"'
+            'target="_blank">orders</a>'
         )
 
     def link(self, instance):

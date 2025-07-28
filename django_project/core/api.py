@@ -57,7 +57,7 @@ class FilteredAPI(object):
             if fields and field not in fields:
                 continue
 
-            if '_in' in param:
+            if param.endswith('_in'):
                 value = value.split(',')
 
             if 'date' in param:
