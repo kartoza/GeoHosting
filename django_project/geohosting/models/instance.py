@@ -131,12 +131,20 @@ class Instance(models.Model):
             return
         self._change_status(InstanceStatus.STARTING_UP)
 
+    def update_running_activities(self):
+        """Update running activities."""
+        from geohosting.models.activity import Activity, ActivityStatus
+        for activity in Activity.running_activities(self.name):
+            activity.status = ActivityStatus.SUCCESS
+            activity.save()
+
     def update_sales_order(self):
         """Update sales order."""
         from geohosting.models.sales_order import SalesOrder, SalesOrderStatus
         from geohosting.models.activity import Activity
 
         # Update sales order instance
+        self.update_running_activities()
         sales_order_ids = Activity.objects.filter(instance=self).values_list(
             'sales_order_id'
         )
@@ -188,11 +196,10 @@ class Instance(models.Model):
 
     def deleted(self):
         """Make instance deleted."""
-        from geohosting.models.activity import Activity, ActivityStatus
+        if not self.status == InstanceStatus.DELETING:
+            return
         self._change_status(InstanceStatus.DELETED)
-        for activity in Activity.running_activities(self.name):
-            activity.status = ActivityStatus.SUCCESS
-            activity.save()
+        self.update_running_activities()
         try:
             self.cancel_subscription()
         except Exception as e:

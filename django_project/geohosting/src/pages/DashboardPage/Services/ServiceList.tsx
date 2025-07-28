@@ -20,7 +20,6 @@ import {
 } from "../../../redux/reducers/instanceSlice";
 import { FaLink } from "react-icons/fa";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import InstanceCredential from "../../../components/Instance/Credential";
 
 const spin = keyframes`
   from {
@@ -190,17 +189,6 @@ const Card: React.FC<CardProps> = ({ instance }) => {
             ),
           )}
         </Grid>
-      )}
-      {["Online", "Offline"].includes(instance.status) && (
-        <Box
-          width="100%"
-          mt={4}
-          justifyContent="center"
-          display="flex"
-          alignItems="center"
-        >
-          <InstanceCredential instance={instance} />
-        </Box>
       )}
       {!["Deleting", "Deleted"].includes(instance.status) &&
         !instance.subscription?.is_active &&

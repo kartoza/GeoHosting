@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
 import Pagination from "../../../components/Pagination/Pagination";
 import { Instance } from "../../../redux/reducers/instanceSlice";
+import { formatDateDMY } from "../../../utils/helpers";
 
 let session: string | null = null;
 
@@ -30,7 +31,7 @@ const Card: React.FC<OrderCardProps> = ({ order }) => {
   return (
     <Tr key={order.id} _hover={{ bg: "gray.100" }}>
       <Td>{order.package.name}</Td>
-      <Td>{new Date(order.date).toLocaleDateString()}</Td>
+      <Td>{formatDateDMY(order.date)}</Td>
       <Td>
         {order.invoice_url && (
           <Tooltip

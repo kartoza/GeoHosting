@@ -20,7 +20,7 @@ import {
 import { checkCheckoutUrl } from "../../CheckoutPage/utils";
 import { FaPrint } from "react-icons/fa";
 import axios from "axios";
-import { headerWithToken } from "../../../utils/helpers";
+import { formatDateDMY, headerWithToken } from "../../../utils/helpers";
 import { toast } from "react-toastify";
 import { Agreement } from "../../../redux/reducers/agreementSlice";
 import { DownloadIcon } from "@chakra-ui/icons";
@@ -95,7 +95,7 @@ const Card: React.FC<OrderCardProps> = ({ order }) => {
       <Td>{order.app_name}</Td>
       <Td>{order.order_status}</Td>
       <Td>{order.company_name}</Td>
-      <Td>{new Date(order.date).toLocaleDateString()}</Td>
+      <Td>{formatDateDMY(order.date)}</Td>
       <Td>
         {order.invoice_url && (
           <Tooltip

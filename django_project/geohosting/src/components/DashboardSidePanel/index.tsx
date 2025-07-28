@@ -39,12 +39,12 @@ const SidebarItem = ({
       style={style}
     >
       {icon && (
-      <Box mr={3} fontSize="lg" display="flex" alignItems="center">
-        {icon}
-      </Box>
-    )}
+        <Box mr={3} fontSize="lg" display="flex" alignItems="center">
+          {icon}
+        </Box>
+      )}
       {children}
-      </Flex>
+    </Flex>
   );
 };
 
@@ -127,11 +127,7 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
         </SidebarItem>
         <SidebarItem
           icon={
-            <Image
-              src="/static/images/support.svg"
-              boxSize="6"
-              alt="Support"
-            />
+            <Image src="/static/images/support.svg" boxSize="6" alt="Support" />
           }
           isSelected={selected === "support"}
           onClick={() => navigate("/dashboard/support")}
@@ -140,11 +136,7 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
         </SidebarItem>
         <SidebarItem
           icon={
-            <Image
-              src="/static/images/profile.svg"
-              boxSize="6"
-              alt="Profile"
-            />
+            <Image src="/static/images/profile.svg" boxSize="6" alt="Profile" />
           }
           isSelected={selected === "profile"}
           onClick={() => navigate("/dashboard/profile")}
@@ -165,13 +157,11 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
         </SidebarItem>
         <SidebarItem
           icon={
-            <Image
-              src="/static/images/logout.svg"
-              boxSize="6"
-              alt="Logout"
-            />
+            <Image src="/static/images/logout.svg" boxSize="6" alt="Logout" />
           }
-          isSelected={false} onClick={handleLogout}>
+          isSelected={false}
+          onClick={handleLogout}
+        >
           Logout
         </SidebarItem>
       </VStack>

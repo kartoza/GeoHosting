@@ -1,12 +1,13 @@
 import React, { CSSProperties, FC } from "react";
 
 import {
-  Button,
+  Box,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
+  Flex,
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -48,17 +49,21 @@ const Help: FC<IHelp> = ({
   return (
     <>
       {isDrawer ? (
-        <Button
-          aria-label="Open menu"
-          leftIcon={<QuestionCircle />}
-          onClick={onDrawerOpen}
-          backgroundColor={backgroundColor}
-          _hover={{ backgroundColor: backgroundColor, opacity: 0.8 }}
-          minWidth={0}
-          style={style}
-        >
-          Help
-        </Button>
+        <>
+          <Flex
+            p={4}
+            color="white"
+            _hover={{ bg: "blue.500", cursor: "pointer" }}
+            w="full"
+            onClick={onDrawerOpen}
+            style={style}
+          >
+            <Box mr={3} fontSize="lg" display="flex" alignItems="center">
+              <QuestionCircle />
+            </Box>
+            Help
+          </Flex>
+        </>
       ) : (
         <IconButton
           aria-label="Open menu"
