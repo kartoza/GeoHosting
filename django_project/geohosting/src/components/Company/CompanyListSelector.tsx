@@ -9,14 +9,12 @@ import CompanyForm from "./CompanyForm";
 export interface OrderSummaryProps {
   companyId: number | null;
   setCompany: (companyName: Company) => void;
-  hideCreate?: boolean;
 }
 
 /** Company controller */
 const CompanyListSelector: React.FC<OrderSummaryProps> = ({
   companyId,
   setCompany,
-  hideCreate = false,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const modalRef = useRef(null);
@@ -66,64 +64,69 @@ const CompanyListSelector: React.FC<OrderSummaryProps> = ({
     );
   }
   return (
-    <Box p={4} background={"white"} mt={4}>
-      {!data?.results.length && !hideCreate && (
+    <Box p={4} background={"white"}>
+      {!data?.results.length && (
         <Box fontSize="13px" textAlign="center" p={4}>
           You don't have any companies yet. Please create one.
         </Box>
       )}
-      {data?.results.length ? (
-        <Box>
-          {data?.results.map((_company: Company) => (
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              key={_company.id}
-              py={4}
-              fontSize="13px"
-              cursor="pointer"
-              whiteSpace="nowrap"
-            >
-              <Box>
-                <Checkbox
-                  _checked={{
-                    "& .chakra-checkbox__control": {
-                      background: "#4F9AC0",
-                      borderColor: "#4F9AC0",
-                      color: "white",
-                    },
-                    "& .chakra-checkbox__control:hover": {
-                      background: "#4F9AC0",
-                      borderColor: "#4F9AC0",
-                      color: "white",
-                    },
-                  }}
-                  sx={{
-                    "& .chakra-checkbox__label": {
-                      fontSize: "13px !important",
-                    },
-                    "& .chakra-checkbox__control": {
-                      background: "white",
-                      borderColor: "#777777",
-                    },
-                  }}
-                  isChecked={companyId === _company.id}
-                  onChange={() => setCompany(_company)}
-                >
-                  {_company.name}
-                </Checkbox>
-              </Box>
-              <EditIcon
+      {!!data?.results.length && (
+        <>
+          <Box fontSize={12} mb={4}>
+            Select Company
+          </Box>
+          <Box height={160} overflowY="auto" pr={4}>
+            {data?.results.map((_company: Company) => (
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                key={_company.id}
+                py={2}
                 fontSize="13px"
-                onClick={() => {
-                  // @ts-ignore
-                  modalRef?.current?.open(_company.id);
-                }}
-              />
-            </Box>
-          ))}
-        </Box>
-      ) : null}
+                cursor="pointer"
+                whiteSpace="nowrap"
+              >
+                <Box>
+                  <Checkbox
+                    _checked={{
+                      "& .chakra-checkbox__control": {
+                        background: "#4F9AC0",
+                        borderColor: "#4F9AC0",
+                        color: "white",
+                      },
+                      "& .chakra-checkbox__control:hover": {
+                        background: "#4F9AC0",
+                        borderColor: "#4F9AC0",
+                        color: "white",
+                      },
+                    }}
+                    sx={{
+                      "& .chakra-checkbox__label": {
+                        fontSize: "13px !important",
+                      },
+                      "& .chakra-checkbox__control": {
+                        background: "white",
+                        borderColor: "#777777",
+                      },
+                    }}
+                    isChecked={companyId === _company.id}
+                    onChange={() => setCompany(_company)}
+                  >
+                    {_company.name}
+                  </Checkbox>
+                </Box>
+                <EditIcon
+                  fontSize="13px"
+                  onClick={() => {
+                    // @ts-ignore
+                    modalRef?.current?.open(_company.id);
+                  }}
+                />
+              </Box>
+            ))}
+          </Box>
+        </>
+      )}
       <CompanyForm ref={modalRef} onDone={setNewCompanyName} />
     </Box>
   );
