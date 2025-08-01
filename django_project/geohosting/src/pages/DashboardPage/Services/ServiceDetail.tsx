@@ -41,6 +41,7 @@ const ServiceDetail: React.FC = () => {
   const { data, loading, error } = useSelector(
     (state: RootState) => state.instance.detail,
   );
+  const notFound = error === "No Instance matches the given query.";
 
   const specification = instance?.package?.package_group?.specification;
 
@@ -123,6 +124,24 @@ const ServiceDetail: React.FC = () => {
         alignItems="center"
       >
         <Spinner size="xl" />
+      </Box>
+    );
+  }
+
+  if (notFound) {
+    return (
+      <Box
+        top={0}
+        left={0}
+        position="absolute"
+        display="flex"
+        justifyContent="center"
+        width="100%"
+        height="100%"
+        alignItems="center"
+        color="red"
+      >
+        No product found for this name.
       </Box>
     );
   }

@@ -58,7 +58,12 @@ class InstanceViewSet(
 
     def retrieve(self, request, *args, **kwargs):
         """Retrieve a model instance."""
-        instance = self.get_object()
+        instances = Instance.objects.filter(
+            owner=self.request.user
+        ).order_by('-created_at')
+        instance = instances.filter(name=kwargs['name']).first()
+        if not instance:
+            raise Http404('No Instance matches the given query.')
 
         # Update sales order
         for activity in instance.activity_set.all():
