@@ -207,7 +207,7 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
             />
           </Box>
         </GridItem>
-        <GridItem gap={4} display={"flex"} flexDirection={"column"} h="100%">
+        <GridItem gap={4} display={"flex"} flexDirection={"column"} h="100%" minH={"400px"}>
           <Box>
             <Text fontSize={22} color={"black"}>
               Payment Method

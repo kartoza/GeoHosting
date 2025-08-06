@@ -1,14 +1,17 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
-app_name_exist_error_message = 'App name is already taken.'
+app_name_exist_error_message = 'Application name is already taken.'
+app_name_max_error_message = 'Application name is too long, maximum is 50 characters.'
 
 
 def app_name_validator(app_name):
-    """App name validator."""
+    """Application name validator."""
     from geohosting.models.activity import Activity
     from geohosting.models.instance import Instance, InstanceStatus
     if app_name:
+        if len(app_name) > 50:
+            raise ValidationError(app_name_max_error_message)
         if Instance.objects.filter(
                 name=app_name
         ).exclude(status=InstanceStatus.DELETED).count():
@@ -16,6 +19,8 @@ def app_name_validator(app_name):
 
         if Activity.running_activities(app_name).count():
             raise ValidationError(app_name_exist_error_message)
+    else:
+        raise ValidationError('Application name cannot be empty.')
 
 
 regex_name = r'^[a-z0-9-]*$'

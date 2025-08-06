@@ -29,14 +29,31 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
   companyName,
 }) => {
   return (
-    <GridItem display="flex" flexDirection="column">
+    <GridItem display="flex" flexDirection="column" minWidth={"400px"}>
       <Box>
-        <Text fontSize={22} color={"black"}>
-          Order Summary
+        <Text
+          fontSize={22}
+          color={"black"}
+          whiteSpace={"nowrap"}
+          display="flex"
+          width={"100%"}
+          gap={2}
+        >
+          <Box>Order Summary</Box>
           {appName && (
-            <Text as="span" color="orange.500">
-              &nbsp;&nbsp;[{appName}]
-            </Text>
+            <Box color="orange.500" display={"flex"}>
+              [
+              <Box
+                maxWidth={"215px"}
+                whiteSpace={"nowrap"}
+                textOverflow={"ellipsis"}
+                overflow={"hidden"}
+                title={appName}
+              >
+                {appName}
+              </Box>
+              ]
+            </Box>
           )}
         </Text>
       </Box>
@@ -106,7 +123,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
           ) : null}
         </Box>
       </Box>
-      </GridItem>
+    </GridItem>
   );
 };
 export default OrderSummary;
