@@ -122,7 +122,6 @@ const Card: React.FC<CardProps> = ({ instance }) => {
           src={instance.product.image}
           alt={`${instance.product.name} logo`}
           boxSize="80px"
-          borderRadius="full"
         />
         <Box paddingTop={2}>
           {/* TODO: We enable this after the feature has been developed*/}
