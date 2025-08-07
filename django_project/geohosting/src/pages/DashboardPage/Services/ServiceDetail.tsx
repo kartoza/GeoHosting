@@ -233,8 +233,17 @@ const ServiceDetail: React.FC = () => {
                 alignItems="center"
                 color="blue.500"
                 mb={4}
+                title={instance.url}
               >
-                <FaLink /> {instance.url}
+                <FaLink />{" "}
+                <Box
+                  maxWidth={"420px"}
+                  overflow={"hidden"}
+                  textOverflow={"ellipsis"}
+                  whiteSpace={"nowrap"}
+                >
+                  {instance.url}
+                </Box>
               </Flex>
             </Link>
             <Table variant="noline" width="auto">
@@ -251,7 +260,17 @@ const ServiceDetail: React.FC = () => {
                   <Td className="table-title" paddingLeft={0} paddingRight={8}>
                     Product name:
                   </Td>
-                  <Td>{instance.name}</Td>
+                  <Td>
+                    <Box
+                      maxWidth={"280px"}
+                      overflow={"hidden"}
+                      textOverflow={"ellipsis"}
+                      whiteSpace={"nowrap"}
+                      title={instance.name}
+                    >
+                      {instance.name}
+                    </Box>
+                  </Td>
                 </Tr>
                 <Tr>
                   <Td className="table-title" paddingLeft={0} paddingRight={8}>
@@ -298,6 +317,7 @@ const ServiceDetail: React.FC = () => {
             flexDirection="column"
             alignItems="center"
             gap={4}
+            minWidth={"120px"}
           >
             <Image
               src={instance.product.image}

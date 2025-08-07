@@ -73,8 +73,8 @@ export const ApplicationName: React.FC<Props> = ({
 
   /** Set validation */
   useEffect(() => {
-    isValid(!error);
-  }, [error]);
+    isValid(!checking && !error);
+  }, [checking, error]);
 
   /** Set validation */
   useEffect(() => {
