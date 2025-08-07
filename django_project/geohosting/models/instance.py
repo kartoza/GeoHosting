@@ -129,7 +129,8 @@ class Instance(models.Model):
         """Make instance online."""
         if self.is_lock:
             return
-        self._change_status(InstanceStatus.STARTING_UP)
+        if self.status == InstanceStatus.DEPLOYING:
+            self._change_status(InstanceStatus.STARTING_UP)
 
     def update_running_activities(self):
         """Update running activities."""
@@ -238,6 +239,14 @@ class Instance(models.Model):
             LogTracker.error(self, f'Get credential : {e}')
             raise e
 
+    def is_server_online(self) -> bool:
+        """Is server online."""
+        try:
+            response = requests.head(self.url, allow_redirects=True)
+            return response.status_code in [200]
+        except requests.exceptions.ConnectionError:
+            return False
+
     def checking_server(self):
         """Check server is online or offline."""
         from geohosting_event.models.webhook import WebhookEvent, WebhookStatus
@@ -254,28 +263,18 @@ class Instance(models.Model):
                 self.deleted()
             return
 
-        try:
-            response = requests.head(self.url, allow_redirects=True)
-            if response.status_code in [200, 302]:
-                self.online()
-            else:
-                # We hide this for now and push it to the thread
-                # LogTracker.error(
-                #     self,
-                #     (
-                #         f'Server - {self.url}: '
-                #         f'{response.status_code} - {response.text}'
-                #     )
-                # )
-                self.offline()
-        except requests.exceptions.ConnectionError:
-            # We hide this for now and push it to the thread
-            # LogTracker.error(self, f'Server - {self.url}: {e}')
+        # Check the server online or offline
+        if self.is_server_online():
+            self.online()
+        else:
             self.offline()
 
     def send_credentials(self):
         """Send credentials."""
         from geohosting.utils.email import InstanceEmail
+        if not self.is_server_online():
+            return
+
         InstanceEmail(self).send_credentials()
 
     def cancel_subscription(self):

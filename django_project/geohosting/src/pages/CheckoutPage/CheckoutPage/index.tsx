@@ -193,10 +193,10 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
         </Box>
       )}
       <Grid
-          gap={6}
-          templateColumns={{ base: "1fr", md: "1fr 1fr" }}
-          alignItems="stretch"
-        >
+        gap={6}
+        templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+        alignItems="stretch"
+      >
         <GridItem>
           <Box display="flex" flexDirection="column" h="100%">
             <OrderSummary
@@ -207,7 +207,13 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
             />
           </Box>
         </GridItem>
-        <GridItem gap={4} display={"flex"} flexDirection={"column"} h="100%" minH={"400px"}>
+        <GridItem
+          gap={4}
+          display={"flex"}
+          flexDirection={"column"}
+          h="100%"
+          minH={"400px"}
+        >
           <Box>
             <Text fontSize={22} color={"black"}>
               Payment Method
@@ -275,22 +281,8 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
       <Box mt={6}>
         <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={6}>
           <GridItem justifySelf="start">
-            <Button
-              colorScheme="yellow"
-              onClick={() => navigate(-1)}        // ← “go back” in history
-            >
+            <Button colorScheme="yellow" onClick={() => navigate(-1)}>
               Back
-            </Button>
-          </GridItem>
-          <GridItem justifySelf="end">
-            <Button
-              colorScheme="blue"
-              onClick={() => {
-                /* your “next” logic: e.g. submit or navigate */ 
-                navigate("/checkout/deployment"); 
-              }}
-            >
-              Next
             </Button>
           </GridItem>
         </Grid>
