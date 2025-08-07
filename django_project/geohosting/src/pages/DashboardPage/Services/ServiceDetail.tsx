@@ -303,6 +303,7 @@ const ServiceDetail: React.FC = () => {
                             instance={instance}
                             product={application.upstream_id}
                           />
+                          <Box>(username: {application.username})</Box>
                         </Box>
                       </Td>
                     </Tr>
