@@ -1,6 +1,6 @@
 FROM python:3.12.0-slim-bookworm AS prod
 
-ARG CACHE_BUSTER=07.08.2025
+ARG CACHE_BUSTER=08.08.2025
 
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
