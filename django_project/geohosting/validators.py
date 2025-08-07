@@ -2,7 +2,9 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 app_name_exist_error_message = 'Application name is already taken.'
-app_name_max_error_message = 'Application name is too long, maximum is 50 characters.'
+app_name_max_error_message = (
+    'Application name is too long, maximum is 50 characters.'
+)
 
 
 def app_name_validator(app_name):
