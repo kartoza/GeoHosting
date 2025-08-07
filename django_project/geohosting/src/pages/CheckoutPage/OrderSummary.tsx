@@ -29,7 +29,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({
   companyName,
 }) => {
   return (
-    <GridItem display="flex" flexDirection="column" minWidth={"400px"}>
+    <GridItem display="flex" flexDirection="column" minWidth={"400px"} h={"100%"}>
       <Box>
         <Text
           fontSize={22}

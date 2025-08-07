@@ -124,7 +124,7 @@ export const PurchaseDetail: React.FC<Props> = ({
                   justifyContent="flex-end"
                 >
                   <Button
-                    colorScheme="orange"
+                    colorScheme="blue"
                     onClick={() => {
                       companyFormRef.current?.open();
                     }}
