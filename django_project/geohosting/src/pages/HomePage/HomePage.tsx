@@ -20,6 +20,7 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const Navbar = lazy(() => import('../../components/Navbar/Navbar'));
 const ProductCard = lazy(() => import('../../components/ProductCard/ProductCard'));
+const HostingPlans = lazy(() => import('../../components/HostingPlans/index'));
 const Footer = lazy(() => import('../../components/Footer/Footer'));
 
 const HomePage: React.FC = () => {
@@ -67,10 +68,27 @@ const HomePage: React.FC = () => {
                 mr={{ base: 0, md: 4 }}
               />
             </Flex>
+            <Text
+              color="#555555"
+              fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '2xl' }}
+              marginTop="20px"
+              paddingX={{ base: 2, md: 50 }}
+            >
+              GSH is purpose-built for the spatial world. With more than a decade of expertise, Kartoza has been at the forefront of FOSS software development, hosting, maintenance, and support.
+            </Text>
+            <Flex justify="center" align="center"
+                  flexDirection={{ base: 'column', md: 'row' }}>
+              <Img
+                src={'/static/images/landing_main_image.svg'}
+                width={{ base: '620px', md: '620px', xl: '700px' }}
+                mb={{ base: 4, md: 0 }}
+                mr={{ base: 0, md: 4 }}
+              />
+            </Flex>
             <Container maxW="container.lg">
               <Text
                 color="gray.700"
-                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '3xl' }}
+                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '4xl' }}
                 marginTop="20px"
                 fontWeight="bold"
                 paddingX={{ base: 2, md: 50 }}
@@ -98,7 +116,29 @@ const HomePage: React.FC = () => {
                   ))}
               </Suspense>
             </Wrap>
+            <Container maxW="container.lg">
+              <Text
+                color="gray.700"
+                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '4xl' }}
+                marginTop="20px"
+                fontWeight="bold"
+                paddingX={{ base: 2, md: 50 }}
+              >
+                Hosting That Fits Your Budget
+              </Text>
+              <Text
+                color="#555555"
+                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: 'xl' }}
+                marginTop="20px"
+                paddingX={{ base: 2, md: 50 }}
+              >
+                Have your pick of three scalable plans tailored to meet your specific budget and project requirements.
+              </Text>
+            </Container>
+            <HostingPlans/>
           </Container>
+
+
         </Box>
         <Suspense fallback={<LoadingSpinner/>}>
           <Footer/>
