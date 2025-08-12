@@ -13,6 +13,7 @@ const FeatureCard = ({ icon, title, description }: FeatureProps) => (
     p={6}
     borderRadius="lg"
     boxShadow="md"
+    // width={["350px", "350px", "500px", "500px"]}
     bg="white"
   >
     <Grid templateColumns="auto 1fr" gap={4} alignItems="start">
@@ -62,7 +63,7 @@ export default function FeaturesGrid() {
   ];
 
   return (
-    <Box>
+    <Box py={10} px={[4, 8, 16]}>
       <Container maxW="container.lg">
         <Text
           color="gray.700"
@@ -74,7 +75,7 @@ export default function FeaturesGrid() {
           What Makes GeoSpatial Hosting Different?
         </Text>
       </Container>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} marginTop="40px">
         {features.map((feature, idx) => (
           <FeatureCard key={idx} {...feature} />
         ))}

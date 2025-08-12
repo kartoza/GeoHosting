@@ -69,7 +69,7 @@ const HostingPlans: React.FC = () => {
         </Text>
       </Container>
 
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={0}>
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={0} marginTop="40px">
         {plans.map((plan, index) => (
           <Box
             key={plan.title}
