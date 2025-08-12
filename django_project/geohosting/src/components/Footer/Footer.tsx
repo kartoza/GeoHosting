@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
               <Link href="https://kartoza.com/portfolio">Our Work</Link>
             </ListItem>
             <ListItem>
-              <Link href="#">Shop</Link>
+              <Link href="https://kartoza.com/training-courses">Courses</Link>
             </ListItem>
             <ListItem>
               <Link href="https://kartoza.com/blog">Blog</Link>
@@ -109,7 +109,7 @@ const Footer: React.FC = () => {
               <Link href="https://kartoza.com/policies">Company Policies</Link>
             </ListItem>
             <ListItem>
-              <Link href="https://kartoza.com/contact-us/new">Help</Link>
+              <Link href="https://kartoza.com/contact-us/new">Contact Us</Link>
             </ListItem>
           </List>
         </Box>
@@ -146,7 +146,7 @@ const Footer: React.FC = () => {
         mx="auto"
       >
         <Box>
-          <Box mt={8}>
+          {/* <Box mt={8}>
             <Heading size="sm" mb={2}>
               NEWSLETTER SIGN UP
             </Heading>
@@ -162,7 +162,7 @@ const Footer: React.FC = () => {
                 SUBSCRIBE
               </Button>
             </Flex>
-          </Box>
+          </Box> */}
         </Box>
 
         <Box>

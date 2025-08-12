@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Flex, Heading, Text, Icon, Grid, Container } from "@chakra-ui/react";
+import { Box, SimpleGrid, Flex, Image, Heading, Text, Icon, Grid, Container } from "@chakra-ui/react";
 import { ReactElement } from "react";
 import { FaCloudUploadAlt, FaRocket, FaBrain, FaHandshake } from "react-icons/fa";
 
@@ -37,25 +37,37 @@ const FeatureCard = ({ icon, title, description }: FeatureProps) => (
 export default function FeaturesGrid() {
   const features: FeatureProps[] = [
     {
-      icon: <FaCloudUploadAlt />,
+      icon: <Image
+        src="/static/images/why_gsh/hassle_free.svg"
+        alt="Hassle Free Hosting"
+      />,
       title: "Hassle Free Hosting",
       description:
         "We will help you set up and deploy your custom geospatial platforms",
     },
     {
-      icon: <FaRocket />,
+      icon: <Image
+        src="/static/images/why_gsh/geospatial-first.svg"
+        alt="Geospatial-first Infrastructure"
+      />,
       title: "Geospatial-first Infrastructure",
       description:
         "We don’t just host servers — we host spatial tools and platforms that work out of the box",
     },
     {
-      icon: <FaBrain />,
+      icon: <Image
+        src="/static/images/why_gsh/knowledge.svg"
+        alt="Knowledge and Experience"
+      />,
       title: "Knowledge and Experience",
       description:
         "We have decades of experience designing, building and hosting geospatial tools for the web",
     },
     {
-      icon: <FaHandshake />,
+      icon: <Image
+        src="/static/images/why_gsh/support.svg"
+        alt="Support and Reliability"
+      />,
       title: "Support and Reliability",
       description:
         "Your services stay online, stable, and production-ready — always.",
