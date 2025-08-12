@@ -8,6 +8,7 @@ import {
   Text,
   Wrap,
   WrapItem,
+  Button
 } from '@chakra-ui/react';
 import customTheme from '../../theme/theme';
 import { AppDispatch, RootState } from '../../redux/store';
@@ -21,6 +22,7 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 const Navbar = lazy(() => import('../../components/Navbar/Navbar'));
 const ProductCard = lazy(() => import('../../components/ProductCard/ProductCard'));
 const HostingPlans = lazy(() => import('../../components/HostingPlans/index'));
+const FeaturesGrid = lazy(() => import('../../components/FeatureGrid/index'));
 const Footer = lazy(() => import('../../components/Footer/Footer'));
 
 const HomePage: React.FC = () => {
@@ -116,6 +118,9 @@ const HomePage: React.FC = () => {
                   ))}
               </Suspense>
             </Wrap>
+            <HostingPlans/>
+            <FeaturesGrid/>
+            
             <Container maxW="container.lg">
               <Text
                 color="gray.700"
@@ -124,7 +129,7 @@ const HomePage: React.FC = () => {
                 fontWeight="bold"
                 paddingX={{ base: 2, md: 50 }}
               >
-                Hosting That Fits Your Budget
+                Need a Custom Solution?
               </Text>
               <Text
                 color="#555555"
@@ -132,13 +137,19 @@ const HomePage: React.FC = () => {
                 marginTop="20px"
                 paddingX={{ base: 2, md: 50 }}
               >
-                Have your pick of three scalable plans tailored to meet your specific budget and project requirements.
+                We’ll help design, setup and deploy the right GeoSpatial solution for your needs.
               </Text>
+              <Button 
+                background="#ECB44B" 
+                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: 'xl' }}
+                onClick={() => {
+                  window.open("https://kartoza.com/contact-us/new")
+                }}
+              >
+                Contact Us
+              </Button>
             </Container>
-            <HostingPlans/>
           </Container>
-
-
         </Box>
         <Suspense fallback={<LoadingSpinner/>}>
           <Footer/>
