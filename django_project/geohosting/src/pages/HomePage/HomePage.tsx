@@ -8,6 +8,7 @@ import {
   Text,
   Wrap,
   WrapItem,
+  Button
 } from '@chakra-ui/react';
 import customTheme from '../../theme/theme';
 import { AppDispatch, RootState } from '../../redux/store';
@@ -20,6 +21,8 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const Navbar = lazy(() => import('../../components/Navbar/Navbar'));
 const ProductCard = lazy(() => import('../../components/ProductCard/ProductCard'));
+const HostingPlans = lazy(() => import('../../components/HostingPlans/index'));
+const FeaturesGrid = lazy(() => import('../../components/FeatureGrid/index'));
 const Footer = lazy(() => import('../../components/Footer/Footer'));
 
 const HomePage: React.FC = () => {
@@ -67,11 +70,28 @@ const HomePage: React.FC = () => {
                 mr={{ base: 0, md: 4 }}
               />
             </Flex>
+            <Text
+              color="#555555"
+              fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '2xl' }}
+              marginTop="20px"
+              paddingX={{ base: 2, md: 50 }}
+            >
+              GSH is purpose-built for the spatial world. With more than a decade of expertise, Kartoza has been at the forefront of FOSS software development, hosting, maintenance, and support.
+            </Text>
+            <Flex justify="center" align="center"
+                  flexDirection={{ base: 'column', md: 'row' }}>
+              <Img
+                src={'/static/images/landing_main_image.svg'}
+                mb={{ base: 4, md: 0 }}
+                mr={{ base: 0, md: 4 }}
+                mt={{ base: 0, md: 10 }}
+              />
+            </Flex>
             <Container maxW="container.lg">
               <Text
                 color="gray.700"
-                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '3xl' }}
-                marginTop="20px"
+                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '4xl' }}
+                mt={{ base: 0, md: "50px" }}
                 fontWeight="bold"
                 paddingX={{ base: 2, md: 50 }}
               >
@@ -98,6 +118,41 @@ const HomePage: React.FC = () => {
                   ))}
               </Suspense>
             </Wrap>
+            <HostingPlans/>
+            <FeaturesGrid/>
+            
+            <Container maxW="container.lg">
+              <Text
+                color="gray.700"
+                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '4xl' }}
+                marginTop={{base: 0, md: "10"}}
+                fontWeight="bold"
+                paddingX={{ base: 2, md: 50 }}
+              >
+                Need a Custom Solution?
+              </Text>
+              <Text
+                color="#555555"
+                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: 'xl' }}
+                marginTop={{base: 0, md: "10"}}
+                paddingX={{ base: 2, md: 50 }}
+              >
+                We’ll help design, setup and deploy the right GeoSpatial solution for your needs.
+              </Text>
+              <Button 
+                colorScheme="orange"
+                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: 'xl' }}
+                _active={{
+                  bg: "blue.200"
+                }}
+                marginTop={{base: 0, md: "10"}}
+                onClick={() => {
+                  window.open("https://kartoza.com/contact-us/new")
+                }}
+              >
+                Contact Us
+              </Button>
+            </Container>
           </Container>
         </Box>
         <Suspense fallback={<LoadingSpinner/>}>
