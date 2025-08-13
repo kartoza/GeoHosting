@@ -13,7 +13,6 @@ const FeatureCard = ({ icon, title, description }: FeatureProps) => (
     p={6}
     borderRadius="lg"
     boxShadow="md"
-    // width={["350px", "350px", "500px", "500px"]}
     bg="white"
   >
     <Grid templateColumns="auto 1fr" gap={4} alignItems="start">
@@ -23,11 +22,11 @@ const FeatureCard = ({ icon, title, description }: FeatureProps) => (
       </Box>
 
       {/* Title + Description Column */}
-      <Box>
+      <Box textAlign="left">
         <Heading size="md" mb={2}>
           {title}
         </Heading>
-        <Text color="gray.600">{description}</Text>
+        <Text color="gray.600" mt={{base: 0, md: 5}}>{description}</Text>
       </Box>
     </Grid>
   </Box>

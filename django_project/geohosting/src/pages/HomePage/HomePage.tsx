@@ -82,16 +82,16 @@ const HomePage: React.FC = () => {
                   flexDirection={{ base: 'column', md: 'row' }}>
               <Img
                 src={'/static/images/landing_main_image.svg'}
-                width={{ base: '620px', md: '620px', xl: '700px' }}
                 mb={{ base: 4, md: 0 }}
                 mr={{ base: 0, md: 4 }}
+                mt={{ base: 0, md: 10 }}
               />
             </Flex>
             <Container maxW="container.lg">
               <Text
                 color="gray.700"
                 fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '4xl' }}
-                marginTop="20px"
+                mt={{ base: 0, md: "50px" }}
                 fontWeight="bold"
                 paddingX={{ base: 2, md: 50 }}
               >
@@ -125,7 +125,7 @@ const HomePage: React.FC = () => {
               <Text
                 color="gray.700"
                 fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '4xl' }}
-                marginTop="20px"
+                marginTop={{base: 0, md: "10"}}
                 fontWeight="bold"
                 paddingX={{ base: 2, md: 50 }}
               >
@@ -134,7 +134,7 @@ const HomePage: React.FC = () => {
               <Text
                 color="#555555"
                 fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: 'xl' }}
-                marginTop="20px"
+                marginTop={{base: 0, md: "10"}}
                 paddingX={{ base: 2, md: 50 }}
               >
                 We’ll help design, setup and deploy the right GeoSpatial solution for your needs.
@@ -145,7 +145,7 @@ const HomePage: React.FC = () => {
                 _active={{
                   bg: "blue.200"
                 }}
-                marginTop="20px"
+                marginTop={{base: 0, md: "10"}}
                 onClick={() => {
                   window.open("https://kartoza.com/contact-us/new")
                 }}
