@@ -57,7 +57,12 @@ const Footer: React.FC = () => {
   };
   
   return (
-    <Box bg="#333" color="white" px={[4, 8, 16]} py={10}>
+    <Box 
+      bg="#333" 
+      color="white" 
+      px={[4, 8, 16]} 
+      py={10}
+    >
       <Grid
         className="aaaa"
         templateAreas={{
@@ -73,11 +78,11 @@ const Footer: React.FC = () => {
             "about social github"
           `,
         }}
-        gap={5}
+        gap={20}
         maxWidth="1200px"
         mx="auto"
         px={[4, 8, 16]}
-        templateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }}
+        templateColumns={{ base: "1fr", md: "1.5fr 1fr 1fr" }}
       >
         {/* ABOUT & COUNTRY (spans 2 rows on desktop) */}
         <GridItem area="about">
@@ -87,7 +92,7 @@ const Footer: React.FC = () => {
               src="/static/images/logos/kartoza.svg"
               alt="Kartoza Logo"
               style={{ cursor: "pointer" }}
-              width="261px"
+              width="400px"
             />
             <Text mt={4} color="gray.300" textAlign={"justify"}>
               We are a Free and Open Source GIS service provider with registered
@@ -122,21 +127,41 @@ const Footer: React.FC = () => {
             </Heading>
             <List spacing={2} color="gray.300">
               <ListItem>
-                <Link href="https://kartoza.com/crowdfunding">Crowdfunding</Link>
+                <Link href="https://kartoza.com/">Home</Link>
               </ListItem>
               <ListItem>
-                <Link href="https://kartoza.com/careers">Careers</Link>
-              </ListItem>
-              <ListItem>
-                <Link href="https://kartoza.com/internships">Internships</Link>
-              </ListItem>
-              <ListItem>
-                <Link href="https://kartoza.com/policies">Company Policies</Link>
+                <Link href="https://kartoza.github.io/GeoHosting-Documentation/">Documentation</Link>
               </ListItem>
               <ListItem>
                 <Link href="https://kartoza.com/contact-us/new">Contact Us</Link>
               </ListItem>
             </List>
+          </Box>
+          <Box mt={8}>
+            <Flex direction="column" h="100%" justifyContent="flex-start" mb={{base: 0, md: 2}}>
+              <Box>
+                <Text fontSize="md" color="white" mb={2}>
+                  FIND US ON SOCIAL MEDIA
+                </Text>
+                <Flex gap={4}>
+                  <Link href="https://www.facebook.com/kartozaGIS" isExternal>
+                    <Icon as={FaFacebook} boxSize={6} />
+                  </Link>
+                  <Link href="https://www.instagram.com/kartozageo/" isExternal>
+                    <Icon as={FaInstagram} boxSize={6} />
+                  </Link>
+                  <Link href="https://www.linkedin.com/company/kartoza-pty-ltd" isExternal>
+                    <Icon as={FaLinkedin} boxSize={6} />
+                  </Link>
+                  <Link href="https://www.youtube.com/user/kartozachannel/feed" isExternal>
+                    <Icon as={FaYoutube} boxSize={6} />
+                  </Link>
+                  <Link href="https://twitter.com/KartozaGeo" isExternal>
+                    <Icon as={FaTwitter} boxSize={6} />
+                  </Link>
+                </Flex>
+              </Box>
+            </Flex>
           </Box>
         </GridItem>
 
@@ -155,58 +180,28 @@ const Footer: React.FC = () => {
                   ))}
             </List>
           </Box>
-        </GridItem>
-
-        {/* SOCIAL MEDIA (desktop: column 2, row 2 | mobile: 4th) */}
-        <GridItem area="social">
-          <Flex direction="column" h="100%" justifyContent="flex-end">
-            <Box>
-              <Text fontSize="md" color="white" mb={2}>
-                FIND US ON SOCIAL MEDIA
-              </Text>
-              <Flex gap={4}>
-                <Link href="https://www.facebook.com/kartozaGIS" isExternal>
-                  <Icon as={FaFacebook} boxSize={6} />
-                </Link>
-                <Link href="https://www.instagram.com/kartozageo/" isExternal>
-                  <Icon as={FaInstagram} boxSize={6} />
-                </Link>
-                <Link href="https://www.linkedin.com/company/kartoza-pty-ltd" isExternal>
-                  <Icon as={FaLinkedin} boxSize={6} />
-                </Link>
-                <Link href="https://www.youtube.com/user/kartozachannel/feed" isExternal>
-                  <Icon as={FaYoutube} boxSize={6} />
-                </Link>
-                <Link href="https://twitter.com/KartozaGeo" isExternal>
-                  <Icon as={FaTwitter} boxSize={6} />
-                </Link>
-              </Flex>
-            </Box>
-          </Flex>
-        </GridItem>
-
-        {/* GITHUB (desktop: column 3, row 2 | mobile: 5th) */}
-        <GridItem area="github">
-          <Flex direction="column" h="100%" justifyContent="flex-end">
-            <Box>
-              <Flex align="start" gap={3}>
-                <Box>
-                  <Heading size="sm" mb={1}>
-                    <Flex align="center" gap={2}>
-                      <Icon as={FaGithub} boxSize={6} />
-                      <Link href="https://github.com/kartoza/" isExternal>
-                        OUR GITHUB REPOSITORY
-                      </Link>
-                    </Flex>
-                  </Heading>
-                  <Text color="gray.300" fontSize="sm" textAlign="justify">
-                    Driven by our mission to promote open source, we share code for many of
-                    our projects on GitHub.
-                  </Text>
-                </Box>
-              </Flex>
-            </Box>
-          </Flex>
+          <Box mt={8}>
+            <Flex direction="column" h="100%">
+              <Box>
+                <Flex align="start" gap={3}>
+                  <Box>
+                    <Heading size="sm" mb={1}>
+                      <Flex align="center" gap={2}>
+                        <Icon as={FaGithub} boxSize={6} />
+                        <Link href="https://github.com/kartoza/" isExternal>
+                          OUR GITHUB REPOSITORY
+                        </Link>
+                      </Flex>
+                    </Heading>
+                    <Text color="gray.300" fontSize="sm" textAlign="justify">
+                      Driven by our mission to promote open source, we share code for many of
+                      our projects on GitHub.
+                    </Text>
+                  </Box>
+                </Flex>
+              </Box>
+            </Flex>
+          </Box>
         </GridItem>
       </Grid>
 
