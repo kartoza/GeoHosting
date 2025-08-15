@@ -139,16 +139,13 @@ const HomePage: React.FC = () => {
               >
                 We’ll help design, setup and deploy the right GeoSpatial solution for your needs.
               </Text>
-              <Button 
+              <Button
                 colorScheme="orange"
-                fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: 'xl' }}
-                _active={{
-                  bg: "blue.200"
-                }}
-                marginTop={{base: 0, md: "10"}}
                 onClick={() => {
                   window.open("https://kartoza.com/contact-us/new")
                 }}
+                marginTop={10}
+                padding="0 4rem"
               >
                 Contact Us
               </Button>
