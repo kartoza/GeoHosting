@@ -13,7 +13,7 @@ const customTheme = extendTheme({
       400: "#57A0C8",
       500: "#4F9AC0",
     },
-    customOrange: {
+    "kartoza-orange": {
       500: "#ECB44B",
       600: "#4F9AC0",
     },
@@ -63,10 +63,11 @@ const customTheme = extendTheme({
       },
       variants: {
         solid: (props) => ({
-          bg: props.colorScheme === "orange" ? "customOrange.500" : undefined,
+          bg: props.colorScheme === "orange" ? "kartoza-orange.500" : undefined,
           color: "white",
           _hover: {
-            bg: props.colorScheme === "orange" ? "customOrange.600" : undefined,
+            bg:
+              props.colorScheme === "orange" ? "kartoza-orange.600" : undefined,
           },
           _disabled: {
             bg: "blue.300",

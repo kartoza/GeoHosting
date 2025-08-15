@@ -63,7 +63,7 @@ const FeatureGrid: React.FC<FeatureGridProps> = ({ product }) => {
               >
                 <Box mb={{ base: 4, md: 0 }} mr={{ md: 6 }}>
                   <Icon as={feature.icon} w={32} h={32}
-                        color="customOrange.500"/>
+                        color="kartoza-orange.500"/>
                 </Box>
                 <Box>
                   <Heading size="lg" mb={4}>

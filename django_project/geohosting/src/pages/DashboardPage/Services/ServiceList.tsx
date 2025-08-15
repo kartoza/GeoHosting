@@ -47,7 +47,7 @@ export const RenderInstanceStatus = ({ instance }) => {
           backgroundColor="red.500"
           borderColor="red.700"
           borderWidth="1px"
-          borderRadius="4px"
+          borderRadius={12}
           color="white"
           px={4}
         >
@@ -60,7 +60,7 @@ export const RenderInstanceStatus = ({ instance }) => {
           backgroundColor="green.500"
           borderColor="green.700"
           borderWidth="1px"
-          borderRadius="4px"
+          borderRadius={12}
           color="white"
           px={4}
         >
@@ -76,7 +76,7 @@ export const RenderInstanceStatus = ({ instance }) => {
           backgroundColor="gray.100"
           borderColor="gray.200"
           borderWidth="1px"
-          borderRadius="4px"
+          borderRadius={12}
           px={4}
         >
           <Box
@@ -106,15 +106,8 @@ const Card: React.FC<CardProps> = ({ instance }) => {
       p={6}
       width={{ base: "100%", md: "320px" }}
       style={{ transition: "margin .1s ease" }}
-      _hover={{
-        cursor: "pointer",
-        margin: "-3px 3px 3px -3px",
-      }}
       bg="white"
       boxShadow="lg"
-      onClick={(e) => {
-        navigate("/dashboard/instances/" + instance.name);
-      }}
     >
       {/* Logo and Switch */}
       <Flex justify="space-between" mb={4}>
@@ -234,6 +227,21 @@ const Card: React.FC<CardProps> = ({ instance }) => {
             .
           </Box>
         )}
+      <Box
+        color={"kartoza-orange.500"}
+        padding={2}
+        marginTop={4}
+        textAlign={"center"}
+        as={RouterLink}
+        to={`/dashboard/instances/${instance.name}`}
+        display={"block"}
+        transition={"all .2s ease"}
+        _hover={{
+          opacity: 0.5,
+        }}
+      >
+        View details
+      </Box>
     </Box>
   );
 };
