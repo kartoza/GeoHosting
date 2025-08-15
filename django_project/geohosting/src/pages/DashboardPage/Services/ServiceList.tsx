@@ -7,7 +7,6 @@ import {
   Image,
   keyframes,
   Link,
-  Link as ChakraLink,
   Select,
   Text,
   useBreakpointValue,
@@ -246,6 +245,78 @@ const Card: React.FC<CardProps> = ({ instance }) => {
   );
 };
 
+const EmptyCard: React.FC = () => {
+  return (
+    <Box
+      borderRadius="lg"
+      position="relative"
+      p={6}
+      width={{ base: "100%", md: "320px" }}
+      style={{ transition: "margin .1s ease" }}
+      bg="white"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      flexDirection="column"
+      cursor="pointer"
+      _hover={{
+        opacity: 0.5,
+      }}
+      color={"blue.500"}
+      as={RouterLink}
+      to="/"
+    >
+      {/* Dash border */}
+      <Box
+        as="svg"
+        position="absolute"
+        top={0}
+        left={0}
+        w="100%"
+        h="100%"
+        pointerEvents="none"
+      >
+        <rect
+          x="1"
+          y="1"
+          width="calc(100% - 2px)"
+          height="calc(100% - 2px)"
+          fill="none"
+          stroke="#cccccc"
+          strokeWidth="2"
+          strokeDasharray="8 6"
+          rx="8"
+          ry="8"
+        />
+      </Box>
+
+      <Box marginBottom={4}>
+        <svg
+          width="75"
+          height="75"
+          viewBox="0 0 75 75"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M37.5 2.5V72.5"
+            stroke="currentColor"
+            stroke-width="5"
+            stroke-linecap="round"
+          />
+          <path
+            d="M72.5 37.5L2.5 37.5"
+            stroke="currentColor"
+            stroke-width="5"
+            stroke-linecap="round"
+          />
+        </svg>
+      </Box>
+      <Box>Add Hosted Product</Box>
+    </Box>
+  );
+};
+
 const renderCards = (instances: Instance[]) => {
   currentIds = instances.map((instance) => instance.id);
   return (
@@ -259,6 +330,7 @@ const renderCards = (instances: Instance[]) => {
       {instances.map((instance: Instance) => {
         return <Card key={instance.name} instance={instance} />;
       })}
+      <EmptyCard />
     </Flex>
   );
 };
@@ -297,21 +369,16 @@ const ServiceList: React.FC = () => {
         }
         autoRefresh={5}
         noDataText={
-          <Box>
-            Looks like you don’t have any active instances yet. You can get
-            started by buying one
-            <ChakraLink
-              as={RouterLink}
-              to="/"
-              fontSize="md"
-              target="_blank"
-              ml={1}
-              color={"blue.600"}
-            >
-              here
-            </ChakraLink>
-            .
-          </Box>
+          <Flex
+            wrap="wrap"
+            justify="flex-start"
+            gap={6}
+            direction={{ base: "column", md: "row" }}
+            mb={8}
+            minHeight={"280px"}
+          >
+            <EmptyCard />
+          </Flex>
         }
       />
     </>

@@ -154,6 +154,8 @@ class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
 
     def _subscription(self, instance):
         """Return subscription."""
+        if not instance.subscription:
+            return None
         return mark_safe(
             f'<a href="/admin/geohosting/subscription/'
             f'{instance.subscription.id}/change/?'
