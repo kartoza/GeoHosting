@@ -87,7 +87,7 @@ export const ApplicationName: React.FC<Props> = ({
     <>
       <GridItem colSpan={{ base: 1, md: 2 }}>
         <Box>
-          <Box fontSize={22} color={"black"} display="flex" alignItems="center">
+          <Box fontSize={22} color={"black"} display="flex" alignItems="center" py={4}>
             Application Name
           </Box>
         </Box>
