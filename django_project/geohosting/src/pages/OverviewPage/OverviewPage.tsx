@@ -58,12 +58,11 @@ const OverviewPage: React.FC = () => {
           <Background />
           {detailLoading && (
             <Box
-              position={"absolute"}
-              display={"flex"}
-              justifyContent={"center"}
               width={"100%"}
-              height={"100%"}
+              height={"80vh"}
+              display={"flex"}
               alignItems={"center"}
+              justifyContent={"center"}
             >
               <LoadingSpinner />
             </Box>

@@ -30,6 +30,7 @@ export interface OrderCardProps {
 }
 
 export const AgreementDownload = (agreement: Agreement) => {
+  console.log(agreement);
   const [downloading, setDownloading] = useState(false);
   const downloadFile = async () => {
     setDownloading(true);

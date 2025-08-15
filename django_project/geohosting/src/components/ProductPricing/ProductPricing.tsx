@@ -163,7 +163,7 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
             size={"xl"}
             width="100%"
             backgroundColor={
-              packageLevel === "Gold" ? "customOrange.500" : "blue.500"
+              packageLevel === "Gold" ? "kartoza-orange.500" : "blue.500"
             }
             color={"white"}
             fontWeight={"bold"}
@@ -173,7 +173,7 @@ const ProductPricing: React.FC<PackageProps> = ({ product, pkg }) => {
             isDisabled={!available}
             _disabled={{
               backgroundColor:
-                packageLevel === "Gold" ? "customOrange.500" : "blue.500",
+                packageLevel === "Gold" ? "kartoza-orange.500" : "blue.500",
               cursor: "not-allowed",
               opacity: 0.6,
             }}

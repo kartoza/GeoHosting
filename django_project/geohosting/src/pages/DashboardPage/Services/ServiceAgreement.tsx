@@ -1,79 +1,52 @@
 import {
-  fetchSalesOrders,
-  SalesOrder,
-} from "../../../redux/reducers/ordersSlice";
-import {
   Box,
   Flex,
-  IconButton,
   Spinner,
   Table,
   Tbody,
   Td,
   Th,
   Thead,
-  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { FaPrint } from "react-icons/fa";
-import { AgreementDownload, OrderCardProps } from "../Orders/OrderList";
+import { CardProps } from "../Agreements/AgreementList";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
 import Pagination from "../../../components/Pagination/Pagination";
 import { Instance } from "../../../redux/reducers/instanceSlice";
 import { formatDateDMY } from "../../../utils/helpers";
+import {
+  Agreement,
+  fetchUserAgreements,
+} from "../../../redux/reducers/agreementSlice";
+import { AgreementDownload } from "../Orders/OrderList";
 
 let session: string | null = null;
 
 /** Card for order **/
-const Card: React.FC<OrderCardProps> = ({ order }) => {
+const Card: React.FC<CardProps> = ({ agreement }) => {
   return (
-    <Tr key={order.id} _hover={{ bg: "gray.100" }}>
-      <Td>{formatDateDMY(order.date)}</Td>
-      <Td>
-        {order.invoice_url && (
-          <Tooltip
-            label={order.erpnext_code + " invoice"}
-            placement="bottom-end"
-          >
-            <IconButton
-              size="xs"
-              as="a"
-              href={order.invoice_url}
-              download
-              aria-label={`Download ${order.erpnext_code} invoice`}
-              icon={<FaPrint />}
-              colorScheme="orange"
-              bg="orange.300 !important"
-              color="white"
-              variant="solid"
-              _hover={{ bg: "orange.400" }}
-            />
-          </Tooltip>
-        )}
-      </Td>
-      <Td>
-        {order.agreements.map((agreement) => (
-          <AgreementDownload {...agreement} />
-        ))}
+    <Tr key={agreement.id} _hover={{ bg: "gray.100" }}>
+      <Td width={"50%"}>{formatDateDMY(agreement.created_at)}</Td>
+      <Td width={"50%"}>
+        <AgreementDownload {...agreement} />
       </Td>
     </Tr>
   );
 };
-const renderCards = (orders: SalesOrder[]) => {
+const renderCards = (agreements: Agreement[]) => {
   return (
     <Table variant="simple">
       <Thead>
         <Tr>
           <Th>Date</Th>
-          <Th>Invoice</Th>
-          <Th>Agreements</Th>
+          <Th>Agreement</Th>
         </Tr>
       </Thead>
       <Tbody>
-        {orders.map((order) => (
-          <Card key={order.id} order={order} />
+        {agreements.map((agreement) => (
+          <Card key={agreement.id} agreement={agreement} />
         ))}
       </Tbody>
     </Table>
@@ -87,13 +60,13 @@ interface Props {
 }
 
 /** Abstract for pagination page */
-export const ServiceOrders: React.FC<Props> = ({
+export const ServiceAgreement: React.FC<Props> = ({
   instance,
-  stateKey = "orders",
-  url = "/api/orders/",
+  stateKey = "agreements",
+  url = "/api/agreements/",
 }) => {
   const additionalFilters = {
-    instance__id: instance.id,
+    sales_order__instance__id: instance.id,
   };
   const dispatch = useDispatch<AppDispatch>();
   const rowsPerPage = 10;
@@ -131,7 +104,7 @@ export const ServiceOrders: React.FC<Props> = ({
     }
     const urlRequest = _url.toString().replace(exampleDomain, "");
     if (force || session !== urlRequest) {
-      dispatch(fetchSalesOrders(urlRequest));
+      dispatch(fetchUserAgreements(urlRequest));
     }
     session = urlRequest;
   };

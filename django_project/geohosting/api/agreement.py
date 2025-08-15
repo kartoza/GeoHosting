@@ -56,10 +56,13 @@ class MyAgreementViewSet(
 
     def get_queryset(self):
         """Return instances for the authenticated user."""
-        return SalesOrderAgreement.objects.select_related(
+        query = SalesOrderAgreement.objects.select_related(
             'agreement_detail', 'sales_order'
         ).filter(sales_order__customer=self.request.user).order_by(
             '-created_at'
+        )
+        return self.filter_query(self.request, query).order_by(
+            '-sales_order__date'
         )
 
     @action(detail=True, methods=["get"])

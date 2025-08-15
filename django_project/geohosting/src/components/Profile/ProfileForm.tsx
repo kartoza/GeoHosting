@@ -140,28 +140,6 @@ const ProfileForm: React.FC<Props> = ({ isModal }) => {
 
   return (
     <Box p={0}>
-      <Box
-        fontSize="2xl"
-        fontWeight="bold"
-        mb={2}
-        color={"#3e3e3e"}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Box>Profile</Box>
-        {!isModal && (
-          <Button
-            colorScheme="blue"
-            onClick={handleProfileUpdate}
-            minWidth={150}
-          >
-            Update Profile
-          </Button>
-        )}
-      </Box>
-      <Box height="2px" bg="blue.500" width="100%" mb={8} />
-
       <Flex
         direction={{ base: "column", md: "row" }}
         align="flex-start"
@@ -313,22 +291,16 @@ const ProfileForm: React.FC<Props> = ({ isModal }) => {
             </>
           )}
 
-          {isModal && (
-            <Box
-              display={"flex"}
-              justifyContent={"flex-end"}
-              marginTop={8}
+          <Box marginTop={8} width={"100%"}>
+            <Button
+              colorScheme="blue"
+              onClick={handleProfileUpdate}
+              minWidth={150}
               width={"100%"}
             >
-              <Button
-                colorScheme="blue"
-                onClick={handleProfileUpdate}
-                minWidth={150}
-              >
-                Update Profile
-              </Button>
-            </Box>
-          )}
+              Update Profile
+            </Button>
+          </Box>
         </VStack>
       </Flex>
     </Box>
