@@ -21,7 +21,7 @@ import axios from "axios";
 import { headerWithToken } from "../../../utils/helpers";
 import { toast } from "react-toastify";
 
-interface CardProps {
+export interface CardProps {
   agreement: Agreement;
 }
 

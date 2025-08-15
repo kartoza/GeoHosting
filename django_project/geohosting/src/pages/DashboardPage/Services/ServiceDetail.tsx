@@ -23,7 +23,8 @@ import SubscriptionDetail from "../../../components/Subscription/Detail";
 import InstanceCredential from "../../../components/Instance/Credential";
 import { formatDateDMY, packageName } from "../../../utils/helpers";
 import { DeleteInstance } from "./Delete";
-import { ServiceOrders } from "./ServiceOrder";
+import { ServicePayment } from "./ServicePayment";
+import { ServiceAgreement } from "./ServiceAgreement";
 
 /** Service Detail Page in pagination */
 const ServiceDetail: React.FC = () => {
@@ -441,12 +442,34 @@ const ServiceDetail: React.FC = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Box>Order Details</Box>
+          <Box>Payments</Box>
         </Box>
         <Box height="2px" bg="blue.500" width="100%" mb={4} />
         <Box px={4}>
           <Box>
-            <ServiceOrders instance={instance} />
+            <ServicePayment instance={instance} />
+          </Box>
+        </Box>
+      </>
+      {/* Agreements */}
+      <>
+        <Box
+          fontSize="2xl"
+          fontWeight="bold"
+          mt={8}
+          px={4}
+          mb={2}
+          color={"#3e3e3e"}
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Box>Agreements</Box>
+        </Box>
+        <Box height="2px" bg="blue.500" width="100%" mb={4} />
+        <Box px={4}>
+          <Box>
+            <ServiceAgreement instance={instance} />
           </Box>
         </Box>
       </>
