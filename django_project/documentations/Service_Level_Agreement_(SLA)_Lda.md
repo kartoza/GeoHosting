@@ -51,12 +51,10 @@ reasonable person would consider confidential.
 
 ## 2. Service Level Commitments
 
-2.1 **Uptime Guarantee**:
-The Hosting Provider guarantees 99.9% uptime per calendar month. Uptime is
-calculated as follows:
-`Uptime = ((Total Minutes - Excluded Downtime) / Total Minutes) × 100`
+2.1 **Uptime Expectation**:  
+The Hosting Provider aims to provide a high level of service availability.
 
-2.2 **Service Metrics**:
+2.2 **Service Metrics**:  
 The Hosting Provider guarantees the following additional performance metrics:
 
 - **Latency**: Average response time for server requests shall not exceed 200ms
@@ -64,16 +62,16 @@ The Hosting Provider guarantees the following additional performance metrics:
 - **Bandwidth**: A minimum bandwidth of 1000 Mbps will be maintained for all
   hosted connections.
 
-2.3 **Incident Prioritization and Response Times**:
+2.3 **Incident Prioritization and Response Times**:  
 Incidents are categorized as follows, with corresponding response and
 resolution times:
 
-| **Priority** | **Definition**                    | **Response Time** | **Resolution Time** |
-|--------------|-----------------------------------|-------------------|---------------------|
-| Critical     | Service completely unavailable    | 1 hour            | 4 hours             |
-| High         | Severe degradation of services    | 4 hours           | 24 hours            |
-| Medium       | Minor issues or degraded services | 8 hours           | 48 hours            |
-| Low          | Non-urgent issues or queries      | 24 hours          | 72 hours            |
+| **Priority** | **Definition**                    | **Response Time**         | **Resolution Time**        |
+|--------------|-----------------------------------|---------------------------|----------------------------|
+| Critical     | Service completely unavailable    | 1 business day (SAST)     | Best efforts               |
+| High         | Severe degradation of services    | 1 business day (SAST)     | Best efforts               |
+| Medium       | Minor issues or degraded services | 1 business day (SAST)     | Best efforts               |
+| Low          | Non-urgent issues or queries      | 2 business days (SAST)    | Best efforts               |
 
 2.4 **Disaster Recovery**:
 
@@ -81,7 +79,7 @@ resolution times:
 - **RPO**: Data restored to within 24 hours of the last backup (our database
   backups are made nightly).
 
-2.5 **Performance Disclaimer**:
+2.5 **Performance Disclaimer**:  
 The Hosting Provider does not warrant that the Service will be uninterrupted or
 error-free and shall not be liable for downtime resulting from circumstances
 beyond its reasonable control.
@@ -130,51 +128,66 @@ The SLA does not apply to:
 - Upon termination, the Hosting Provider will provide the Client with a
   complete export of their data in a mutually agreed format within 30 days.
 
-4.5 **Indemnity**:
+4.5 **Indemnity**:  
 The Client shall indemnify and hold harmless the Hosting Provider against any
 claims arising from the misuse of data or unauthorized access to the Client’s
 systems.
 
 ---
 
-## 5. Limitations of Liability
+## 5. Acceptable Use Policy and Right of Refusal/Termination
 
-5.1 The Hosting Provider’s total liability under this SLA shall not exceed the
+5.1 **Acceptable Use Policy (AUP)**:  
+The Client agrees to abide by GeoSpatialHosting's Acceptable Use Policy, which is incorporated herein by reference and may be updated from time to time without prior notice. The AUP strictly prohibits the use of GeoSpatialHosting's services for any illegal activities, distribution of malware, engagement in hacking attempts, spamming, intellectual property infringement, defamation, harassment, or any other activity deemed harmful or detrimental to GeoSpatialHosting or its users..
+
+5.2 **Right of Refusal and Termination**:  
+GeoSpatialHosting reserves the absolute right, in its sole discretion, to refuse service to any potential client or to suspend or terminate services for any existing client found to be in violation of this SLA, including but not limited to the AUP. GeoSpatialHosting may take such action immediately and without prior notice in cases of severe violations, particularly those involving illegal activities or significant harm to GeoSpatialHosting's network or reputation. In the event of service termination due to a violation of this SLA, the Client shall not be entitled to any refund of fees paid. GeoSpatialHosting shall not be liable for any damages or losses incurred by the Client or any third party as a result of such suspension or termination.
+
+5.3 **Indemnification**:  
+The Client agrees to indemnify, defend, and hold harmless GeoSpatialHosting, its officers, directors, employees, and agents from and against any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising from or in any way related to the Client's use of the services, content hosted by the Client, any breach of this SLA by the Client, or any act or omission of the Client.
+
+---
+
+## 6. Limitations of Liability
+
+6.1 The Hosting Provider’s total liability under this SLA shall not exceed the
 fees paid by the Client in the preceding 3 months.
 
-5.2 The Hosting Provider shall not be liable for:
+6.2 The Hosting Provider shall not be liable for:
 
 - Indirect, incidental, or consequential damages, including loss of profits,
   revenue, or data.
 - Damages arising from third-party dependencies or Client-caused issues.
 
-5.3 Liability for data breaches caused by malicious attacks is limited to
+6.3 Liability for data breaches caused by malicious attacks is limited to
 reasonable efforts to mitigate the breach.
 
-5.4 Disputes shall be resolved via arbitration in Lisbon, Portugal with each
+6.4 Disputes shall be resolved via arbitration in Lisbon, Portugal with each
 party bearing its own legal costs.
 
 ---
 
-## 6. Governing Law and Jurisdiction
+## 7. Governing Law and Jurisdiction
 
-6.1 This SLA shall be governed by Portuguese law for services rendered by
+7.1 This SLA shall be governed by Portuguese law for services rendered by
 Kartoza, LDA.
 
-6.2 Any disputes shall be subject to binding arbitration under the rules of the
+7.2 Any disputes shall be subject to binding arbitration under the rules of the
 relevant jurisdiction.
 
 ---
 
-## 7. Acceptance
+## 8. Acceptance
 
-Both parties agree to the terms of this SLA by signing below.
+Both parties agree to the terms of this SLA by signing below. The Hosting
+Provider entity applicable to this SLA must be selected by marking the checkbox
+in the appropriate column.
 
 | Hosting Provider (Portugal)       | Client                                     |
 |-----------------------------------|--------------------------------------------|
-| Kartoza, LDA                      | [Client Name]                              |
-| NIPC (Tax ID): 517404885          | Representative name: [Representative Name] |
+| ☐ Kartoza, LDA                    | [Client Name]                              |
+| NIPC (Tax ID): 517404885          |                                            |
 | Registered Office:                |                                            |
-| Bloco 1, Caixa 11, Vale de Rodão, |                                            |
+| Bloco 1, Caixa 11, Vale de Rodão, | Client Address: [Client Address]           |
 | Distrito: Portalegre,             | Signature: [Signature]                     |
 | Concelho: Marvão, Portugal        | Date: [Date]                               |
