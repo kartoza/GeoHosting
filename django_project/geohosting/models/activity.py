@@ -260,9 +260,7 @@ class Activity(models.Model):
                 price = self.sales_order.package
             else:
                 price = Package.objects.filter(
-                    package_group__package_code=self.client_data[
-                        'package_code'
-                    ]
+                    id=self.client_data['package_id']
                 ).first()
 
             if (
