@@ -318,6 +318,7 @@ class SalesOrder(ErpModel):
                         self.delivery_date.strftime('%Y-%m-%d')
                     ),
                     'qty': 1.0,
+                    'uom': 'Month'
                 }
             ],
             'company': company
