@@ -35,6 +35,9 @@ class PreferencesAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('site_type', 'support_email', 'erpnext_project_code')
         }),
+        ('Versions', {
+            'fields': ('project_version',)
+        }),
         ('Rule', {
             'fields': ('grace_period_days', 'reminder_days_after_expiry')
         }),
@@ -42,4 +45,4 @@ class PreferencesAdmin(admin.ModelAdmin):
             'fields': test_fields
         }),
     )
-    readonly_fields = test_fields
+    readonly_fields = test_fields + ('project_version',)

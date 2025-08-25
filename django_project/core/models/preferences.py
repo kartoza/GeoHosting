@@ -70,6 +70,12 @@ class Preferences(SingletonModel):
         return 'Preferences'
 
     @property
+    def project_version(self):
+        """Return the version of the project."""
+        from core.context_processors import project_version
+        return project_version(None)['version']
+
+    @property
     def erp_base_url(self):
         """Erp base url."""
         return settings.ERPNEXT_BASE_URL
