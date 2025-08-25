@@ -33,7 +33,7 @@ export const InstanceCredential = forwardRef(
         const response = await axios.get(url, {
           headers: headerWithToken(),
         });
-        const { username, password } = response.data;
+        const { password } = response.data;
         navigator.clipboard
           .writeText(password)
           .then(() => {
@@ -44,10 +44,16 @@ export const InstanceCredential = forwardRef(
               "Your credentials have been successfully copied to the clipboard.",
             );
           })
-          .catch(() => {
-            toast.error("Failed to get credentials, please retry.");
+          .catch((err) => {
+            toast.success(
+              "Please ensure that you change your password within the application for security purposes.",
+            );
+            toast.success(`${password}`);
+            toast.success(`Please copy the password below:`);
           });
       } catch (err) {
+        // @ts-ignore
+        toast.error("" + err.toString());
         toast.error("Failed to get credentials, please retry.");
       }
       setFetchingCredential(false);
