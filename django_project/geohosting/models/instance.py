@@ -246,6 +246,9 @@ class Instance(models.Model):
             return response.status_code in [200]
         except requests.exceptions.ConnectionError:
             return False
+        except Exception as e:
+            LogTracker.error(self, f'Check instance: {str(e)}')
+            raise e
 
     def checking_server(self):
         """Check server is online or offline."""
