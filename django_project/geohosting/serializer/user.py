@@ -58,7 +58,7 @@ class UserSerializer(serializers.ModelSerializer):
             )
         try:
             country_name = billing_information.country.name
-        except Exception as e:
+        except Exception:
             pass
         billing_information = UserBillingInformationSerializer(
             billing_information
