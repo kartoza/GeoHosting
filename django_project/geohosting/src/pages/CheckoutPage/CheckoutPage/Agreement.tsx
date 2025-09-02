@@ -29,6 +29,8 @@ import SignatureCanvas from "react-signature-canvas";
 import { getUserLocation, headerWithToken } from "../../../utils/helpers";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { fetchUserProfile } from "../../../redux/reducers/profileSlice";
+import { Company } from "../../../redux/reducers/companySlice";
+
 import "../../../assets/styles/Markdown.css";
 
 interface CheckboxProps {
@@ -334,13 +336,13 @@ export const AgreementMarkdown = ({
 };
 
 interface Props {
-  companyName?: string | null;
+  company: Company | null;
   paymentMethod: string | null;
   isDone: (agreements: Agreement[]) => void;
 }
 
 export const AgreementModal = forwardRef(
-  ({ companyName, paymentMethod, isDone }: Props, ref) => {
+  ({ company, paymentMethod, isDone }: Props, ref) => {
     const dispatch: AppDispatch = useDispatch();
     const { user, loading, error } = useSelector(
       (state: RootState) => state.profile,
@@ -356,6 +358,30 @@ export const AgreementModal = forwardRef(
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [agreements, setAgreements] = useState<Agreement[] | null>(null);
 
+    let userAddress: string[] = [];
+    if (user?.billing_information) {
+      userAddress = [
+        user.billing_information.address,
+        user.billing_information.city,
+        user.billing_information.region,
+      ];
+      if (user.billing_information.country_name) {
+        userAddress.push(user.billing_information.country_name);
+      }
+    }
+    let companyAddress: string[] = [];
+    if (company?.billing_information) {
+      companyAddress = [
+        company.billing_information.address,
+        company.billing_information.city,
+        company.billing_information.region,
+      ];
+      if (company.billing_information.country_name) {
+        companyAddress.push(company.billing_information.country_name);
+      }
+    }
+    let address: string[] = company ? companyAddress : userAddress;
+
     useEffect(() => {
       if (isOpen) {
         setAgreements(null);
@@ -369,7 +395,7 @@ export const AgreementModal = forwardRef(
             );
             const results = response.data.results;
             results.map((result: Agreement) => {
-              if (companyName) {
+              if (company?.name) {
                 result.template = result.template.replaceAll(
                   "[Representative Name]",
                   name,
@@ -381,7 +407,11 @@ export const AgreementModal = forwardRef(
                 );
               }
               result.template = result.template
-                .replaceAll("[Client Name]", companyName ? companyName : name)
+                .replaceAll(
+                  "[Client Name]",
+                  company?.name ? company?.name : name,
+                )
+                .replaceAll("[Client Address]", address.join(", "))
                 .replaceAll("[Date]", new Date().toISOString().split("T")[0]);
             });
             setAgreements(results);

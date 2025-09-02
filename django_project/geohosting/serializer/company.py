@@ -51,13 +51,22 @@ class CompanyDetailSerializer(serializers.ModelSerializer):
 
     def get_billing_information(self, company: Company):
         """Return CompanyBillingInformation."""
+        country_name = ""
         try:
             billing_information = company.companybillinginformation
         except CompanyBillingInformation.DoesNotExist:
             billing_information = CompanyBillingInformation.objects.create(
                 user=company
             )
-        return CompanyBillingInformationSerializer(billing_information).data
+        try:
+            country_name = billing_information.country.name
+        except Exception:
+            pass
+        billing_information = CompanyBillingInformationSerializer(
+            billing_information
+        ).data
+        billing_information['country_name'] = country_name
+        return billing_information
 
     class Meta:  # noqa: D106
         model = Company

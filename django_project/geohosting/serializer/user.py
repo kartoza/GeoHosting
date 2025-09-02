@@ -49,13 +49,22 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_billing_information(self, user: User):
         """Return UserBillingInformation."""
+        country_name = ""
         try:
             billing_information = user.userbillinginformation
         except UserBillingInformation.DoesNotExist:
             billing_information = UserBillingInformation.objects.create(
                 user=user
             )
-        return UserBillingInformationSerializer(billing_information).data
+        try:
+            country_name = billing_information.country.name
+        except Exception:
+            pass
+        billing_information = UserBillingInformationSerializer(
+            billing_information
+        ).data
+        billing_information['country_name'] = country_name
+        return billing_information
 
     class Meta:  # noqa: D106
         model = User
