@@ -66,12 +66,12 @@ The Hosting Provider guarantees the following additional performance metrics:
 Incidents are categorized as follows, with corresponding response and
 resolution times:
 
-| **Priority** | **Definition**                    | **Response Time**         | **Resolution Time**        |
-|--------------|-----------------------------------|---------------------------|----------------------------|
-| Critical     | Service completely unavailable    | 1 business day (SAST)     | Best efforts               |
-| High         | Severe degradation of services    | 1 business day (SAST)     | Best efforts               |
-| Medium       | Minor issues or degraded services | 1 business day (SAST)     | Best efforts               |
-| Low          | Non-urgent issues or queries      | 2 business days (SAST)    | Best efforts               |
+| **Priority** | **Definition**                    | **Response Time**      | **Resolution Time** |
+|--------------|-----------------------------------|------------------------|---------------------|
+| Critical     | Service completely unavailable    | 1 business day (SAST)  | Best efforts        |
+| High         | Severe degradation of services    | 1 business day (SAST)  | Best efforts        |
+| Medium       | Minor issues or degraded services | 1 business day (SAST)  | Best efforts        |
+| Low          | Non-urgent issues or queries      | 2 business days (SAST) | Best efforts        |
 
 2.4 **Disaster Recovery**:
 
@@ -138,13 +138,33 @@ systems.
 ## 5. Acceptable Use Policy and Right of Refusal/Termination
 
 5.1 **Acceptable Use Policy (AUP)**:  
-The Client agrees to abide by GeoSpatialHosting's Acceptable Use Policy, which is incorporated herein by reference and may be updated from time to time without prior notice. The AUP strictly prohibits the use of GeoSpatialHosting's services for any illegal activities, distribution of malware, engagement in hacking attempts, spamming, intellectual property infringement, defamation, harassment, or any other activity deemed harmful or detrimental to GeoSpatialHosting or its users..
+The Client agrees to abide by GeoSpatialHosting's Acceptable Use Policy, which
+is incorporated herein by reference and may be updated from time to time
+without prior notice. The AUP strictly prohibits the use of GeoSpatialHosting's
+services for any illegal activities, distribution of malware, engagement in
+hacking attempts, spamming, intellectual property infringement, defamation,
+harassment, or any other activity deemed harmful or detrimental to
+GeoSpatialHosting or its users..
 
 5.2 **Right of Refusal and Termination**:  
-GeoSpatialHosting reserves the absolute right, in its sole discretion, to refuse service to any potential client or to suspend or terminate services for any existing client found to be in violation of this SLA, including but not limited to the AUP. GeoSpatialHosting may take such action immediately and without prior notice in cases of severe violations, particularly those involving illegal activities or significant harm to GeoSpatialHosting's network or reputation. In the event of service termination due to a violation of this SLA, the Client shall not be entitled to any refund of fees paid. GeoSpatialHosting shall not be liable for any damages or losses incurred by the Client or any third party as a result of such suspension or termination.
+GeoSpatialHosting reserves the absolute right, in its sole discretion, to
+refuse service to any potential client or to suspend or terminate services for
+any existing client found to be in violation of this SLA, including but not
+limited to the AUP. GeoSpatialHosting may take such action immediately and
+without prior notice in cases of severe violations, particularly those
+involving illegal activities or significant harm to GeoSpatialHosting's network
+or reputation. In the event of service termination due to a violation of this
+SLA, the Client shall not be entitled to any refund of fees paid.
+GeoSpatialHosting shall not be liable for any damages or losses incurred by the
+Client or any third party as a result of such suspension or termination.
 
 5.3 **Indemnification**:  
-The Client agrees to indemnify, defend, and hold harmless GeoSpatialHosting, its officers, directors, employees, and agents from and against any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising from or in any way related to the Client's use of the services, content hosted by the Client, any breach of this SLA by the Client, or any act or omission of the Client.
+The Client agrees to indemnify, defend, and hold harmless GeoSpatialHosting,
+its officers, directors, employees, and agents from and against any and all
+claims, damages, losses, liabilities, costs, and expenses (including reasonable
+attorneys' fees) arising from or in any way related to the Client's use of the
+services, content hosted by the Client, any breach of this SLA by the Client,
+or any act or omission of the Client.
 
 ---
 
@@ -183,11 +203,11 @@ Both parties agree to the terms of this SLA by signing below. The Hosting
 Provider entity applicable to this SLA must be selected by marking the checkbox
 in the appropriate column.
 
-| Hosting Provider (Portugal)       | Client                                     |
-|-----------------------------------|--------------------------------------------|
-| ☐ Kartoza, LDA                    | [Client Name]                              |
-| NIPC (Tax ID): 517404885          |                                            |
-| Registered Office:                |                                            |
-| Bloco 1, Caixa 11, Vale de Rodão, | Client Address: [Client Address]           |
-| Distrito: Portalegre,             | Signature: [Signature]                     |
-| Concelho: Marvão, Portugal        | Date: [Date]                               |
+| Hosting Provider (Portugal)       | Client                 |
+|-----------------------------------|------------------------|
+| ☐ Kartoza, LDA                    | [Client Name]          |
+| NIPC (Tax ID): 517404885          |                        |
+| Registered Office:                | Client Address:        |
+| Bloco 1, Caixa 11, Vale de Rodão, | [Client Address]       |
+| Distrito: Portalegre,             | Signature: [Signature] |
+| Concelho: Marvão, Portugal        | Date: [Date]           |

@@ -304,7 +304,7 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
       />
       <AgreementModal
         ref={agreementModalRef}
-        companyName={companyName}
+        company={company}
         paymentMethod={currentMethod}
         isDone={(agreements) => {
           setAgreements(agreements);

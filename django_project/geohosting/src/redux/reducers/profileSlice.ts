@@ -21,6 +21,7 @@ export interface BillingInformation {
 
   // To check if already has code
   erpnext_code?: string;
+  country_name?: string | null;
 }
 
 export interface User {
