@@ -330,6 +330,10 @@ class SalesOrder(ErpModel):
                 TaxesAndCharges.doc_type,
                 taxes_and_charges.erpnext_code
             )
+            taxes = data['data']['taxes']
+            for tax in taxes:
+                tax['included_in_print_rate'] = 1
+                tax['included_in_paid_amount'] = 1
             payload['taxes'] = data['data']['taxes']
         return payload
 

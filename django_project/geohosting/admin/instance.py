@@ -11,18 +11,27 @@ from geohosting.forms.activity.delete_instance import (
 )
 from geohosting.models import Instance, InstanceStatus
 from geohosting_event.admin.log import LogTrackerObjectAdmin
+from geohosting_event.models.log import LogTracker
 
 
 def send_credentials(modeladmin, request, queryset):
     """Send credentials."""
     for config in queryset:
-        config.send_credentials()
+        try:
+            config.send_credentials()
+        except Exception as e:
+            LogTracker.error(config, f'Check instance: {str(e)}')
+            raise e
 
 
 def check_instance(modeladmin, request, queryset):
     """Send instance."""
     for config in queryset:
-        config.checking_server()
+        try:
+            config.checking_server()
+        except Exception as e:
+            LogTracker.error(config, f'Check instance: {str(e)}')
+            raise e
 
 
 def delete_instance(modeladmin, request, queryset):
