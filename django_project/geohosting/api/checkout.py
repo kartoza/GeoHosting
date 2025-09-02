@@ -3,7 +3,6 @@
 import io
 import json
 
-from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
@@ -17,6 +16,7 @@ from geohosting.models.agreement import AgreementDetail, SalesOrderAgreement
 from geohosting.models.company import Company
 from geohosting.models.sales_order import SalesOrder
 from geohosting.validators import name_validator, app_name_validator
+from geohosting_event.models.log import LogTracker
 
 
 def create_agreement(html_content, agreement_id, order):
@@ -75,23 +75,30 @@ class CheckoutAPI(PaymentAPI):
                 company = None
             name_validator(app_name)
             app_name_validator(app_name)
-        except (ValueError, ValidationError) as e:
+        except Exception as e:
+            LogTracker.error(request.user, f'Checkout: {e}')
             return HttpResponseBadRequest(e)
-        package = get_object_or_404(Package, pk=pk)
 
-        # Create order
-        order = SalesOrder.objects.create(
-            package=package,
-            customer=request.user,
-            app_name=app_name,
-            company=company,
-            payment_method=self.payment_method
-        )
-        for agreement_id in agreement_ids:
-            create_agreement(
-                request.data[f'agreement-{agreement_id}'], agreement_id, order
+        try:
+            package = get_object_or_404(Package, pk=pk)
+
+            # Create order
+            order = SalesOrder.objects.create(
+                package=package,
+                customer=request.user,
+                app_name=app_name,
+                company=company,
+                payment_method=self.payment_method
             )
-        return self.get_post(order=order)
+            for agreement_id in agreement_ids:
+                create_agreement(
+                    request.data[f'agreement-{agreement_id}'], agreement_id,
+                    order
+                )
+            return self.get_post(order=order)
+        except Exception as e:
+            LogTracker.error(request.user, f'Checkout: {e}')
+            return HttpResponseBadRequest(e)
 
 
 class CheckoutStripeSessionAPI(PaymentStripeSessionAPI, CheckoutAPI):

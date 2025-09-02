@@ -274,19 +274,19 @@ const EmptyCard: React.FC = () => {
         left={0}
         w="100%"
         h="100%"
+        viewBox="0 0 100 100"
         pointerEvents="none"
+        preserveAspectRatio="none"
       >
         <rect
-          x="1"
-          y="1"
-          width="calc(100% - 2px)"
-          height="calc(100% - 2px)"
+          width="100"
+          height="100"
           fill="none"
           stroke="#cccccc"
-          strokeWidth="2"
-          strokeDasharray="8 6"
-          rx="8"
-          ry="8"
+          strokeWidth="1"
+          strokeDasharray="2"
+          rx="4"
+          ry="4"
         />
       </Box>
 
