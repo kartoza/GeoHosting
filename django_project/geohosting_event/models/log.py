@@ -4,6 +4,8 @@ GeoHosting.
 
 .. note:: Log tracker.
 """
+import traceback
+
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -59,6 +61,9 @@ class LogTracker(models.Model):
     @staticmethod
     def error(instance, note, exception=None):
         """Create log for failed process."""
+        error_trace = traceback.format_exc()
+        if exception:
+            note += '\n' + error_trace
         LogTracker._create_log(instance, LogTracker.ERROR, note)
         if exception:
             raise exception
