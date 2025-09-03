@@ -61,8 +61,8 @@ class LogTracker(models.Model):
     @staticmethod
     def error(instance, note, exception=None):
         """Create log for failed process."""
-        error_trace = traceback.format_exc()
         if exception:
+            error_trace = traceback.format_exc()
             note += '\n' + error_trace
         LogTracker._create_log(instance, LogTracker.ERROR, note)
         if exception:
