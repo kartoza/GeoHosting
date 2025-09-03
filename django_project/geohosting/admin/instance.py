@@ -20,8 +20,7 @@ def send_credentials(modeladmin, request, queryset):
         try:
             config.send_credentials()
         except Exception as e:
-            LogTracker.error(config, f'Check instance: {str(e)}')
-            raise e
+            LogTracker.error(config, f'Check instance: {str(e)}', e)
 
 
 def check_instance(modeladmin, request, queryset):
@@ -30,8 +29,7 @@ def check_instance(modeladmin, request, queryset):
         try:
             config.checking_server()
         except Exception as e:
-            LogTracker.error(config, f'Check instance: {str(e)}')
-            raise e
+            LogTracker.error(config, f'Check instance: {str(e)}', e)
 
 
 def delete_instance(modeladmin, request, queryset):
