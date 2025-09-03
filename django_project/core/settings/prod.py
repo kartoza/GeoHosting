@@ -7,8 +7,11 @@ GeoHosting Controller.
 
 import ast
 
-from .project import *  # noqa
+import sentry_sdk
 from boto3.s3.transfer import TransferConfig
+from sentry_sdk.integrations.django import DjangoIntegration
+
+from .project import *  # noqa
 
 # Comment if you are not running behind proxy
 USE_X_FORWARDED_HOST = True
@@ -67,10 +70,9 @@ LOGGING = {
 # -------------------------------------------------- #
 # ----------            SENTRY          ------------ #
 # -------------------------------------------------- #
-if SENTRY_DSN is not None and SENTRY_DSN.strip():
-    import sentry_sdk
-    from sentry_sdk.integrations.django import DjangoIntegration
+SENTRY_ENVIRONMENT = os.environ.get('SENTRY_ENVIRONMENT', None)
 
+if SENTRY_DSN and SENTRY_DSN != "''":
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[
