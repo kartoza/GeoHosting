@@ -76,7 +76,7 @@ const HomePage: React.FC = () => {
               marginTop="20px"
               paddingX={{ base: 2, md: 50 }}
             >
-              GSH is purpose-built for the spatial world. With more than a decade of expertise, Kartoza has been at the forefront of FOSS software development, hosting, maintenance, and support.
+              GSH is purpose-built for the spatial world. With more than a decade of expertise, Kartoza has been at the forefront of FOSS development, hosting, maintenance, and support.
             </Text>
             <Flex justify="center" align="center"
                   flexDirection={{ base: 'column', md: 'row' }}>
