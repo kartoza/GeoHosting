@@ -95,8 +95,8 @@ const HomePage: React.FC = () => {
                 fontWeight="bold"
                 paddingX={{ base: 2, md: 50 }}
               >
-                Professional GeoSpatial hosting for open-source GIS web
-                applications.
+                Professional Geospatial Hosting for Open-Source GIS Web
+                Applications
               </Text>
             </Container>
             <Wrap spacing="30px" marginY="50px" justify="center" overflowX='visible'>
