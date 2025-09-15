@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
 from geohosting.models import (
-    UserProfile, UserBillingInformation
+    UserProfile, UserBillingInformation, UserPaymentGatewayId
 )
 
 
@@ -38,12 +38,20 @@ class UserBillingInformationInline(admin.StackedInline):
     can_delete = False
 
 
+class UserPaymentGatewayIdInline(admin.StackedInline):
+    model = UserPaymentGatewayId
+    can_delete = False
+
+
 class UserAdmin(BaseUserAdmin):
     list_display = (
         "username", "email", "first_name", "last_name", "is_staff",
         "erpnext_code"
     )
-    inlines = (UserProfileInline, UserBillingInformationInline)
+    inlines = (
+        UserProfileInline, UserBillingInformationInline,
+        UserPaymentGatewayIdInline
+    )
     actions = [push_user_to_erpnext]
 
     def get_inline_instances(self, request, obj=None):

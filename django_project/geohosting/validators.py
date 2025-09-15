@@ -25,8 +25,9 @@ def app_name_validator(app_name):
         raise ValidationError('Application name cannot be empty.')
 
 
-regex_name = r'^[a-z0-9-]*$'
+regex_name = r'^[a-z0-9]+(?:-[a-z0-9]+)*$'
 regex_name_error = (
-    'Name may only contain lowercase letters, numbers or dashes.'
+    'Name may only contain lowercase letters, '
+    'numbers or dashes (not at start or end).'
 )
 name_validator = RegexValidator(regex_name, regex_name_error)

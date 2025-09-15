@@ -199,6 +199,20 @@ class SalesOrder(ErpModel):
         help_text='Invoice id on the payment gateway.'
     )
 
+    # Discounts
+    discount_code = models.CharField(
+        max_length=256,
+        null=True, blank=True
+    )
+    discount_amount = models.IntegerField(
+        null=True, blank=True,
+        help_text='Discount amount if not using percentage.'
+    )
+    discount_percentage = models.IntegerField(
+        null=True, blank=True,
+        help_text='Discount percentage.'
+    )
+
     class Meta:
         verbose_name = 'Sales order'
         verbose_name_plural = 'Sales orders'
@@ -341,7 +355,7 @@ class SalesOrder(ErpModel):
     def erp_payload_for_edit(self):
         """ERP Payload for edit request."""
         order_status_obj = self.sales_order_status_obj
-        return {
+        payload = {
             # status is not billed
             'billing_status': order_status_obj.billing_status,
             # Status waiting bill
@@ -352,6 +366,14 @@ class SalesOrder(ErpModel):
             'docstatus': order_status_obj.doc_status
         }
 
+        # Payload for discount
+        if self.discount_amount:
+            payload['discount_amount'] = self.discount_amount
+        if self.discount_percentage:
+            payload[
+                'additional_discount_percentage'] = self.discount_percentage
+        return payload
+
     @property
     def sales_order_status_obj(self) -> _SalesOrderStatusObject:
         """Return sales order status object."""
@@ -359,6 +381,12 @@ class SalesOrder(ErpModel):
 
     def set_order_status(self, new: _SalesOrderStatusObject):
         """Set order status from _SalesOrderStatusObject."""
+        if new.key == SalesOrderStatus.WAITING_DEPLOYMENT.key:
+            # If order status is waiting payment,
+            # We need to check the discount
+            self.sync_subscription()
+            if self.subscription:
+                pass
         self.order_status = new.key
         self.save()
 
@@ -369,10 +397,10 @@ class SalesOrder(ErpModel):
                 and self.payment_id
         ):
             if self.payment_gateway.payment_verification():
+                self.sync_subscription()
                 self.set_order_status(
                     SalesOrderStatus.WAITING_CONFIGURATION
                 )
-                self.sync_subscription()
 
     @property
     def invoice_url(self):
@@ -444,7 +472,15 @@ class SalesOrder(ErpModel):
                 self.customer
             )
             if subscription:
+                detail = subscription.detail
                 self.subscription = subscription
+                try:
+                    self.discount_code = detail.get('discount_code')
+                    self.discount_amount = detail.get('discount_amount')
+                    self.discount_percentage = detail.get(
+                        'discount_percentage')
+                except KeyError:
+                    pass
                 self.save()
                 self.subscription.sync_subscription()
 

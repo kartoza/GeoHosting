@@ -45,6 +45,9 @@ const ServiceDetail: React.FC = () => {
   const notFound = error === "No Instance matches the given query.";
 
   const specification = instance?.package?.package_group?.specification;
+  const isReady = ![undefined, "Deploying", "Starting Up"].includes(
+    instance?.status,
+  );
 
   const refresh = () => {
     setTimeout(() => {
@@ -227,26 +230,28 @@ const ServiceDetail: React.FC = () => {
       <Box px={4}>
         <Flex align="flex-start" justifyContent="space-between">
           <Box>
-            <Link href={instance.url} target="_blank">
-              <Flex
-                wrap="wrap"
-                gap={1}
-                alignItems="center"
-                color="blue.500"
-                mb={4}
-                title={instance.url}
-              >
-                <FaLink />{" "}
-                <Box
-                  maxWidth={"420px"}
-                  overflow={"hidden"}
-                  textOverflow={"ellipsis"}
-                  whiteSpace={"nowrap"}
+            {isReady && (
+              <Link href={instance.url} target="_blank">
+                <Flex
+                  wrap="wrap"
+                  gap={1}
+                  alignItems="center"
+                  color="blue.500"
+                  mb={4}
+                  title={instance.url}
                 >
-                  {instance.url}
-                </Box>
-              </Flex>
-            </Link>
+                  <FaLink />{" "}
+                  <Box
+                    maxWidth={"420px"}
+                    overflow={"hidden"}
+                    textOverflow={"ellipsis"}
+                    whiteSpace={"nowrap"}
+                  >
+                    {instance.url}
+                  </Box>
+                </Flex>
+              </Link>
+            )}
             <Table variant="noline" width="auto">
               <tbody>
                 <Tr>
@@ -283,33 +288,34 @@ const ServiceDetail: React.FC = () => {
                       : "–"}
                   </Td>
                 </Tr>
-                {instance.applications?.map((application) => {
-                  return (
-                    <Tr>
-                      <Td paddingLeft={0} paddingRight={8}>
-                        <Link href={application.url} target="_blank">
-                          <Flex
-                            wrap="wrap"
-                            gap={1}
-                            direction={{ base: "column", md: "row" }}
-                            color="blue.500"
-                          >
-                            <FaLink /> {application.name}
-                          </Flex>
-                        </Link>
-                      </Td>
-                      <Td>
-                        <Box display="flex" gap={2}>
-                          <InstanceCredential
-                            instance={instance}
-                            product={application.upstream_id}
-                          />
-                          <Box>(username: {application.username})</Box>
-                        </Box>
-                      </Td>
-                    </Tr>
-                  );
-                })}
+                {isReady &&
+                  instance.applications?.map((application) => {
+                    return (
+                      <Tr>
+                        <Td paddingLeft={0} paddingRight={8}>
+                          <Link href={application.url} target="_blank">
+                            <Flex
+                              wrap="wrap"
+                              gap={1}
+                              direction={{ base: "column", md: "row" }}
+                              color="blue.500"
+                            >
+                              <FaLink /> {application.name}
+                            </Flex>
+                          </Link>
+                        </Td>
+                        <Td>
+                          <Box display="flex" gap={2}>
+                            <InstanceCredential
+                              instance={instance}
+                              product={application.upstream_id}
+                            />
+                            <Box>(username: {application.username})</Box>
+                          </Box>
+                        </Td>
+                      </Tr>
+                    );
+                  })}
               </tbody>
             </Table>
           </Box>

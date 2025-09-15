@@ -13,7 +13,8 @@ from geohosting.utils.paystack import (
 from geohosting.utils.stripe import (
     cancel_subscription as cancel_stripe_subscription,
     get_subscription as get_stripe_subscription_detail,
-    get_payment_method_detail as get_stripe_payment_method_detail
+    get_payment_method_detail as get_stripe_payment_method_detail,
+    get_invoice_detail as get_stripe_invoice_detail,
 )
 
 User = get_user_model()
@@ -139,7 +140,10 @@ class SubscriptionData:
             currency: str,
             period: str,
             amount: int,
-            latest_invoice: str
+            latest_invoice: str,
+            discount_amount: float = None,
+            discount_percentage: float = None,
+            discount_code: str = None
     ):
         self.id = id
         self.customer_id = customer_id
@@ -157,6 +161,10 @@ class SubscriptionData:
         ) + timedelta(
             days=pref.grace_period_days
         )
+
+        self.discount_amount = discount_amount
+        self.discount_percentage = discount_percentage
+        self.discount_code = discount_code
 
     @property
     def json(self):
@@ -183,6 +191,9 @@ class SubscriptionData:
             'currency': self.currency.upper(),
             'period': self.period.capitalize(),
             'amount': self.amount,
+            'discount_amount': self.discount_amount,
+            'discount_percentage': self.discount_percentage,
+            'discount_code': self.discount_code,
         }
 
 
@@ -241,13 +252,14 @@ class SubscriptionGateway:
                     invoice_id=subscription_data.latest_invoice
                 )
 
-                # This is for creating if no subscription created
+                # For create new sales order if there is no sales order
+                # For next payment date
                 orders = subscription.salesorder_set.filter(
                     invoice_id__isnull=False
                 )
                 if not orders.filter(
                         invoice_id=subscription_data.latest_invoice
-                ).first():
+                ).first() and orders.last():
                     # Create sales order
                     template = orders.last()
                     template.id = None
@@ -312,6 +324,17 @@ class StripeSubscriptionGateway(SubscriptionGateway):
             amount=subscription['plan']['amount'],
             latest_invoice=subscription['latest_invoice'],
         )
+        # For getting discount
+        if subscription['latest_invoice']:
+            invoice = get_stripe_invoice_detail(subscription['latest_invoice'])
+            try:
+                # Coupon
+                coupon = invoice['discount']['coupon']
+                subscription_data.discount_amount = coupon['amount_off']
+                subscription_data.discount_percentage = coupon['percent_off']
+                subscription_data.discount_code = coupon['name']
+            except Exception:
+                pass
         if return_payment:
             try:
                 payment_method_detail = get_stripe_payment_method_detail(
