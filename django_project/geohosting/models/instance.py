@@ -250,20 +250,30 @@ class Instance(models.Model):
             LogTracker.error(self, f'Check instance: {str(e)}')
             raise e
 
+    def is_server_reached(self) -> bool:
+        """Is server reached."""
+        try:
+            requests.head(self.url, allow_redirects=True)
+        except requests.exceptions.ConnectionError as e:
+            if 'Name or service not known' in f'{e}':
+                return False
+        return True
+
     def checking_server(self):
         """Check server is online or offline."""
-        from geohosting_event.models.webhook import WebhookEvent, WebhookStatus
         # If deleted, no need to check
         if self.status in [InstanceStatus.DELETED]:
             return
 
         # If deleting, we can check the webhook
         if self.status in [InstanceStatus.DELETING]:
-            if WebhookEvent.objects.filter(
-                    activity__instance=self,
-                    data__Status=WebhookStatus.DELETED
-            ).exists():
+            if not self.is_server_reached():
                 self.deleted()
+            return
+
+        if self.status in [InstanceStatus.DEPLOYING]:
+            if self.is_server_reached():
+                self.starting_up()
             return
 
         # Check the server online or offline
