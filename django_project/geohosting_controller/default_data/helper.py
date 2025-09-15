@@ -3,7 +3,7 @@ import json
 from core.settings.utils import absolute_path
 from geohosting.models.cluster import Cluster
 from geohosting.models.region import Region
-from core.models.preferences import Preferences
+
 
 def get_jenkin_activity_types() -> dict:
     """Return jenkins activity types by product name."""
