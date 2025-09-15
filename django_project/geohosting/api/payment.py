@@ -11,7 +11,7 @@ from paystackapi.transaction import Transaction
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from geohosting.models import Package
+from geohosting.models import Package, UserPaymentGatewayId
 from geohosting.models.sales_order import SalesOrder, PaymentMethod
 from geohosting_event.models.log import LogTracker
 
@@ -29,7 +29,7 @@ class PaymentAPI(APIView):
         raise NotImplemented
 
     def create_payload(
-            self, email, package: Package, callback_url
+            self, email, package: Package, callback_url, user=None
     ) -> (int, str):
         """Create payload of data from gateway.
 
@@ -43,7 +43,8 @@ class PaymentAPI(APIView):
         try:
             callback_url = f'{domain}#/orders/{order.id}/deployment'
             _id, payload = self.create_payload(
-                self.request.user.email, order.package, callback_url
+                self.request.user.email, order.package, callback_url,
+                self.request.user
             )
             order.payment_id = _id
             order.payment_method = self.payment_method
@@ -67,7 +68,7 @@ class PaymentAPI(APIView):
             )
             callback_url = f'{domain}#/orders/{order.id}/deployment'
             _id, payload = self.create_payload(
-                request.user.email, package, callback_url
+                request.user.email, package, callback_url, request.user
             )
             order.payment_id = _id
             order.payment_method = self.payment_method
@@ -87,28 +88,51 @@ class PaymentStripeSessionAPI:
     payment_method = PaymentMethod.STRIPE
 
     def create_payload(
-            self, email, package: Package, callback_url
+            self, email, package: Package, callback_url, user
     ) -> (int, str):
         """Create payload of data from gateway.
 
         Return id of payment and string of challenge.
         """
         price_id = package.get_stripe_price_id()
-        checkout = stripe.checkout.Session.create(
-            ui_mode='embedded',
-            customer_email=email,
-            line_items=[
-                {
+        customer_id = None
+        try:
+            customer_id = user.userpaymentgatewayid.stripe
+        except UserPaymentGatewayId.DoesNotExist:
+            pass
+
+        if customer_id:
+            checkout = stripe.checkout.Session.create(
+                ui_mode='embedded',
+                customer=customer_id,
+                line_items=[{
                     'price': price_id,
                     'quantity': 1,
-                },
-            ],
-            payment_method_types=['card'],
-            mode='subscription',
-            return_url=callback_url,
-            billing_address_collection='required',
-            allow_promotion_codes=True,
-        )
+                }],
+                payment_method_types=['card'],
+                mode='subscription',
+                return_url=callback_url,
+                billing_address_collection='required',
+                allow_promotion_codes=True,
+                payment_method_collection="always",
+            )
+        else:
+            checkout = stripe.checkout.Session.create(
+                ui_mode='embedded',
+                customer_email=email,
+                line_items=[
+                    {
+                        'price': price_id,
+                        'quantity': 1,
+                    },
+                ],
+                payment_method_types=['card'],
+                mode='subscription',
+                return_url=callback_url,
+                billing_address_collection='required',
+                allow_promotion_codes=True,
+                payment_method_collection="always",
+            )
         return checkout.id, checkout.client_secret
 
 
@@ -118,7 +142,7 @@ class PaymentPaystackSessionAPI:
     payment_method = PaymentMethod.PAYSTACK
 
     def create_payload(
-            self, email, package: Package, callback_url
+            self, email, package: Package, callback_url, user
     ) -> (int, str):
         """Create payload of data from gateway.
 

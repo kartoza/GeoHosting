@@ -2,6 +2,8 @@ from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 
 from core.models.preferences import Preferences
@@ -141,3 +143,25 @@ class Subscription(models.Model):
                     self.sync_subscription()
             except Exception as e:
                 LogTracker.error(self, f'{e}')
+
+
+# This is for saving customer id of payment gateway
+@receiver(post_save, sender=Subscription)
+def create_name(sender, instance: Subscription, created, **kwargs):
+    from geohosting.models import UserPaymentGatewayId
+    customer = instance.customer
+    if customer:
+        try:
+            customer.userpaymentgatewayid
+        except UserPaymentGatewayId.DoesNotExist:
+            UserPaymentGatewayId.objects.create(user=customer)
+
+        user_payment_id = customer.userpaymentgatewayid
+        if instance.payment_method == PaymentMethod.PAYSTACK:
+            if not user_payment_id.paystack:
+                user_payment_id.paystack = instance.customer_payment_id
+                user_payment_id.save()
+        elif instance.payment_method == PaymentMethod.STRIPE:
+            if not user_payment_id.stripe:
+                user_payment_id.stripe = instance.customer_payment_id
+                user_payment_id.save()

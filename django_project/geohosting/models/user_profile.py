@@ -101,3 +101,13 @@ def save_billing_information(sender, instance, **kwargs):
         instance.userbillinginformation.save()
     except UserBillingInformation.DoesNotExist:
         UserBillingInformation.objects.create(user=instance)
+
+
+class UserPaymentGatewayId(models.Model):
+    """User payment gateway id."""
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE
+    )
+    stripe = models.TextField(blank=True, null=True)
+    paystack = models.TextField(blank=True, null=True)

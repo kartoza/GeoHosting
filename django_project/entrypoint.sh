@@ -19,7 +19,6 @@ npm run build-react
 cd /home/web/django_project
 echo 'Running initialize.py...'
 python -u initialize.py
-python manage.py migrate
 
 echo "-----------------------------------------------------"
 echo "FINISHED DJANGO ENTRYPOINT --------------------------"
