@@ -133,6 +133,8 @@ const SignaturePad = ({ onChange }) => {
         penColor="black"
         onEnd={handleSignatureEnd}
         canvasProps={{
+          width: 400,
+          height: 200,
           className: "border rounded-lg shadow-md",
         }}
       />
