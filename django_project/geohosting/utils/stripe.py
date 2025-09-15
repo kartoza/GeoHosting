@@ -65,6 +65,14 @@ def get_checkout_detail(checkout_id):
         return None
 
 
+def get_invoice_detail(invoice_id):
+    """Return invoice detail."""
+    try:
+        return stripe.Invoice.retrieve(invoice_id)
+    except Exception:
+        return None
+
+
 def get_subscription_detail_from_payment(checkout_id):
     """Return subscription detail."""
     try:

@@ -86,6 +86,14 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
             }
         ),
         (
+            'Discount',
+            {
+                'fields': (
+                    'discount_code', 'discount_amount', 'discount_percentage'
+                )
+            }
+        ),
+        (
             'Instance',
             {
                 'fields': ('app_name', 'instance')

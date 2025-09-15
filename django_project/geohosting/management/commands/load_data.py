@@ -39,10 +39,16 @@ class Command(BaseCommand):
         for product in Product.objects.all():
             if product.name.lower() == 'geoserver':
                 product.vault_path = '/geohosting/geoserver/geoserver-creds-'
+                product.username_credential = 'admin'
+                product.password_key_on_vault = 'GEOSERVER_ADMIN_PASSWORD'
             elif product.name.lower() == 'geonode':
                 product.vault_path = '/geohosting/geonode/geonode-creds-'
+                product.username_credential = 'admin'
+                product.password_key_on_vault = 'ADMIN_PASSWORD'
             elif product.name.lower() == 'g3w':
                 product.vault_path = '/geohosting/g3wsuite/g3wsuite-creds-'
+                product.username_credential = 'admin'
+                product.password_key_on_vault = 'G3WSUITE_ADMIN_PASS'
             product.save()
 
         # Update cluster
