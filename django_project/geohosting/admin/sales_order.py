@@ -56,7 +56,7 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
         'activities', 'logs'
     )
     list_filter = ('order_status', 'payment_method',)
-    search_fields = ('erpnext_code', 'instance__name')
+    search_fields = ('erpnext_code', 'instance__name', 'customer__email')
     actions = [
         push_to_erp, update_payment_status,
         sync_subscriptions, auto_deploy

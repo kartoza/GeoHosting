@@ -1,11 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import {
-  Box,
-  ChakraProvider,
-  Container,
-  Flex,
-  Spinner,
-} from "@chakra-ui/react";
+import { Box, ChakraProvider, Container, Flex } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import customTheme from "../../../theme/theme";
@@ -17,6 +11,7 @@ import { fetchSalesOrderDetail } from "../../../redux/reducers/ordersSlice";
 import { checkCheckoutUrl } from "../utils";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import Footer from "../../../components/Footer/Footer";
+import CheckoutDeployment from "./CheckoutDeployment";
 
 interface Props {
   activeStep: number;
@@ -77,27 +72,7 @@ const Index: React.FC<Props> = ({
                 });
               })
             ) : (
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                justifyContent={"center"}
-                width={"100%"}
-                height={"100%"}
-                alignItems={"center"}
-                p={24}
-              >
-                <Spinner size="xl" color="orange.500" />
-                <Box
-                  color="orange.500"
-                  fontSize="lg"
-                  fontWeight="bold"
-                  mt={8}
-                  textAlign={"center"}
-                >
-                  Please wait while we verify your payment and prepare your
-                  product. <Box>This may take a moment.</Box>
-                </Box>
-              </Box>
+              <CheckoutDeployment />
             )}
           </Container>
         </Box>
