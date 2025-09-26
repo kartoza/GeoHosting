@@ -55,6 +55,12 @@ services:
     entrypoint: [ ]
     ports:
       - "9000:9000"
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:9000" ]
+      interval: 5s
+      timeout: 2s
+      retries: 200
+      start_period: 5s
 
   dev:
     build:
@@ -97,3 +103,6 @@ services:
       - worker
       - webpack
     entrypoint: [ ]
+    depends_on:
+      webpack:
+        condition: service_healthy
