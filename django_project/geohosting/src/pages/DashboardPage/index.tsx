@@ -11,7 +11,7 @@ import DashboardPageContent from "./DashboardPageContent";
 import SupportList from "./Support/SupportList";
 import ServiceDetail from "./Services/ServiceDetail";
 
-const DashboardPage = ({ title = "Dashboard" }) => {
+const Index = ({ title = "Dashboard" }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -89,4 +89,4 @@ const DashboardPage = ({ title = "Dashboard" }) => {
   );
 };
 
-export default DashboardPage;
+export default Index;

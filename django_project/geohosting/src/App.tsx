@@ -8,8 +8,9 @@ import TokenValidator from "./components/TokenValidator/TokenValidator";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
 
-const HomePage = lazy(() => import("./pages/HomePage/HomePage"));
-const DashboardPage = lazy(() => import("./pages/DashboardPage/DashboardPage"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const SalesOrderCheckout = lazy(
   () => import("./pages/CheckoutPage/SalesOrderCheckout"),
@@ -27,9 +28,9 @@ const CheckoutFinish = lazy(
   () => import("./pages/CheckoutPage/SalesOrderCheckout/CheckoutFinish"),
 );
 const ResetPasswordPage = lazy(
-  () => import("./pages/ResetPasswordPage/ResetPasswordPage"),
+  () => import("./pages/ResetPasswordPage"),
 );
-const OverviewPage = lazy(() => import("./pages/OverviewPage/OverviewPage"));
+const OverviewPage = lazy(() => import("./pages/OverviewPage"));
 
 /** Global decalrations **/
 declare global {
@@ -115,6 +116,9 @@ const App: React.FC = () => {
             />
             {/* ----------------------------- */}
             <Route path="/app/:appName" element={<OverviewPage />} />
+
+            {/* 404 Not Found route */}
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Suspense>
         <ToastContainer hideProgressBar={true} newestOnTop={true} />
