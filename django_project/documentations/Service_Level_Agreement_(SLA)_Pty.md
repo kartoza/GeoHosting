@@ -62,8 +62,8 @@ The Hosting Provider guarantees the following additional performance metrics:
 - **Bandwidth**: A minimum bandwidth of 1000 Mbps will be maintained for all
   hosted connections.
 
-2.3 **Incident Prioritization and Response Times**:  
-Incidents are categorized as follows, with corresponding response and
+2.3 **Incident Prioritisation and Response Times**:  
+Incidents are categorised as follows, with corresponding response and
 resolution times:
 
 | **Priority** | **Definition**                    | **Response Time**      | **Resolution Time** |
@@ -75,7 +75,7 @@ resolution times:
 
 2.4 **Disaster Recovery**:
 
-- **RTO**: Restoration of services within 4 hours.
+- **RTO**: Restoration of services within next business day.
 - **RPO**: Data restored to within 24 hours of the last backup (our database
   backups are made nightly).
 
@@ -115,20 +115,22 @@ The SLA does not apply to:
 4.2 **Encryption Standards**:
 
 - Data in transit is encrypted using TLS 1.2 or higher.
-- Data at rest is encrypted using AES-256 encryption or an equivalent standard.
 
 4.3 **Data Backup Policy**:
 
 - Full backups of all Client data are performed every 24 hours.
 - Backups are retained for a period of 30 days.
-- Restoration requests initiated by the Client will be processed within 24
-  hours.
+- Restoration requests initiated by the Client will be processed within the next business day after acceptance of estimated quote.
 
 4.4 **Ownership and Portability**:
 
 - The Client retains full ownership of their data.
 - Upon termination, the Hosting Provider will provide the Client with a
-  complete export of their data in a mutually agreed format within 30 days.
+  complete export of their data in a the following formats within 30 days:
+  
+     a. Daily CNPG Backups: These are full database snapshots stored in S3
+     b. WAL Archiving: This continuously streams every change so we can restore the database to any second in time between backups(Point-In-Time Recovery (PITR).
+     c. Velero Backups: The backup of the Kubernetes persistet volume data, configurations and secrets (clusterwide backup)
 
 4.5 **Indemnity**:  
 The Client shall indemnify and hold harmless the Hosting Provider against any
