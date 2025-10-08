@@ -128,9 +128,9 @@ The SLA does not apply to:
 - Upon termination, the Hosting Provider will provide the Client with a
   complete export of their data in a the following formats within 30 days:
   
-     a. Daily CNPG Backups: These are full database snapshots stored in S3
-     b. WAL Archiving: This continuously streams every change so we can restore the database to any second in time between backups(Point-In-Time Recovery (PITR).
-     c. Velero Backups: The backup of the Kubernetes persistet volume data, configurations and secrets (clusterwide backup)
+    a. Daily CNPG Backups: These are full database snapshots stored in S3
+    b. WAL Archiving: This continuously streams every change so we can restore the database to any second in time between backups(Point-In-Time Recovery (PITR).
+    c. Velero Backups: The backup of the Kubernetes persistet volume data, configurations and secrets (cluster-wide backup).
 
 4.5 **Indemnity**:  
 The Client shall indemnify and hold harmless the Hosting Provider against any
