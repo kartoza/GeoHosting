@@ -3,6 +3,7 @@ version: '3.9'
 volumes:
   database:
   static-data:
+  redis-data:
 
 x-common-django:
   &default-common-django
@@ -15,9 +16,15 @@ x-common-django:
 
 services:
   redis:
-    image: bitnami/redis:7.0.2
-    environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-redis_password}
+    image: redis:8.0.4-alpine
+    command: [
+      "redis-server",
+      "--appendonly", "yes",
+      "--appendfilename", "appendonly.aof",
+      "--requirepass", "${REDIS_PASSWORD:-redis_password}"
+    ]
+    volumes:
+      - redis-data:/data
 
   db:
     image: kartoza/postgis:16-3.4
