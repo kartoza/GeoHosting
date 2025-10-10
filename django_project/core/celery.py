@@ -12,7 +12,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
 # Get the base REDIS URL, default to redis
 BASE_REDIS_URL = (
-    f'redis://redis:{os.environ.get("REDIS_PASSWORD", "")}'
+    f'redis://default:{os.environ.get("REDIS_PASSWORD", "")}'
     f'@{os.environ.get("REDIS_HOST", "")}',
 )
 
