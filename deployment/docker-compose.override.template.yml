@@ -1,5 +1,8 @@
 version: '3.9'
 services:
+  redis:
+    volumes:
+      - ./volumes/redis:/data
   db:
     volumes:
       - ./volumes/database:/opt/postgres/data
