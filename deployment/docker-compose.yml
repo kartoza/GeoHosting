@@ -23,6 +23,8 @@ services:
       "--appendfilename", "appendonly.aof",
       "--requirepass", "${REDIS_PASSWORD:-redis_password}"
     ]
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-redis_password}
     volumes:
       - redis-data:/data
 
