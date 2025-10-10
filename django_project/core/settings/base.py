@@ -129,13 +129,14 @@ INSTALLED_APPS = (
 )
 
 SITE_ID = 1
+CELERY_BROKER_REDIS_URL = (
+    f'redis://default:{os.environ.get("REDIS_PASSWORD", "")}'
+    f'@{os.environ.get("REDIS_HOST", "")}',
+)
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': (
-            f'redis://default:{os.environ.get("REDIS_PASSWORD", "")}'
-            f'@{os.environ.get("REDIS_HOST", "")}',
-        )
+        'LOCATION': CELERY_BROKER_REDIS_URL
     }
 }
 
