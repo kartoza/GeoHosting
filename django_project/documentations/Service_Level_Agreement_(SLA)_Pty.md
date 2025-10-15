@@ -75,8 +75,8 @@ resolution times:
 
 2.4 **Disaster Recovery**:
 
-- **RTO**: Restoration of services within next business day.
-- **RPO**: Data restored to within 24 hours of the last backup (our database
+- Restoration of services within next business day (SAST).
+- Data restored to within 24 hours of the last backup (our database
   backups are made nightly).
 
 2.5 **Performance Disclaimer**:  
@@ -99,7 +99,7 @@ The SLA does not apply to:
   third-party integrations, plugins, or hosting dependencies outside the
   Hosting Provider’s control.
 - **Force Majeure**: Events beyond reasonable control, such as natural
-  disasters, government actions, or cyberattacks.
+  disasters, government actions, or cyber attacks.
 
 ---
 
@@ -125,12 +125,6 @@ The SLA does not apply to:
 4.4 **Ownership and Portability**:
 
 - The Client retains full ownership of their data.
-- Upon termination, the Hosting Provider will provide the Client with a
-  complete export of their data in a the following formats within 30 days:
-  
-    a. Daily CNPG Backups: These are full database snapshots stored in S3
-    b. WAL Archiving: This continuously streams every change so we can restore the database to any second in time between backups(Point-In-Time Recovery (PITR).
-    c. Velero Backups: The backup of the Kubernetes persistet volume data, configurations and secrets (cluster-wide backup).
 
 4.5 **Indemnity**:  
 The Client shall indemnify and hold harmless the Hosting Provider against any
