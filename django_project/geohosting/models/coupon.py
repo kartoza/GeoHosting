@@ -78,6 +78,14 @@ class Coupon(models.Model):
         """Return coupon name."""
         return self.name
 
+    def discount_text(self):
+        """Return discount text."""
+        if self.discount_percentage:
+            return f'{self.discount_percentage}%'
+        elif self.discount_amount:
+            return f'{self.discount_amount} {self.currency}'
+        return 'N/A'
+
     def sync_stripe(self):
         """Sync stripe."""
         if not self.stripe_id:
@@ -138,6 +146,7 @@ class CouponCode(models.Model):
                 context={
                     'code': code,
                     'support_email': pref.support_email,
+                    'discount_text': self.coupon.discount_text(),
                 }
             )
 
