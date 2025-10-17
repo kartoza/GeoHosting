@@ -14,6 +14,7 @@ import string
 import stripe
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from core.models.preferences import Preferences
@@ -64,7 +65,8 @@ class Coupon(models.Model):
         null=True, blank=True
     )
     duration = models.IntegerField(
-        help_text='Duration of coupon code group in months.'
+        help_text='Duration of coupon code group in months.',
+        validators=[MinValueValidator(1)]
     )
     stripe_id = models.CharField(max_length=256, null=True, blank=True)
     paystack_id = models.CharField(max_length=256, null=True, blank=True)
