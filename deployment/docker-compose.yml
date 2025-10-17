@@ -21,7 +21,7 @@ services:
       "redis-server",
       "--appendonly", "yes",
       "--appendfilename", "appendonly.aof",
-      "--requirepass", "${REDIS_PASSWORD:-redis_password}"
+      "--requirepass", "${REDIS_PASSWORD}"
     ]
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-redis_password}

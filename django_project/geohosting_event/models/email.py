@@ -17,6 +17,7 @@ class EmailCategory:
 
     INSTANCE_NOTIFICATION = 'Instance Notification'
     SUBSCRIPTION_REMINDER = 'Subscription Remainder'
+    COUPON = 'Coupon'
 
 
 class EmailEvent(models.Model):
