@@ -48,7 +48,8 @@ class Coupon(models.Model):
         validators=[validate_coupon_name],
         help_text=(
             'Name may only contain letters, numbers, and hyphens (-). '
-            'It cannot start or end with a hyphen, nor contain consecutive hyphens.'
+            'It cannot start or end with a hyphen, '
+            'nor contain consecutive hyphens.'
         ),
     )
     created_at = models.DateTimeField(auto_now_add=True)
@@ -91,7 +92,9 @@ class Coupon(models.Model):
                 params["currency"] = self.currency
             else:
                 raise ValueError(
-                    "Coupon must have either discount_percentage or discount_amount")
+                    "Coupon must have either "
+                    "discount_percentage or discount_amount"
+                )
 
             stripe_coupon = stripe.Coupon.create(**params)
             self.stripe_id = stripe_coupon.id
@@ -138,7 +141,7 @@ class CouponCode(models.Model):
 
             # Create the email message
             EmailEvent.send_email(
-                subject=f'You have received a promotional coupon code',
+                subject='You have received a promotional coupon code',
                 body=html_content,
                 to=[self.email],
                 category=EmailCategory.COUPON,

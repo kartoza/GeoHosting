@@ -78,6 +78,7 @@ def send_email(modeladmin, request, queryset):
 @admin.register(CouponCode)
 class CouponCodeAdmin(admin.ModelAdmin):
     """Coupon code admin."""
+
     list_display = (
         'coupon', 'email', 'stripe_code', 'paystack_code'
     )
@@ -94,6 +95,7 @@ def sync_stripe(modeladmin, request, queryset):
 @admin.register(Coupon)
 class CouponAdmin(admin.ModelAdmin):
     """Coupon admin."""
+
     list_display = (
         'name', 'discount_percentage', 'discount_amount', 'currency',
         'duration', 'coupon_count', 'stripe_id', 'paystack_id'

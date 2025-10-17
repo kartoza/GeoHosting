@@ -91,7 +91,8 @@ class CreateCouponForm(EditCouponForm):
 
         if not discount_percentage and not discount_amount:
             raise forms.ValidationError(
-                'You must specify either a discount percentage or a discount amount.'
+                'You must specify either '
+                'a discount percentage or a discount amount.'
             )
 
         if discount_amount and not currency:
