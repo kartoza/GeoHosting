@@ -90,7 +90,7 @@ class Coupon(models.Model):
             if self.discount_percentage:
                 params["percent_off"] = self.discount_percentage
             elif self.discount_amount:
-                params["amount_off"] = self.discount_amount
+                params["amount_off"] = self.discount_amount * 100
                 params["currency"] = self.currency
             else:
                 raise ValueError(
