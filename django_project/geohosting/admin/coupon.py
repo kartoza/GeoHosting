@@ -1,5 +1,4 @@
-from django.contrib import admin
-from django.db.models import Q
+from django.contrib import admin, messages
 from django.urls import reverse
 from django.utils.html import format_html
 
@@ -7,52 +6,6 @@ from geohosting.forms.coupon import CreateCouponForm, EditCouponForm
 from geohosting.models.coupon import CouponCode, Coupon
 from geohosting.tasks.coupon import sync_stripe_coupon
 from geohosting_event.models.log import LogTracker
-
-
-class StripeCodeFilter(admin.SimpleListFilter):
-    """Stripe code filter."""
-
-    title = 'Stripe Code'
-    parameter_name = 'stripe_code_status'
-
-    def lookups(self, request, model_admin):
-        return [
-            ('has', 'Has Stripe Code'),
-            ('none', 'No Stripe Code'),
-        ]
-
-    def queryset(self, request, queryset):
-        if self.value() == 'has':
-            return queryset.exclude(stripe_code__isnull=True).exclude(
-                stripe_code__exact='')
-        if self.value() == 'none':
-            return queryset.filter(
-                Q(stripe_code__isnull=True) | Q(stripe_code__exact='')
-            )
-        return queryset
-
-
-class PaystackCodeFilter(admin.SimpleListFilter):
-    """Paystack code filter."""
-
-    title = 'Paystack Code'
-    parameter_name = 'paystack_code_status'
-
-    def lookups(self, request, model_admin):
-        return [
-            ('has', 'Has Paystack Code'),
-            ('none', 'No Paystack Code'),
-        ]
-
-    def queryset(self, request, queryset):
-        if self.value() == 'has':
-            return queryset.exclude(paystack_code__isnull=True).exclude(
-                paystack_code__exact='')
-        if self.value() == 'none':
-            return queryset.filter(
-                Q(paystack_code__isnull=True) | Q(paystack_code__exact='')
-            )
-        return queryset
 
 
 @admin.action(description="Sync stripe")
@@ -63,6 +16,27 @@ def sync_coupon_code_stripe(modeladmin, request, queryset):
             config.sync_stripe()
         except Exception as e:
             LogTracker.error(config, f'Sync stripe: {str(e)}', e)
+
+
+@admin.action(description="Sync paystack")
+def sync_coupon_code_paystack(modeladmin, request, queryset):
+    """Sync stripe."""
+    for coupon_code in queryset:
+        if (
+                coupon_code.coupon.currency and
+                coupon_code.coupon.currency != "ZAR"
+        ):
+            messages.error(
+                request,
+                f'Currency {coupon_code.coupon.currency} '
+                f'is not supported for Paystack'
+            )
+            continue
+
+        try:
+            coupon_code.sync_paystack()
+        except Exception as e:
+            LogTracker.error(coupon_code, f'Sync paystack: {str(e)}', e)
 
 
 @admin.action(description="Send email")
@@ -80,10 +54,10 @@ class CouponCodeAdmin(admin.ModelAdmin):
     """Coupon code admin."""
 
     list_display = (
-        'coupon', 'email', 'stripe_code', 'paystack_code'
+        'coupon', 'email', 'code', 'stripe_active', 'paystack_active'
     )
-    list_filter = ('coupon', StripeCodeFilter, PaystackCodeFilter)
-    actions = (sync_coupon_code_stripe, send_email)
+    list_filter = ('coupon', 'stripe_active', 'paystack_active')
+    actions = (sync_coupon_code_stripe, sync_coupon_code_paystack, send_email)
 
 
 def sync_stripe(modeladmin, request, queryset):
@@ -92,15 +66,27 @@ def sync_stripe(modeladmin, request, queryset):
         sync_stripe_coupon.delay(config.id)
 
 
+def sync_paystack(modeladmin, request, queryset):
+    """Sync paystack."""
+    for coupon in queryset:
+        if coupon.currency and coupon.currency != "ZAR":
+            messages.error(
+                request,
+                f'Currency {coupon.currency} '
+                f'is not supported for Paystack'
+            )
+            continue
+        coupon.sync_paystack()
+
+
 @admin.register(Coupon)
 class CouponAdmin(admin.ModelAdmin):
     """Coupon admin."""
-
     list_display = (
         'name', 'discount_percentage', 'discount_amount', 'currency',
         'duration', 'coupon_count', 'stripe_id', 'paystack_id'
     )
-    actions = (sync_stripe,)
+    actions = (sync_stripe, sync_paystack)
 
     def get_form(self, request, obj=None, **kwargs):
         if obj is None:

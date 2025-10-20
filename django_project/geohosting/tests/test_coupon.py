@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
+from django.urls import reverse
 from rest_framework.test import APITestCase
 
 from geohosting.forms.coupon import CreateCouponForm
+from geohosting.models.coupon import Coupon, CouponCode
 
 
 class InstanceViewSetTests(APITestCase):
@@ -163,3 +165,35 @@ class InstanceViewSetTests(APITestCase):
 
         form = CreateCouponForm(data=data)
         self.assertTrue(form.is_valid())
+
+    def test_coupon_code_check(self):
+        """Test coupon code check."""
+        url = reverse('coupon-code-check-paystack')
+        coupon = Coupon.objects.create(
+            name="MONTHEUR",
+            discount_percentage=10,
+            duration=1
+        )
+        code_1 = CouponCode.objects.create(
+            coupon=coupon
+        )
+        code_1.sync_paystack()
+        code_2 = CouponCode.objects.create(
+            coupon=coupon
+        )
+        code_2.sync_paystack()
+        code_2.paystack_active = False
+        code_2.save()
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 405)
+        response = self.client.post(url, {})
+        self.assertEqual(response.status_code, 400)
+        response = self.client.post(url, {
+            "coupon_code": code_2.code
+        })
+        self.assertEqual(response.status_code, 404)
+        response = self.client.post(url, {
+            "coupon_code": code_1.code
+        })
+        self.assertEqual(response.status_code, 200)

@@ -142,7 +142,11 @@ class Package(models.Model):
     paystack_id = models.CharField(
         blank=True,
         null=True,
-        help_text='Price id on the paystack.'
+        help_text=(
+            'Price id on the paystack.'
+            'This is for the product on the storefront. '
+            'We split using the product because we need to apply .'
+        )
     )
 
     # Package group that basically grouping by the variant
@@ -194,27 +198,20 @@ class Package(models.Model):
     def _create_paystack_price_id(self, email):
         """Create price id on paystack."""
         features = []
+        paystack_id = None
         try:
             features = self.feature_list['spec']
         except KeyError:
             pass
-        # TODO: Always create new plan
-        # if self.price and not self.paystack_id:
         if self.price:
             now = int(timezone.now().timestamp())
-            self.paystack_id = create_paystack_price(
+            paystack_id = create_paystack_price(
                 f'{self.name} - {email} - {now}', self.currency, self.price,
                 self.periodicity,
                 features
             )
-            self.save()
-        return self.paystack_id
+        return paystack_id
 
     def get_paystack_price_id(self, email):
         """Return price id on paystack."""
-        # TODO: Paystack price plan is created everytime
-        #  As it does not able to have multiple subscription with one plan
-        # if not self.paystack_id:
-        #     self._create_paystack_price_id()
-        # return self.paystack_id
         return self._create_paystack_price_id(email)

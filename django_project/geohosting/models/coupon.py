@@ -80,10 +80,16 @@ class Coupon(models.Model):
 
     def discount_text(self):
         """Return discount text."""
+        durations = ""
+        if self.duration:
+            if self.duration == 1:
+                durations = "for 1 month"
+            else:
+                durations = f'for {self.duration} months'
         if self.discount_percentage:
-            return f'{self.discount_percentage}%'
+            return f'{self.discount_percentage}% {durations}'
         elif self.discount_amount:
-            return f'{self.discount_amount} {self.currency}'
+            return f'{self.discount_amount} {self.currency} {durations}'
         return 'N/A'
 
     def sync_stripe(self):
@@ -110,34 +116,42 @@ class Coupon(models.Model):
             self.stripe_id = stripe_coupon.id
             self.save()
 
+    def sync_paystack(self):
+        """Sync stripe."""
+        for coupon_code in self.couponcode_set.all():
+            coupon_code.sync_paystack()
+
 
 class CouponCode(models.Model):
     """Coupon code model."""
 
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
     email = models.EmailField()
-    stripe_code = models.CharField(max_length=256, null=True, blank=True)
-    paystack_code = models.CharField(max_length=256, null=True, blank=True)
+    code = models.CharField(max_length=256, null=True, blank=True)
+    stripe_active = models.BooleanField(default=False)
+    paystack_active = models.BooleanField(default=False)
+    code_used_on_paystack = models.BooleanField(default=False)
 
-    def create_stripe_code(self):
+    def create_code(self):
         """Create stripe code."""
+        if self.code:
+            return self.code
+
         code = ''.join(
             random.choices(string.ascii_letters + string.digits, k=5)
         )
         code = f'{self.coupon.name}-{code}'
         code = code.upper()
-        if CouponCode.objects.filter(stripe_code=code).exists():
-            return self.create_stripe_code()
+        if CouponCode.objects.filter(code=code).exists():
+            return self.create_code()
+        self.code = code
+        self.save()
         return code
 
     def send_email(self):
         """Send email."""
         from django.template.loader import render_to_string
-        code = None
-        if self.stripe_code:
-            code = self.stripe_code
-        elif self.paystack_code:
-            code = self.paystack_code
+        code = self.code
 
         if code:
             pref = Preferences.load()
@@ -161,10 +175,11 @@ class CouponCode(models.Model):
 
     def sync_stripe(self):
         """Sync stripe."""
-        if not self.stripe_code:
+        if not self.stripe_active:
             if not self.coupon.stripe_id:
                 self.coupon.sync_stripe()
-            code = self.create_stripe_code()
+
+            code = self.create_code()
             promotion_code = stripe.PromotionCode.create(
                 coupon=self.coupon.stripe_id,
                 code=code,
@@ -172,6 +187,15 @@ class CouponCode(models.Model):
                 max_redemptions=1
             )
             if promotion_code.id:
-                self.stripe_code = code
+                self.stripe_active = True
                 self.save()
                 self.send_email()
+
+    def sync_paystack(self):
+        """Sync paystack."""
+        if not self.code:
+            code = self.create_code()
+        if not self.paystack_active:
+            self.paystack_active = True
+            self.save()
+            self.send_email()
