@@ -371,7 +371,8 @@ class SalesOrder(ErpModel):
             payload['discount_amount'] = self.discount_amount
         if self.discount_percentage:
             payload[
-                'additional_discount_percentage'] = self.discount_percentage
+                'additional_discount_percentage'
+            ] = self.discount_percentage
         return payload
 
     @property
@@ -478,7 +479,8 @@ class SalesOrder(ErpModel):
                     self.discount_code = detail.get('discount_code')
                     self.discount_amount = detail.get('discount_amount')
                     self.discount_percentage = detail.get(
-                        'discount_percentage')
+                        'discount_percentage'
+                    )
                 except KeyError:
                     pass
                 self.save()

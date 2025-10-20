@@ -94,7 +94,7 @@ class Subscription(models.Model):
         return timezone.now() >= self.current_expiry_at
 
     @property
-    def detail(self) -> bool:
+    def detail(self) -> dict:
         """Remote detail data."""
         if self.payment_gateway.get_subscription_data():
             return self.payment_gateway.get_subscription_data().json
