@@ -117,6 +117,16 @@ class Instance(models.Model):
         """Return url."""
         return f'https://{self.name}.{self.cluster.domain}'
 
+    @property
+    def url_check(self):
+        """Return url."""
+        addon = self.price.product.productaddon_set.filter(
+            is_instance_check=True
+        ).first()
+        if addon:
+            return addon.addon_url(self)
+        return self.url
+
     def _change_status(self, status):
         """Change status."""""
         if self.status == status:
@@ -242,7 +252,7 @@ class Instance(models.Model):
     def is_server_online(self) -> bool:
         """Is server online."""
         try:
-            response = requests.head(self.url, allow_redirects=True)
+            response = requests.head(self.url_check, allow_redirects=True)
             return response.status_code in [200]
         except requests.exceptions.ConnectionError:
             return False
@@ -253,7 +263,7 @@ class Instance(models.Model):
     def is_server_reached(self) -> bool:
         """Is server reached."""
         try:
-            requests.head(self.url, allow_redirects=True)
+            requests.head(self.url_check, allow_redirects=True)
         except requests.exceptions.ConnectionError as e:
             if 'Name or service not known' in f'{e}':
                 return False

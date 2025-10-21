@@ -108,8 +108,6 @@ def sync_product_metadata():
             }
         )
         product.is_add_on = value['is_add_on']
-        if product.url_as_addon is None:
-            product.url_as_addon = value['url_as_addon']
         if product.vault_path is None:
             product.vault_path = value['vault_path']
         if product.username_credential is None:
@@ -117,11 +115,3 @@ def sync_product_metadata():
         if product.password_key_on_vault is None:
             product.password_key_on_vault = value['password_key_on_vault']
         product.save()
-
-        for add_on in value.get('add_on', []):
-            try:
-                product.add_on.add(
-                    Product.objects.get(upstream_id=add_on),
-                )
-            except Product.DoesNotExist:
-                pass
