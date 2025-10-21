@@ -130,11 +130,11 @@ The SLA does not apply to:
 
 ## 8. Acceptance
 
-Both parties agree to the terms of this SLA by signing below. 
+Both parties agree to the terms of this SLA by signing below. The Hosting Provider entity applicable to this SLA must be selected by marking the checkbox in the appropriate column.
 
 | Hosting Provider (South Africa)  | Client                                     |
 |----------------------------------|--------------------------------------------|
-| Kartoza Lda                      | [Client Name]                              |
+| ☐ Kartoza Lda                   | [Client Name]                              |
 | NIPC (Tax ID): 517404885         |                                            |
 | Registered Office:               |                                            |
 | Bloco 1, Caixa 11, Vale de Rodão,| Client Address: [Client Address]           |
