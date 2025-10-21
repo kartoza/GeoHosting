@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from geohosting.models import Package, UserPaymentGatewayId
+from geohosting.models.coupon import CouponCode
 from geohosting.models.sales_order import SalesOrder, PaymentMethod
 from geohosting_event.models.log import LogTracker
 
@@ -148,7 +149,24 @@ class PaymentPaystackSessionAPI:
 
         Return id of payment and string of challenge.
         """
-        plan = Plan.get(package.get_paystack_price_id(email))
+        coupon_code = None
+        coupon_code_text = self.request.data.get('coupon_code')
+        if coupon_code_text:
+            coupon_code = CouponCode.query_active(coupon_code_text).first()
+            if not coupon_code:
+                LogTracker.error(
+                    package,
+                    f'Coupon code : {coupon_code_text} is not valid.'
+                )
+                raise ValueError(f'Invalid coupon code: {coupon_code_text}')
+
+        price = float(package.price * 100)
+        metadata = {}
+        if coupon_code:
+            metadata = coupon_code.metadata(price)
+            price = metadata['discounted_amount']
+
+        plan = Plan.get(package.get_paystack_price_id(email, metadata))
         try:
             plan = plan['data']
         except KeyError as e:
@@ -157,8 +175,9 @@ class PaymentPaystackSessionAPI:
 
         transaction = Transaction.initialize(
             email=email,
-            amount=float(package.price * 100),
-            plan=plan['plan_code']
+            amount=price,
+            plan=plan['plan_code'],
+            metadata=metadata,
         )
         try:
             transaction = transaction['data']

@@ -24,6 +24,7 @@ from geohosting.api.subscription import SubscriptionSetView
 from geohosting.api.subscription_changes import (
     SubscriptionStripeChangeAPI, SubscriptionPaystackChangeAPI
 )
+from geohosting.api.coupon import CheckPaystackCoupon
 from geohosting.api.support import TicketSetView, AttachmentSetView
 from geohosting.api.token import CreateToken
 from geohosting.api.user import UserProfileView, ChangePasswordView
@@ -117,8 +118,16 @@ subscription_changes = [
         name='payment-changes-paystack-session'
     ),
 ]
+coupon_code_check = [
+    path(
+        'paystack/',
+        CheckPaystackCoupon.as_view(),
+        name='coupon-code-check-paystack'
+    )
+]
 
 api = [
+    path('coupon-check/', include(coupon_code_check)),
     path('subscription/<pk>/payment-changes/', include(subscription_changes)),
     path('webhook/', WebhookView.as_view(), name='webhook-api'),
     path(

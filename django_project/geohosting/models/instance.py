@@ -257,6 +257,8 @@ class Instance(models.Model):
         except requests.exceptions.ConnectionError as e:
             if 'Name or service not known' in f'{e}':
                 return False
+            if 'No address associated with hostname' in f'{e}':
+                return False
         return True
 
     def checking_server(self):

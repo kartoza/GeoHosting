@@ -37,6 +37,7 @@ def create_stripe_price(modeladmin, request, queryset):
 
 
 def create_paystack_price(modeladmin, request, queryset):
+    """Create paystack price."""
     for package in queryset:
         package.get_paystack_price_id()
 

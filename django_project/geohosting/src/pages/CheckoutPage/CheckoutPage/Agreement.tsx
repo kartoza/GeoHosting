@@ -26,7 +26,10 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import SignatureCanvas from "react-signature-canvas";
-import { getUserLocation, headerWithToken } from "../../../utils/helpers";
+import {
+  getCurrencyBasedOnLocation,
+  headerWithToken,
+} from "../../../utils/helpers";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { fetchUserProfile } from "../../../redux/reducers/profileSlice";
 import { Company } from "../../../redux/reducers/companySlice";
@@ -161,9 +164,8 @@ const MarkdownRenderer = memo(
 
     useEffect(() => {
       (async () => {
-        const userLocation = await getUserLocation();
-        const host =
-          userLocation === "ZA" ? "Kartoza (Pty) Ltd" : "Kartoza, LDA";
+        const currency = await getCurrencyBasedOnLocation();
+        const host = currency === "ZAR" ? "Kartoza (Pty) Ltd" : "Kartoza, LDA";
         for (const key in checkboxRefs.current) {
           // @ts-ignore
           checkboxRefs.current[key].valueChange(host);

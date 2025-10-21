@@ -114,7 +114,7 @@ const ProductCard: React.FC<CardProps> = (
       <Text
         justifyContent={'center'} display={'flex'} fontSize="md"
         marginBottom="20px"
-        maxW={["500px", "350px", "320px", "320px"]} pt={2} pb={5} pl={5}
+        pt={2} pb={5} pl={5}
         pr={5} height={75} zIndex={1}
         opacity={opacity}
       >

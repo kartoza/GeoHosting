@@ -109,7 +109,7 @@ export const SubscriptionDetail = memo(
                     </Tr>
                     <Tr>
                       <Td className="table-title">Next payment due: </Td>
-                      <Td px={4}>{formatDateDMY(data.current_period_start)}</Td>
+                      <Td px={4}>{formatDateDMY(data.current_period_end)}</Td>
                     </Tr>
                     {data.billing_detail?.billing_type && (
                       <Tr>

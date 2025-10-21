@@ -1,0 +1,33 @@
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from geohosting.models.coupon import CouponCode
+
+
+class CheckPaystackCoupon(APIView):
+    """Check if a paystack coupon is valid."""
+
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        """Check coupon validity."""
+        coupon_code = request.data.get('coupon_code')
+        if not coupon_code:
+            return Response(
+                'Coupon code is required.',
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        code = CouponCode.query_active(coupon_code).first()
+        if code:
+            return Response(
+                code.coupon.discount_text(),
+                status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                'Coupon not found or inactive.',
+                status=status.HTTP_404_NOT_FOUND
+            )

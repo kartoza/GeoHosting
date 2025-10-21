@@ -22,7 +22,10 @@ import { StripePaymentModal } from "./Stripe";
 import { PaystackPaymentModal } from "./Paystack";
 import CheckoutTracker from "../../../components/ProgressTracker/CheckoutTracker";
 import { OrderSummary } from "../OrderSummary";
-import { getUserLocation, headerWithToken } from "../../../utils/helpers";
+import {
+  getCurrencyBasedOnLocation,
+  headerWithToken,
+} from "../../../utils/helpers";
 import { Agreement, AgreementModal } from "./Agreement";
 import { PaymentMethods } from "./types";
 import { useSelector } from "react-redux";
@@ -34,6 +37,7 @@ import axios from "axios";
 import CompanyForm from "../../../components/Company/CompanyForm";
 import Footer from "../../../components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
+import CouponCode from "./CouponCode";
 
 interface CheckoutPageModalProps {
   product: Product;
@@ -76,12 +80,15 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
   );
   const [company, setCompany] = useState<Company | null>(null);
 
+  const [couponCode, setCouponCode] = useState<string>("");
+  const [couponCodeValid, setCouponCodeValid] = useState<boolean>(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      const userLocation = await getUserLocation();
-      if (userLocation === "ZA") {
+      const currency = await getCurrencyBasedOnLocation();
+      if (currency === "ZAR") {
         setPaymentMethods([PaymentMethods.PAYSTACK]);
       } else {
         setPaymentMethods([PaymentMethods.STRIPE]);
@@ -253,14 +260,24 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
                   </Button>
                 ) : null}
                 {paymentMethods?.includes(PaymentMethods.PAYSTACK) ? (
-                  <Button
-                    mt={4}
-                    colorScheme="blue"
-                    size="lg"
-                    onClick={() => agreement(PaymentMethods.PAYSTACK)}
-                  >
-                    Pay with Paystack
-                  </Button>
+                  <>
+                    <CouponCode
+                      couponCode={couponCode}
+                      setCouponCode={setCouponCode}
+                      isValid={setCouponCodeValid}
+                    />
+                    <Button
+                      isDisabled={!couponCodeValid}
+                      mt={4}
+                      colorScheme="blue"
+                      size="lg"
+                      onClick={() => {
+                        agreement(PaymentMethods.PAYSTACK);
+                      }}
+                    >
+                      Pay with Paystack
+                    </Button>
+                  </>
                 ) : null}
                 {!paymentMethods ? (
                   <Box paddingTop={5} fontStyle={"italic"} color={"gray"}>
@@ -301,6 +318,7 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
         appName={appName}
         companyName={companyName}
         agreements={agreements}
+        couponCode={couponCode}
       />
       <AgreementModal
         ref={agreementModalRef}
