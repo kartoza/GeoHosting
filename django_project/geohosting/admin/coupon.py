@@ -83,6 +83,7 @@ def sync_paystack(modeladmin, request, queryset):
 @admin.register(Coupon)
 class CouponAdmin(admin.ModelAdmin):
     """Coupon admin."""
+
     list_display = (
         'name', 'discount_percentage', 'discount_amount', 'currency',
         'duration', 'coupon_count', 'stripe_id', 'paystack_id'

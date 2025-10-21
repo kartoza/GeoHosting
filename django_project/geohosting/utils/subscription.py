@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.utils.timezone import make_aware, now
 
@@ -424,9 +425,10 @@ class PaystackSubscriptionGateway(SubscriptionGateway):
             next_payment_due = float(next_payment_due)
             if not canceled:
                 dt = datetime.fromtimestamp(next_payment_due)
-                if now - timedelta(days=30) <= dt:
+                diff = relativedelta(dt, now)
+                if diff.months <= 0 or (diff.months == 1 and diff.days == 0):
                     self.cancel_subscription()
-                canceled = True
+                    canceled = True
             if canceled:
                 try:
                     instance = Instance.objects.get(
@@ -434,7 +436,8 @@ class PaystackSubscriptionGateway(SubscriptionGateway):
                     )
                     instance_subscription = instance.subscription
                     if (
-                            instance_subscription and instance.status != InstanceStatus.DELETED
+                            instance_subscription and
+                            instance.status != InstanceStatus.DELETED
                     ):
                         if next_payment_due >= current_period_end:
                             canceled = False
@@ -460,7 +463,9 @@ class PaystackSubscriptionGateway(SubscriptionGateway):
                                 plan=plan_code
                             )["data"]
                             subscription_id = new_subscription["id"]
-                            instance_subscription.subscription_id = subscription_id
+                            instance_subscription.subscription_id = (
+                                subscription_id
+                            )
                             instance_subscription.save()
                             instance_subscription.sync_subscription()
                             return

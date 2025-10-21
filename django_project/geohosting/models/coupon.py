@@ -228,7 +228,7 @@ class CouponCode(models.Model):
     def sync_paystack(self):
         """Sync paystack."""
         if not self.code:
-            code = self.create_code()
+            self.create_code()
         if not self.paystack_active:
             self.paystack_active = True
             self.save()

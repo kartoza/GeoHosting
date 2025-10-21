@@ -1,5 +1,6 @@
 from core.celery import app
 from geohosting.models import Subscription
+from geohosting_event.models import LogTracker
 
 
 @app.task(name='sync_subscriptions')
@@ -9,5 +10,5 @@ def sync_subscriptions():
     for subscription in Subscription.objects.filter(is_active=True):
         try:
             subscription.sync_subscription()
-        except Exception:
-            pass
+        except Exception as e:
+            LogTracker.error(subscription, f'{e}')
