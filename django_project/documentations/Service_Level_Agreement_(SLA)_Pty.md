@@ -130,11 +130,11 @@ The SLA does not apply to:
 
 ## 8. Acceptance
 
-Both parties agree to the terms of this SLA by signing below. 
+Both parties agree to the terms of this SLA by signing below. The Hosting Provider entity applicable to this SLA must be selected by marking the checkbox in the appropriate column. 
 
 | Hosting Provider (South Africa)  | Client                                     |
 |----------------------------------|--------------------------------------------|
-| Kartoza (Pty) Ltd                | [Client Name]                              |
+| ☐ Kartoza (Pty) Ltd              | [Client Name]                              |
 | Company Number: 2014/109067/07   |                                            |
 | Registered Office:               |                                            |
 | 1st Floor, Block B, North Park,  | Client Address: [Client Address]           |
