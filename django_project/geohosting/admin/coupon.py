@@ -54,7 +54,8 @@ class CouponCodeAdmin(admin.ModelAdmin):
     """Coupon code admin."""
 
     list_display = (
-        'coupon', 'email', 'code', 'stripe_active', 'paystack_active'
+        'coupon', 'email', 'code', 'stripe_active', 'paystack_active',
+        'code_used_on_paystack'
     )
     list_filter = ('coupon', 'stripe_active', 'paystack_active')
     actions = (sync_coupon_code_stripe, sync_coupon_code_paystack, send_email)

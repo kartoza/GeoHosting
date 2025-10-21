@@ -195,23 +195,23 @@ class Package(models.Model):
     # ----------------------------------------------------
     # PAYSTACK
     # ----------------------------------------------------
-    def _create_paystack_price_id(self, email):
+    def _create_paystack_price(self, email, metadata=None):
         """Create price id on paystack."""
         features = []
-        paystack_id = None
+        paystack_price = None
         try:
             features = self.feature_list['spec']
         except KeyError:
             pass
         if self.price:
             now = int(timezone.now().timestamp())
-            paystack_id = create_paystack_price(
+            paystack_price = create_paystack_price(
                 f'{self.name} - {email} - {now}', self.currency, self.price,
                 self.periodicity,
-                features
+                features, metadata=metadata
             )
-        return paystack_id
+        return paystack_price
 
-    def get_paystack_price_id(self, email):
+    def get_paystack_price_id(self, email, metadata=None):
         """Return price id on paystack."""
-        return self._create_paystack_price_id(email)
+        return self._create_paystack_price(email, metadata)["id"]

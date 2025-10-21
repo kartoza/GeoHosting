@@ -7,6 +7,7 @@ export const postData = async (
   app_name: string,
   company_name: string | null | undefined,
   agreements: Agreement[],
+  couponCode: string | null = null,
 ) => {
   const formData = new FormData();
 
@@ -24,6 +25,9 @@ export const postData = async (
     "agreement_ids",
     JSON.stringify(agreements.map((agreement) => agreement.id)),
   );
+  if (couponCode) {
+    formData.append("coupon_code", couponCode);
+  }
 
   // Send the request with Axios
   return await axios.post(url, formData, {

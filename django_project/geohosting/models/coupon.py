@@ -7,11 +7,14 @@ GeoHosting.
     User will upload list of email and backend will generate coupon code
     in a group.
 """
+
 import random
 import re
 import string
+from datetime import datetime
 
 import stripe
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
@@ -121,6 +124,14 @@ class Coupon(models.Model):
         for coupon_code in self.couponcode_set.all():
             coupon_code.sync_paystack()
 
+    def discounted_amount(self, amount):
+        """Return discounted amount."""
+        if self.discount_percentage:
+            return amount * (1 - self.discount_percentage / 100)
+        elif self.discount_amount:
+            return amount - self.discount_amount
+        return amount
+
 
 class CouponCode(models.Model):
     """Coupon code model."""
@@ -131,6 +142,29 @@ class CouponCode(models.Model):
     stripe_active = models.BooleanField(default=False)
     paystack_active = models.BooleanField(default=False)
     code_used_on_paystack = models.BooleanField(default=False)
+
+    @staticmethod
+    def query_active(coupon_code):
+        """Return active coupon codes."""
+        return CouponCode.objects.filter(
+            code=coupon_code,
+            paystack_active=True,
+            code_used_on_paystack=False
+        )
+
+    def metadata(self, amount):
+        """Return metadata."""
+        return {
+            'discount_code': self.code,
+            'discount_amount': self.coupon.discount_amount,
+            'discount_percentage': self.coupon.discount_percentage,
+            'discount_currency': self.coupon.currency,
+            'discount_duration': self.coupon.duration,
+            'discounted_amount': self.coupon.discounted_amount(amount),
+            'next_payment_due': (datetime.now() + relativedelta(
+                months=self.coupon.duration
+            )).timestamp()
+        }
 
     def create_code(self):
         """Create stripe code."""

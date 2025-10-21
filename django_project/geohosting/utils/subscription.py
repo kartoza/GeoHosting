@@ -162,6 +162,17 @@ class SubscriptionData:
             days=pref.grace_period_days
         )
 
+        if isinstance(discount_amount, str):
+            if discount_amount:
+                discount_amount = float(discount_amount)
+            else:
+                discount_amount = None
+        if isinstance(discount_percentage, str):
+            if discount_percentage:
+                discount_percentage = float(discount_percentage)
+            else:
+                discount_percentage = None
+
         self.discount_amount = discount_amount
         self.discount_percentage = discount_percentage
         self.discount_code = discount_code
@@ -382,6 +393,10 @@ class PaystackSubscriptionGateway(SubscriptionGateway):
             self, return_payment: bool = None
     ) -> SubscriptionData | None:
         """Get subscription data."""
+        from geohosting.models.instance import Instance, InstanceStatus
+        from paystackapi.subscription import (
+            Subscription as PaystackSubscription
+        )
         subscription = get_paystack_subscription_detail(self.subscription_id)
         if not subscription:
             return None
@@ -392,19 +407,81 @@ class PaystackSubscriptionGateway(SubscriptionGateway):
             subscription['next_payment_date'].replace('Z', '+00:00')
         ).timestamp()
         status = subscription['status']
+        canceled = (
+                status in ['cancel', 'cancelled', 'non-renewing']
+        )
 
+        # Now we check if it has discount_code
+        # This is for getting discount
+        metadata = subscription.get('metadata', {})
+        if not metadata:
+            metadata = {}
+
+        # When has next payment due, this is basically discount code
+        next_payment_due = metadata.get('next_payment_due')
+        if next_payment_due:
+            now = datetime.now()
+            next_payment_due = float(next_payment_due)
+            if not canceled:
+                dt = datetime.fromtimestamp(next_payment_due)
+                if now - timedelta(days=30) <= dt:
+                    self.cancel_subscription()
+                canceled = True
+            if canceled:
+                try:
+                    instance = Instance.objects.get(
+                        subscription__subscription_id=self.subscription_id
+                    )
+                    instance_subscription = instance.subscription
+                    if (
+                            instance_subscription and instance.status != InstanceStatus.DELETED
+                    ):
+                        if next_payment_due >= current_period_end:
+                            canceled = False
+
+                        # Create new subscription if the next payment due is
+                        # greater than current period end
+                        # And the instance is active
+                        if now.timestamp() >= current_period_end:
+                            # Create the new subscription
+                            plan_code = instance.price._create_paystack_price(
+                                instance.owner.email
+                            )["plan_code"]
+                            self.cancel_subscription()
+                            authorization_code = (
+                                get_paystack_payment_method_detail(
+                                    self.subscription_id
+                                )['authorization_code']
+                            )
+                            new_subscription = PaystackSubscription.create(
+                                customer=subscription['customer'][
+                                    'customer_code'],
+                                authorization=authorization_code,
+                                plan=plan_code
+                            )["data"]
+                            subscription_id = new_subscription["id"]
+                            instance_subscription.subscription_id = subscription_id
+                            instance_subscription.save()
+                            instance_subscription.sync_subscription()
+                            return
+                except Instance.DoesNotExist:
+                    pass
+        most_recent_invoice = subscription['most_recent_invoice']
+        if not most_recent_invoice:
+            most_recent_invoice = {'invoice_code': None}
         subscription_data = SubscriptionData(
             id=subscription['id'],
             customer_id=subscription['customer']['customer_code'],
             current_period_start=current_period_start,
             current_period_end=current_period_end,
-            canceled=(
-                    status in ['cancel', 'cancelled', 'non-renewing']
-            ),
+            canceled=canceled,
             amount=subscription['plan']['amount'],
             currency=subscription['plan']['currency'],
             period=subscription['plan']['interval'],
-            latest_invoice=subscription['most_recent_invoice']['invoice_code']
+            latest_invoice=most_recent_invoice['invoice_code'],
+            discount_amount=metadata.get('discount_amount', None),
+            discount_percentage=metadata.get('discount_percentage', None),
+            discount_code=metadata.get('discount_code', None),
         )
         if return_payment:
             try:

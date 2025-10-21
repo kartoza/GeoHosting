@@ -197,3 +197,9 @@ class InstanceViewSetTests(APITestCase):
             "coupon_code": code_1.code
         })
         self.assertEqual(response.status_code, 200)
+        code_1.code_used_on_paystack = True
+        code_1.save()
+        response = self.client.post(url, {
+            "coupon_code": code_1.code
+        })
+        self.assertEqual(response.status_code, 404)

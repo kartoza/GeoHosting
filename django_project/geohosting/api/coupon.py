@@ -16,14 +16,11 @@ class CheckPaystackCoupon(APIView):
         coupon_code = request.data.get('coupon_code')
         if not coupon_code:
             return Response(
-                {'detail': 'Coupon code is required.'},
+                'Coupon code is required.',
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        code = CouponCode.objects.filter(
-            code=coupon_code,
-            paystack_active=True
-        ).first()
+        code = CouponCode.query_active(coupon_code).first()
         if code:
             return Response(
                 code.coupon.discount_text(),
@@ -31,6 +28,6 @@ class CheckPaystackCoupon(APIView):
             )
         else:
             return Response(
-                {'detail': 'Coupon not found or inactive.'},
+                'Coupon not found or inactive.',
                 status=status.HTTP_404_NOT_FOUND
             )

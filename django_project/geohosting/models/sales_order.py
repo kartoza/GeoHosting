@@ -468,6 +468,7 @@ class SalesOrder(ErpModel):
 
     def sync_subscription(self):
         """Sync subscription."""
+        from geohosting.models.coupon import CouponCode
         if not self.subscription:
             subscription = self.payment_gateway.subscription(
                 self.customer
@@ -477,6 +478,10 @@ class SalesOrder(ErpModel):
                 self.subscription = subscription
                 try:
                     self.discount_code = detail.get('discount_code')
+                    if self.discount_code:
+                        code = CouponCode.objects.get(code=self.discount_code)
+                        code.code_used_on_paystack = True
+                        code.save()
                     self.discount_amount = detail.get('discount_amount')
                     self.discount_percentage = detail.get(
                         'discount_percentage'
