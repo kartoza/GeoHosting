@@ -59,6 +59,10 @@ class CouponCodeAdmin(admin.ModelAdmin):
     )
     list_filter = ('coupon', 'stripe_active', 'paystack_active')
     actions = (sync_coupon_code_stripe, sync_coupon_code_paystack, send_email)
+    readonly_fields = (
+        'code', 'stripe_active', 'paystack_active',
+        'code_used_on_paystack'
+    )
 
 
 def sync_stripe(modeladmin, request, queryset):
