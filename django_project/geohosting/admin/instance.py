@@ -110,7 +110,7 @@ class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     list_display = (
         'name', 'product', 'price', 'owner', 'status',
         '_subscription', 'sales_orders', 'created_at', 'logs', 'webhooks',
-        'link', 'cluster'
+        'links', 'cluster'
     )
     list_filter = ('status',)
     actions = (
@@ -177,8 +177,13 @@ class InstanceAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
             'target="_blank">orders</a>'
         )
 
-    def link(self, instance):
+    def links(self, instance):
         """Return logs."""
-        return mark_safe(
-            f'<a href="{instance.url}" target="_blank">link</a>'
-        )
+        instance_product = instance.price.product
+        links = [f'<a href="{instance.url}" target="_blank">instance</a>']
+        for product in instance_product.productaddon_set.all():
+            links.append(
+                f'<a href="{product.addon_url(instance)}" '
+                f'target="_blank">{product.addon.name}</a>'
+            )
+        return mark_safe(', '.join(links))
