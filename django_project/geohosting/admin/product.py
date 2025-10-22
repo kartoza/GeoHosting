@@ -1,8 +1,14 @@
 from django.contrib import admin
 
 from geohosting.models import (
-    Product, ProductMetadata, ProductMedia, ProductCluster
+    Product, ProductMetadata, ProductMedia, ProductCluster, ProductAddon
 )
+
+
+class ProductAddonInline(admin.TabularInline):
+    model = ProductAddon
+    extra = 1
+    fk_name = 'product'
 
 
 class ProductClusterInline(admin.TabularInline):
@@ -36,16 +42,24 @@ def sync_metadata(modeladmin, request, queryset):
 class ProductAdmin(admin.ModelAdmin):
     change_list_template = 'admin/product_change_list.html'
     list_display = (
-        'name', 'available', 'is_add_on', 'clusters', 'vault_path'
+        'name', 'available', 'is_add_on', 'clusters', 'vault_path', 'addons'
     )
     search_fields = ('name', 'upstream_id')
-    filter_horizontal = ('add_on',)
     list_editable = ('vault_path', 'available', 'is_add_on')
-    inlines = [ProductClusterInline, ProductMediaInline, ProductMetadataInline]
+    inlines = [
+        ProductAddonInline, ProductClusterInline, ProductMediaInline,
+        ProductMetadataInline
+    ]
     actions = [sync_media, sync_metadata]
 
     def clusters(self, obj: Product):
         """Return clusters."""
         return ', '.join(
             obj.productcluster_set.values_list('cluster__code', flat=True)
+        )
+
+    def addons(self, obj: Product):
+        """Return addons."""
+        return ', '.join(
+            obj.productaddon_set.values_list('addon__name', flat=True)
         )

@@ -7,7 +7,9 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase, APIClient
 
-from geohosting.models import Product, Instance, Region, Cluster, Package
+from geohosting.models import (
+    Product, Instance, Region, Cluster, Package, ProductAddon
+)
 
 
 class InstanceCredential(APITestCase):
@@ -60,7 +62,10 @@ class InstanceCredential(APITestCase):
             username_credential='admin',
             password_key_on_vault='PASSWORD'
         )
-        self.product.add_on.add(self.product_2)
+        ProductAddon.objects.create(
+            product=self.product,
+            addon=self.product_2
+        )
 
         # Create test Package with a valid product
         self.package = Package.objects.create(

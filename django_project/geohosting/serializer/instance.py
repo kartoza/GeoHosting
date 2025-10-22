@@ -21,7 +21,7 @@ class InstanceSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj: Instance):
         """Return url."""
-        return obj.url
+        return obj.url_check
 
     def get_package(self, obj: Instance):
         """Return package."""
@@ -59,13 +59,18 @@ class InstanceDetailSerializer(InstanceSerializer):
             }
         )
         # Add-on
-        for product in instance_product.add_on.all():
+        for product in instance_product.productaddon_set.all():
+            url = product.addon_url(obj)
+            addon = product.addon
+            username = addon.username_credential
+            if addon.is_username_credential_use_email:
+                username = obj.owner.email
             applications.append(
                 {
-                    'name': product.name,
-                    'upstream_id': product.upstream_id,
-                    'url': obj.url + product.url_as_addon,
-                    'username': product.username_credential
+                    'name': addon.name,
+                    'upstream_id': addon.upstream_id,
+                    'url': url,
+                    'username': username
                 }
             )
         return applications

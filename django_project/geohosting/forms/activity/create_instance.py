@@ -67,7 +67,8 @@ class CreateInstanceForm(forms.ModelForm):
                     'cluster': product_cluster.cluster.code,
                     'environment': product_cluster.environment,
                     'package': package.package_group.package_code,
-                    'app_name': app_name
+                    'app_name': app_name,
+                    'user_email': self.user.email,
                 }
                 return activity.activity_type.mapping_data(data)
             except ProductCluster.DoesNotExist:

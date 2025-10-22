@@ -47,14 +47,7 @@ class Product(models.Model):
         default=False,
         help_text="This product cannot be standalone and is not saleable."
     )
-    url_as_addon = models.CharField(
-        max_length=256,
-        null=True, blank=True,
-        help_text=(
-            'URL of the product as add-on, '
-            'example: geoserver on the geonode is "/geoserver".'
-        )
-    )
+
     # Credentials
     vault_path = models.CharField(
         max_length=256,
@@ -67,12 +60,15 @@ class Product(models.Model):
         max_length=256,
         blank=True, null=True
     )
+    is_username_credential_use_email = models.BooleanField(
+        default=False,
+        help_text=(
+            'If this is true, the username credential will be the email.'
+        )
+    )
     password_key_on_vault = models.CharField(
         max_length=256,
         blank=True, null=True
-    )
-    add_on = models.ManyToManyField(
-        "geohosting.Product", blank=True, null=True
     )
 
     class Meta:
@@ -178,6 +174,45 @@ class Product(models.Model):
             f'/assets/geohosting/images/Product_Images/{self.name}/'
             f'secondary.png'
         )
+
+
+class ProductAddon(models.Model):
+    """Product addon model."""
+
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE
+    )
+    addon = models.ForeignKey(
+        Product, on_delete=models.CASCADE,
+        related_name='add_ons'
+    )
+    url = models.CharField(
+        max_length=256,
+        null=True, blank=True,
+        help_text=(
+            'URL of the product as add-on, '
+            'example: geoserver on the geonode is "/geoserver". '
+            'Or if a static one, you could put : '
+            'http://<instance_name>.addon.<cluster_domain>'
+        )
+    )
+    is_instance_check = models.BooleanField(
+        default=False,
+        help_text=(
+            'If this is true, the addon '
+            'will be checked for instance availability'
+        )
+    )
+
+    def addon_url(self, instance):
+        """Return url based on instance."""
+        url = instance.url + self.url
+        if '<instance_name>' in self.url:
+            url = self.url.replace(
+                '<instance_name>', instance.name
+            ).replace(
+                '<cluster_domain>', instance.cluster.domain)
+        return url
 
 
 class ProductMetadata(models.Model):
