@@ -86,13 +86,13 @@ class Coupon(models.Model):
         durations = ""
         if self.duration:
             if self.duration == 1:
-                durations = "for 1 month"
+                durations = "your first month"
             else:
-                durations = f'for {self.duration} months'
+                durations = f'your first {self.duration} months'
         if self.discount_percentage:
-            return f'{self.discount_percentage}% {durations}'
+            return f'{self.discount_percentage}% off {durations}'
         elif self.discount_amount:
-            return f'{self.discount_amount} {self.currency} {durations}'
+            return f'{self.discount_amount} {self.currency} off {durations}'
         return 'N/A'
 
     def sync_stripe(self):
@@ -198,9 +198,21 @@ class CouponCode(models.Model):
                 }
             )
 
+            if self.coupon.discount_percentage:
+                subject = (
+                    f'Your {self.coupon.discount_percentage}% '
+                    f'discount for GSH is waiting for you'
+                )
+            else:
+                subject = (
+                    f'Your {self.coupon.discount_amount} '
+                    f'{self.coupon.currency} '
+                    f'discount for GSH is waiting for you'
+                )
+
             # Create the email message
             EmailEvent.send_email(
-                subject='You have received a promotional coupon code',
+                subject=subject,
                 body=html_content,
                 to=[self.email],
                 category=EmailCategory.COUPON,
