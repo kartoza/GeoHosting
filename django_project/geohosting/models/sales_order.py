@@ -479,9 +479,12 @@ class SalesOrder(ErpModel):
                 try:
                     self.discount_code = detail.get('discount_code')
                     if self.discount_code:
-                        code = CouponCode.objects.get(code=self.discount_code)
-                        code.code_used_on_paystack = True
-                        code.save()
+                        try:
+                            code = CouponCode.objects.get(code=self.discount_code)
+                            code.code_used_on_paystack = True
+                            code.save()
+                        except CouponCode.DoesNotExist:
+                            pass
                     self.discount_amount = detail.get('discount_amount')
                     self.discount_percentage = detail.get(
                         'discount_percentage'
