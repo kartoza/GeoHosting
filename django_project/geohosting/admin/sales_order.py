@@ -7,6 +7,7 @@ from geohosting.admin.global_function import (
 from geohosting.models import SalesOrder, SalesOrderInvoice
 from geohosting.models.agreement import SalesOrderAgreement
 from geohosting_event.admin.log import LogTrackerObjectAdmin
+from geohosting_event.models import LogTracker
 
 
 class SalesOrderInvoiceInline(admin.TabularInline):
@@ -38,7 +39,10 @@ class SalesOrderAgreementInline(admin.TabularInline):
 def update_payment_status(modeladmin, request, queryset):
     """Update order status."""
     for order in queryset.filter():
-        order.update_payment_status()
+        try:
+            order.update_payment_status()
+        except Exception as e:
+            LogTracker.error(order, f'Update payment status: {str(e)}', e)
 
 
 @admin.action(description="Auto deploy")
