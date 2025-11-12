@@ -137,7 +137,7 @@ const HomePage: React.FC = () => {
                 marginTop={{base: 0, md: "10"}}
                 paddingX={{ base: 2, md: 50 }}
               >
-                We’ll help design, setup and deploy the right GeoSpatial solution for your needs.
+                We’ll help design, setup and deploy the right geospatial solution for your needs.
               </Text>
               <Button
                 colorScheme="orange"
