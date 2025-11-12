@@ -21,27 +21,24 @@ const plans: Plan[] = [
     title: "Basic",
     features: [
       "Ideal for personal use, learning, or small proof-of-concept projects",
-      "Single-instance deployments",
-      "Community-level support",
-      "Affordable monthly pricing",
+      "Single-instance deployment",
+      "Shared resource infrastructure",
     ],
   },
   {
     title: "Advanced",
     features: [
-      "Ideal for NGOs, researchers, and small teams needing simple, reliable hosting.",
-      "Multi-instance support",
-      "Enhanced monitoring & backups",
-      "Balanced cost-to-performance",
+      "Ideal for NGOs, researchers, and small teams needing simple, reliable hosting",
+      "Multi-instance deployment",
+      "Balanced resources",
     ],
   },
   {
     title: "Gold",
     features: [
-      "Ideal for enterprise, government, and high-demand deployments.",
-      "Full-stack support & SLAs",
-      "Dedicated resources & expert onboarding",
-      "Premium tier with white-glove service",
+      "Ideal for enterprise, government, and high-availability use",
+      "Full-stack deployments with SLAs",
+      "Dedicated, high-performance setup",
     ],
   },
 ];
