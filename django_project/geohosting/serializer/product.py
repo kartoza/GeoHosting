@@ -53,9 +53,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     def get_packages(self, obj: Product):
         if self.currency:
-            currency = 'USD'
-        else:
             currency = self.currency
+        else:
+            currency = 'USD'
 
         return ProductPackageSerializer(
             obj.packages.filter(
