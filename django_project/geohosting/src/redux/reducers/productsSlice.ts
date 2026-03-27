@@ -4,6 +4,7 @@ import { getCurrencyBasedOnLocation } from "../../utils/helpers";
 
 export interface PackageGroup {
   specification: object;
+  package_code: number;
 }
 
 export interface Product {
@@ -41,6 +42,7 @@ export interface Package {
   product: number;
   currency: string;
   package_group: PackageGroup;
+  erpnext_item_code: string;
 }
 
 interface ProductsState {

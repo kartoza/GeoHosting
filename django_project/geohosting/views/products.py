@@ -54,11 +54,11 @@ def fetch_products_from_erpnext():
     packages = []
 
     for product_detail in product_list:
-        name = product_detail.get('item_name', '')
-        print(f'Checking {name}')
+        code = product_detail.get('item_code', '')
+        print(f'Checking {code}')
 
         # Currently we focus on DO
-        if name.endswith('DO'):
+        if code.endswith('DO'):
             packages.append(product_detail)
 
         description = product_detail.get('description', None)
@@ -69,11 +69,10 @@ def fetch_products_from_erpnext():
 
             # -----------------------
             # Extract attributes
-            print(f'Fetch product detail {name}')
+            print(f'Fetch product detail {code}')
             _product_detail = fetch_erpnext_detail_data(
-                f'{doctype}/{name}'
+                f'{doctype}/{code}'
             )
-            print(_product_detail)
             attributes = _product_detail.get('attributes', [])
             host_attributes = {}
             for attribute in attributes:
@@ -94,6 +93,7 @@ def fetch_products_from_erpnext():
 
             # Extracting data from the product_detail dictionary
             upstream_id = product_detail.get('name', '')
+            name = product_detail.get('item_name', '')
             description = desc.get('short_description', '')
             available = product_detail.get(
                 'available_in_geohosting', 0) == 1
