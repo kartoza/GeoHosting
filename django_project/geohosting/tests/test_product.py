@@ -321,15 +321,20 @@ class ProductViewSetTestCase(APITestCase):
 
         # Check if serializer is returning correct packages based on currency
         product_data = response.data
-        serializer = ProductDetailSerializer(instance=self.product,
-                                             context={'currency': 'USD'})
+        serializer = ProductDetailSerializer(
+            instance=self.product,
+            currency='USD'
+        )
 
         self.assertEqual(product_data['packages'], serializer.data['packages'])
-        self.assertEqual(product_data['packages'][0]['currency'],
-                         serializer.data['packages'][0]['currency'])
+        self.assertEqual(
+            product_data['packages'][0]['currency'],
+            serializer.data['packages'][0]['currency']
+        )
         self.assertEqual(product_data['images'], serializer.data['images'])
-        self.assertEqual(product_data['product_meta'],
-                         serializer.data['product_meta'])
+        self.assertEqual(
+            product_data['product_meta'], serializer.data['product_meta']
+        )
 
     def test_retrieve_product_detail_without_currency(self):
         # Test retrieving product details without specifying a currency

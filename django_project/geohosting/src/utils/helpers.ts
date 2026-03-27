@@ -26,13 +26,13 @@ export const formatPrice = (price: string, currency = "USD") => {
  * Is it basic, advanced, gold?
  */
 export const packageName = (pkg: Package) => {
-  if (pkg.name.toLowerCase().includes("small")) {
+  if (pkg.package_group.package_code == 1) {
     return "Basic";
-  } else if (pkg.name.toLowerCase().includes("medium")) {
+  } else if (pkg.package_group.package_code == 2) {
     return "Advanced";
-  } else if (pkg.name.toLowerCase().includes("large")) {
+  } else if (pkg.package_group.package_code == 3) {
     return "Gold";
-  }
+  } else pkg.name;
 };
 
 /**
@@ -41,11 +41,11 @@ export const packageName = (pkg: Package) => {
  * @param pkg
  */
 export const packageIndicator = (pkg: Package) => {
-  if (pkg.name.toLowerCase().includes("small")) {
+  if (pkg.package_group.package_code == 1) {
     return "Get Started";
-  } else if (pkg.name.toLowerCase().includes("medium")) {
+  } else if (pkg.package_group.package_code == 2) {
     return "Best Value";
-  } else if (pkg.name.toLowerCase().includes("large")) {
+  } else if (pkg.package_group.package_code == 3) {
     return "High Resource";
   }
 };

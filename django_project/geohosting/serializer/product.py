@@ -53,28 +53,16 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     def get_packages(self, obj: Product):
         if self.currency:
-            preferred_currency_order = [self.currency, 'USD', 'EUR', 'ZAR']
+            currency = 'USD'
         else:
-            preferred_currency_order = ['USD', 'EUR', 'ZAR']
+            currency = self.currency
 
-        unique_packages = {}
-        for currency in preferred_currency_order:
-            for package in obj.packages.filter(currency=currency).filter(
-                    enabled=True
-            ):
-                if package.name not in unique_packages:
-                    unique_packages[package.name] = package
-
-        sorted_packages = sorted(
-            unique_packages.values(),
-            key=lambda p: (
-                'large' in p.name.lower(),
-                'medium' in p.name.lower(),
-                'small' in p.name.lower()
-            )
-        )
-
-        return ProductPackageSerializer(sorted_packages, many=True).data
+        return ProductPackageSerializer(
+            obj.packages.filter(
+                currency=currency).filter(
+                enabled=True).order_by('package_group__package_code'),
+            many=True
+        ).data
 
     def get_product_meta(self, obj: Product):
         metadata = ProductMetadata.objects.filter(product=obj)

@@ -68,7 +68,17 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
 
       <ChakraLink
         as="button"
-        onClick={() => navigate("/")}
+        onClick={() => {
+          const isHome = window.location.pathname === "/" && !window.location.hash.startsWith("#/");
+          if (isHome) {
+            document.getElementById("our-products")?.scrollIntoView({ behavior: "smooth" });
+          } else {
+            navigate("/");
+            setTimeout(() => {
+              document.getElementById("our-products")?.scrollIntoView({ behavior: "smooth" });
+            }, 300);
+          }
+        }}
         fontSize="md"
         _hover={STYLES.linkHovered}
       >

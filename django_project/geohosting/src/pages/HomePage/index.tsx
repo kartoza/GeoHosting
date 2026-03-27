@@ -87,7 +87,7 @@ const HomePage: React.FC = () => {
                 mt={{ base: 0, md: 10 }}
               />
             </Flex>
-            <Container maxW="container.lg">
+            <Container maxW="container.lg" id="our-products">
               <Text
                 color="gray.700"
                 fontSize={{ base: 'lg', sm: 'xl', md: '2xl', xl: '4xl' }}
