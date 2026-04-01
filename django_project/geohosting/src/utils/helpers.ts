@@ -66,7 +66,11 @@ export const getCurrencyBasedOnLocation = async () => {
   let newCurrency = "USD";
   if (userCountry === "ZA") newCurrency = "ZAR";
   else if (
-    ["AT", "BE", "FR", "DE", "IT", "ES", "NL", "PT"].includes(userCountry)
+    [
+      "AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR",
+      "GR", "HR", "IE", "IT", "LT", "LU", "LV", "MT",
+      "NL", "PT", "SI", "SK"
+    ].includes(userCountry)
   )
     newCurrency = "EUR";
 
