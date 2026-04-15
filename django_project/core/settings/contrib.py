@@ -4,23 +4,8 @@ GeoHosting Controller.
 
 .. note:: Settings for 3rd party.
 """
-import os as _os
-import sys as _sys
 
 from .base import *  # noqa
-
-# Add kartoza-cloudbench to sys.path so 'apps.*' modules can be imported
-CLOUDBENCH_PATH = _os.environ.get(
-    'CLOUDBENCH_PATH',
-    _os.path.abspath(
-        _os.path.join(
-            _os.path.dirname(__file__), '../../../kartoza-cloudbench'
-        )
-    )
-)
-if CLOUDBENCH_PATH not in _sys.path:
-    _sys.path.insert(0, CLOUDBENCH_PATH)
-
 
 # Extra installed apps
 INSTALLED_APPS = INSTALLED_APPS + (

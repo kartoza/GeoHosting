@@ -5,6 +5,7 @@ GeoHosting Controller.
 .. note:: Project level settings.
 """
 import os  # noqa
+import sys  # noqa
 
 from .contrib import *  # noqa
 
@@ -127,3 +128,29 @@ STORAGES = {
         )
     },
 }
+# ------------------------------------
+# CLOUDBENCH ENVIRONMENT VARIABLES
+# ------------------------------------
+
+# Add kartoza-cloudbench to sys.path so 'apps.*' modules can be imported
+CLOUDBENCH_PATH = os.environ.get(
+    'CLOUDBENCH_PATH',
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__), '../../../kartoza-cloudbench'
+        )
+    )
+)
+if CLOUDBENCH_PATH not in sys.path:
+    sys.path.insert(0, CLOUDBENCH_PATH)
+
+CLOUDBENCH_MUST_AUTHENTICATED = True
+
+XDG_CACHE_HOME = os.environ.get(
+    "XDG_CACHE_HOME",
+    os.path.expanduser("~/.cache/kartoza-cloudbench"),
+)
+# Chunked upload settings
+UPLOAD_CHUNK_SIZE = 5 * 1024 * 1024  # 5MB chunks
+UPLOAD_TEMP_DIR = os.path.join(XDG_CACHE_HOME, "uploads")
+UPLOAD_MAX_FILE_SIZE = 10 * 1024 * 1024 * 1024  # 10GB max
