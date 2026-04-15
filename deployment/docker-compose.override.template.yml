@@ -69,26 +69,6 @@ services:
       retries: 200
       start_period: 5s
 
-  vite:
-    build:
-      context: ../
-      dockerfile: deployment/docker/Dockerfile
-      target: dev
-    image: kartoza/${COMPOSE_PROJECT_NAME:-django_project}_dev
-    volumes:
-      - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
-    working_dir: /home/web/kartoza-cloudbench/web
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
-    entrypoint: [ ]
-    ports:
-      - "5173:5173"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5173" ]
-      interval: 5s
-      timeout: 2s
-      retries: 200
-      start_period: 10s
-
   dev:
     build:
       context: ../
@@ -131,10 +111,7 @@ services:
       - redis
       - worker
       - webpack
-      - vite
     entrypoint: [ ]
     depends_on:
       webpack:
-        condition: service_healthy
-      vite:
         condition: service_healthy

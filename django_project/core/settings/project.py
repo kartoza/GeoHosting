@@ -40,6 +40,7 @@ INSTALLED_APPS = INSTALLED_APPS + (
 
 # Kartoza CloudBench apps
 CLOUDBENCH_APPS = (
+    'apps.core',
     'apps.ai',
     'apps.bridge',
     'apps.connections',

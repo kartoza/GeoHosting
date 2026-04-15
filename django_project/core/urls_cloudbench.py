@@ -1,27 +1,9 @@
-"""CloudBench URL configuration — mounted at /cloudbench/api/ in core/urls.py."""
+"""CloudBench URL configuration — mounted at /api/cloudbench/ in core/urls.py."""
+from django.conf import settings
 from django.urls import include, path
 
-app_modules = [
-    'apps.ai',
-    'apps.bridge',
-    'apps.connections',
-    'apps.dashboard',
-    'apps.geonode',
-    'apps.geoserver',
-    'apps.gwc',
-    'apps.iceberg',
-    'apps.mergin',
-    'apps.postgres',
-    'apps.preview',
-    'apps.qfieldcloud',
-    'apps.qgis',
-    'apps.query',
-    'apps.s3',
-    'apps.search',
-    'apps.sqlview',
-    'apps.sync',
-    'apps.terria',
-    'apps.upload',
-]
+# Use CLOUDBENCH_APPS from settings, with apps.preview added (no models, URLs only)
+_extra = ['apps.preview']
+app_modules = list(getattr(settings, 'CLOUDBENCH_APPS', [])) + _extra
 
 urlpatterns = [path('', include(f'{app}.urls')) for app in app_modules]

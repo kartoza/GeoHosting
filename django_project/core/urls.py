@@ -7,6 +7,7 @@ from django.views.generic.base import RedirectView
 
 from core.api import DjangoSettingAPI
 from core.models.preferences import Preferences
+from core.views import CloudBenchAppView
 
 
 class PreferencesRedirectView(RedirectView):
@@ -34,9 +35,12 @@ urlpatterns = [
     re_path('', include('docs_crawler.urls')),
     # CloudBench API endpoints
     path('api/cloudbench/', include('core.urls_cloudbench')),
+    # CloudBench SPA + static files — catch-all, must be last
+    re_path(r'^cloudbench/(?P<path>.*)$', CloudBenchAppView.as_view(), name='cloudbench'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT)
+        document_root=settings.MEDIA_ROOT
+    )
