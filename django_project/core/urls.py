@@ -32,6 +32,8 @@ urlpatterns = [
         DjangoSettingAPI.as_view(), name='django-settings-api'
     ),
     re_path('', include('docs_crawler.urls')),
+    # CloudBench API endpoints
+    path('api/cloudbench/', include('core.urls_cloudbench')),
 ]
 
 if settings.DEBUG:

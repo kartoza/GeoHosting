@@ -38,6 +38,31 @@ INSTALLED_APPS = INSTALLED_APPS + (
     'geohosting_controller'
 )
 
+# Kartoza CloudBench apps
+CLOUDBENCH_APPS = (
+    'apps.ai',
+    'apps.bridge',
+    'apps.connections',
+    'apps.dashboard',
+    'apps.geonode',
+    'apps.geoserver',
+    'apps.gwc',
+    'apps.iceberg',
+    'apps.mergin',
+    'apps.postgres',
+    'apps.qfieldcloud',
+    'apps.qgis',
+    'apps.query',
+    'apps.s3',
+    'apps.search',
+    'apps.sqlview',
+    'apps.sync',
+    'apps.terria',
+    'apps.upload'
+)
+
+INSTALLED_APPS += CLOUDBENCH_APPS
+
 FIXTURE_DIRS = ['geohosting_controller/fixtures']
 
 ERPNEXT_API_KEY = os.environ.get('ERPNEXT_API_KEY', '')
