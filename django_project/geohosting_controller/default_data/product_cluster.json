@@ -13,5 +13,15 @@
     "cluster": "ktz-sta-ks-gn-01",
     "region": "global",
     "environment": "sta"
+  },
+  "postgis": {
+    "cluster": "ktz-sta-ks-gn-01",
+    "region": "global",
+    "environment": "sta"
+  },
+  "geosight": {
+    "cluster": "ktz-sta-ks-gn-01",
+    "region": "global",
+    "environment": "sta"
   }
 }
