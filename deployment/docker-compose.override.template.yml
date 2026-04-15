@@ -17,6 +17,9 @@ services:
       - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
+      - ./volumes/cloudbench/config:/home/web/cloudbench_data/config
+      - ./volumes/cloudbench/data:/home/web/cloudbench_data/data
+      - ./volumes/cloudbench/cache:/home/web/cloudbench_data/cache
 
   worker:
     build:
@@ -27,6 +30,9 @@ services:
       - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
+      - ./volumes/cloudbench/config:/home/web/cloudbench_data/config
+      - ./volumes/cloudbench/data:/home/web/cloudbench_data/data
+      - ./volumes/cloudbench/cache:/home/web/cloudbench_data/cache
 
   celery_beat:
     build:
@@ -37,6 +43,9 @@ services:
       - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
+      - ./volumes/cloudbench/config:/home/web/cloudbench_data/config
+      - ./volumes/cloudbench/data:/home/web/cloudbench_data/data
+      - ./volumes/cloudbench/cache:/home/web/cloudbench_data/cache
 
   nginx:
     volumes:
@@ -100,6 +109,9 @@ services:
       - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
+      - ./volumes/cloudbench/config:/home/web/cloudbench_data/config
+      - ./volumes/cloudbench/data:/home/web/cloudbench_data/data
+      - ./volumes/cloudbench/cache:/home/web/cloudbench_data/cache
     environment:
       # editable in .env
       - DATABASE_NAME=${DATABASE_NAME:-django}
