@@ -42,7 +42,6 @@ const STYLES = {
 const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
   const navigate = useNavigate();
   const { token } = useSelector((state: RootState) => state.auth);
-  const { products } = useSelector((state: RootState) => state.products);
   return (
     <>
       <ChakraLink
@@ -76,7 +75,7 @@ const NavbarContent: React.FC<NavbarContentProps> = ({ onOpen, isDrawer }) => {
             navigate("/");
             setTimeout(() => {
               document.getElementById("our-products")?.scrollIntoView({ behavior: "smooth" });
-            }, 300);
+            }, 500);
           }
         }}
         fontSize="md"

@@ -246,6 +246,7 @@ const Card: React.FC<CardProps> = ({ instance }) => {
 };
 
 const EmptyCard: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Box
       borderRadius="lg"
@@ -263,8 +264,14 @@ const EmptyCard: React.FC = () => {
         opacity: 0.5,
       }}
       color={"blue.500"}
-      as={RouterLink}
-      to="/"
+      onClick={() => {
+        navigate("/");
+        setTimeout(() => {
+          document
+            .getElementById("our-products")
+            ?.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+      }}
     >
       {/* Dash border */}
       <Box
