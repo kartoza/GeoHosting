@@ -81,8 +81,14 @@ services:
     volumes:
       - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
     working_dir: /home/web/kartoza-cloudbench/web
-    command: sh -c "npm install && VITE_BASE_URL=/cloudbench/ VITE_API_BASE=/api/cloudbench npm run dev -- --host 0.0.0.0"
-    entrypoint: [ ]
+    entrypoint: [ "sh", "/home/web/kartoza-cloudbench/entrypoint.dev.sh" ]
+    command: [ ]
+    environment:
+      - VITE_BASE_URL=/cloudbench/
+      - VITE_API_BASE=/api/cloudbench
+      - VITE_CREATE_GEOSERVER_URL=/#/app/GeoServer
+      - VITE_CREATE_GEONODE_URL=/#/app/GeoNode
+      - VITE_CREATE_POSTGIS_URL=/#/app/PostGIS
     ports:
       - "5173:5173"
     healthcheck:

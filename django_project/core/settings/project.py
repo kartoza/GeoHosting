@@ -144,13 +144,15 @@ CLOUDBENCH_PATH = os.environ.get(
 if CLOUDBENCH_PATH not in sys.path:
     sys.path.insert(0, CLOUDBENCH_PATH)
 
+STATICFILES_DIRS += (
+    ('cloudbench', os.path.join(CLOUDBENCH_PATH, 'static')),
+)
+
 CLOUDBENCH_MUST_AUTHENTICATED = True
 
-XDG_CACHE_HOME = os.environ.get(
-    "XDG_CACHE_HOME",
-    os.path.expanduser("~/.cache/kartoza-cloudbench"),
-)
 # Chunked upload settings
 UPLOAD_CHUNK_SIZE = 5 * 1024 * 1024  # 5MB chunks
-UPLOAD_TEMP_DIR = os.path.join(XDG_CACHE_HOME, "uploads")
+UPLOAD_TEMP_DIR = os.path.join(
+    os.environ.get('CLOUDBENCH_DATA_FOLDER', MEDIA_ROOT), "uploads"
+)
 UPLOAD_MAX_FILE_SIZE = 10 * 1024 * 1024 * 1024  # 10GB max

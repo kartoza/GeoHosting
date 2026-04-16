@@ -1,6 +1,13 @@
 import { SalesOrder } from "../../redux/reducers/ordersSlice";
 import { NavigateFunction } from "react-router/dist/lib/hooks";
 
+export function notifyAndCloseWindow() {
+  if (window.opener) {
+    window.opener.postMessage({ type: 'checkout_status' }, '*');
+    window.close();
+  }
+}
+
 export function checkCheckoutUrl(
   salesOrder: SalesOrder,
   navigate?: NavigateFunction,
@@ -22,9 +29,11 @@ export function checkCheckoutUrl(
       break;
     case "Waiting Deployment":
       targetUrl = `/dashboard/instances/${salesOrder.app_name}`;
+      notifyAndCloseWindow();
       break;
     case "Deployed":
       targetUrl = `/dashboard/instances/${salesOrder.app_name}`;
+      notifyAndCloseWindow();
       break;
   }
   if (navigate && originalUrl.replace("/#", "") != targetUrl) {

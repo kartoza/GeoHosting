@@ -79,4 +79,4 @@ STATICFILES_DIRS += (
     absolute_path('geohosting', 'assets', 'webpack_bundles_dev'),
 )
 
-WEBPACK_CLOUDBENCH_SERVER_URL = os.environ.get('WEBPACK_CLOUDBENCH_SERVER_URL')
+WEBPACK_CLOUDBENCH_SERVER_URL = "http://webpack_cloudbench:5173"
