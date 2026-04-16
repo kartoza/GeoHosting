@@ -17,9 +17,7 @@ services:
       - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
-      - ./volumes/cloudbench/config:/home/web/cloudbench_data/config
-      - ./volumes/cloudbench/data:/home/web/cloudbench_data/data
-      - ./volumes/cloudbench/cache:/home/web/cloudbench_data/cache
+      - ./volumes/cloudbench:/home/web/cloudbench_data
 
   worker:
     build:
@@ -30,9 +28,7 @@ services:
       - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
-      - ./volumes/cloudbench/config:/home/web/cloudbench_data/config
-      - ./volumes/cloudbench/data:/home/web/cloudbench_data/data
-      - ./volumes/cloudbench/cache:/home/web/cloudbench_data/cache
+      - ./volumes/cloudbench:/home/web/cloudbench_data
 
   celery_beat:
     build:
@@ -43,9 +39,7 @@ services:
       - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
-      - ./volumes/cloudbench/config:/home/web/cloudbench_data/config
-      - ./volumes/cloudbench/data:/home/web/cloudbench_data/data
-      - ./volumes/cloudbench/cache:/home/web/cloudbench_data/cache
+      - ./volumes/cloudbench:/home/web/cloudbench_data
 
   nginx:
     volumes:
@@ -134,11 +128,9 @@ services:
       - REDIS_PASSWORD=redis_password
 
       # CLOUDBENCH
-      - CLOUDBENCH_PATH=/home/web/kartoza-cloudbench
       - WEBPACK_CLOUDBENCH_SERVER_URL=http://webpack_cloudbench:5173
-      - XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-/home/web/cloudbench_data/config}
-      - XDG_DATA_HOME=${XDG_DATA_HOME:-/home/web/cloudbench_data/data}
-      - XDG_CACHE_HOME=${XDG_CACHE_HOME:-/home/web/cloudbench_data/cache}
+      - CLOUDBENCH_PATH=/home/web/kartoza-cloudbench
+      - CLOUDBENCH_DATA_FOLDER=${CLOUDBENCH_DATA_FOLDER:-/home/web/cloudbench_data}
     ports:
       # for django test server
       - "9200:8080"

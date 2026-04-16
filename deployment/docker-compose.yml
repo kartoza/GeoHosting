@@ -12,9 +12,7 @@ x-common-django:
     - .env
   environment:
     # Cloudbench
-    - XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-/home/web/cloudbench_data/config}
-    - XDG_DATA_HOME=${XDG_DATA_HOME:-/home/web/cloudbench_data/data}
-    - XDG_CACHE_HOME=${XDG_CACHE_HOME:-/home/web/cloudbench_data/cache}
+    - CLOUDBENCH_DATA_FOLDER=${CLOUDBENCH_DATA_FOLDER:-/home/web/cloudbench_data}
   volumes:
     - static-data:/home/web/static
   restart: on-failure
