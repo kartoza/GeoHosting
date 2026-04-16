@@ -61,7 +61,7 @@ def patch_config_manager():
                     config.connections.append(Connection(
                         id=conn_id,
                         name=data["name"],
-                        url=data["url"],
+                        url=data["url"] + '/geoserver',
                         username=data["username"],
                         password=data["password"],
                         is_active=data["is_active"],
