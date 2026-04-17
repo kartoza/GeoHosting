@@ -24,6 +24,10 @@ RUN apt-get update -y && apt-get install -y nodejs npm
 
 ADD django_project /home/web/django_project
 
+ARG CLOUDBENCH_REPO=https://github.com/kartoza/kartoza-cloudbench.git
+ARG CLOUDBENCH_BRANCH=geohosting
+RUN git clone --depth=1 --branch ${CLOUDBENCH_BRANCH} ${CLOUDBENCH_REPO} /home/web/kartoza-cloudbench
+
 EXPOSE 8080
 
 ADD deployment/docker/uwsgi.conf /uwsgi.conf

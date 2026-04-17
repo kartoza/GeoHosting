@@ -14,7 +14,6 @@ services:
       target: prod
     volumes:
       - ../django_project:/home/web/django_project
-      - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
       - ./volumes/cloudbench:/home/web/cloudbench_data
@@ -25,7 +24,6 @@ services:
       dockerfile: deployment/docker/Dockerfile
     volumes:
       - ../django_project:/home/web/django_project
-      - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
       - ./volumes/cloudbench:/home/web/cloudbench_data
@@ -36,7 +34,6 @@ services:
       dockerfile: deployment/docker/Dockerfile
     volumes:
       - ../django_project:/home/web/django_project
-      - ../kartoza-cloudbench:/home/web/kartoza-cloudbench
       - ./volumes/static:/home/web/static
       - ./volumes/media:/home/web/media
       - ./volumes/cloudbench:/home/web/cloudbench_data
@@ -135,7 +132,6 @@ services:
 
       # CLOUDBENCH
       - WEBPACK_CLOUDBENCH_SERVER_URL=http://webpack_cloudbench:5173
-      - CLOUDBENCH_PATH=/home/web/kartoza-cloudbench
       - CLOUDBENCH_DATA_FOLDER=${CLOUDBENCH_DATA_FOLDER:-/home/web/cloudbench_data}
     ports:
       # for django test server
