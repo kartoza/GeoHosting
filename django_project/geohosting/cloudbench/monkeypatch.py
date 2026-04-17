@@ -3,7 +3,14 @@ from geohosting.models import Instance, InstanceStatus
 
 def cloudbench_data(instance: Instance):
     """Convert instance to cloudbench data."""
-    credentials = instance.credential()
+    product = instance.price.product
+    try:
+        credentials = instance.credential()
+    except Exception:
+        credentials = {
+            "username": product.username_credential,
+            "password": ""
+        }
     return {
         "id": instance.id,
         "name": instance.name,
@@ -69,6 +76,15 @@ def patch_config_manager():
                     return True
             return False
 
+        def _update_password_if_empty(items, conn_id, _instance):
+            for item in items:
+                if item.id == conn_id and not item.password:
+                    data = cloudbench_data(_instance)
+                    if data["password"]:
+                        item.password = data["password"]
+                        return True
+            return False
+
         changed = False
         for instance in instances:
             is_active = instance.status in [
@@ -96,6 +112,9 @@ def patch_config_manager():
                     changed |= _update_is_active(
                         config.connections, 'id', conn_id, is_active
                     )
+                    changed |= _update_password_if_empty(
+                        config.connections, conn_id, instance
+                    )
 
             elif product_name == PRODUCT_NAMES.GEONODE:
                 # Add it
@@ -117,6 +136,9 @@ def patch_config_manager():
                     changed |= _update_is_active(
                         config.geonode_connections, 'id', conn_id, is_active
                     )
+                    changed |= _update_password_if_empty(
+                        config.geonode_connections, conn_id, instance
+                    )
 
         # ----------------------------------------------
         # Delete instance from config if it's deleted'
@@ -125,7 +147,10 @@ def patch_config_manager():
             'price__product'
         ).filter(
             owner=user,
-            status__in=[InstanceStatus.DELETED]
+            status__in=[
+                InstanceStatus.DELETING,
+                InstanceStatus.DELETED
+            ]
         )
         for instance in instances:
             conn_id = _get_instance_connection_id(instance)
