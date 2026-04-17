@@ -75,7 +75,7 @@
     },
     {
       "identifier": "INSTANCE.DELETE",
-      "jenkins_url": "https://api.do.kartoza.com/jenkins/job/kartoza/job/devops/job/geohosting/job/db_create/buildWithParameters",
+      "jenkins_url": "https://api.do.kartoza.com/jenkins/job/kartoza/job/devops/job/geohosting/job/geosight_delete/buildWithParameters",
       "mapping": {
         "cluster": "k8s_cluster",
         "environment": "database_env",
@@ -96,7 +96,7 @@
     },
     {
       "identifier": "INSTANCE.DELETE",
-      "jenkins_url": "https://api.do.kartoza.com/jenkins/job/kartoza/job/devops/job/geohosting/job/geosight_create/buildWithParameters",
+      "jenkins_url": "https://api.do.kartoza.com/jenkins/job/kartoza/job/devops/job/geohosting/job/geosight_delete/buildWithParameters",
       "mapping": {
         "cluster": "k8s_cluster",
         "environment": "geosight_env",
