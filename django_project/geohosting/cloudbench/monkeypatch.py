@@ -26,7 +26,7 @@ def patch_config_manager():
     try:
         from apps.core.config import ConfigManager
         from apps.core.models import (
-            Config, Connection, GeoNodeConnection, PGServiceState
+            Config, Connection, GeoNodeConnection, PGService
         )
     except ImportError:
         return
@@ -63,18 +63,12 @@ def patch_config_manager():
                 InstanceStatus.OFFLINE,
             ]
         )
+        # Names that is running
+        instance_names = instances.values_list('name', flat=True)
 
         existing_geoserver_ids = {c.id for c in config.connections}
         existing_geonode_ids = {c.id for c in config.geonode_connections}
-
-        def _update_is_active(items, match_key, match_val, is_active):
-            for item in items:
-                if getattr(
-                        item, match_key
-                ) == match_val and item.is_active != is_active:
-                    item.is_active = is_active
-                    return True
-            return False
+        existing_pg_ids = {s.id for s in config.pg_services}
 
         def _update_password_if_empty(items, conn_id, _instance):
             for item in items:
@@ -109,9 +103,6 @@ def patch_config_manager():
                     existing_geoserver_ids.add(conn_id)
                     changed = True
                 else:
-                    changed |= _update_is_active(
-                        config.connections, 'id', conn_id, is_active
-                    )
                     changed |= _update_password_if_empty(
                         config.connections, conn_id, instance
                     )
@@ -133,11 +124,32 @@ def patch_config_manager():
                     existing_geonode_ids.add(conn_id)
                     changed = True
                 else:
-                    changed |= _update_is_active(
-                        config.geonode_connections, 'id', conn_id, is_active
-                    )
                     changed |= _update_password_if_empty(
                         config.geonode_connections, conn_id, instance
+                    )
+
+            elif product_name == PRODUCT_NAMES.POSTGIS:
+                if conn_id not in existing_pg_ids:
+                    data = cloudbench_data(instance)
+                    host = data["url"].removeprefix("https://").removeprefix(
+                        "http://")
+                    config.pg_services.append(
+                        PGService(
+                            id=conn_id,
+                            name=data["name"],
+                            host=host,
+                            port=5432,
+                            dbname=data["username"],
+                            user=data["username"],
+                            password=data["password"],
+                            is_active=is_active,
+                        )
+                    )
+                    existing_pg_ids.add(conn_id)
+                    changed = True
+                else:
+                    changed |= _update_password_if_empty(
+                        config.pg_services, conn_id, instance
                     )
 
         # ----------------------------------------------
@@ -151,6 +163,8 @@ def patch_config_manager():
                 InstanceStatus.DELETING,
                 InstanceStatus.DELETED
             ]
+        ).exclude(
+            name__in=instance_names
         )
         for instance in instances:
             conn_id = _get_instance_connection_id(instance)
