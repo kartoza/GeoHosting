@@ -70,7 +70,8 @@
         "cluster": "k8s_cluster",
         "environment": "database_env",
         "package": "database_size",
-        "app_name": "database_name"
+        "app_name": "database_name",
+        "user_email": "pgadmin_username_email"
       }
     },
     {

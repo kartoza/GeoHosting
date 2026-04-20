@@ -139,10 +139,11 @@ def patch_config_manager():
                             name=data["name"],
                             host=host,
                             port=5432,
-                            dbname=data["username"],
+                            dbname="gis",
                             user=data["username"],
                             password=data["password"],
                             is_active=is_active,
+                            sslmode="require"
                         )
                     )
                     existing_pg_ids.add(conn_id)
