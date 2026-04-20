@@ -60,7 +60,8 @@ CLOUDBENCH_APPS = (
     'apps.sqlview',
     'apps.sync',
     'apps.terria',
-    'apps.upload'
+    'apps.upload',
+    'apps.preview'
 )
 
 INSTALLED_APPS += CLOUDBENCH_APPS
