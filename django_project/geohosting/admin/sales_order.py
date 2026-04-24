@@ -66,7 +66,7 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
         sync_subscriptions, auto_deploy
     ]
     readonly_fields = (
-        'erpnext_code', 'package', 'customer', 'company',
+        'package', 'customer', 'company',
         'date', 'delivery_date', 'instance',
         'app_name',
         'payment_method', 'payment_id', 'subscription', 'invoice',

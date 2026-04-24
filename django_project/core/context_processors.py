@@ -41,3 +41,10 @@ def stripe(request):
     return {
         'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY
     }
+
+
+def is_debug(request):
+    """Return is debug."""
+    return {
+        'IS_DEBUG': settings.DEBUG
+    }

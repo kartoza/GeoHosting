@@ -36,7 +36,11 @@ export function checkCheckoutUrl(
       notifyAndCloseWindow();
       break;
   }
-  if (navigate && targetUrl !== "/" && originalUrl.replace("/#", "") != targetUrl) {
+  if (
+    navigate &&
+    targetUrl !== "/" &&
+    originalUrl.replace("/#", "") != targetUrl
+  ) {
     navigate(targetUrl);
   }
   return targetUrl;
