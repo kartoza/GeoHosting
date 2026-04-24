@@ -134,6 +134,9 @@ STORAGES = {
 # ------------------------------------
 
 # Add kartoza-cloudbench to sys.path so 'apps.*' modules can be imported
+CLOUDBENCH_DATA_FOLDER = os.environ.get(
+    'CLOUDBENCH_DATA_FOLDER', "/home/web/cloudbench_data"
+)
 CLOUDBENCH_PATH = "/home/web/kartoza-cloudbench"
 if CLOUDBENCH_PATH not in sys.path:
     sys.path.insert(0, CLOUDBENCH_PATH)
