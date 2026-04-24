@@ -5,14 +5,14 @@ import os
 
 import httpx
 from django.conf import settings
-from django.http import FileResponse, Http404, HttpResponse, StreamingHttpResponse
+from django.http import FileResponse, Http404, HttpResponse
 from django.views import View
 
 
 class CloudBenchAppView(View):
     """Serve the CloudBench React SPA and its static assets.
 
-    In development: proxies to Vite dev server (WEBPACK_CLOUDBENCH_SERVER_URL) for HMR.
+    In development: proxies to Vite dev server (WEBPACK_CLOUDBENCH_SERVER_URL).
     In production:  serves built static files from kartoza-cloudbench/static/.
     """
 
@@ -23,7 +23,9 @@ class CloudBenchAppView(View):
         cloudbench_path = getattr(
             settings, 'CLOUDBENCH_PATH',
             os.path.abspath(
-                os.path.join(os.path.dirname(__file__), '../../kartoza-cloudbench')
+                os.path.join(
+                    os.path.dirname(__file__), '../../kartoza-cloudbench'
+                )
             )
         )
         return os.path.join(cloudbench_path, 'static')
@@ -45,10 +47,14 @@ class CloudBenchAppView(View):
         try:
             resp = httpx.get(target, timeout=10, follow_redirects=True)
         except httpx.RequestError:
-            raise Http404('Vite dev server unavailable. Is the vite service running?')
+            raise Http404(
+                'Vite dev server unavailable. Is the vite service running?'
+            )
 
         content_type = resp.headers.get('content-type', 'text/html')
-        return HttpResponse(resp.content, status=resp.status_code, content_type=content_type)
+        return HttpResponse(
+            resp.content, status=resp.status_code, content_type=content_type
+        )
 
     def _serve_static(self, path):
         """Serve built static files, fallback to index.html for SPA routing."""
@@ -63,8 +69,14 @@ class CloudBenchAppView(View):
 
         if path:
             file_path = os.path.realpath(os.path.join(static_root, path))
-            if file_path.startswith(os.path.realpath(static_root)) and os.path.isfile(file_path):
+            if file_path.startswith(
+                    os.path.realpath(static_root)
+            ) and os.path.isfile(file_path):
                 content_type, _ = mimetypes.guess_type(file_path)
-                return FileResponse(open(file_path, 'rb'), content_type=content_type)
+                return FileResponse(
+                    open(file_path, 'rb'), content_type=content_type
+                )
 
-        return FileResponse(open(index_html, 'rb'), content_type='text/html')
+        return FileResponse(
+            open(index_html, 'rb'), content_type='text/html'
+        )

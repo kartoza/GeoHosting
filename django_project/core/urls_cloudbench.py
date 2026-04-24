@@ -1,8 +1,7 @@
-"""CloudBench URL configuration — mounted at /api/cloudbench/ in core/urls.py."""
+"""CloudBench URL configuration"""
 from django.conf import settings
 from django.urls import include, path
 
-# Use CLOUDBENCH_APPS from settings, with apps.preview added (no models, URLs only)
 _extra = []
 app_modules = list(getattr(settings, 'CLOUDBENCH_APPS', [])) + _extra
 
