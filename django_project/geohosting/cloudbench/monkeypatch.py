@@ -22,7 +22,7 @@ def cloudbench_data(instance: Instance):
 
 
 def patch_config_manager():
-    """Monkeypatch ConfigManager.post_process_config to inject GeoHosting instances."""
+    """Monkeypatch ConfigManager.post_process_config."""
     try:
         from apps.core.config import ConfigManager
         from apps.core.models import (
@@ -32,7 +32,7 @@ def patch_config_manager():
         return
 
     class PRODUCT_NAMES:
-        """Product names"""
+        """Contains product names."""
         GEOSERVER = 'geoserver'
         GEONODE = 'geonode'
         POSTGIS = 'postgis'

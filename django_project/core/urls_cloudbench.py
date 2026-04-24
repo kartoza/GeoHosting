@@ -1,4 +1,4 @@
-"""CloudBench URL configuration"""
+"""CloudBench URL configuration."""
 from django.conf import settings
 from django.urls import include, path
 

@@ -36,7 +36,10 @@ urlpatterns = [
     # CloudBench API endpoints
     path('api/cloudbench/', include('core.urls_cloudbench')),
     # CloudBench SPA + static files — catch-all, must be last
-    re_path(r'^cloudbench/(?P<path>.*)$', CloudBenchAppView.as_view(), name='cloudbench'),
+    re_path(
+        r'^cloudbench/(?P<path>.*)$', CloudBenchAppView.as_view(),
+        name='cloudbench'
+    ),
 ]
 
 if settings.DEBUG:
