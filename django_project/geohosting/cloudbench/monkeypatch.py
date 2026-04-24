@@ -33,6 +33,7 @@ def patch_config_manager():
 
     class PRODUCT_NAMES:
         """Contains product names."""
+
         GEOSERVER = 'geoserver'
         GEONODE = 'geonode'
         POSTGIS = 'postgis'
