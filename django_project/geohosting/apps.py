@@ -15,3 +15,7 @@ class Config(AppConfig):
 
     name = 'geohosting'
     verbose_name = _('GeoHosting')
+
+    def ready(self):
+        from geohosting.cloudbench.monkeypatch import patch_config_manager
+        patch_config_manager()

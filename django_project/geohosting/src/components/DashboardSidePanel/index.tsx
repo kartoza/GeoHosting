@@ -1,5 +1,5 @@
-import { AppDispatch } from "../../redux/store";
-import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/reducers/authSlice";
 import {
@@ -142,6 +142,42 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
           onClick={() => navigate("/dashboard/profile")}
         >
           Profile
+        </SidebarItem>
+        <SidebarItem
+          style={{ position: "relative", alignItems: "center" }}
+          icon={
+            <svg
+              stroke="currentColor"
+              fill="none"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              focusable="false"
+              className="chakra-icon css-qwa21a"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+            </svg>
+          }
+          isSelected={selected === "cloudbench"}
+          onClick={() => navigate("/cloudbench")}
+        >
+          CloudBench{" "}
+          <span
+            style={{
+              fontSize: "0.8rem",
+              backgroundColor: "green",
+              marginLeft: "0.5rem",
+              padding: "0 0.5rem",
+              borderRadius: "0.25rem",
+              color: "white",
+            }}
+          >
+            Experimental
+          </span>
         </SidebarItem>
         <SidebarItem style={{ padding: 0 }}>
           <Help

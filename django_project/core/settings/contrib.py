@@ -4,6 +4,7 @@ GeoHosting Controller.
 
 .. note:: Settings for 3rd party.
 """
+
 from .base import *  # noqa
 
 # Extra installed apps

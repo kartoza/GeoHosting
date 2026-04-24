@@ -34,5 +34,21 @@
     "username_credential": "admin",
     "password_key_on_vault": "G3WSUITE_ADMIN_PASS",
     "add_on": []
+  },
+  "postgis": {
+    "is_add_on": false,
+    "url_as_addon": "",
+    "vault_path": "/geohosting/postgis-db/postgis-db-creds-",
+    "username_credential": "kartoza_postgis",
+    "password_key_on_vault": "DATABASE_PASSWORD",
+    "add_on": []
+  },
+  "geosight": {
+    "is_add_on": false,
+    "url_as_addon": "",
+    "vault_path": "/geohosting/geosight/geosight-creds-",
+    "username_credential": "admin",
+    "password_key_on_vault": "ADMIN_PASSWORD",
+    "add_on": []
   }
 }

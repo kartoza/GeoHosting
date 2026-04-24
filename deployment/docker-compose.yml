@@ -10,6 +10,9 @@ x-common-django:
   image: kartoza/${COMPOSE_PROJECT_NAME:-django_project}:${DJANGO_TAG:-1.0.0}
   env_file:
     - .env
+  environment:
+    # Cloudbench
+    - CLOUDBENCH_DATA_FOLDER=${CLOUDBENCH_DATA_FOLDER:-/home/web/cloudbench_data}
   volumes:
     - static-data:/home/web/static
   restart: on-failure

@@ -73,6 +73,8 @@ def fetch_products_from_erpnext():
             _product_detail = fetch_erpnext_detail_data(
                 f'{doctype}/{code}'
             )
+            if not isinstance(_product_detail, dict):
+                continue
             attributes = _product_detail.get('attributes', [])
             host_attributes = {}
             for attribute in attributes:

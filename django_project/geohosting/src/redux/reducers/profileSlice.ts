@@ -30,6 +30,7 @@ export interface User {
   email: string;
   profile: Profile;
   billing_information: BillingInformation;
+  cloudbench_url: string;
 }
 
 interface ProfileState {

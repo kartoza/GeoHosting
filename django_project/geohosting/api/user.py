@@ -48,7 +48,9 @@ class UserProfileView(APIView):
 
     def get(self, request):
         """Get user profile."""
-        return Response(UserSerializer(request.user).data)
+        return Response(
+            UserSerializer(request.user, context={'request': request}).data
+        )
 
     def put(self, request):
         """Put method to change password."""

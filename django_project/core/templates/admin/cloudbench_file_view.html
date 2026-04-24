@@ -1,0 +1,51 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}{{ filename }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; <a href="{% url 'admin:core_preferences_changelist' %}">Preferences</a>
+    &rsaquo; <a href="{% url 'admin:core_preferences_cloudbench_files' %}">File Browser</a>
+    {% for crumb in breadcrumbs %}
+    &rsaquo;
+    {% if not forloop.last %}
+    <a href="{% url 'admin:core_preferences_cloudbench_files' %}?path={{ crumb.rel_path }}">{{ crumb.name }}</a>
+    {% else %}
+    {{ crumb.name }}
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block content %}
+<style>
+    .file-viewer { font-family: monospace; }
+    .file-viewer .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+    .file-viewer pre {
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 16px;
+        border-radius: 4px;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+        max-height: 80vh;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+</style>
+
+<div class="file-viewer">
+    <div class="toolbar">
+        <a href="{{ parent_browser_url }}" class="button">&#8592; Back</a>
+        <strong>{{ filename }}</strong>
+    </div>
+    <pre>{{ content }}</pre>
+</div>
+{% endblock %}

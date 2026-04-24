@@ -5,6 +5,7 @@ GeoHosting Controller.
 .. note:: Project level settings.
 """
 import os  # noqa
+import sys  # noqa
 
 from .contrib import *  # noqa
 
@@ -12,12 +13,14 @@ ALLOWED_HOSTS = ['*']
 ADMINS = ()
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'ENGINE': os.environ.get(
+            'DATABASE_ENGINE', 'django.contrib.gis.db.backends.postgis'
+        ),
         'NAME': os.environ['DATABASE_NAME'],
         'USER': os.environ['DATABASE_USERNAME'],
         'PASSWORD': os.environ['DATABASE_PASSWORD'],
         'HOST': os.environ['DATABASE_HOST'],
-        'PORT': 5432,
+        'PORT': os.environ.get('DATABASE_PORT', '5432'),
         'TEST_NAME': 'unittests',
         'TEST': {
             'NAME': 'unittests',
@@ -35,6 +38,33 @@ INSTALLED_APPS = INSTALLED_APPS + (
     'geohosting',
     'geohosting_controller'
 )
+
+# Kartoza CloudBench apps
+CLOUDBENCH_APPS = (
+    'apps.core',
+    'apps.ai',
+    'apps.bridge',
+    'apps.connections',
+    'apps.dashboard',
+    'apps.geonode',
+    'apps.geoserver',
+    'apps.gwc',
+    'apps.iceberg',
+    'apps.mergin',
+    'apps.postgres',
+    'apps.qfieldcloud',
+    'apps.qgis',
+    'apps.query',
+    'apps.s3',
+    'apps.search',
+    'apps.sqlview',
+    'apps.sync',
+    'apps.terria',
+    'apps.upload',
+    'apps.preview'
+)
+
+INSTALLED_APPS += CLOUDBENCH_APPS
 
 FIXTURE_DIRS = ['geohosting_controller/fixtures']
 
@@ -99,3 +129,27 @@ STORAGES = {
         )
     },
 }
+# ------------------------------------
+# CLOUDBENCH ENVIRONMENT VARIABLES
+# ------------------------------------
+
+# Add kartoza-cloudbench to sys.path so 'apps.*' modules can be imported
+CLOUDBENCH_DATA_FOLDER = os.environ.get(
+    'CLOUDBENCH_DATA_FOLDER', "/home/web/cloudbench_data"
+)
+CLOUDBENCH_PATH = "/home/web/kartoza-cloudbench"
+if CLOUDBENCH_PATH not in sys.path:
+    sys.path.insert(0, CLOUDBENCH_PATH)
+
+STATICFILES_DIRS += (
+    ('cloudbench', os.path.join(CLOUDBENCH_PATH, 'static')),
+)
+
+CLOUDBENCH_MUST_AUTHENTICATED = True
+
+# Chunked upload settings
+UPLOAD_CHUNK_SIZE = 5 * 1024 * 1024  # 5MB chunks
+UPLOAD_TEMP_DIR = os.path.join(
+    os.environ.get('CLOUDBENCH_DATA_FOLDER', MEDIA_ROOT), "uploads"
+)
+UPLOAD_MAX_FILE_SIZE = 10 * 1024 * 1024 * 1024  # 10GB max

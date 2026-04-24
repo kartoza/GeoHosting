@@ -28,10 +28,9 @@ const CheckoutDeployment = lazy(
 const CheckoutFinish = lazy(
   () => import("./pages/CheckoutPage/SalesOrderCheckout/CheckoutFinish"),
 );
-const ResetPasswordPage = lazy(
-  () => import("./pages/ResetPasswordPage"),
-);
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 const OverviewPage = lazy(() => import("./pages/OverviewPage"));
+const CloudBenchPage = lazy(() => import("./pages/CloudBenchPage"));
 
 /** Global decalrations **/
 declare global {
@@ -117,6 +116,14 @@ const App: React.FC = () => {
             />
             {/* ----------------------------- */}
             <Route path="/app/:appName" element={<OverviewPage />} />
+            <Route
+              path="/cloudbench"
+              element={
+                <PrivateRoute>
+                  <CloudBenchPage />
+                </PrivateRoute>
+              }
+            />
 
             {/* 404 Not Found route */}
             <Route path="*" element={<PageNotFound />} />

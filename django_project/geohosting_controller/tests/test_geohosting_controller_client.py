@@ -151,7 +151,7 @@ class ControllerTest(TestCase):
             )
             requests_mocker.head(
                 (
-                    'https://server-test.sta.do.kartoza.com'
+                    'https://server-test.sta.geospatialhosting.com'
                 ),
                 status_code=200,
                 json={
