@@ -281,6 +281,14 @@ class SubscriptionGateway:
                     template.date = now()
                     template.delivery_date = now()
                     template.is_main_invoice = False
+
+                    template.discount_amount = (
+                        subscription_data.discount_amount
+                    )
+                    template.discount_percentage = (
+                        subscription_data.discount_percentage
+                    )
+                    template.discount_code = subscription_data.discount_code
                     template.save()
 
         subscription.customer_payment_id = subscription_data.customer_id

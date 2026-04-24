@@ -61,5 +61,48 @@
         "app_name": "geoserver_name"
       }
     }
+  ],
+  "postgis": [
+    {
+      "identifier": "INSTANCE.CREATE",
+      "jenkins_url": "https://api.do.kartoza.com/jenkins/job/kartoza/job/devops/job/geohosting/job/db_create/buildWithParameters",
+      "mapping": {
+        "cluster": "k8s_cluster",
+        "environment": "database_env",
+        "package": "database_size",
+        "app_name": "database_name",
+        "user_email": "pgadmin_username_email"
+      }
+    },
+    {
+      "identifier": "INSTANCE.DELETE",
+      "jenkins_url": "https://api.do.kartoza.com/jenkins/job/kartoza/job/devops/job/geohosting/job/db_delete/buildWithParameters",
+      "mapping": {
+        "cluster": "k8s_cluster",
+        "environment": "database_env",
+        "app_name": "database_name"
+      }
+    }
+  ],
+  "geosight": [
+    {
+      "identifier": "INSTANCE.CREATE",
+      "jenkins_url": "https://api.do.kartoza.com/jenkins/job/kartoza/job/devops/job/geohosting/job/geosight_create/buildWithParameters",
+      "mapping": {
+        "cluster": "k8s_cluster",
+        "environment": "geosight_env",
+        "package": "geosight_size",
+        "app_name": "geosight_name"
+      }
+    },
+    {
+      "identifier": "INSTANCE.DELETE",
+      "jenkins_url": "https://api.do.kartoza.com/jenkins/job/kartoza/job/devops/job/geohosting/job/geosight_delete/buildWithParameters",
+      "mapping": {
+        "cluster": "k8s_cluster",
+        "environment": "geosight_env",
+        "app_name": "geosight_name"
+      }
+    }
   ]
 }
