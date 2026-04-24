@@ -27,7 +27,11 @@ export function checkCheckoutUrl(
       targetUrl = `/dashboard/instances/${salesOrder.app_name}`;
       break;
   }
-  if (navigate && originalUrl.replace("/#", "") != targetUrl) {
+  if (
+    navigate &&
+    targetUrl !== "/" &&
+    originalUrl.replace("/#", "") != targetUrl
+  ) {
     navigate(targetUrl);
   }
   return targetUrl;

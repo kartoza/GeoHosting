@@ -7,6 +7,7 @@ import "./assets/styles/index.css";
 import TokenValidator from "./components/TokenValidator/TokenValidator";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
+import { checkCheckoutUrl } from "./pages/CheckoutPage/utils";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));

@@ -29,13 +29,7 @@ const Index: React.FC<Props> = ({
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { detail } = useSelector((state: RootState) => state.salesOrders);
-  const { data: salesOrderDetail, error: detailError } = detail;
-
-  useEffect(() => {
-    if (detailError) {
-      navigate("/");
-    }
-  }, [detailError]);
+  const { data: salesOrderDetail } = detail;
 
   useEffect(() => {
     if (id && salesOrderDetail?.id != id) {
