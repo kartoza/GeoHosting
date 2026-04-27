@@ -1,0 +1,38 @@
+.DashboardSidePanel {
+
+  .CollapseButton {
+    cursor: pointer;
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .SidePanelText {
+    display: flex;
+  }
+
+  &.collapsed {
+    width: 4rem;
+
+    .SidePanelText {
+      display: none;
+    }
+
+    .SidebarItem {
+      padding-left: 20px;
+      padding-right: 0;
+    }
+
+    .HeaderName {
+      display: none;
+    }
+
+    .chakra-heading {
+      .chakra-image {
+        margin-right: 0;
+      }
+    }
+  }
+}

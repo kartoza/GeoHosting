@@ -51,7 +51,7 @@ const Help: FC<IHelp> = ({
       {isDrawer ? (
         <>
           <Flex
-            p={4}
+            p={3}
             color="white"
             _hover={{ bg: "blue.500", cursor: "pointer" }}
             w="full"
