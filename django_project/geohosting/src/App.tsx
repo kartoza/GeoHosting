@@ -116,15 +116,6 @@ const App: React.FC = () => {
             />
             {/* ----------------------------- */}
             <Route path="/app/:appName" element={<OverviewPage />} />
-            <Route
-              path="/cloudbench"
-              element={
-                <PrivateRoute>
-                  <CloudBenchPage />
-                </PrivateRoute>
-              }
-            />
-
             {/* 404 Not Found route */}
             <Route path="*" element={<PageNotFound />} />
           </Routes>
