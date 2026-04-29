@@ -1,12 +1,20 @@
 import React from "react";
 import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import CloudBenchDisclaimerModal, {
+  useCloudBenchDisclaimer,
+} from "./CloudBenchDisclaimerModal";
 
 const CloudBenchPage: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(true);
+  const [showModal, setShowModal] = React.useState(useCloudBenchDisclaimer);
   const cloudbenchUrl = "/cloudbench";
 
   return (
     <>
+      <CloudBenchDisclaimerModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
       {cloudbenchUrl ? (
         <Box width="100%" height="100%" position="relative">
           {isLoading && (
