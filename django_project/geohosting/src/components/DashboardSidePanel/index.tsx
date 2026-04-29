@@ -62,6 +62,11 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
   const selected = pathNames[pathNames.length - 1];
   const [collapsed, setCollapsed] = React.useState(false);
 
+  const navigateTo = (path: string) => {
+    onClose();
+    navigate(path);
+  };
+
   const handleLogout = () => {
     dispatch(logout()).then(() => {
       navigate("/");
@@ -72,16 +77,22 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
     <Box
       className={"DashboardSidePanel " + (collapsed ? "collapsed" : "")}
       bg="gray.500"
-      zIndex={99}
+      zIndex={999}
       w={{ base: "full", md: 60 }}
+      minW={{ base: 0, md: collapsed ? 0 : 60 }}
       minHeight="100vh"
       maxHeight="100vh"
       overflowY="auto"
       {...rest}
     >
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex
+        alignItems={{ base: "flex-start", md: "center" }}
+        justifyContent="space-between"
+      >
         <CloseButton
-          display={{ base: "flex", md: "none" }}
+          position="absolute"
+          zIndex={999}
+          display={{ base: "block", md: "none" }}
           onClick={onClose}
           color={{ base: "white", md: "#3e3e3e" }}
         />
@@ -176,7 +187,7 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
             />
           }
           isSelected={selected === "dashboard" || pathNames[2] === "instances"}
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigateTo("/dashboard")}
         >
           Hosted Products
         </SidebarItem>
@@ -189,7 +200,7 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
             />
           }
           isSelected={selected === "orders"}
-          onClick={() => navigate("/dashboard/orders")}
+          onClick={() => navigateTo("/dashboard/orders")}
         >
           Agreements
         </SidebarItem>
@@ -198,7 +209,7 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
             <Image src="/static/images/support.svg" boxSize="6" alt="Support" />
           }
           isSelected={selected === "support"}
-          onClick={() => navigate("/dashboard/support")}
+          onClick={() => navigateTo("/dashboard/support")}
         >
           Support
         </SidebarItem>
@@ -207,7 +218,7 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
             <Image src="/static/images/profile.svg" boxSize="6" alt="Profile" />
           }
           isSelected={selected === "profile"}
-          onClick={() => navigate("/dashboard/profile")}
+          onClick={() => navigateTo("/dashboard/profile")}
         >
           Profile
         </SidebarItem>
@@ -235,10 +246,7 @@ const DashboardSidePanel = ({ onClose, ...rest }) => {
             </svg>
           }
           isSelected={selected === "cloudbench"}
-          onClick={() => {
-            navigate("/dashboard/cloudbench");
-            setCollapsed(true);
-          }}
+          onClick={() => navigateTo("/dashboard/cloudbench")}
         >
           CloudBench{" "}
           <span
