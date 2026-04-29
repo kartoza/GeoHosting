@@ -3,11 +3,10 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { store } from "./redux/store";
-import "./assets/styles/index.css";
 import TokenValidator from "./components/TokenValidator/TokenValidator";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
-import { checkCheckoutUrl } from "./pages/CheckoutPage/utils";
+import "./assets/styles/index.css";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
@@ -30,7 +29,6 @@ const CheckoutFinish = lazy(
 );
 const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 const OverviewPage = lazy(() => import("./pages/OverviewPage"));
-const CloudBenchPage = lazy(() => import("./pages/CloudBenchPage"));
 
 /** Global decalrations **/
 declare global {

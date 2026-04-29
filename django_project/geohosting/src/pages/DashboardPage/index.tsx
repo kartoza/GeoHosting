@@ -18,9 +18,9 @@ const DashboardPage = ({ title = "Dashboard" }) => {
 
   return (
     <ChakraProvider theme={customTheme}>
-      <Box minH="100vh" display="flex">
+      <Box h="100vh" overflow="hidden" display="flex">
         <DashboardSidePanel
-          onClose={toggleSidebar}
+          onClose={() => setIsOpen(false)}
           display={{ base: isOpen ? "block" : "none", md: "block" }}
           position={{ base: "absolute", md: "unset" }}
         />
@@ -86,7 +86,17 @@ const DashboardPage = ({ title = "Dashboard" }) => {
                 />
               }
             />
-            <Route path="/cloudbench" element={<CloudBenchPage />} />
+            <Route
+              path="/cloudbench"
+              element={
+                <DashboardPageContent
+                  title="Cloudbench"
+                  element={<CloudBenchPage />}
+                  toggleSidebar={toggleSidebar}
+                  content={{ p: 0 }}
+                />
+              }
+            />
           </Routes>
         </Box>
       </Box>

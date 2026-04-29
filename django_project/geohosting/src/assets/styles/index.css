@@ -16,3 +16,26 @@ code {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ECB44B;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d9a23a;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ECB44B transparent;
+}

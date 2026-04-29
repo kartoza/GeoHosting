@@ -7,20 +7,22 @@ interface Props {
   title: string;
   toggleSidebar: () => void;
   element: ReactNode;
+  content?: {
+    p: number;
+  };
 }
 
-const DashboardPageContent = ({ title, toggleSidebar, element }: Props) => {
+const DashboardPageContent = ({
+  title,
+  toggleSidebar,
+  element,
+  content = { p: 8 },
+}: Props) => {
   const { id } = useParams<{ id: string }>();
-
   return (
-    <Flex
-      transition="0.3s ease"
-      minH="100vh"
-      maxH="100vh"
-      overflowY="auto"
-      flexDirection={"column"}
-    >
+    <Box display="flex" flexDirection="column" height="100vh">
       <Flex
+        zIndex={99}
         as="header"
         align="center"
         justifyContent={{ base: "left", md: "space-between" }}
@@ -30,6 +32,7 @@ const DashboardPageContent = ({ title, toggleSidebar, element }: Props) => {
         borderBottomWidth="1px"
         borderColor="gray.200"
         h="14"
+        flexShrink={0}
       >
         <IconButton
           aria-label="Open menu"
@@ -49,11 +52,10 @@ const DashboardPageContent = ({ title, toggleSidebar, element }: Props) => {
         </Heading>
       </Flex>
 
-      {/* Main content area below the header */}
-      <Box p={8} flexGrow={1} position="relative">
+      <Box flex={1} overflowY="auto" p={content.p}>
         {element}
       </Box>
-    </Flex>
+    </Box>
   );
 };
 

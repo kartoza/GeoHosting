@@ -50,19 +50,36 @@ const Help: FC<IHelp> = ({
     <>
       {isDrawer ? (
         <>
-          <Flex
-            p={3}
-            color="white"
-            _hover={{ bg: "blue.500", cursor: "pointer" }}
-            w="full"
-            onClick={onDrawerOpen}
-            style={style}
-          >
-            <Box mr={3} fontSize="lg" display="flex" alignItems="center">
-              <QuestionCircle />
-            </Box>
-            Help
-          </Flex>
+          {backgroundColor != "transparent" ? (
+            <Flex
+              _hover={{ bg: "blue.500", cursor: "pointer" }}
+              borderBottom="1px solid"
+              borderColor="gray.200"
+              paddingBottom="1.5rem"
+              w="full"
+              onClick={onDrawerOpen}
+              style={style}
+            >
+              <Box mr={3} fontSize="lg" display="flex" alignItems="center">
+                <QuestionCircle />
+              </Box>
+              Help
+            </Flex>
+          ) : (
+            <Flex
+              p={3}
+              color="white"
+              _hover={{ bg: "blue.500", cursor: "pointer" }}
+              w="full"
+              onClick={onDrawerOpen}
+              style={style}
+            >
+              <Box mr={3} fontSize="lg" display="flex" alignItems="center">
+                <QuestionCircle />
+              </Box>
+              Help
+            </Flex>
+          )}
         </>
       ) : (
         <IconButton
