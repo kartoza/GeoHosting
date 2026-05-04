@@ -29,6 +29,22 @@ ARG CLOUDBENCH_REPO=https://github.com/kartoza/kartoza-cloudbench.git
 ARG CLOUDBENCH_BRANCH=geohosting
 RUN git clone --depth=1 --branch ${CLOUDBENCH_BRANCH} ${CLOUDBENCH_REPO} /home/web/kartoza-cloudbench
 
+# Build GeoHosting frontend
+RUN cd /home/web/django_project/geohosting && \
+    npm install --verbose && \
+    npm run build-react
+
+# Build CloudBench frontend
+RUN cd /home/web/kartoza-cloudbench/web && \
+    npm install --verbose && \
+    VITE_BASE_URL="/static/cloudbench" \
+    VITE_API_BASE="/api/cloudbench" \
+    VITE_CREATE_GEOSERVER_URL="/#/app/GeoServer" \
+    VITE_CREATE_GEONODE_URL="/#/app/GeoNode" \
+    VITE_CREATE_POSTGIS_URL="/#/app/PostGIS" \
+    npm run build && \
+    cp -r /home/web/kartoza-cloudbench/static/static/cloudbench/* /home/web/kartoza-cloudbench/static
+
 EXPOSE 8080
 
 ADD deployment/docker/uwsgi.conf /uwsgi.conf
