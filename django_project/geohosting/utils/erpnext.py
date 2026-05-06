@@ -187,7 +187,7 @@ def post_to_erpnext(data, doctype, file=None, url_input=None):
 
     except requests.exceptions.HTTPError as err:
         log.response_code = err.response.status_code
-        log.response_text = str(err)
+        log.response_text = err.response.text if err.response is not None else str(err)
         log.save()
 
         if response.status_code == 409:
@@ -243,7 +243,7 @@ def upload_attachment_to_erp(doctype, id, file):
 
     except requests.exceptions.HTTPError as err:
         log.response_code = err.response.status_code
-        log.response_text = str(err)
+        log.response_text = err.response.text if err.response is not None else str(err)
         log.save()
 
         if response.status_code == 409:
@@ -293,7 +293,7 @@ def get_erpnext_data(doctype, id):
 
     except requests.exceptions.HTTPError as err:
         log.response_code = err.response.status_code
-        log.response_text = str(err)
+        log.response_text = err.response.text if err.response is not None else str(err)
         log.save()
 
         return {"status": "error", "message": str(err)}
@@ -353,7 +353,7 @@ def put_to_erpnext(data, doctype, id, file=None):
 
     except requests.exceptions.HTTPError as err:
         log.response_code = err.response.status_code
-        log.response_text = str(err)
+        log.response_text = err.response.text if err.response is not None else str(err)
         log.save()
 
         return {"status": "error", "message": str(err)}

@@ -5,25 +5,34 @@ from django.contrib.auth.models import User
 from geohosting.models import (
     UserProfile, UserBillingInformation, UserPaymentGatewayId
 )
+from geohosting_event.models import LogTracker
 
 
 @admin.action(description="Push to erpnext")
 def push_user_to_erpnext(modeladmin, request, queryset):
     for user in queryset:
-        user_profile, created = (
-            UserProfile.objects.get_or_create(user=user)
-        )
-        result = user_profile.post_to_erpnext()
-        if result['status'] == 'success':
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                'Published')
-        else:
+        try:
+            user_profile, created = (
+                UserProfile.objects.get_or_create(user=user)
+            )
+            result = user_profile.post_to_erpnext()
+            if result['status'] == 'success':
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Published')
+            else:
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    result['message']
+                )
+        except Exception as e:
+            LogTracker.error(user, f'Push to erpnext', e)
             messages.add_message(
                 request,
                 messages.ERROR,
-                result['message']
+                "Look on the LogTracker"
             )
 
 
