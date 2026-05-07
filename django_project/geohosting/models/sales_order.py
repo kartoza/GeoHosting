@@ -190,6 +190,8 @@ class SalesOrder(ErpModel):
             'Subscription of the instance.'
         )
     )
+
+    # Invoice data
     is_main_invoice = models.BooleanField(
         default=True
     )
@@ -197,6 +199,14 @@ class SalesOrder(ErpModel):
         blank=True,
         null=True,
         help_text='Invoice id on the payment gateway.'
+    )
+    current_period_start = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+    current_period_end = models.DateTimeField(
+        blank=True,
+        null=True,
     )
 
     # Discounts
@@ -254,9 +264,7 @@ class SalesOrder(ErpModel):
             invoice = self.salesorderinvoice_set.all().first()
             if not invoice:
                 # Create sales invoice if sales order is not already invoiced
-                SalesOrderInvoice.objects.create(
-                    sales_order=self
-                )
+                SalesOrderInvoice.objects.create(sales_order=self)
             else:
                 invoice.post_to_erpnext()
         return result
@@ -373,6 +381,47 @@ class SalesOrder(ErpModel):
             payload[
                 'additional_discount_percentage'
             ] = self.discount_percentage
+        if self.invoice_id:
+            auto_repeat = {
+                'repeat_on_day': (
+                    self.current_period_start.day if self.current_period_start else 1
+                ),
+                'submit_on_creation': 1,
+                'status': (
+                    'Active' if self.subscription.is_active else 'Stopped'
+                ),
+                'notify_by_email': 1
+            }
+            if self.current_period_start and self.current_period_end:
+                delta = (
+                        self.current_period_end - self.current_period_start
+                ).days
+                if delta <= 3:
+                    frequency = 'Daily'
+                elif delta <= 20:
+                    frequency = 'Weekly'
+                elif delta <= 60:
+                    frequency = 'Monthly'
+                elif delta <= 135:
+                    frequency = 'Quarterly'
+                elif delta <= 270:
+                    frequency = 'Half-yearly'
+                else:
+                    frequency = 'Yearly'
+                auto_repeat['frequency'] = frequency
+            if self.current_period_start:
+                auto_repeat['repeat_on_day'] = self.current_period_start.day
+                payload[
+                    'transaction_date'
+                ] = self.current_period_start.strftime('%Y-%m-%d')
+                auto_repeat[
+                    'start_date'
+                ] = self.current_period_start.strftime('%Y-%m-%d')
+            if self.current_period_end:
+                auto_repeat[
+                    'end_date'
+                ] = self.current_period_end.strftime('%Y-%m-%d')
+            payload['auto_repeat'] = auto_repeat
         return payload
 
     @property

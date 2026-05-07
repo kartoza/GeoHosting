@@ -255,41 +255,54 @@ class SubscriptionGateway:
             }
         )
 
-        # This is for null invoice_id in sales order
-        if subscription.is_active:
-            if subscription_data.latest_invoice:
-                subscription.salesorder_set.filter(
-                    invoice_id__isnull=True
+        # This is update latest invoice
+        if subscription_data.latest_invoice:
+            # Apply invoice_id for the null one
+            subscription.salesorder_set.filter(
+                invoice_id__isnull=True
+            ).update(
+                invoice_id=subscription_data.latest_invoice
+            )
+
+            sales_order = subscription.salesorder_set.filter(
+                invoice_id=subscription_data.latest_invoice
+            ).first()
+
+            # For create new sales order if there is no sales order
+            # For next payment date
+            orders = subscription.salesorder_set.filter(
+                invoice_id__isnull=False
+            )
+            # If the the sales order for this invoice is not created yet
+            # And there is already sales order for this subscription
+            if not sales_order and orders.last():
+                # Create sales order
+                template = orders.last()
+                template.id = None
+                template.erpnext_code = None
+                template.invoice = None
+                template.invoice_id = subscription_data.latest_invoice
+                template.date = now()
+                template.delivery_date = now()
+                template.is_main_invoice = False
+
+                template.discount_amount = (
+                    subscription_data.discount_amount
+                )
+                template.discount_percentage = (
+                    subscription_data.discount_percentage
+                )
+                template.discount_code = subscription_data.discount_code
+                template.save()
+                sales_order = template
+                
+            if sales_order:
+                type(sales_order).objects.filter(
+                    pk=sales_order.pk
                 ).update(
-                    invoice_id=subscription_data.latest_invoice
+                    current_period_start=current_period_start,
+                    current_period_end=current_period_end
                 )
-
-                # For create new sales order if there is no sales order
-                # For next payment date
-                orders = subscription.salesorder_set.filter(
-                    invoice_id__isnull=False
-                )
-                if not orders.filter(
-                        invoice_id=subscription_data.latest_invoice
-                ).first() and orders.last():
-                    # Create sales order
-                    template = orders.last()
-                    template.id = None
-                    template.erpnext_code = None
-                    template.invoice = None
-                    template.invoice_id = subscription_data.latest_invoice
-                    template.date = now()
-                    template.delivery_date = now()
-                    template.is_main_invoice = False
-
-                    template.discount_amount = (
-                        subscription_data.discount_amount
-                    )
-                    template.discount_percentage = (
-                        subscription_data.discount_percentage
-                    )
-                    template.discount_code = subscription_data.discount_code
-                    template.save()
 
         subscription.customer_payment_id = subscription_data.customer_id
         subscription.current_period_start = current_period_start

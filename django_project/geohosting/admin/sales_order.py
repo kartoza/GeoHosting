@@ -59,7 +59,7 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
         'erpnext_code', 'app_name', 'date', 'package',
         'activities', 'logs'
     )
-    list_filter = ('order_status', 'payment_method',)
+    list_filter = ('order_status', 'payment_method', 'is_main_invoice')
     search_fields = ('erpnext_code', 'instance__name', 'customer__email')
     actions = [
         push_to_erp, update_payment_status,
@@ -70,7 +70,8 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
         'date', 'delivery_date', 'instance',
         'app_name',
         'payment_method', 'payment_id', 'subscription', 'invoice',
-        'invoice_id'
+        'invoice_id', 'is_main_invoice', 'current_period_start',
+        'current_period_end'
     )
     fieldsets = (
         (
@@ -78,7 +79,7 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
             {
                 'fields': (
                     'erpnext_code', 'package', 'customer', 'company',
-                    'date', 'delivery_date', 'invoice_id',
+                    'date', 'delivery_date',
                     'invoice'
                 )
             }
@@ -108,6 +109,15 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
             {
                 'fields': (
                     'payment_method', 'payment_id', 'subscription'
+                )
+            }
+        ),
+        (
+            'Invoice',
+            {
+                'fields': (
+                    'invoice_id', 'is_main_invoice', 'current_period_start',
+                    'current_period_end'
                 )
             }
         )
