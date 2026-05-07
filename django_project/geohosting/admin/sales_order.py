@@ -161,10 +161,16 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
 
     def _auto_repeat_code(self, obj: SalesOrder):
         """Return auto repeat erpnext_code."""
-        auto_repeat = getattr(obj, 'sales_order_auto_repeat', None)
-        if auto_repeat:
-            return auto_repeat.erpnext_code
+        try:
+            auto_repeat = obj.salesorderautorepeat
+            if auto_repeat:
+                if not auto_repeat.erpnext_code:
+                    auto_repeat.post_to_erpnext()
+                return auto_repeat.erpnext_code
+        except SalesOrderAutoRepeat.DoesNotExist:
+            pass
         return None
+
     _auto_repeat_code.short_description = 'Auto Repeat'
 
     def _subscription(self, obj: SalesOrder):
