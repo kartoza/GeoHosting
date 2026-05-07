@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Reminder: Action Required</title>
+    <title>Late Payment Reminder: Action Required</title>
 </head>
 <body style="font-family: Lato, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; width: 900px">
        <table align="center" border="0" cellpadding="0" cellspacing="0" width="900" style="background-color: #ffffff; padding: 10px 10px 10px 10px;">
@@ -17,7 +17,7 @@
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #ffffff; padding: 0px; border: 1px solid #dddddd;">
         <tr>
             <td style="padding: 10px 0; text-align: center; background-color: #D9534F; color: #ffffff;">
-                <h2>⚠️ Payment Overdue</h2>
+                <h2>⚠️ Important: Action Needed to Keep Your {{ app_name }} Instance Active</h2>
             </td>
         </tr>
     </table>
@@ -26,15 +26,16 @@
             <td style="padding: 20px; font-size: 16px; color: #333333;">
                 <p>Dear {{ name }},</p>
                 <br>
-                <p>We noticed that the subscription for your <strong>{{ app_name }}</strong> instance has not been paid.</p>
+                <p>Our records indicate that payment for your service is currently outstanding.</p>
 
-                <p>If payment is not received, your instance will be <span style="color: #D9534F;"><strong>permanently deleted</strong></span> at {{ delete_time }} from our servers.</p>
+                <p>To prevent interruption of service and potential data loss, please arrange payment or contact us as soon as possible. 
+                    Please note that services with unpaid balances are scheduled for deletion after <strong>{time period}</strong>.</p>
 
-                <p>To avoid service interruption and data loss, please settle your payment as soon as possible/</p>
+                <p>Once deleted, all data associated with the service will be permanently lost and cannot be recovered.</p>
 
-                <p>If you believe you received this message in error or have any questions, feel free to contact our support team at <a href="mailto:{{ support_email }}" style="color: #FFA500;">{{ support_email }}</a>.</p>
+                <p>IIf you believe this notice was sent in error, or if you need any assistance, please don’t hesitate to contact our support team at <a href="mailto:{{ support_email }}" style="color: #FFA500;">{{ support_email }}</a>.</p>
 
-                <p>We value your use of <strong>{{ app_name }}</strong>, and we hope to continue serving you without interruption.</p>
+                <p>Thank you for being part of the GeoSpatialHosting community — we truly value having you with us.</p>
 
                 <br>
                 <p>Best regards,<br><br>
@@ -59,3 +60,4 @@
     </table>
 </body>
 </html>
+
