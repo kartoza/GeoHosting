@@ -28,7 +28,7 @@ User = get_user_model()
 
 
 def get_default_delivery_date():
-    return now() + timedelta(days=1)
+    return now() + timedelta(days=30)
 
 
 class _SalesOrderStatusObject:
