@@ -6,6 +6,7 @@ import { store } from "./redux/store";
 import TokenValidator from "./components/TokenValidator/TokenValidator";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
+import HealthBanner from "./components/HealthBanner/HealthBanner";
 import "./assets/styles/index.css";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -41,6 +42,7 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <Router>
+        <HealthBanner />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
