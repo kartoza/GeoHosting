@@ -47,11 +47,6 @@ class PaymentAPI(APIView):
                 'We don\'t recognize your profile. '
                 'Please update your profile at /#/dashboard/profile.'
             )
-        if not user.userbillinginformation.erpnext_code:
-            raise Exception(
-                'We don\'t recognize your billing information. '
-                'Please update your profile at /#/dashboard/profile.'
-            )
         pref = Preferences.load()
         if pref.erp_next_test != 'OK':
             raise Exception(

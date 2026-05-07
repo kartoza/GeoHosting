@@ -101,7 +101,7 @@ class SalesOrderAdmin(LogTrackerObjectAdmin, NoUpdateAdmin):
     ]
     readonly_fields = (
         'package', 'customer', 'company',
-        'date', 'delivery_date', 'instance',
+        'date', 'instance',
         'app_name',
         'payment_method', 'payment_id', 'subscription', 'invoice',
         'invoice_id', 'is_main_invoice'
