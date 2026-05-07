@@ -62,7 +62,15 @@ export const StripePaymentChangesModal = forwardRef(
                 });
               window.location.href = response.data.url
             } catch (error) {
-              toast.error("There is error on checkout, please try it again.");
+              // @ts-ignore
+              if (error?.response?.data) {
+                toast.error(
+                  // @ts-ignore
+                  "There is error on checkout. " + error?.response?.data,
+                );
+              } else {
+                toast.error("There is error on checkout, please try it again.");
+              }
               onClose()
             }
           }

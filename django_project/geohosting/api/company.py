@@ -1,5 +1,4 @@
 import json
-import threading
 
 from django.http import HttpResponseBadRequest
 from rest_framework import mixins, viewsets
@@ -98,9 +97,13 @@ class CompanyViewSet(
 
             # Save billing information
             billing_serializer.save()
-            threading.Thread(
-                target=company.post_to_erpnext
-            ).start()
+            try:
+                company.post_to_erpnext()
+            except Exception as e:
+                return Response(
+                    {'error': str(e)},
+                    status=500
+                )
             return Response(company_serializer.data)
         except KeyError as e:
             return HttpResponseBadRequest(f'{e} is required')

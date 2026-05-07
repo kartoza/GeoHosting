@@ -76,8 +76,9 @@ class ValidateTokenView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({'detail': 'Token is valid.'},
-                        status=status.HTTP_200_OK)
+        return Response(
+            {'detail': 'Token is valid.'}, status=status.HTTP_200_OK
+        )
 
 
 class PasswordResetView(APIView):

@@ -26,7 +26,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:  # noqa: D106
         model = UserProfile
-        exclude = ('erpnext_code', 'reset_token', 'user', 'id')
+        exclude = ('reset_token', 'user', 'id')
 
 
 class UserBillingInformationSerializer(BillingInformationSerializer):

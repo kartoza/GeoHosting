@@ -43,9 +43,13 @@ class PaymentAPI(APIView):
         domain = self.request.build_absolute_uri('/')
         try:
             callback_url = f'{domain}#/orders/{order.id}/deployment'
+            user = self.request.user
+            if not user.userprofile.erpnext_code:
+                raise Exception('You need to update profile.')
+            if not user.userbillinginformation.erpnext_code:
+                raise Exception('You need to update profile.')
             _id, payload = self.create_payload(
-                self.request.user.email, order.package, callback_url,
-                self.request.user
+                user.email, order.package, callback_url, user
             )
             order.payment_id = _id
             order.payment_method = self.payment_method

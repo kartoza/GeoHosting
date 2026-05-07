@@ -49,7 +49,15 @@ export const PaystackPaymentChangesModal = forwardRef(
                 window.location.reload()
               }
             } catch (error) {
-              toast.error("There is error on checkout, please try it again.");
+              // @ts-ignore
+              if (error?.response?.data) {
+                toast.error(
+                  // @ts-ignore
+                  "There is error on checkout. " + error?.response?.data,
+                );
+              } else {
+                toast.error("There is error on checkout, please try it again.");
+              }
               onClose()
             }
           }
