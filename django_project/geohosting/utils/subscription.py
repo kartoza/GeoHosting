@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.utils.timezone import make_aware, now
 
 from core.models.preferences import Preferences
+from geohosting.models.sales_order import SalesOrderAutoRepeat
 from geohosting.models.subscription import Subscription
 from geohosting.utils.paystack import (
     cancel_subscription as cancel_paystack_subscription,
@@ -295,13 +296,29 @@ class SubscriptionGateway:
                 template.discount_code = subscription_data.discount_code
                 template.save()
                 sales_order = template
-                
+
             if sales_order:
-                type(sales_order).objects.filter(
-                    pk=sales_order.pk
-                ).update(
+                auto_repeat = SalesOrderAutoRepeat(
+                    sales_order=sales_order,
                     current_period_start=current_period_start,
-                    current_period_end=current_period_end
+                    current_period_end=current_period_end,
+                    repeat_on_day=current_period_start.day,
+                    notify_by_email=False,
+                    submit_on_creation=True,
+                )
+                auto_repeat.update_frequency()
+                SalesOrderAutoRepeat.objects.update_or_create(
+                    sales_order=sales_order,
+                    defaults={
+                        'current_period_start': (
+                            auto_repeat.current_period_start
+                        ),
+                        'current_period_end': auto_repeat.current_period_end,
+                        'repeat_on_day': auto_repeat.repeat_on_day,
+                        'frequency': auto_repeat.frequency,
+                        'notify_by_email': False,
+                        'submit_on_creation': True,
+                    }
                 )
 
         subscription.customer_payment_id = subscription_data.customer_id
