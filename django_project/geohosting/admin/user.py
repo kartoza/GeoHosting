@@ -28,7 +28,7 @@ def push_user_to_erpnext(modeladmin, request, queryset):
                     result['message']
                 )
         except Exception as e:
-            LogTracker.error(user, f'Push to erpnext', e)
+            LogTracker.error(user, 'Push to erpnext', e)
             messages.add_message(
                 request,
                 messages.ERROR,
