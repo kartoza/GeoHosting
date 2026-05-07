@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Checkbox, GridItem } from "@chakra-ui/react";
+import { Box, Checkbox, GridItem } from "@chakra-ui/react";
 import CompanyListSelector from "../../../components/Company/CompanyListSelector";
 import CompanyForm from "../../../components/Company/CompanyForm";
 
@@ -28,8 +28,6 @@ export const PurchaseDetail: React.FC<Props> = ({
   const [purchaseFor, setPurchaseFor] = useState<string>(
     purchaseForTypes.COMPANY,
   );
-
-  const companyFormRef = useRef<{ open: (id?: number) => void }>(null);
 
   /** Set validation */
   useEffect(() => {
@@ -116,34 +114,10 @@ export const PurchaseDetail: React.FC<Props> = ({
                   />
                 </Box>
               </Box>
-              <Box>
-                <Box
-                  mt={4}
-                  display="flex"
-                  width="100%"
-                  justifyContent="flex-end"
-                >
-                  <Button
-                    colorScheme="blue"
-                    onClick={() => {
-                      companyFormRef.current?.open();
-                    }}
-                  >
-                    Create Company
-                  </Button>
-                </Box>
-              </Box>
             </>
           )}
         </Box>
       </GridItem>
-      <CompanyForm
-        ref={companyFormRef}
-        onDone={(newName: string) => {
-          // When they finish creating, auto-select it:
-          setCompanyName(newName);
-        }}
-      />
     </>
   );
 };

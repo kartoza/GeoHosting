@@ -4,7 +4,6 @@ GeoHosting Controller.
 .. note:: User.
 """
 import json
-import threading
 
 from django.http import HttpResponseBadRequest
 from rest_framework.permissions import IsAuthenticated
@@ -88,9 +87,13 @@ class UserProfileView(APIView):
                 billing = user.userbillinginformation
                 billing.emptying()
 
-            threading.Thread(
-                target=user.userprofile.post_to_erpnext
-            ).start()
+            try:
+                user.userprofile.post_to_erpnext()
+            except Exception as e:
+                return Response(
+                    {'error': str(e)},
+                    status=500
+                )
             return Response(serializer.data)
         except KeyError as e:
             return HttpResponseBadRequest(f'{e} is required')

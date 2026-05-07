@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import PaystackPop from "@paystack/inline-js";
-import { toast } from "react-toastify";
+import { checkout_error_handler } from "../../../utils/checkoutError";
 import { RootState } from "../../../redux/store";
 import { Agreement } from "./Agreement";
 import { postData } from "./post";
@@ -50,7 +50,7 @@ export const PaystackPaymentModal = forwardRef(
               window.location.replace(response.data.success_url);
             };
           } catch (error) {
-            toast.error("There is error on checkout, please try it again.");
+            checkout_error_handler(error);
             onClose();
           }
         })();

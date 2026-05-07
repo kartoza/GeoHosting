@@ -100,6 +100,8 @@ export const MainCheckoutPageComponent: React.FC<CheckoutPageModalProps> = ({
   useEffect(() => {
     if (!companyName) {
       if (
+        !user?.profile?.erpnext_code ||
+        !user?.billing_information?.erpnext_code ||
         !user?.billing_information?.erpnext_code ||
         !user?.billing_information?.address ||
         !user?.billing_information?.city ||

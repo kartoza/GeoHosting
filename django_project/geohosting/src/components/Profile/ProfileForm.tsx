@@ -297,6 +297,9 @@ const ProfileForm: React.FC<Props> = ({ isModal }) => {
               onClick={handleProfileUpdate}
               minWidth={150}
               width={"100%"}
+              isLoading={loading}
+              isDisabled={loading}
+              loadingText="Updating..."
             >
               Update Profile
             </Button>

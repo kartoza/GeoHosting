@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { checkout_error_handler } from "../../utils/checkoutError";
 import axios from "axios";
 import { RootState } from "../../redux/store";
 
@@ -62,7 +62,7 @@ export const StripePaymentChangesModal = forwardRef(
                 });
               window.location.href = response.data.url
             } catch (error) {
-              toast.error("There is error on checkout, please try it again.");
+              checkout_error_handler(error);
               onClose()
             }
           }

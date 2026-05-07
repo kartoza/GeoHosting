@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.utils.timezone import make_aware, now
 
 from core.models.preferences import Preferences
+from geohosting.models.sales_order import SalesOrderAutoRepeat
 from geohosting.models.subscription import Subscription
 from geohosting.utils.paystack import (
     cancel_subscription as cancel_paystack_subscription,
@@ -255,41 +256,70 @@ class SubscriptionGateway:
             }
         )
 
-        # This is for null invoice_id in sales order
-        if subscription.is_active:
-            if subscription_data.latest_invoice:
-                subscription.salesorder_set.filter(
-                    invoice_id__isnull=True
-                ).update(
-                    invoice_id=subscription_data.latest_invoice
-                )
+        # This is update latest invoice
+        if subscription_data.latest_invoice:
+            # Apply invoice_id for the null one
+            subscription.salesorder_set.filter(
+                invoice_id__isnull=True
+            ).update(
+                invoice_id=subscription_data.latest_invoice
+            )
 
-                # For create new sales order if there is no sales order
-                # For next payment date
-                orders = subscription.salesorder_set.filter(
-                    invoice_id__isnull=False
-                )
-                if not orders.filter(
-                        invoice_id=subscription_data.latest_invoice
-                ).first() and orders.last():
-                    # Create sales order
-                    template = orders.last()
-                    template.id = None
-                    template.erpnext_code = None
-                    template.invoice = None
-                    template.invoice_id = subscription_data.latest_invoice
-                    template.date = now()
-                    template.delivery_date = now()
-                    template.is_main_invoice = False
+            sales_order = subscription.salesorder_set.filter(
+                invoice_id=subscription_data.latest_invoice
+            ).first()
 
-                    template.discount_amount = (
-                        subscription_data.discount_amount
-                    )
-                    template.discount_percentage = (
-                        subscription_data.discount_percentage
-                    )
-                    template.discount_code = subscription_data.discount_code
-                    template.save()
+            # For create new sales order if there is no sales order
+            # For next payment date
+            orders = subscription.salesorder_set.filter(
+                invoice_id__isnull=False
+            )
+            # If the the sales order for this invoice is not created yet
+            # And there is already sales order for this subscription
+            if not sales_order and orders.last():
+                # Create sales order
+                template = orders.last()
+                template.id = None
+                template.erpnext_code = None
+                template.invoice = None
+                template.invoice_id = subscription_data.latest_invoice
+                template.date = now()
+                template.delivery_date = now()
+                template.is_main_invoice = False
+
+                template.discount_amount = (
+                    subscription_data.discount_amount
+                )
+                template.discount_percentage = (
+                    subscription_data.discount_percentage
+                )
+                template.discount_code = subscription_data.discount_code
+                template.save()
+                sales_order = template
+
+            if sales_order:
+                auto_repeat = SalesOrderAutoRepeat(
+                    sales_order=sales_order,
+                    current_period_start=current_period_start,
+                    current_period_end=current_period_end,
+                    repeat_on_day=current_period_start.day,
+                    notify_by_email=False,
+                    submit_on_creation=True,
+                )
+                auto_repeat.update_frequency()
+                SalesOrderAutoRepeat.objects.update_or_create(
+                    sales_order=sales_order,
+                    defaults={
+                        'current_period_start': (
+                            auto_repeat.current_period_start
+                        ),
+                        'current_period_end': auto_repeat.current_period_end,
+                        'repeat_on_day': auto_repeat.repeat_on_day,
+                        'frequency': auto_repeat.frequency,
+                        'notify_by_email': False,
+                        'submit_on_creation': True,
+                    }
+                )
 
         subscription.customer_payment_id = subscription_data.customer_id
         subscription.current_period_start = current_period_start

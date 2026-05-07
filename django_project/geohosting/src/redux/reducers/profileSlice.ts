@@ -7,6 +7,7 @@ import axios from "axios";
 import { headerWithToken } from "../../utils/helpers";
 
 export interface Profile {
+  erpnext_code?: string;
   avatar: string;
 }
 

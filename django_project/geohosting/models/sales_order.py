@@ -190,6 +190,8 @@ class SalesOrder(ErpModel):
             'Subscription of the instance.'
         )
     )
+
+    # Invoice data
     is_main_invoice = models.BooleanField(
         default=True
     )
@@ -254,9 +256,7 @@ class SalesOrder(ErpModel):
             invoice = self.salesorderinvoice_set.all().first()
             if not invoice:
                 # Create sales invoice if sales order is not already invoiced
-                SalesOrderInvoice.objects.create(
-                    sales_order=self
-                )
+                SalesOrderInvoice.objects.create(sales_order=self)
             else:
                 invoice.post_to_erpnext()
         return result
@@ -373,6 +373,14 @@ class SalesOrder(ErpModel):
             payload[
                 'additional_discount_percentage'
             ] = self.discount_percentage
+        try:
+            auto_repeat = self.salesorderautorepeat
+            if auto_repeat:
+                if not auto_repeat.erpnext_code:
+                    auto_repeat.post_to_erpnext()
+                payload['auto_repeat'] = auto_repeat.erpnext_code
+        except SalesOrderAutoRepeat.DoesNotExist:
+            pass
         return payload
 
     @property
@@ -502,6 +510,73 @@ class SalesOrder(ErpModel):
 
         if self.subscription:
             self.subscription.sync_subscription()
+
+
+class AutoRepeatFrequency(models.TextChoices):
+    DAILY = 'Daily', 'Daily'
+    WEEKLY = 'Weekly', 'Weekly'
+    MONTHLY = 'Monthly', 'Monthly'
+    QUARTERLY = 'Quarterly', 'Quarterly'
+    HALF_YEARLY = 'Half-yearly', 'Half-yearly'
+    YEARLY = 'Yearly', 'Yearly'
+
+
+class SalesOrderAutoRepeat(ErpModel):
+    """Sales Order Auto Repeat."""
+
+    doc_type = "Auto Repeat"
+    sales_order = models.OneToOneField(
+        SalesOrder,
+        on_delete=models.CASCADE
+    )
+    frequency = models.CharField(
+        max_length=20,
+        choices=AutoRepeatFrequency.choices,
+        default=AutoRepeatFrequency.MONTHLY
+    )
+    repeat_on_day = models.IntegerField()
+    current_period_start = models.DateTimeField()
+    current_period_end = models.DateTimeField()
+    notify_by_email = models.BooleanField(default=True)
+    submit_on_creation = models.BooleanField(default=True)
+
+    def update_frequency(self):
+        """Update frequency."""
+        delta = (
+                self.current_period_end - self.current_period_start
+        ).days
+        if delta <= 3:
+            self.frequency = AutoRepeatFrequency.DAILY
+        elif delta <= 20:
+            self.frequency = AutoRepeatFrequency.WEEKLY
+        elif delta <= 60:
+            self.frequency = AutoRepeatFrequency.MONTHLY
+        elif delta <= 135:
+            self.frequency = AutoRepeatFrequency.QUARTERLY
+        elif delta <= 270:
+            self.frequency = AutoRepeatFrequency.HALF_YEARLY
+        else:
+            self.frequency = AutoRepeatFrequency.YEARLY
+
+    @property
+    def erp_payload_for_create(self):
+        """ERP Payload for create request."""
+        payload = {
+            "reference_doctype": "Sales Order",
+            "reference_document": self.sales_order.erpnext_code,
+            "frequency": self.frequency,
+            "start_date": self.current_period_start.strftime("%Y-%m-%d"),
+            "end_date": self.current_period_end.strftime("%Y-%m-%d"),
+            "repeat_on_day": self.repeat_on_day,
+            "notify_by_email": 1 if self.notify_by_email else 0,
+            "submit_on_creation": 1 if self.submit_on_creation else 0,
+        }
+        return payload
+
+    @property
+    def erp_payload_for_edit(self):
+        """ERP Payload for edit request."""
+        return self.erp_payload_for_create
 
 
 class SalesOrderInvoice(ErpModel):

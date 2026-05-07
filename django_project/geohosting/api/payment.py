@@ -11,6 +11,7 @@ from paystackapi.transaction import Transaction
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
+from core.models.preferences import Preferences
 from geohosting.models import Package, UserPaymentGatewayId
 from geohosting.models.coupon import CouponCode
 from geohosting.models.sales_order import SalesOrder, PaymentMethod
@@ -38,14 +39,44 @@ class PaymentAPI(APIView):
         """
         raise NotImplemented
 
+    def check(self):
+        """Check payment."""
+        user = self.request.user
+        if not user.userprofile.erpnext_code:
+            raise Exception(
+                'We don\'t recognize your profile. '
+                'Please update your profile at /#/dashboard/profile.'
+            )
+        if not user.userbillinginformation.erpnext_code:
+            raise Exception(
+                'We don\'t recognize your billing information. '
+                'Please update your profile at /#/dashboard/profile.'
+            )
+        pref = Preferences.load()
+        if pref.erp_next_test != 'OK':
+            raise Exception(
+                'Our payment system is temporarily unavailable. '
+                'Please try again later or contact support.'
+            )
+        if pref.proxy_test != 'OK':
+            raise Exception(
+                'Our deployment system is temporarily unavailable. '
+                'Please try again later or contact support.'
+            )
+        if pref.vault_test != 'OK':
+            raise Exception(
+                'Our deployment system is temporarily unavailable. '
+                'Please try again later or contact support.'
+            )
+
     def get_post(self, order: SalesOrder):
         """Get post response."""
         domain = self.request.build_absolute_uri('/')
         try:
             callback_url = f'{domain}#/orders/{order.id}/deployment'
+            user = self.request.user
             _id, payload = self.create_payload(
-                self.request.user.email, order.package, callback_url,
-                self.request.user
+                user.email, order.package, callback_url, user
             )
             order.payment_id = _id
             order.payment_method = self.payment_method
@@ -60,6 +91,7 @@ class PaymentAPI(APIView):
 
     def post(self, request, pk):
         """Post to create checkout session."""
+        self.check()
         package = get_object_or_404(Package, pk=pk)
         domain = request.build_absolute_uri('/')
         try:

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Checkbox } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { EditIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { AppDispatch, RootState } from "../../redux/store";
 import { Company, fetchUserCompanies } from "../../redux/reducers/companySlice";
 import CompanyForm from "./CompanyForm";
@@ -67,24 +67,78 @@ const CompanyListSelector: React.FC<OrderSummaryProps> = ({
     <Box p={4} background={"white"}>
       {!data?.results.length && (
         <Box fontSize="13px" textAlign="center" p={4}>
-          You don't have any companies yet. Please create one.
+          You don't have any companies yet.
+          <Box
+            onClick={() => {
+              // @ts-ignore
+              modalRef?.current?.open();
+            }}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            gap={1}
+            mt={2}
+            color="blue.500"
+            fontWeight="semibold"
+            cursor="pointer"
+            _hover={{ textDecoration: "underline", color: "blue.600" }}
+          >
+            <AddIcon boxSize={2.5} />
+            Create
+          </Box>
         </Box>
       )}
       {!!data?.results.length && (
         <>
-          <Box fontSize={12} mb={4}>
-            Select Company
+          <Box
+            fontSize="13px"
+            mb={4}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box>Select Company</Box>
+            <Box
+              onClick={() => {
+                // @ts-ignore
+                modalRef?.current?.open();
+              }}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap={1}
+              color="blue.500"
+              fontWeight="semibold"
+              cursor="pointer"
+              _hover={{ textDecoration: "underline", color: "blue.600" }}
+            >
+              <AddIcon boxSize={2.5} />
+              Create
+            </Box>
           </Box>
-          <Box height={160} overflowY="auto" pr={4}>
+          <Box
+            height={160}
+            overflowY="auto"
+            pr={2}
+            border="1px solid"
+            borderColor="gray.200"
+            borderRadius="md"
+            p={2}
+          >
             {data?.results.map((_company: Company) => (
               <Box
                 display="flex"
                 justifyContent="space-between"
+                alignItems="center"
                 key={_company.id}
+                px={2}
                 py={2}
                 fontSize="13px"
                 cursor="pointer"
                 whiteSpace="nowrap"
+                borderRadius="md"
+                _hover={{ background: "gray.50" }}
+                background={companyId === _company.id ? "blue.50" : "white"}
               >
                 <Box>
                   <Checkbox
@@ -117,6 +171,8 @@ const CompanyListSelector: React.FC<OrderSummaryProps> = ({
                 </Box>
                 <EditIcon
                   fontSize="13px"
+                  color="gray.400"
+                  _hover={{ color: "blue.500" }}
                   onClick={() => {
                     // @ts-ignore
                     modalRef?.current?.open(_company.id);

@@ -14,6 +14,10 @@ from geohosting.api.checkout import (
 from geohosting.api.company import CompanyViewSet
 from geohosting.api.country import CountryViewSet
 from geohosting.api.erp import ERPApiView
+from geohosting.api.health import (
+    ErpHealthView, ProxyHealthView, StripeHealthView,
+    PaystackHealthView, VaultHealthView
+)
 from geohosting.api.instance import InstanceViewSet
 from geohosting.api.product import ProductViewSet
 from geohosting.api.sales_order import (
@@ -126,7 +130,16 @@ coupon_code_check = [
     )
 ]
 
+health = [
+    path('erp/', ErpHealthView.as_view(), name='health-erp'),
+    path('proxy/', ProxyHealthView.as_view(), name='health-proxy'),
+    path('stripe/', StripeHealthView.as_view(), name='health-stripe'),
+    path('paystack/', PaystackHealthView.as_view(), name='health-paystack'),
+    path('vault/', VaultHealthView.as_view(), name='health-vault'),
+]
+
 api = [
+    path('health/', include(health)),
     path('coupon-check/', include(coupon_code_check)),
     path('subscription/<pk>/payment-changes/', include(subscription_changes)),
     path('webhook/', WebhookView.as_view(), name='webhook-api'),
