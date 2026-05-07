@@ -66,6 +66,7 @@ class CheckoutAPI(PaymentAPI):
     def post(self, request, pk):
         """Post to create checkout session."""
         try:
+            self.check()
             app_name = request.data['app_name']
             company_name = request.data['company_name']
             agreement_ids = json.loads(request.data['agreement_ids'])

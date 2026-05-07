@@ -10,7 +10,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { checkout_error_handler } from "../../utils/checkoutError";
 import axios from "axios";
 import { RootState } from "../../redux/store";
 import PaystackPop from '@paystack/inline-js';
@@ -49,15 +49,7 @@ export const PaystackPaymentChangesModal = forwardRef(
                 window.location.reload()
               }
             } catch (error) {
-              // @ts-ignore
-              if (error?.response?.data) {
-                toast.error(
-                  // @ts-ignore
-                  "There is error on checkout. " + error?.response?.data,
-                );
-              } else {
-                toast.error("There is error on checkout, please try it again.");
-              }
+              checkout_error_handler(error);
               onClose()
             }
           }
